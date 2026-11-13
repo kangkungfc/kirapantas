@@ -72,6 +72,7 @@
         </div>
       </div>
       <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️ Admin</button>
         <button onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ Akaun</button>
         <button onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-xs font-black px-2.5 py-2 border-2 border-indigo-700">🏆 Skor</button>
         <button onclick="logoutPlayer()" class="bubbly-btn bg-rose-100 text-rose-700 text-xs font-black px-2.5 py-2 border-2 border-rose-300" title="Log Keluar">🚪</button>
@@ -132,6 +133,9 @@
         <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
           <button type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
             🔑 Lupa Kata Laluan? Tetapkan Semula
+          </button>
+          <button type="button" onclick="fillAdminLoginHint()" class="text-[11px] font-black text-rose-700 hover:text-rose-900 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full">
+            🛡️ Log Masuk Akaun Admin / Guru
           </button>
           <p class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
         </div>
@@ -245,6 +249,9 @@
         </button>
         <button onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
+        </button>
+        <button id="btn-home-admin-panel" onclick="navTo('admin')" class="hidden col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
+          <span>🛡️</span> Buka Panel Admin (Urus Akaun Pelajar, Reset Password & Padam)
         </button>
       </div>
     </section>
@@ -756,6 +763,43 @@
       </div>
     </section>
 
+    <!-- ========================================================
+         SKRIN 10: PANEL ADMIN & GURU (URUS SEMUA AKAUN PELAJAR)
+         ======================================================== -->
+    <section id="screen-admin" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <button onclick="loadAdminStudentList()" class="bubbly-btn bg-rose-100 border-2 border-rose-300 px-3 py-2 text-xs font-black text-rose-800">🔄 Segar Semula</button>
+      </div>
+
+      <div class="bubbly-card bg-white border-4 border-rose-500 p-4 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-bold text-rose-950">🛡️ Panel Kawalan Admin</h2>
+            <p class="text-[11px] font-bold text-slate-500">Semua 6 Tahap dibuka untuk ujian. Urus akaun pelajar di bawah:</p>
+          </div>
+          <span id="admin-total-students-badge" class="text-xs font-black bg-rose-100 text-rose-900 px-3 py-1 rounded-full border border-rose-300">0 Pelajar</span>
+        </div>
+
+        <!-- Tetapan Kata Laluan Lalai Reset & Carian -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-rose-50/80 p-3 rounded-2xl border-2 border-rose-200">
+          <div>
+            <label class="block text-[10px] font-black text-rose-950 mb-1">🔍 Cari Nama Pelajar</label>
+            <input id="admin-search-input" type="text" oninput="filterAdminStudentList()" placeholder="Taip nama pelajar..." class="w-full px-3 py-2 rounded-xl border border-rose-300 text-xs font-bold bg-white focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-rose-950 mb-1">🔑 Kata Laluan Lalai Untuk Reset</label>
+            <input id="admin-default-reset-pass" type="text" value="1234" minlength="3" maxlength="20" placeholder="Lalai: 1234" class="w-full px-3 py-2 rounded-xl border border-rose-300 text-xs font-black bg-white focus:outline-none" />
+          </div>
+        </div>
+
+        <div id="admin-action-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5 text-center"></div>
+
+        <!-- Senarai Akaun Pelajar -->
+        <div id="admin-students-list" class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1"></div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ========================================================
@@ -764,7 +808,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, getDocs, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, deleteDoc, getDocs, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     let db = null;
     let auth = null;
@@ -774,151 +818,57 @@
     let scoreboardUnsubscribe = null;
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jari-abakus-pintar';
     const TEACHER_RESET_MASTER_CODE = 'GURU2026';
-
-    /* Konfigurasi Projek Firebase Online ("kirapantas") */
+    const ADMIN_ACCOUNT_ID = 'acc_admin_master';
+    const ADMIN_DEFAULT_NAME = 'admin';
+    const ADMIN_DEFAULT_PASS = 'admin123';
     const CUSTOM_FIREBASE_CONFIG = {
-      apiKey: "AIzaSyATxc89Yl0NxfMRy2Ply2ma77iP9HEuZM0",
+      apiKey: localStorage.getItem('kirapantas_fb_apikey_override') || "AIzaSyATxc89Yl0NxfMRy2Ply2ma77iP9HEuZM0",
       authDomain: "kirapantas.firebaseapp.com",
       projectId: "kirapantas",
       storageBucket: "kirapantas.firebasestorage.app",
-      messagingSenderId: "244674005206",
-      appId: "1:244674005206:web:37613ea5e65e4f12e6e177",
-      measurementId: "G-CD1C9LHHFJ"
+      messagingSenderId: "1244674885286",
+      appId: "1:1244674885286:web:37613eabec6e4f31e4e1f7",
+      measurementId: "G-CUIDIVLHFF"
     };
 
     try {
-      const savedOverrideKey = localStorage.getItem('kirapantas_fb_apikey_override');
-      if (savedOverrideKey && savedOverrideKey.startsWith('AIza')) {
-        CUSTOM_FIREBASE_CONFIG.apiKey = savedOverrideKey.trim();
-      }
-      const hasCustomFirebase = CUSTOM_FIREBASE_CONFIG.apiKey && !CUSTOM_FIREBASE_CONFIG.apiKey.startsWith("GANTI_");
-      const rawFirebaseCfg = typeof __firebase_config !== 'undefined' && __firebase_config
-        ? JSON.parse(__firebase_config)
-        : (hasCustomFirebase ? CUSTOM_FIREBASE_CONFIG : null);
-
-      if (rawFirebaseCfg) {
-        const app = initializeApp(rawFirebaseCfg);
-        auth = getAuth(app);
-        db = getFirestore(app);
-        authReadyPromise = new Promise((resolve) => {
-          onAuthStateChanged(auth, (u) => {
-            if (u) {
-              fbUser = u;
-              fbLastError = '';
-              resolve(u);
-            }
-          });
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            signInWithCustomToken(auth, __initial_auth_token).catch(() =>
-              signInAnonymously(auth).catch((e) => { fbLastError = e?.code || 'auth-error'; resolve(null); })
-            );
-          } else {
-            signInAnonymously(auth).catch((e) => { fbLastError = e?.code || 'auth-error'; resolve(null); });
-          }
-        });
-      }
+      const fbApp = initializeApp(CUSTOM_FIREBASE_CONFIG);
+      auth = getAuth(fbApp);
+      db = getFirestore(fbApp);
+      authReadyPromise = (async () => {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+        return auth.currentUser;
+      })();
+      onAuthStateChanged(auth, (u) => { fbUser = u; });
     } catch (err) {
       fbLastError = err?.code || 'init-error';
       console.warn("Mod storan tempatan aktif.");
     }
 
-    /* 1. KATALOG STUDIO AVATAR 3D PIXAR-STYLE MENGIKUT JANTINA & STACKABLE */
-    const HAIR_COLOR_PALETTES = {
-      brown: { light: '#8D5B3C', mid: '#5C3620', dark: '#2E180B', shine: '#B88463' },
-      black: { light: '#475569', mid: '#1E293B', dark: '#090D16', shine: '#94A3B8' },
-      honey: { light: '#F59E0B', mid: '#B45309', dark: '#78350F', shine: '#FDE68A' },
-      auburn: { light: '#FB923C', mid: '#EA580C', dark: '#9A3412', shine: '#FED7AA' },
-      pink: { light: '#F472B6', mid: '#DB2777', dark: '#831843', shine: '#FBCFE8' }
-    };
-
-    const AVATAR_STUDIO_CATALOG = {
-      face: [
-        { id: 'boy_leo', name: 'Leo (Hoodie Kuning)', cost: 0, gender: 'boy', defaultHair: 'hair_quiff', defaultColor: 'brown' },
-        { id: 'boy_adam', name: 'Adam (Sut Eksekutif)', cost: 10, gender: 'boy', defaultHair: 'hair_neat', defaultColor: 'black' },
-        { id: 'boy_zack', name: 'Zack (Rambut Pacak)', cost: 15, gender: 'boy', defaultHair: 'hair_messy', defaultColor: 'black' },
-        { id: 'boy_danish', name: 'Danish (Atlet Blond)', cost: 15, gender: 'boy', defaultHair: 'hair_quiff', defaultColor: 'honey' },
-        { id: 'boy_amir', name: 'Amir (Jaket Sukan)', cost: 20, gender: 'boy', defaultHair: 'hair_curly_boy', defaultColor: 'auburn' },
-        { id: 'boy_rayyan', name: 'Rayyan (Sopan Kemas)', cost: 25, gender: 'boy', defaultHair: 'hair_neat', defaultColor: 'brown' },
-        { id: 'girl_hana', name: 'Hana (Rambut Beralun)', cost: 0, gender: 'girl', defaultHair: 'hair_wavy_girl', defaultColor: 'honey' },
-        { id: 'girl_sofia', name: 'Sofia (Sanggul Fon Kepala)', cost: 10, gender: 'girl', defaultHair: 'hair_ponytail', defaultColor: 'black' },
-        { id: 'girl_maya', name: 'Maya (Tocang Dua Comel)', cost: 15, gender: 'girl', defaultHair: 'hair_buns', defaultColor: 'brown' },
-        { id: 'girl_aina', name: 'Aina (Kerinting Oren)', cost: 15, gender: 'girl', defaultHair: 'hair_long_girl', defaultColor: 'auburn' },
-        { id: 'girl_bella', name: 'Bella (Graduasi Pintar)', cost: 20, gender: 'girl', defaultHair: 'hair_long_girl', defaultColor: 'black' },
-        { id: 'girl_nadia', name: 'Nadia (Siswi Pastel)', cost: 25, gender: 'girl', defaultHair: 'hair_wavy_girl', defaultColor: 'pink' }
-      ],
-      hair: [
-        { id: 'hair_quiff', name: 'Jambul 3D Bergaya', cost: 0, gender: 'boy' },
-        { id: 'hair_neat', name: 'Belah Tepi Kemas', cost: 10, gender: 'boy' },
-        { id: 'hair_messy', name: 'Pacak Santai 3D', cost: 15, gender: 'boy' },
-        { id: 'hair_curly_boy', name: 'Kerinting Pendek 3D', cost: 15, gender: 'boy' },
-        { id: 'hair_wavy_girl', name: 'Beralun Paras Bahu', cost: 0, gender: 'girl' },
-        { id: 'hair_buns', name: 'Sanggul Dua Comel', cost: 10, gender: 'girl' },
-        { id: 'hair_ponytail', name: 'Sanggul Tinggi 3D', cost: 15, gender: 'girl' },
-        { id: 'hair_long_girl', name: 'Panjang Sutera 3D', cost: 20, gender: 'girl' }
-      ],
-      headwear: [
-        { id: 'hw_none', name: 'Tiada Penutup', cost: 0, gender: 'unisex' },
-        { id: 'hw_cap_red', name: 'Topi Besbol Merah 3D', cost: 15, gender: 'boy' },
-        { id: 'hw_cap_blue', name: 'Topi Sukan Biru 3D', cost: 15, gender: 'boy' },
-        { id: 'hw_beanie', name: 'Topi Kait Kuning 3D', cost: 20, gender: 'boy' },
-        { id: 'hw_tudung_pink', name: 'Tudung Pastel Pink 3D', cost: 15, gender: 'girl' },
-        { id: 'hw_tudung_blue', name: 'Tudung Biru Langit 3D', cost: 15, gender: 'girl' },
-        { id: 'hw_tudung_emerald', name: 'Tudung Shawl Zamrud 3D', cost: 25, gender: 'girl' },
-        { id: 'hw_cat_ears', name: 'Cekak Telinga Kucing', cost: 20, gender: 'girl' },
-        { id: 'hw_grad', name: 'Topi Graduasi 3D', cost: 35, gender: 'unisex' },
-        { id: 'hw_crown', name: 'Mahkota Diraja 3D', cost: 50, gender: 'unisex' }
-      ],
-      accessory: [
-        { id: 'acc_glasses', name: 'Cermin Mata Bulat 3D', cost: 15, slot: 'eyewear', gender: 'unisex' },
-        { id: 'acc_shades', name: 'Spek Hitam 3D Glossy', cost: 25, slot: 'eyewear', gender: 'unisex' },
-        { id: 'acc_backpack', name: 'Beg Galas Sekolah 3D', cost: 20, slot: 'bag', gender: 'unisex' },
-        { id: 'acc_headphones', name: 'Fon Kepala 3D', cost: 25, slot: 'ears_acc', gender: 'unisex' },
-        { id: 'acc_pin_star', name: 'Lencana Bintang Emas', cost: 25, slot: 'pin', gender: 'unisex' },
-        { id: 'acc_bowtie', name: 'Tali Leher Kupu-Kupu', cost: 20, slot: 'neck', gender: 'boy' },
-        { id: 'acc_ribbon', name: 'Riben Pastel Comel', cost: 20, slot: 'neck', gender: 'girl' },
-        { id: 'acc_earring_pearl', name: 'Subang Mutiara 3D', cost: 20, slot: 'earring', gender: 'girl' },
-        { id: 'acc_earring_star', name: 'Subang Bintang 3D', cost: 30, slot: 'earring', gender: 'girl' }
-      ],
-      bg: [
-        { id: 'bg_sky', name: 'Langit Awan 3D', cost: 0, c1: '#F8FAFC', c2: '#CBD5E1', gender: 'unisex' },
-        { id: 'bg_amber', name: 'Mentari Madu 3D', cost: 10, c1: '#FEF9C3', c2: '#F59E0B', gender: 'unisex' },
-        { id: 'bg_rose', name: 'Sakura Pastel 3D', cost: 10, c1: '#FCE7F3', c2: '#EC4899', gender: 'unisex' },
-        { id: 'bg_emerald', name: 'Pudina Segar 3D', cost: 15, c1: '#D1FAE5', c2: '#10B981', gender: 'unisex' },
-        { id: 'bg_purple', name: 'Galaksi Ungu 3D', cost: 25, c1: '#EDE9FE', c2: '#8B5CF6', gender: 'unisex' },
-        { id: 'bg_royal', name: 'Emas Juara 3D', cost: 40, c1: '#FEF08A', c2: '#D97706', gender: 'unisex' }
-      ]
-    };
-
-    const MODULE_UNLOCK_REQ = { 1: 0, 2: 0, 3: 15, 4: 40, 5: 75, 6: 120 };
-    let activeStudioTab = 'face';
-    let currentPlayer = null;
-    let activePlayTimer = null;
-
-    /* 2. KESAN AUDIO WEB AUDIO API & KONFETI */
-    let audioCtx = null;
-    function getAudioCtx() {
-      if (!audioCtx) {
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        if (Ctx) audioCtx = new Ctx();
-      }
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-      return audioCtx;
+    function isAdminAccountRecord(acc) {
+      if (!acc) return false;
+      const id = String(acc.accountId || acc.key || '').trim();
+      const nm = String(acc.name || '').trim().toLowerCase();
+      return Boolean(acc.isAdmin) || id === ADMIN_ACCOUNT_ID || nm === ADMIN_DEFAULT_NAME;
     }
 
-    function playTone(freq, type = 'sine', duration = 0.12, gainVal = 0.12) {
+    async function purgeAdminFromCloudScoreboard() {
+      inMemoryAccounts.delete(ADMIN_ACCOUNT_ID);
+      inMemoryAccounts.forEach((v, k) => {
+        if (isAdminAccountRecord(v) || k === ADMIN_ACCOUNT_ID) {
+          inMemoryAccounts.delete(k);
+        }
+      });
+      persistLocalAccountsToStorage();
+      if (!db) return;
       try {
-        const ctx = getAudioCtx();
-        if (!ctx) return;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + duration);
+        await authReadyPromise;
+        if (!fbUser) return;
+        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', ADMIN_ACCOUNT_ID));
       } catch (e) {}
     }
 
@@ -2182,13 +2132,8 @@
       if (chosen === ans) {
         playCheer();
         fb.className = 'text-[11px] font-black rounded-xl p-2 bg-emerald-100 text-emerald-900';
-        fb.innerText = `🎉 Tepat! Sebab ${num} + ${ans} = ${base}! (+1 Bintang ⭐)`;
+        fb.innerText = `🎉 Tepat! Sebab ${num} + ${ans} = ${base}! (Latihan hafalan - tiada skor ditambah)`;
         fb.classList.remove('hidden');
-        if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          syncPlayerUI();
-          savePlayerCloud();
-        }
         setTimeout(() => renderMod3FriendMiniGame(), 1100);
       } else {
         playWrong();
@@ -2630,7 +2575,7 @@
       for (let m = 1; m <= 6; m++) {
         const meta = MODULES_META[m];
         const req = MODULE_UNLOCK_REQ[m];
-        const unlocked = currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= req;
+        const unlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= req;
         if (unlocked && !currentPlayer.unlockedModules.includes(m)) {
           currentPlayer.unlockedModules.push(m);
         }
@@ -3033,7 +2978,7 @@
         container.className = 'grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-0.5';
         for (let m = 3; m <= 6; m++) {
           const meta = MODULES_META[m];
-          const isUnlocked = currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= MODULE_UNLOCK_REQ[m];
+          const isUnlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= MODULE_UNLOCK_REQ[m];
           const req = MODULE_UNLOCK_REQ[m];
           const row = document.createElement('div');
           row.className = 'flex items-center justify-between bg-amber-50/70 border-2 border-amber-200 rounded-2xl p-2.5';
@@ -3414,6 +3359,12 @@
       if (!currentPlayer) return;
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
       const avatarSvg = renderRealisticAvatarSVG(cfg, 'w-full h-full');
+      const isAdmin = Boolean(currentPlayer.isAdmin);
+
+      const btnHeaderAdmin = document.getElementById('btn-header-admin');
+      const btnHomeAdmin = document.getElementById('btn-home-admin-panel');
+      if (btnHeaderAdmin) btnHeaderAdmin.classList.toggle('hidden', !isAdmin);
+      if (btnHomeAdmin) btnHomeAdmin.classList.toggle('hidden', !isAdmin);
 
       const hAvatar = document.getElementById('header-avatar-box');
       const mAvatar = document.getElementById('home-avatar-box');
@@ -3425,16 +3376,10 @@
       const hName = document.getElementById('header-player-name');
       const mName = document.getElementById('home-player-name');
       const aName = document.getElementById('acc-current-name-display');
-      if (hName) hName.innerText = currentPlayer.name;
-      if (mName) mName.innerText = currentPlayer.name;
-      if (aName) aName.innerText = currentPlayer.name;
-
-      const stars = currentPlayer.stars || 0;
-      const pts = currentPlayer.totalPoints || 0;
-      const hStars = document.getElementById('header-star-count');
-      const mStars = document.getElementById('home-star-count');
-      const mPts = document.getElementById('home-points-count');
-      const hTime = document.getElementById('header-timer-display');
+      const displayLabel = isAdmin ? `${currentPlayer.name} 🛡️` : currentPlayer.name;
+      if (hName) hName.innerText = displayLabel;
+      if (mName) mName.innerText = displayLabel;
+      if (aName) aName.innerText = displayLabel;
       if (hStars) hStars.innerText = stars;
       if (mStars) mStars.innerText = stars;
       if (mPts) mPts.innerText = pts;
@@ -3454,6 +3399,20 @@
       if (!currentPlayer) return;
       const docId = currentPlayer.accountId || currentPlayer.key;
       if (!docId) return;
+
+      /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor / Firestore semasa ujian admin */
+      if (isAdminAccountRecord(currentPlayer)) {
+        try {
+          localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify({
+            name: currentPlayer.name,
+            password: currentPlayer.password,
+            recoveryPin: currentPlayer.recoveryPin || '2026',
+            avatarConfig: currentPlayer.avatarConfig
+          }));
+        } catch (e) {}
+        await purgeAdminFromCloudScoreboard();
+        return;
+      }
 
       currentPlayer.accountId = docId;
       currentPlayer.key = docId;
@@ -3476,6 +3435,7 @@
           name: currentPlayer.name,
           password: currentPlayer.password,
           recoveryPin: currentPlayer.recoveryPin,
+          isAdmin: false,
           stars: currentPlayer.stars || 0,
           totalPoints: currentPlayer.totalPoints || 0,
           playSeconds: currentPlayer.playSeconds || 0,
@@ -3490,6 +3450,16 @@
         console.warn('Gagal menyegerak rekod akaun:', err);
       }
     }
+
+    window.fillAdminLoginHint = function() {
+      playClick();
+      const nameInp = document.getElementById('input-player-name');
+      const passInp = document.getElementById('input-player-pass');
+      if (nameInp) nameInp.value = ADMIN_DEFAULT_NAME;
+      if (passInp) passInp.value = '';
+      if (passInp) passInp.focus();
+      showAppToast('Masukkan kata laluan Admin (lalai: admin123) untuk masuk ke Panel Kawalan.');
+    };
 
     function startPlayerSessionTimer() {
       if (activePlayTimer) clearInterval(activePlayTimer);
@@ -3529,7 +3499,33 @@
       submitBtn.innerText = '⏳ Menyemak Akaun...';
 
       try {
-        const existingAccount = await findAccountByExactName(displayName);
+        const isAdminAttempt = displayName.trim().toLowerCase() === ADMIN_DEFAULT_NAME;
+        let existingAccount = isAdminAttempt ? null : await findAccountByExactName(displayName);
+
+        if (isAdminAttempt) {
+          let savedAdmin = null;
+          try {
+            const rawAdm = localStorage.getItem('kirapantas_admin_profile_v1');
+            if (rawAdm) savedAdmin = JSON.parse(rawAdm);
+          } catch (e) {}
+          existingAccount = {
+            accountId: ADMIN_ACCOUNT_ID,
+            key: ADMIN_ACCOUNT_ID,
+            nameKey: normalizePlayerKey(ADMIN_DEFAULT_NAME),
+            name: (savedAdmin && savedAdmin.name) || ADMIN_DEFAULT_NAME,
+            password: (savedAdmin && savedAdmin.password) || ADMIN_DEFAULT_PASS,
+            recoveryPin: (savedAdmin && savedAdmin.recoveryPin) || '2026',
+            isAdmin: true,
+            stars: 999,
+            totalPoints: 0,
+            playSeconds: 0,
+            unlockedModules: [1, 2, 3, 4, 5, 6],
+            modScores: {},
+            avatarConfig: (savedAdmin && savedAdmin.avatarConfig) || getDefaultAvatarConfig('boy'),
+            ownedAvatarItems: ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky']
+          };
+          await purgeAdminFromCloudScoreboard();
+        }
 
         if (existingAccount) {
           if (existingAccount.password !== password) {
@@ -3542,6 +3538,7 @@
           }
 
           const permanentId = existingAccount.accountId || existingAccount.key || generatePermanentAccountId();
+          const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           currentPlayer = {
             accountId: permanentId,
             key: permanentId,
@@ -3549,12 +3546,15 @@
             name: existingAccount.name || displayName,
             password: existingAccount.password,
             recoveryPin: existingAccount.recoveryPin || validPin || '0000',
+            isAdmin: isAdminUser,
             stars: Number(existingAccount.stars) || 0,
             totalPoints: Number(existingAccount.totalPoints) || 0,
             playSeconds: Number(existingAccount.playSeconds) || 0,
-            unlockedModules: Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
-              ? existingAccount.unlockedModules
-              : [1, 2],
+            unlockedModules: isAdminUser
+              ? [1, 2, 3, 4, 5, 6]
+              : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
+                ? existingAccount.unlockedModules
+                : [1, 2]),
             modScores: existingAccount.modScores && typeof existingAccount.modScores === 'object'
               ? existingAccount.modScores
               : {},
@@ -3566,7 +3566,9 @@
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
           playCheer();
-          showAppToast(`Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
+          showAppToast(isAdminUser
+            ? '🛡️ Selamat datang Admin! Semua 6 Tahap dibuka & Panel Admin sedia digunakan.'
+            : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
         } else {
           const newAccountId = generatePermanentAccountId();
           currentPlayer = {
@@ -3806,7 +3808,7 @@
       }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
-      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account'].forEach(s => {
+      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -3821,41 +3823,38 @@
       const listEl = document.getElementById('scoreboard-list');
       if (!listEl) return;
 
-      const sorted = [...playersArray].sort((a, b) => {
-        const diffPts = (b.totalPoints || 0) - (a.totalPoints || 0);
-        if (diffPts !== 0) return diffPts;
-        return (b.stars || 0) - (a.stars || 0);
-      });
+      const sorted = [...playersArray]
+        .filter(p => !isAdminAccountRecord(p))
+        .sort((a, b) => {
+          const diffPts = (b.totalPoints || 0) - (a.totalPoints || 0);
+          if (diffPts !== 0) return diffPts;
+          return (b.stars || 0) - (a.stars || 0);
+        });
 
       if (sorted.length === 0) {
-        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Belum ada rekod pelajar.</div>`;
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Belum ada rekod markah pelajar lagi.</div>`;
         return;
       }
 
-      const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : null;
-
       listEl.innerHTML = sorted.map((p, idx) => {
-        const pId = p.accountId || p.key;
-        const isMe = myId && pId === myId;
-        const rankBadge = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
-        const validMods = Array.isArray(p.unlockedModules)
-          ? p.unlockedModules.filter(n => n >= 1 && n <= 6)
-          : [];
-        const maxMod = validMods.length ? Math.max(...validMods) : 2;
+        const rank = idx + 1;
+        const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+        const isMe = currentPlayer && !currentPlayer.isAdmin && (p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
+        const safeName = (p.name || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const miniAvatar = renderRealisticAvatarSVG(p.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full');
-
+        const maxMod = Array.isArray(p.unlockedModules) && p.unlockedModules.length ? Math.max(...p.unlockedModules) : 2;
         return `
-          <div class="flex items-center justify-between gap-2.5 p-2.5 rounded-2xl border-2 ${isMe ? 'bg-amber-50 border-amber-400' : 'bg-slate-50 border-slate-200'}">
+          <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl border-2 ${isMe ? 'bg-amber-50 border-amber-400 shadow-sm' : 'bg-slate-50 border-slate-200'}">
             <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-7 text-center font-black text-sm text-indigo-900 flex-shrink-0">${rankBadge}</div>
-              <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-amber-400 bg-sky-100 flex-shrink-0">${miniAvatar}</div>
+              <div class="w-7 text-center font-black text-sm text-indigo-900 flex-shrink-0">${medal}</div>
+              <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-amber-300 bg-sky-100 flex-shrink-0">${miniAvatar}</div>
               <div class="min-w-0">
-                <div class="text-xs font-black text-slate-800 truncate">${p.name} ${isMe ? '<span class="text-[10px] bg-amber-400 text-amber-950 px-1.5 py-0.5 rounded-full ml-1">Anda</span>' : ''}</div>
+                <div class="text-xs font-black text-slate-800 truncate">${safeName} ${isMe ? '<span class="text-[10px] bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full ml-1">Anda</span>' : ''}</div>
                 <div class="text-[10px] font-bold text-slate-500">Pencapaian: Tahap ${maxMod} • Masa: ${formatDurationMMSS(p.playSeconds || 0)}</div>
               </div>
             </div>
             <div class="text-right flex-shrink-0">
-              <div class="text-xs font-black text-indigo-800">${p.totalPoints || 0} Markah</div>
+              <div class="text-xs font-black text-indigo-800">${(p.totalPoints || 0).toLocaleString()} Markah</div>
               <div class="text-[11px] font-extrabold text-amber-600">⭐ ${p.stars || 0}</div>
             </div>
           </div>
@@ -3864,20 +3863,17 @@
     }
 
     window.loadScoreboard = async function() {
-      const listEl = document.getElementById('scoreboard-list');
       const statusEl = document.getElementById('scoreboard-sync-status');
-      const fixBoxEl = document.getElementById('scoreboard-apikey-fix');
-      if (listEl) {
-        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-4">Memuatkan papan skor...</div>`;
-      }
-
+      const fixBox = document.getElementById('scoreboard-apikey-fix');
+      await purgeAdminFromCloudScoreboard();
       loadLocalAccountsFromStorage();
 
       if (!db) {
         if (statusEl) {
-          statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800';
-          statusEl.innerText = '🟠 Mod Tempatan (Firebase tidak dikonfigurasi)';
+          statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800';
+          statusEl.innerText = `🔴 Ralat Firebase (${fbLastError || 'offline'})`;
         }
+        if (fixBox) fixBox.classList.remove('hidden');
         renderScoreboardList(Array.from(inMemoryAccounts.values()));
         return;
       }
@@ -3887,37 +3883,42 @@
         if (!fbUser) {
           if (statusEl) {
             statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800';
-            statusEl.innerText = `🔴 Ralat Firebase (${fbLastError || 'auth/operation-not-allowed'})`;
+            statusEl.innerText = `🔴 Ralat Firebase (${fbLastError || 'auth-failed'})`;
           }
-          if (fixBoxEl && (fbLastError || '').includes('api-key')) {
-            fixBoxEl.classList.remove('hidden');
-          }
+          if (fixBox) fixBox.classList.remove('hidden');
           renderScoreboardList(Array.from(inMemoryAccounts.values()));
           return;
         }
-        if (fixBoxEl) fixBoxEl.classList.add('hidden');
+
+        if (fixBox) fixBox.classList.add('hidden');
         if (scoreboardUnsubscribe) {
           scoreboardUnsubscribe();
           scoreboardUnsubscribe = null;
         }
-        const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+
+        const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
         scoreboardUnsubscribe = onSnapshot(
-          colRef,
+          playersCol,
           (snapshot) => {
-            if (statusEl) {
-              statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800';
-              statusEl.innerText = '🟢 Online Awan Aktif (Semua Peranti Disegerak)';
-            }
-            const merged = new Map(inMemoryAccounts);
-            snapshot.forEach(docSnap => {
+            const merged = new Map();
+            inMemoryAccounts.forEach((v, k) => {
+              if (!isAdminAccountRecord(v)) merged.set(k, v);
+            });
+            snapshot.forEach((docSnap) => {
               const d = docSnap.data();
               const id = d && (d.accountId || d.key || docSnap.id);
-              if (id) {
+              if (id && !isAdminAccountRecord(d) && docSnap.id !== ADMIN_ACCOUNT_ID) {
                 d.accountId = id;
                 d.key = id;
                 merged.set(id, d);
+                inMemoryAccounts.set(id, d);
               }
             });
+            persistLocalAccountsToStorage();
+            if (statusEl) {
+              statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800';
+              statusEl.innerText = '🟢 Online Awan Aktif';
+            }
             renderScoreboardList(Array.from(merged.values()));
           },
           (snapErr) => {
@@ -3945,7 +3946,7 @@
 
     window.navTo = function(screenName) {
       playClick();
-      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account'].forEach(s => {
+      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -3970,6 +3971,12 @@
         loadScoreboard();
       } else if (screenName === 'anzan') {
         switchAnzanTab('flash');
+      } else if (screenName === 'admin') {
+        if (!currentPlayer || !currentPlayer.isAdmin) {
+          navTo('home');
+          return;
+        }
+        loadAdminStudentList();
       } else if (screenName === 'account') {
         syncPlayerUI();
         const pinInp = document.getElementById('acc-new-pin');
@@ -3981,24 +3988,194 @@
       }
     };
 
-    /* 11. AKADEMI MASTER ANZAN (FLASH ANZAN, PECUT MEMORI OTOT & DIKTE SUARA) */
-    let flashAnzanAnswer = 0;
-    let flashAnzanHistory = [];
-    let flashTimerHandle = null;
+    /* 10B. FUNGSI PANEL ADMIN (SENARAI PELAJAR, RESET PASSWORD & PADAM AKAUN) */
+    let adminCachedStudents = [];
+    let adminPendingDeleteId = null;
 
-    window.switchAnzanTab = function(tabName) {
-      playClick();
-      ['flash', 'drill', 'dictation'].forEach(t => {
-        const btn = document.getElementById(`tab-anzan-${t}`);
-        const panel = document.getElementById(`anzan-panel-${t}`);
-        if (btn) {
-          btn.className = t === tabName
-            ? 'anzan-tab bubbly-btn bg-rose-500 text-white border-2 border-rose-800 py-2.5 px-2 text-xs font-black'
-            : 'anzan-tab bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+    window.loadAdminStudentList = async function() {
+      const listEl = document.getElementById('admin-students-list');
+      if (listEl) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-5">⏳ Memuatkan semua akaun pelajar...</div>`;
+      }
+      await purgeAdminFromCloudScoreboard();
+      loadLocalAccountsFromStorage();
+      const merged = new Map();
+      inMemoryAccounts.forEach((v, k) => {
+        if (v && !isAdminAccountRecord(v)) {
+          merged.set(k, v);
         }
-        if (panel) panel.classList.toggle('hidden', t !== tabName);
       });
-      if (tabName === 'drill') startNewSpeedDrill();
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            snap.forEach((docSnap) => {
+              const d = docSnap.data();
+              const id = d && (d.accountId || d.key || docSnap.id);
+              if (id && !isAdminAccountRecord(d) && docSnap.id !== ADMIN_ACCOUNT_ID) {
+                d.accountId = id;
+                d.key = id;
+                merged.set(id, d);
+                inMemoryAccounts.set(id, d);
+              }
+            });
+            persistLocalAccountsToStorage();
+          }
+        } catch (err) {
+          console.warn('Admin gagal baca awan:', err);
+        }
+      }
+
+      adminCachedStudents = Array.from(merged.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      filterAdminStudentList();
+    };
+
+    window.filterAdminStudentList = function() {
+      const listEl = document.getElementById('admin-students-list');
+      const countBadge = document.getElementById('admin-total-students-badge');
+      const query = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+      if (!listEl) return;
+
+      const filtered = query
+        ? adminCachedStudents.filter(s => (s.name || '').toLowerCase().includes(query) || (s.accountId || '').toLowerCase().includes(query))
+        : adminCachedStudents;
+
+      if (countBadge) countBadge.innerText = `${filtered.length} Pelajar`;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Tiada akaun pelajar ditemui.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map((st) => {
+        const id = st.accountId || st.key;
+        const safeName = (st.name || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const miniAvatar = renderRealisticAvatarSVG(st.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full');
+        const isConfirmingDelete = adminPendingDeleteId === id;
+
+        return `
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-amber-400 bg-sky-100 flex-shrink-0">${miniAvatar}</div>
+                <div class="min-w-0">
+                  <div class="text-sm font-black text-slate-800 truncate">${safeName}</div>
+                  <div class="text-[10px] font-bold text-slate-500">ID: <span class="font-mono">${id}</span> • PIN: <b>${st.recoveryPin || '0000'}</b></div>
+                  <div class="text-[10px] font-extrabold text-indigo-700">⭐ ${st.stars || 0} Bintang • 🏅 ${st.totalPoints || 0} Markah • ⏱️ ${formatDurationMMSS(st.playSeconds || 0)}</div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1 border-t border-slate-200">
+              <button type="button" onclick="adminResetStudentPassword('${id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-2.5 text-[11px] font-black">
+                🔑 Reset Password
+              </button>
+              ${isConfirmingDelete ? `
+                <button type="button" onclick="adminConfirmDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-600 text-white border border-rose-900 py-2 px-2.5 text-[11px] font-black">
+                  ⚠️ Sah Padam Kekal?
+                </button>
+                <button type="button" onclick="adminCancelDeleteStudent()" class="bubbly-btn bg-slate-200 text-slate-700 border border-slate-400 py-2 px-2.5 text-[11px] font-black">
+                  Batal
+                </button>
+              ` : `
+                <button type="button" onclick="adminRequestDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 py-2 px-2.5 text-[11px] font-black">
+                  🗑️ Padam Akaun
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.adminResetStudentPassword = async function(studentId) {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const target = adminCachedStudents.find(s => (s.accountId || s.key) === studentId);
+      if (!target) return;
+
+      const defaultPassInp = (document.getElementById('admin-default-reset-pass')?.value || '').trim();
+      const newDefaultPass = defaultPassInp.length >= 3 ? defaultPassInp : '1234';
+      const fb = document.getElementById('admin-action-feedback');
+
+      try {
+        target.password = newDefaultPass;
+        target.updatedAt = Date.now();
+        inMemoryAccounts.set(studentId, target);
+        persistLocalAccountsToStorage();
+
+        if (db) {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId), target);
+          }
+        }
+
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `✅ Kata laluan bagi "${target.name}" telah ditetapkan semula kepada: ${newDefaultPass}`;
+          fb.classList.remove('hidden');
+        }
+        filterAdminStudentList();
+      } catch (err) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '❌ Gagal menetapkan semula kata laluan pelajar.';
+          fb.classList.remove('hidden');
+        }
+      }
+    };
+
+    window.adminRequestDeleteStudent = function(studentId) {
+      playClick();
+      adminPendingDeleteId = studentId;
+      filterAdminStudentList();
+    };
+
+    window.adminCancelDeleteStudent = function() {
+      playClick();
+      adminPendingDeleteId = null;
+      filterAdminStudentList();
+    };
+
+    window.adminConfirmDeleteStudent = async function(studentId) {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const target = adminCachedStudents.find(s => (s.accountId || s.key) === studentId);
+      const deletedName = target ? target.name : studentId;
+      const fb = document.getElementById('admin-action-feedback');
+
+      try {
+        inMemoryAccounts.delete(studentId);
+        persistLocalAccountsToStorage();
+
+        if (db) {
+          await authReadyPromise;
+          if (fbUser) {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId));
+          }
+        }
+
+        adminPendingDeleteId = null;
+        adminCachedStudents = adminCachedStudents.filter(s => (s.accountId || s.key) !== studentId);
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-amber-100 text-amber-950 border border-amber-400';
+          fb.innerText = `🗑️ Akaun pelajar "${deletedName}" telah dipadam sepenuhnya daripada sistem & papan skor.`;
+          fb.classList.remove('hidden');
+        }
+        filterAdminStudentList();
+      } catch (err) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '❌ Ralat semasa memadam akaun pelajar dari pangkalan data awan.';
+          fb.classList.remove('hidden');
+        }
+      }
     };
 
     window.startFlashAnzan = function() {

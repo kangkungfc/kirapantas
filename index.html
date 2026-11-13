@@ -330,15 +330,15 @@
             <div id="mod-q-visual" class="flex flex-wrap items-center justify-center gap-3 py-1"></div>
           </div>
 
-          <!-- Sempoa Bantu Kira Interaktif (Praktis Sebelum Anzan) -->
+          <!-- Sempoa Bantu Kira Interaktif (Disembunyikan Secara Default Untuk Latihan Anzan) -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5">
-                <span>🧮</span> <span id="mod-helper-toggle-label">Sembunyi Sempoa Kira</span>
+                <span>🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
               </button>
-              <span class="text-[10px] font-extrabold text-slate-500">Praktis gerakkan manik sebelum Anzan</span>
+              <span class="text-[10px] font-extrabold text-slate-500">Cuba kira dalam minda dahulu!</span>
             </div>
-            <div id="mod-helper-abacus-wrap" class="bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
+            <div id="mod-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
               <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
                 <span>Bacaan Sempoa Anda: <span id="mod-helper-val" class="text-amber-300 text-sm">0</span></span>
                 <button type="button" onclick="resetHelperAbacus('mod')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg">🔄 Kosongkan</button>
@@ -434,15 +434,15 @@
           <div id="blitz-visual-box" class="flex justify-center pt-1"></div>
         </div>
 
-        <!-- Sempoa Bantu Kira Interaktif (Praktis / Mod Anzan) -->
+        <!-- Sempoa Bantu Kira Interaktif (Disembunyikan Secara Default Untuk Latihan Anzan) -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <button type="button" onclick="toggleHelperAbacus('blitz')" id="blitz-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5">
-              <span>🧮</span> <span id="blitz-helper-toggle-label">Sembunyi Sempoa Kira</span>
+              <span>🧮</span> <span id="blitz-helper-toggle-label">Buka Sempoa Kira</span>
             </button>
-            <span class="text-[10px] font-extrabold text-purple-700">Tutup sempoa untuk uji Anzan!</span>
+            <span class="text-[10px] font-extrabold text-purple-700">Buka sempoa hanya jika perlukan bantuan</span>
           </div>
-          <div id="blitz-helper-abacus-wrap" class="bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
+          <div id="blitz-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
             <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
               <span>Bacaan Sempoa Anda: <span id="blitz-helper-val" class="text-amber-300 text-sm">0</span></span>
               <button type="button" onclick="resetHelperAbacus('blitz')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg">🔄 Kosongkan</button>
@@ -1762,42 +1762,45 @@
         border: 'border-pink-800',
         renderGuide: () => `
           <div class="space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-3 space-y-1.5">
-                <div class="font-black text-rose-900">🌟 1. Kawan Kecil (Kombinasi 5)</div>
-                <p class="text-[10px] font-bold text-slate-600">Guna bila Manik Bumi tak cukup, tapi Manik Syurga (5) masih ada:</p>
-                <div class="grid grid-cols-2 gap-1 text-center font-black text-[11px]">
-                  <div class="bg-white border border-rose-300 rounded-lg py-1 text-rose-800">1 ↔ 4</div>
-                  <div class="bg-white border border-rose-300 rounded-lg py-1 text-rose-800">2 ↔ 3</div>
+            <!-- Papan Cerita & Simulator Interaktif Formula Rahsia -->
+            <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
+                  <span>🪄</span> Makmal Infografik Interaktif Formula
                 </div>
-                <div class="bg-white rounded-xl p-2 text-[10px] font-bold text-slate-700">
-                  <b>Contoh (3 + 4):</b> Manik bawah tinggal 1. Guna <span class="text-rose-700 font-black">+4 = +5 - 1</span> → <b>7</b>!
-                </div>
+                <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
               </div>
 
-              <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-1.5">
-                <div class="font-black text-indigo-900">🚀 2. Kawan Besar (Kombinasi 10)</div>
-                <p class="text-[10px] font-bold text-slate-600">Guna bila satu tiang penuh (9) dan perlu pinjam tiang Puluh:</p>
-                <div class="flex flex-wrap justify-center gap-1 font-black text-[10px]">
-                  <span class="bg-white border border-indigo-300 rounded-lg px-1.5 py-0.5 text-indigo-800">1↔9</span>
-                  <span class="bg-white border border-indigo-300 rounded-lg px-1.5 py-0.5 text-indigo-800">2↔8</span>
-                  <span class="bg-white border border-indigo-300 rounded-lg px-1.5 py-0.5 text-indigo-800">3↔7</span>
-                  <span class="bg-white border border-indigo-300 rounded-lg px-1.5 py-0.5 text-indigo-800">4↔6</span>
-                  <span class="bg-white border border-indigo-300 rounded-lg px-1.5 py-0.5 text-indigo-800">5↔5</span>
-                </div>
-                <div class="bg-white rounded-xl p-2 text-[10px] font-bold text-slate-700">
-                  <b>Contoh (8 + 4):</b> Tiang Sa tak cukup. Guna <span class="text-indigo-700 font-black">+4 = +10 - 6</span> → <b>12</b>!
-                </div>
+              <!-- 4 Tab Kategori Comel -->
+              <div class="grid grid-cols-4 gap-1">
+                <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Geng 5</button>
+                <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Geng 10</button>
+                <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ Gabungan</button>
+                <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Kuiz Mini</button>
               </div>
-            </div>
 
-            <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-3 space-y-1.5">
-              <div class="font-black text-purple-950">🧙‍♂️ 3. Formula Gabungan (Kawan Kecil + Kawan Besar)</div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center text-[10px] font-black text-purple-900">
-                <div class="bg-white border border-purple-300 rounded-xl p-1.5">+6 = +10 - 5 + 1</div>
-                <div class="bg-white border border-purple-300 rounded-xl p-1.5">+7 = +10 - 5 + 2</div>
-                <div class="bg-white border border-purple-300 rounded-xl p-1.5">+8 = +10 - 5 + 3</div>
-                <div class="bg-white border border-purple-300 rounded-xl p-1.5">+9 = +10 - 5 + 4</div>
+              <!-- Kandungan Tab Dinamik -->
+              <div id="m3-tab-content"></div>
+
+              <!-- Pentas Demo Visual Manik Sempoa Langkah-Demi-Langkah -->
+              <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm">
+                <div class="inline-block bg-rose-100 text-rose-900 text-[10px] font-black px-2.5 py-0.5 rounded-full">Contoh Interaktif: Kawan Kecil Tambah (+4 = +5 - 1)</div>
+                <div class="text-sm font-black text-slate-800">Kira <span class="text-rose-600">3 + 4</span> pada Sempoa:</div>
+                <div class="grid grid-cols-3 gap-1.5 items-center text-center">
+                  <div class="bg-slate-50 rounded-xl p-1.5 border border-slate-200">
+                    <div class="text-[9px] font-black text-slate-500 mb-1">1. Mula (3)</div>
+                    ${renderAbacusQuestionSVG(3, 2).replace('w-48 h-36', 'w-24 h-24')}
+                  </div>
+                  <div class="bg-amber-50 rounded-xl p-1.5 border border-amber-300">
+                    <div class="text-[9px] font-black text-amber-800 mb-1">2. Turun 5, Tolak 1</div>
+                    <div class="text-xs font-black text-rose-700 py-6">+5 ⬇️<br>-1 ⬇️</div>
+                  </div>
+                  <div class="bg-emerald-50 rounded-xl p-1.5 border border-emerald-300">
+                    <div class="text-[9px] font-black text-emerald-800 mb-1">3. Hasil (7)</div>
+                    ${renderAbacusQuestionSVG(7, 2).replace('w-48 h-36', 'w-24 h-24')}
+                  </div>
+                </div>
+                <p class="text-[11px] font-bold text-slate-600">💡 <b>Cerita Comel:</b> Manik bawah cuma tinggal 1 (tak cukup 4). Jadi kita panggil <b>Bos Besar (5)</b> turun membantu, dan pulangkan <b>1 kawan kecilnya</b>!</p>
               </div>
             </div>
           </div>
@@ -1981,6 +1984,218 @@
         ${renderAbacusQuestionSVG(val, 3)}
         <span class="text-[11px] font-black text-amber-900">Nilai Bacaan Sempoa: ${val}</span>
       `;
+    };
+
+    /* Pangkalan Data Lengkap Infografik & Contoh Interaktif Tahap 3 */
+    const MOD3_FORMULAS = {
+      kecil: {
+        title: '✋ Geng Lima (Kawan Kecil — Kombinasi 5)',
+        story: 'Bila Manik Bumi (bawah) tak cukup, kita minta tolong Bos Besar (Manik Syurga = 5)! Pasangan adik-beradik 5 ialah: 1↔4 dan 2↔3.',
+        badgeClass: 'bg-rose-100 text-rose-900',
+        add: [
+          { f: '+4 = +5 - 1', ex: '3 + 4 = 7', start: 3, end: 7, action: 'Turun 5 ⬇️, Tolak 1 ⬇️', tip: 'Manik bawah tinggal 1. Panggil Bos 5 turun, pulangkan kawan kecil 4 iaitu 1!' },
+          { f: '+3 = +5 - 2', ex: '4 + 3 = 7', start: 4, end: 7, action: 'Turun 5 ⬇️, Tolak 2 ⬇️', tip: 'Manik bawah dah penuh (4). Panggil Bos 5 turun, pulangkan kawan kecil 3 iaitu 2!' },
+          { f: '+2 = +5 - 3', ex: '4 + 2 = 6', start: 4, end: 6, action: 'Turun 5 ⬇️, Tolak 3 ⬇️', tip: 'Manik bawah tak cukup 2. Panggil Bos 5 turun, pulangkan kawan kecil 2 iaitu 3!' },
+          { f: '+1 = +5 - 4', ex: '4 + 1 = 5', start: 4, end: 5, action: 'Turun 5 ⬇️, Tolak 4 ⬇️', tip: 'Manik bawah dah penuh (4). Panggil Bos 5 turun, pulangkan semua 4 manik bawah!' }
+        ],
+        sub: [
+          { f: '-4 = -5 + 1', ex: '6 - 4 = 2', start: 6, end: 2, action: 'Naik 5 ⬆️, Tambah 1 ⬆️', tip: 'Manik bawah cuma 1 (tak cukup tolak 4). Naikkan Bos 5, masukkan semula 1!' },
+          { f: '-3 = -5 + 2', ex: '7 - 3 = 4', start: 7, end: 4, action: 'Naik 5 ⬆️, Tambah 2 ⬆️', tip: 'Manik bawah cuma 2. Naikkan Bos 5 ke atas, dan tambah semula 2 manik bawah!' },
+          { f: '-2 = -5 + 3', ex: '6 - 2 = 4', start: 6, end: 4, action: 'Naik 5 ⬆️, Tambah 3 ⬆️', tip: 'Manik bawah cuma 1. Naikkan Bos 5 ke atas, dan tambah semula 3 manik bawah!' },
+          { f: '-1 = -5 + 4', ex: '5 - 1 = 4', start: 5, end: 4, action: 'Naik 5 ⬆️, Tambah 4 ⬆️', tip: 'Tiada manik bawah aktif. Naikkan Bos 5 ke atas, dan naikkan 4 manik bawah!' }
+        ]
+      },
+      besar: {
+        title: '🚀 Geng Sepuluh (Kawan Besar — Kombinasi 10)',
+        story: 'Bila satu tiang tak cukup, kita pinjam 10 dari tiang Puluh sebelah kiri! Pasangan kembar 10: 1↔9, 2↔8, 3↔7, 4↔6, 5↔5.',
+        badgeClass: 'bg-indigo-100 text-indigo-900',
+        add: [
+          { f: '+9 = +10 - 1', ex: '4 + 9 = 13', start: 4, end: 13, action: 'Tambah 10 ⬆️, Tolak 1 ⬇️', tip: 'Kawan besar 9 ialah 1. Naikkan 1 manik Puluh (+10), dan turunkan 1 pada tiang Sa!' },
+          { f: '+8 = +10 - 2', ex: '5 + 8 = 13', start: 5, end: 13, action: 'Tambah 10 ⬆️, Tolak 2 ⬇️', tip: 'Kawan besar 8 ialah 2. Naikkan 10 di tiang Puluh, dan tolak 2 pada tiang Sa!' },
+          { f: '+7 = +10 - 3', ex: '6 + 7 = 13', start: 6, end: 13, action: 'Tambah 10 ⬆️, Tolak 3 ⬇️', tip: 'Kawan besar 7 ialah 3. Naikkan 10 di tiang Puluh, dan tolak 3 pada tiang Sa!' },
+          { f: '+6 = +10 - 4', ex: '7 + 6 = 13', start: 7, end: 13, action: 'Tambah 10 ⬆️, Tolak 4 ⬇️', tip: 'Kawan besar 6 ialah 4. Naikkan 10 di tiang Puluh, dan tolak 4 pada tiang Sa!' },
+          { f: '+5 = +10 - 5', ex: '8 + 5 = 13', start: 8, end: 13, action: 'Tambah 10 ⬆️, Tolak 5 ⬆️', tip: 'Kawan besar 5 ialah 5. Naikkan 10 di tiang Puluh, dan naikkan Manik Syurga (-5)!' },
+          { f: '+4 = +10 - 6', ex: '8 + 4 = 12', start: 8, end: 12, action: 'Tambah 10 ⬆️, Tolak 6', tip: 'Kawan besar 4 ialah 6. Naikkan 10 di tiang Puluh, dan buka sepit 6 (naik 5 & turun 1)!' },
+          { f: '+3 = +10 - 7', ex: '9 + 3 = 12', start: 9, end: 12, action: 'Tambah 10 ⬆️, Tolak 7', tip: 'Kawan besar 3 ialah 7. Naikkan 10 di tiang Puluh, dan buka sepit 7 pada tiang Sa!' },
+          { f: '+2 = +10 - 8', ex: '9 + 2 = 11', start: 9, end: 11, action: 'Tambah 10 ⬆️, Tolak 8', tip: 'Kawan besar 2 ialah 8. Naikkan 10 di tiang Puluh, dan buka sepit 8 pada tiang Sa!' },
+          { f: '+1 = +10 - 9', ex: '9 + 1 = 10', start: 9, end: 10, action: 'Tambah 10 ⬆️, Tolak 9', tip: 'Tiang Sa dah penuh (9). Naikkan 10 di tiang Puluh, dan kosongkan semua 9 di tiang Sa!' }
+        ],
+        sub: [
+          { f: '-9 = -10 + 1', ex: '12 - 9 = 3', start: 12, end: 3, action: 'Tolak 10 ⬇️, Tambah 1 ⬆️', tip: 'Tiang Sa cuma 2. Pinjam 10 dari tiang Puluh (-10), dan pulangkan kawan 9 iaitu +1!' },
+          { f: '-8 = -10 + 2', ex: '13 - 8 = 5', start: 13, end: 5, action: 'Tolak 10 ⬇️, Tambah 2 ⬆️', tip: 'Tiang Sa cuma 3. Turunkan 10 di tiang Puluh, dan tambah kawan 8 iaitu +2!' },
+          { f: '-7 = -10 + 3', ex: '14 - 7 = 7', start: 14, end: 7, action: 'Tolak 10 ⬇️, Tambah 3 ⬆️', tip: 'Tiang Sa cuma 4. Turunkan 10 di tiang Puluh, dan tambah kawan 7 iaitu +3!' },
+          { f: '-6 = -10 + 4', ex: '12 - 6 = 6', start: 12, end: 6, action: 'Tolak 10 ⬇️, Tambah 4 ⬆️', tip: 'Tiang Sa cuma 2. Turunkan 10 di tiang Puluh, dan tambah kawan 6 iaitu +4!' },
+          { f: '-5 = -10 + 5', ex: '11 - 5 = 6', start: 11, end: 6, action: 'Tolak 10 ⬇️, Tambah 5 ⬇️', tip: 'Tiang Sa cuma 1. Turunkan 10 di tiang Puluh, dan turunkan Manik Syurga (+5)!' },
+          { f: '-4 = -10 + 6', ex: '11 - 4 = 7', start: 11, end: 7, action: 'Tolak 10 ⬇️, Tambah 6', tip: 'Tiang Sa cuma 1. Turunkan 10 di tiang Puluh, dan cubit masuk 6 (5 + 1)!' },
+          { f: '-3 = -10 + 7', ex: '11 - 3 = 8', start: 11, end: 8, action: 'Tolak 10 ⬇️, Tambah 7', tip: 'Tiang Sa cuma 1. Turunkan 10 di tiang Puluh, dan cubit masuk 7 (5 + 2)!' },
+          { f: '-2 = -10 + 8', ex: '10 - 2 = 8', start: 10, end: 8, action: 'Tolak 10 ⬇️, Tambah 8', tip: 'Tiang Sa sifar (0). Turunkan 10 di tiang Puluh, dan cubit masuk 8 (5 + 3)!' },
+          { f: '-1 = -10 + 9', ex: '10 - 1 = 9', start: 10, end: 9, action: 'Tolak 10 ⬇️, Tambah 9', tip: 'Tiang Sa sifar (0). Turunkan 10 di tiang Puluh, dan cubit masuk 9 (5 + 4)!' }
+        ]
+      },
+      gabung: {
+        title: '⚡ Kuasa Super (Formula Gabungan 10 & 5)',
+        story: 'Bila Manik Syurga (5) sudah pun digunakan di tiang Sa dan kita perlu tambah atau tolak 6, 7, 8, atau 9 — kita gerakkan 10 dan 5 serentak!',
+        badgeClass: 'bg-purple-100 text-purple-900',
+        add: [
+          { f: '+6 = +10 - 5 + 1', ex: '7 + 6 = 13', start: 7, end: 13, action: '+10 ⬆️, -5 ⬆️, +1 ⬆️', tip: 'Tiang Sa ada 7 (Bos 5 dah turun, kawan besar 6 iaitu 4 tak cukup ditolak). Naik 10, naik 5, naik 1!' },
+          { f: '+7 = +10 - 5 + 2', ex: '6 + 7 = 13', start: 6, end: 13, action: '+10 ⬆️, -5 ⬆️, +2 ⬆️', tip: 'Tiang Sa ada 6 (tak cukup tolak 3). Jadi kita gabung: +10 di Puluh, dan naikkan 5 & 2 serentak!' },
+          { f: '+8 = +10 - 5 + 3', ex: '6 + 8 = 14', start: 6, end: 14, action: '+10 ⬆️, -5 ⬆️, +3 ⬆️', tip: 'Tiang Sa ada 6 (tak cukup tolak 2). Gabungkan: +10 di Puluh, dan naikkan 5 & 3 serentak!' },
+          { f: '+9 = +10 - 5 + 4', ex: '5 + 9 = 14', start: 5, end: 14, action: '+10 ⬆️, -5 ⬆️, +4 ⬆️', tip: 'Tiang Sa ada 5 (tiada manik bawah untuk tolak 1). Gabungkan: +10 di Puluh, naik 5 & naik 4!' }
+        ],
+        sub: [
+          { f: '-6 = -10 + 5 - 1', ex: '13 - 6 = 7', start: 13, end: 7, action: '-10 ⬇️, +5 ⬇️, -1 ⬇️', tip: 'Tiang Sa ada 3 (tak cukup tambah 4). Tolak 10 di Puluh, dan turunkan 5 serta 1 serentak!' },
+          { f: '-7 = -10 + 5 - 2', ex: '13 - 7 = 6', start: 13, end: 6, action: '-10 ⬇️, +5 ⬇️, -2 ⬇️', tip: 'Tiang Sa ada 3 (tak cukup tambah 3). Tolak 10 di Puluh, dan turunkan 5 serta 2 serentak!' },
+          { f: '-8 = -10 + 5 - 3', ex: '14 - 8 = 6', start: 14, end: 6, action: '-10 ⬇️, +5 ⬇️, -3 ⬇️', tip: 'Tiang Sa ada 4 (tak cukup tambah 2). Tolak 10 di Puluh, dan turunkan 5 serta 3 serentak!' },
+          { f: '-9 = -10 + 5 - 4', ex: '14 - 9 = 5', start: 14, end: 5, action: '-10 ⬇️, +5 ⬇️, -4 ⬇️', tip: 'Tiang Sa ada 4 (tak cukup tambah 1). Tolak 10 di Puluh, turunkan 5 & turunkan 4!' }
+        ]
+      }
+    };
+
+    window.switchMod3InfographicTab = function(tabKey) {
+      playClick();
+      document.querySelectorAll('.m3-tab').forEach(btn => {
+        btn.className = 'm3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-slate-700 border border-slate-200';
+      });
+      const activeBtn = document.getElementById(`m3-tab-${tabKey}`);
+      if (activeBtn) {
+        const activeColors = {
+          kecil: 'bg-rose-500 text-white shadow-sm',
+          besar: 'bg-indigo-600 text-white shadow-sm',
+          gabung: 'bg-purple-600 text-white shadow-sm',
+          game: 'bg-emerald-600 text-white shadow-sm'
+        };
+        activeBtn.className = `m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black ${activeColors[tabKey] || 'bg-rose-500 text-white'}`;
+      }
+
+      const contentEl = document.getElementById('m3-tab-content');
+      const stageEl = document.getElementById('m3-visual-stage');
+      if (!contentEl) return;
+
+      if (tabKey === 'game') {
+        if (stageEl) stageEl.classList.add('hidden');
+        renderMod3FriendMiniGame();
+        return;
+      }
+
+      if (stageEl) stageEl.classList.remove('hidden');
+      const cat = MOD3_FORMULAS[tabKey];
+      if (!cat) return;
+
+      const renderButtons = (arr, opType, btnColor) => arr.map((item, idx) => `
+        <button type="button" onclick="previewMod3Formula('${tabKey}', '${opType}', ${idx})"
+          class="text-left p-2 rounded-xl border-2 ${btnColor} transition hover:scale-[1.02] active:scale-95">
+          <div class="text-[11px] font-black">${item.f}</div>
+          <div class="text-[10px] font-bold opacity-85">Cth: ${item.ex}</div>
+        </button>
+      `).join('');
+
+      contentEl.innerHTML = `
+        <div class="space-y-2.5 text-[11px]">
+          <div class="bg-white/90 rounded-xl p-2.5 border border-slate-200">
+            <div class="font-black text-slate-900">${cat.title}</div>
+            <p class="font-bold text-slate-600 mt-0.5">${cat.story}</p>
+          </div>
+
+          <div class="space-y-1">
+            <div class="font-black text-emerald-800 text-[10px] uppercase tracking-wider">➕ Semua Formula Tambah (Klik untuk lihat contoh sempoa):</div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              ${renderButtons(cat.add, 'add', 'bg-emerald-50 border-emerald-300 text-emerald-950')}
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="font-black text-rose-800 text-[10px] uppercase tracking-wider">➖ Semua Formula Tolak (Klik untuk lihat contoh sempoa):</div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              ${renderButtons(cat.sub, 'sub', 'bg-rose-50 border-rose-300 text-rose-950')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      window.previewMod3Formula(tabKey, 'add', 0, true);
+    };
+
+    window.previewMod3Formula = function(tabKey, opType, idx, silent = false) {
+      if (!silent) playClick();
+      const cat = MOD3_FORMULAS[tabKey];
+      const stageEl = document.getElementById('m3-visual-stage');
+      if (!cat || !stageEl) return;
+      const item = cat[opType][idx];
+      if (!item) return;
+
+      stageEl.innerHTML = `
+        <div class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula Dipilih: ${item.f}</div>
+        <div class="text-sm font-black text-slate-800">Contoh Kiraan: <span class="text-indigo-700">${item.ex}</span></div>
+        <div class="grid grid-cols-3 gap-1.5 items-center text-center">
+          <div class="bg-slate-50 rounded-xl p-1.5 border border-slate-200">
+            <div class="text-[9px] font-black text-slate-500 mb-1">1. Mula (${item.start})</div>
+            ${renderAbacusQuestionSVG(item.start, 2).replace('w-48 h-36', 'w-24 h-24')}
+          </div>
+          <div class="bg-amber-50 rounded-xl p-1.5 border border-amber-300">
+            <div class="text-[9px] font-black text-amber-800 mb-1">2. Gerakan Jari</div>
+            <div class="text-[11px] font-black text-rose-700 py-6 leading-snug">${item.action}</div>
+          </div>
+          <div class="bg-emerald-50 rounded-xl p-1.5 border border-emerald-300">
+            <div class="text-[9px] font-black text-emerald-800 mb-1">3. Hasil (${item.end})</div>
+            ${renderAbacusQuestionSVG(item.end, 2).replace('w-48 h-36', 'w-24 h-24')}
+          </div>
+        </div>
+        <p class="text-[11px] font-bold text-slate-700 bg-amber-50/70 rounded-xl p-2 border border-amber-200">💡 <b>Cara Ingat:</b> ${item.tip}</p>
+      `;
+    };
+
+    window.renderMod3FriendMiniGame = function() {
+      const contentEl = document.getElementById('m3-tab-content');
+      if (!contentEl) return;
+      const isKawan5 = Math.random() > 0.5;
+      const base = isKawan5 ? 5 : 10;
+      const num = isKawan5 ? (Math.floor(Math.random() * 4) + 1) : (Math.floor(Math.random() * 9) + 1);
+      const ans = base - num;
+      const opts = shuffleArray(Array.from(new Set([ans, (ans % (base - 1)) + 1, ((ans + 1) % (base - 1)) + 1, base === 10 ? (ans === 5 ? 4 : 5) : (ans === 2 ? 3 : 2)])).slice(0, 4));
+      while (opts.length < 4) {
+        const cand = Math.floor(Math.random() * 9) + 1;
+        if (!opts.includes(cand)) opts.push(cand);
+      }
+
+      contentEl.innerHTML = `
+        <div class="bg-white rounded-2xl p-3 border-2 border-emerald-300 text-center space-y-2.5">
+          <div class="inline-block bg-emerald-100 text-emerald-900 text-[10px] font-black px-2.5 py-0.5 rounded-full">
+            ${isKawan5 ? '✋ Cabaran Kawan Kecil (Geng 5)' : '🚀 Cabaran Kawan Besar (Geng 10)'}
+          </div>
+          <div class="text-sm font-black text-slate-800">
+            Siapakah ${isKawan5 ? 'Kawan Kecil (5)' : 'Kawan Besar (10)'} bagi nombor <span class="text-xl text-rose-600">${num}</span>?
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            ${shuffleArray(opts).map(o => `
+              <button type="button" onclick="checkMod3MiniGame(${o}, ${ans}, ${base}, ${num})"
+                class="bubbly-btn bg-amber-50 hover:bg-amber-100 border-2 border-amber-400 py-2.5 text-base font-black text-amber-950">${o}</button>
+            `).join('')}
+          </div>
+          <div id="m3-minigame-fb" class="hidden text-[11px] font-black rounded-xl p-2"></div>
+        </div>
+      `;
+    };
+
+    window.checkMod3MiniGame = function(chosen, ans, base, num) {
+      const fb = document.getElementById('m3-minigame-fb');
+      if (!fb) return;
+      if (chosen === ans) {
+        playCheer();
+        fb.className = 'text-[11px] font-black rounded-xl p-2 bg-emerald-100 text-emerald-900';
+        fb.innerText = `🎉 Tepat! Sebab ${num} + ${ans} = ${base}! (+1 Bintang ⭐)`;
+        fb.classList.remove('hidden');
+        if (currentPlayer) {
+          currentPlayer.stars = (currentPlayer.stars || 0) + 1;
+          syncPlayerUI();
+          savePlayerCloud();
+        }
+        setTimeout(() => renderMod3FriendMiniGame(), 1100);
+      } else {
+        playWrong();
+        fb.className = 'text-[11px] font-black rounded-xl p-2 bg-rose-100 text-rose-900';
+        fb.innerText = `❌ Cuba lagi! ${num} tambah berapa jadi ${base}?`;
+        fb.classList.remove('hidden');
+      }
     };
 
     /* 5. PENJANA 50 SOALAN INTENSIF SETIAP TAHAP (300 SOALAN) + KOCOK RAWAK */
@@ -2275,6 +2490,7 @@
       const diff = document.getElementById('blitz-difficulty')?.value || 'all';
       const fb = document.getElementById('blitz-feedback');
       if (fb) fb.classList.add('hidden');
+      hideHelperAbacusDefault('blitz');
       resetHelperAbacus('blitz', true);
 
       let qText = '';
@@ -2467,6 +2683,9 @@
       document.getElementById('mod-guide-title').innerText = `Tahap ${modId}: ${meta.title}`;
       document.getElementById('mod-guide-subtitle').innerText = meta.subtitle;
       document.getElementById('mod-guide-content').innerHTML = meta.renderGuide();
+      if (modId === 3) {
+        switchMod3InfographicTab('kecil');
+      }
       document.getElementById('mod-best-score').innerText = (currentPlayer?.modScores?.[modId]) || 0;
 
       renderCurrentModuleQuestion();
@@ -2493,6 +2712,7 @@
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
+      hideHelperAbacusDefault('mod');
       resetHelperAbacus('mod', true);
       document.getElementById('mod-q-num').innerText = activeModIndex + 1;
       const pct = Math.round(((activeModIndex + 1) / 50) * 100);
@@ -2564,7 +2784,7 @@
     /* 8. SIMULATOR JARI, ABAKUS 4-TIANG BEBAS & SEMPOA BANTU SOALAN */
     const helperAbacusState = {
       mod: {
-        visible: true,
+        visible: false,
         rods: [
           { top: false, bot: 0, mult: 1000, label: 'Ribu' },
           { top: false, bot: 0, mult: 100, label: 'Ratus' },
@@ -2573,7 +2793,7 @@
         ]
       },
       blitz: {
-        visible: true,
+        visible: false,
         rods: [
           { top: false, bot: 0, mult: 1000, label: 'Ribu' },
           { top: false, bot: 0, mult: 100, label: 'Ratus' },
@@ -2582,6 +2802,16 @@
         ]
       }
     };
+
+    function hideHelperAbacusDefault(ctxKey) {
+      const st = helperAbacusState[ctxKey];
+      if (!st) return;
+      st.visible = false;
+      const wrap = document.getElementById(`${ctxKey}-helper-abacus-wrap`);
+      const lbl = document.getElementById(`${ctxKey}-helper-toggle-label`);
+      if (wrap) wrap.classList.add('hidden');
+      if (lbl) lbl.innerText = 'Buka Sempoa Kira';
+    }
 
     function renderHelperAbacus(ctxKey) {
       const st = helperAbacusState[ctxKey];

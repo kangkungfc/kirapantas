@@ -134,9 +134,6 @@
           <button type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
             🔑 Lupa Kata Laluan? Tetapkan Semula
           </button>
-          <button type="button" onclick="fillAdminLoginHint()" class="text-[11px] font-black text-rose-700 hover:text-rose-900 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full">
-            🛡️ Log Masuk Akaun Admin / Guru
-          </button>
           <p class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
         </div>
 
@@ -836,10 +833,18 @@
       auth = getAuth(fbApp);
       db = getFirestore(fbApp);
       authReadyPromise = (async () => {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
+        try {
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+        } catch (authErr) {
+          if (authErr?.code === 'auth/custom-token-mismatch' || authErr?.code === 'auth/invalid-custom-token') {
+            await signInAnonymously(auth);
+          } else {
+            fbLastError = authErr?.code || 'auth-error';
+          }
         }
         return auth.currentUser;
       })();
@@ -869,6 +874,107 @@
         await authReadyPromise;
         if (!fbUser) return;
         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', ADMIN_ACCOUNT_ID));
+      } catch (e) {}
+    }
+
+    let currentPlayer = null;
+    let activePlayTimer = null;
+    let activeStudioTab = 'face';
+    let flashTimerHandle = null;
+    let flashAnzanAnswer = 0;
+    let flashAnzanHistory = [];
+
+    const MODULE_UNLOCK_REQ = {
+      1: 0,
+      2: 0,
+      3: 15,
+      4: 35,
+      5: 60,
+      6: 90
+    };
+
+    const HAIR_COLOR_PALETTES = {
+      brown:  { light: '#8B5A2B', mid: '#5C3620', dark: '#3A2010', shine: '#D2A679' },
+      black:  { light: '#475569', mid: '#1E293B', dark: '#090D16', shine: '#94A3B8' },
+      honey:  { light: '#F59E0B', mid: '#B45309', dark: '#78350F', shine: '#FDE68A' },
+      auburn: { light: '#FB923C', mid: '#EA580C', dark: '#9A3412', shine: '#FED7AA' },
+      pink:   { light: '#F472B6', mid: '#DB2777', dark: '#831843', shine: '#FBCFE8' }
+    };
+
+    const AVATAR_STUDIO_CATALOG = {
+      face: [
+        { id: 'boy_leo', name: 'Leo Pintar', gender: 'boy', cost: 0, defaultHair: 'hair_quiff', defaultColor: 'brown' },
+        { id: 'boy_adam', name: 'Adam Bijak', gender: 'boy', cost: 10, defaultHair: 'hair_neat', defaultColor: 'black' },
+        { id: 'boy_zack', name: 'Zack Cergas', gender: 'boy', cost: 15, defaultHair: 'hair_messy', defaultColor: 'honey' },
+        { id: 'boy_danish', name: 'Danish Tangkas', gender: 'boy', cost: 20, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
+        { id: 'boy_amir', name: 'Amir Juara', gender: 'boy', cost: 25, defaultHair: 'hair_curly', defaultColor: 'black' },
+        { id: 'boy_rayyan', name: 'Rayyan Master', gender: 'boy', cost: 30, defaultHair: 'hair_neat', defaultColor: 'brown' },
+        { id: 'girl_hana', name: 'Hana Comel', gender: 'girl', cost: 0, defaultHair: 'hair_wavy_girl', defaultColor: 'brown' },
+        { id: 'girl_sofia', name: 'Sofia Ceria', gender: 'girl', cost: 10, defaultHair: 'hair_buns', defaultColor: 'black' },
+        { id: 'girl_maya', name: 'Maya Pintar', gender: 'girl', cost: 15, defaultHair: 'hair_ponytail', defaultColor: 'honey' },
+        { id: 'girl_aina', name: 'Aina Cekap', gender: 'girl', cost: 20, defaultHair: 'hair_long_girl', defaultColor: 'auburn' },
+        { id: 'girl_bella', name: 'Bella Anggun', gender: 'girl', cost: 25, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
+        { id: 'girl_nadia', name: 'Nadia Juara', gender: 'girl', cost: 30, defaultHair: 'hair_buns', defaultColor: 'brown' }
+      ],
+      hair: [
+        { id: 'hair_quiff', name: 'Jambul Gaya', gender: 'boy', cost: 0 },
+        { id: 'hair_neat', name: 'Sikat Kemas', gender: 'boy', cost: 8 },
+        { id: 'hair_messy', name: 'Pacat Ceria', gender: 'boy', cost: 12 },
+        { id: 'hair_curly', name: 'Keriting Comel', gender: 'boy', cost: 15 },
+        { id: 'hair_wavy_girl', name: 'Beralun Lembut', gender: 'girl', cost: 0 },
+        { id: 'hair_buns', name: 'Sanggul Kembar', gender: 'girl', cost: 8 },
+        { id: 'hair_ponytail', name: 'Ekor Kuda', gender: 'girl', cost: 12 },
+        { id: 'hair_long_girl', name: 'Lurus Panjang', gender: 'girl', cost: 15 }
+      ],
+      headwear: [
+        { id: 'hw_none', name: 'Tiada Penutup', gender: 'unisex', cost: 0 },
+        { id: 'hw_cap_red', name: 'Topi Merah', gender: 'unisex', cost: 10 },
+        { id: 'hw_cap_blue', name: 'Topi Biru', gender: 'unisex', cost: 10 },
+        { id: 'hw_beanie', name: 'Beanie Oren', gender: 'unisex', cost: 14 },
+        { id: 'hw_cat_ears', name: 'Cekak Kucing', gender: 'unisex', cost: 18 },
+        { id: 'hw_tudung_pink', name: 'Tudung Pink', gender: 'girl', cost: 8 },
+        { id: 'hw_tudung_blue', name: 'Tudung Biru', gender: 'girl', cost: 8 },
+        { id: 'hw_tudung_emerald', name: 'Tudung Hijau', gender: 'girl', cost: 8 },
+        { id: 'hw_grad', name: 'Topi Graduasi', gender: 'unisex', cost: 25 },
+        { id: 'hw_crown', name: 'Mahkota Juara', gender: 'unisex', cost: 40 }
+      ],
+      accessory: [
+        { id: 'acc_glasses', name: 'Cermin Mata', gender: 'unisex', slot: 'eyewear', cost: 8 },
+        { id: 'acc_shades', name: 'Kaca Hitam', gender: 'unisex', slot: 'eyewear', cost: 12 },
+        { id: 'acc_headphones', name: 'Fon Kepala', gender: 'unisex', slot: 'head', cost: 15 },
+        { id: 'acc_bowtie', name: 'Tali Leher Kupu', gender: 'boy', slot: 'neck', cost: 10 },
+        { id: 'acc_ribbon', name: 'Reben Merah Jambu', gender: 'girl', slot: 'neck', cost: 10 },
+        { id: 'acc_earring_pearl', name: 'Subang Mutiara', gender: 'girl', slot: 'ear', cost: 12 },
+        { id: 'acc_earring_star', name: 'Subang Bintang', gender: 'girl', slot: 'ear', cost: 16 },
+        { id: 'acc_pin_star', name: 'Pin Bintang Emas', gender: 'unisex', slot: 'pin', cost: 14 },
+        { id: 'acc_backpack', name: 'Beg Galas Sekolah', gender: 'unisex', slot: 'back', cost: 18 }
+      ],
+      bg: [
+        { id: 'bg_sky', name: 'Langit Cerah', gender: 'unisex', cost: 0, c1: '#E0F2FE', c2: '#7DD3FC' },
+        { id: 'bg_mint', name: 'Pudina Segar', gender: 'unisex', cost: 10, c1: '#D1FAE5', c2: '#6EE7B7' },
+        { id: 'bg_sunset', name: 'Senja Emas', gender: 'unisex', cost: 15, c1: '#FEF3C7', c2: '#FDBA74' },
+        { id: 'bg_sakura', name: 'Bunga Sakura', gender: 'unisex', cost: 18, c1: '#FCE7F3', c2: '#F9A8D4' },
+        { id: 'bg_galaxy', name: 'Galaksi Ungu', gender: 'unisex', cost: 25, c1: '#EDE9FE', c2: '#A78BFA' }
+      ]
+    };
+
+    let sharedAudioCtx = null;
+    function playTone(freq = 520, type = 'sine', duration = 0.08, gainVal = 0.08) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+        const osc = sharedAudioCtx.createOscillator();
+        const gain = sharedAudioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, sharedAudioCtx.currentTime);
+        gain.gain.setValueAtTime(gainVal, sharedAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, sharedAudioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(sharedAudioCtx.destination);
+        osc.start();
+        osc.stop(sharedAudioCtx.currentTime + duration);
       } catch (e) {}
     }
 
@@ -3380,6 +3486,13 @@
       if (hName) hName.innerText = displayLabel;
       if (mName) mName.innerText = displayLabel;
       if (aName) aName.innerText = displayLabel;
+
+      const stars = currentPlayer.stars || 0;
+      const pts = currentPlayer.totalPoints || 0;
+      const hStars = document.getElementById('header-star-count');
+      const mStars = document.getElementById('home-star-count');
+      const mPts = document.getElementById('home-points-count');
+      const hTime = document.getElementById('header-timer-display');
       if (hStars) hStars.innerText = stars;
       if (mStars) mStars.innerText = stars;
       if (mPts) mPts.innerText = pts;
@@ -4163,8 +4276,8 @@
         adminCachedStudents = adminCachedStudents.filter(s => (s.accountId || s.key) !== studentId);
         playCheer();
         if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-amber-100 text-amber-950 border border-amber-400';
-          fb.innerText = `🗑️ Akaun pelajar "${deletedName}" telah dipadam sepenuhnya daripada sistem & papan skor.`;
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya daripada sistem.`;
           fb.classList.remove('hidden');
         }
         filterAdminStudentList();
@@ -4172,10 +4285,25 @@
         playWrong();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = '❌ Ralat semasa memadam akaun pelajar dari pangkalan data awan.';
+          fb.innerText = '❌ Gagal memadam akaun pelajar.';
           fb.classList.remove('hidden');
         }
       }
+    };
+
+    window.switchAnzanTab = function(tabName) {
+      playClick();
+      ['flash', 'drill', 'dictation'].forEach(t => {
+        const panel = document.getElementById(`anzan-panel-${t}`);
+        const btn = document.getElementById(`tab-anzan-${t}`);
+        if (panel) panel.classList.toggle('hidden', t !== tabName);
+        if (btn) {
+          btn.className = t === tabName
+            ? 'anzan-tab bubbly-btn bg-rose-500 text-white border-2 border-rose-800 py-2.5 px-2 text-xs font-black'
+            : 'anzan-tab bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+        }
+      });
+      if (tabName === 'drill') startNewSpeedDrill();
     };
 
     window.startFlashAnzan = function() {

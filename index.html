@@ -65,9 +65,10 @@
         <div id="header-avatar-box" onclick="navTo('rewards')" class="w-10 h-10 rounded-full overflow-hidden border-2 border-amber-400 bg-sky-100 flex-shrink-0 cursor-pointer shadow-sm"></div>
         <div class="min-w-0">
           <div id="header-player-name" class="text-xs font-black text-slate-800 truncate">Pelajar</div>
-          <div class="flex items-center gap-1.5 text-[11px] font-extrabold">
-            <span class="text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">⭐ <span id="header-star-count">0</span></span>
-            <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-full">⏱️ <span id="header-timer-display">00:00</span></span>
+          <div class="flex flex-wrap items-center gap-1 text-[11px] font-extrabold">
+            <span class="text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
+            <span class="text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full" title="Jumlah Bintang">⭐ <span id="header-star-count">0</span></span>
+            <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
           </div>
         </div>
       </div>
@@ -75,7 +76,14 @@
         <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️ Admin</button>
         <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ Akaun</button>
         <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-xs font-black px-2.5 py-2 border-2 border-indigo-700">🏆 Skor</button>
-        <button onclick="logoutPlayer()" class="bubbly-btn bg-rose-100 text-rose-700 text-xs font-black px-2.5 py-2 border-2 border-rose-300" title="Log Keluar">🚪</button>
+        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span id="lbl-header-logout">Keluar</span>
+        </button>
       </div>
     </div>
   </header>
@@ -871,6 +879,7 @@
         footerNote: 'Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.',
         headerAcc: '⚙️ Akaun',
         headerScore: '🏆 Skor',
+        headerLogout: 'Keluar',
         welcomeTag: 'Selamat Datang!',
         btnAvatar: '🎨 Avatar & Kedai',
         btnManageAcc: '⚙️ Urus Akaun',
@@ -908,6 +917,7 @@
         footerNote: 'Each student name is unique and saves its own levels, score, and avatar.',
         headerAcc: '⚙️ Account',
         headerScore: '🏆 Scores',
+        headerLogout: 'Log Out',
         welcomeTag: 'Welcome Back!',
         btnAvatar: '🎨 Avatar & Shop',
         btnManageAcc: '⚙️ Manage Account',
@@ -945,6 +955,7 @@
         footerNote: '每个学生姓名都是唯一的，并独立保存关卡、积分与形象。',
         headerAcc: '⚙️ 账号',
         headerScore: '🏆 排行榜',
+        headerLogout: '退出',
         welcomeTag: '欢迎回来！',
         btnAvatar: '🎨 形象与商店',
         btnManageAcc: '⚙️ 管理账号',
@@ -982,6 +993,7 @@
         footerNote: 'كل اسم طالب فريد ويحفظ مستوياته ونقاطه وشخصيته الخاصة.',
         headerAcc: '⚙️ الحساب',
         headerScore: '🏆 النتائج',
+        headerLogout: 'خروج',
         welcomeTag: 'أهلاً بعودتك!',
         btnAvatar: '🎨 الشخصية والمتجر',
         btnManageAcc: '⚙️ إدارة الحساب',
@@ -1030,6 +1042,7 @@
 
       setTxt('btn-header-account', t.headerAcc);
       setTxt('btn-header-score', t.headerScore);
+      setTxt('lbl-header-logout', t.headerLogout);
       setTxt('home-welcome-tag', t.welcomeTag);
       setTxt('btn-home-avatar', t.btnAvatar);
       setTxt('btn-home-account', t.btnManageAcc);
@@ -3799,10 +3812,12 @@
 
       const stars = currentPlayer.stars || 0;
       const pts = currentPlayer.totalPoints || 0;
+      const hPts = document.getElementById('header-points-count');
       const hStars = document.getElementById('header-star-count');
       const mStars = document.getElementById('home-star-count');
       const mPts = document.getElementById('home-points-count');
       const hTime = document.getElementById('header-timer-display');
+      if (hPts) hPts.innerText = pts;
       if (hStars) hStars.innerText = stars;
       if (mStars) mStars.innerText = stars;
       if (mPts) mPts.innerText = pts;

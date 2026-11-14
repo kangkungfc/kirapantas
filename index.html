@@ -153,7 +153,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.7.1
+            Versi 1.9.1
           </span>
         </div>
 
@@ -278,8 +278,8 @@
          ======================================================== -->
     <section id="screen-modules" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-slate-800">📚 6 Tahap Master Abacus</h2>
+        <button id="btn-mod-back-home" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="mod-screen-heading" class="text-lg font-bold text-slate-800">📚 6 Tahap Master Abacus</h2>
       </div>
 
       <!-- Kad Ucapan Master Abacus & Panduan Latihan Harian 15 Minit Ibu Bapa -->
@@ -288,8 +288,8 @@
           <div class="flex items-center gap-2.5">
             <div class="w-11 h-11 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center text-2xl shadow-sm flex-shrink-0">🐼</div>
             <div>
-              <div class="text-xs font-black text-amber-950">Ni hao! Kurikulum 6 Tahap Kalkulator Manusia</div>
-              <div class="text-[11px] font-bold text-amber-800">Rahsia juara dunia: Konsisten 15 minit setiap hari!</div>
+              <div id="parent-guide-title" class="text-xs font-black text-amber-950">Ni hao! Kurikulum 6 Tahap Kalkulator Manusia</div>
+              <div id="parent-guide-sub" class="text-[11px] font-bold text-amber-800">Rahsia juara dunia: Konsisten 15 minit setiap hari!</div>
             </div>
           </div>
           <button type="button" onclick="toggleParentGuideDetails()" id="btn-toggle-parent-guide" class="bubbly-btn bg-amber-400 text-amber-950 text-[10px] font-black px-2.5 py-1.5 border border-amber-600 flex-shrink-0">
@@ -320,7 +320,7 @@
       <!-- Paparan Dalam Modul (Nota Infografik + 50 Soalan Latihan) -->
       <div id="module-detail-view" class="hidden space-y-4">
         <div class="flex items-center justify-between">
-          <button onclick="closeModuleView()" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-2 text-xs font-black text-amber-900">⬅️ Senarai Tahap</button>
+          <button id="btn-mod-back-list" onclick="closeModuleView()" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-2 text-xs font-black text-amber-900">⬅️ Senarai Tahap</button>
           <span id="mod-badge-level" class="text-xs font-black bg-indigo-600 text-white px-3 py-1 rounded-full">Tahap 1</span>
         </div>
 
@@ -338,10 +338,10 @@
         <div id="mod-quiz-box" class="bubbly-card bg-white border-4 border-amber-400 p-4 space-y-3">
           <div class="flex items-center justify-between gap-2">
             <div>
-              <div class="text-xs font-black text-amber-800">🎯 Latihan Intensif: Soalan <span id="mod-q-num">1</span>/50</div>
-              <div class="text-[11px] font-bold text-slate-500">Rekod Terbaik Tahap: <span id="mod-best-score" class="text-emerald-600 font-black">0</span>/50 ⭐</div>
+              <div class="text-xs font-black text-amber-800"><span id="lbl-mod-intensive">🎯 Latihan Intensif: Soalan</span> <span id="mod-q-num">1</span>/50</div>
+              <div class="text-[11px] font-bold text-slate-500"><span id="lbl-mod-best">Rekod Terbaik Tahap:</span> <span id="mod-best-score" class="text-emerald-600 font-black">0</span>/50 ⭐</div>
             </div>
-            <button onclick="reshuffleModuleQuestions()" class="bubbly-btn bg-sky-100 border-2 border-sky-300 px-2.5 py-1.5 text-[11px] font-black text-sky-800">🔀 Kocok Semula</button>
+            <button id="btn-mod-reshuffle" onclick="reshuffleModuleQuestions()" class="bubbly-btn bg-sky-100 border-2 border-sky-300 px-2.5 py-1.5 text-[11px] font-black text-sky-800">🔀 Kocok Semula</button>
           </div>
 
           <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
@@ -349,7 +349,11 @@
           </div>
 
           <!-- Paparan Soalan + Rajah Visual Tangan / Sempoa -->
-          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 text-center space-y-2">
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 text-center space-y-2 relative">
+            <div class="flex items-center justify-between gap-2">
+              <span id="mod-q-timer-badge" class="inline-flex items-center gap-1 text-[11px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full">⏱️ 0.0s</span>
+              <span id="mod-q-speed-hint" class="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">⚡ Jawab pantas = Bonus skor!</span>
+            </div>
             <div id="mod-q-prompt" class="text-sm sm:text-base font-black text-slate-800">Soalan</div>
             <div id="mod-q-visual" class="flex flex-wrap items-center justify-center gap-3 py-1"></div>
           </div>
@@ -364,8 +368,8 @@
             </div>
             <div id="mod-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
               <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
-                <span>Bacaan Sempoa Anda: <span id="mod-helper-val" class="text-amber-300 text-sm">0</span></span>
-                <button type="button" onclick="resetHelperAbacus('mod')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg">🔄 Kosongkan</button>
+                <span><span id="lbl-mod-abacus-read">Bacaan Sempoa Anda:</span> <span id="mod-helper-val" class="text-amber-300 text-sm">0</span></span>
+                <button id="btn-mod-abacus-clear" type="button" onclick="resetHelperAbacus('mod')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg">🔄 Kosongkan</button>
               </div>
               <div id="mod-helper-board"></div>
             </div>
@@ -385,22 +389,22 @@
          ======================================================== -->
     <section id="screen-simulator" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-slate-800">🖐️ Simulator Jari</h2>
+        <button id="btn-sim-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="sim-screen-title" class="text-lg font-bold text-slate-800">🖐️ Simulator Jari</h2>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 text-center space-y-3">
         <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl p-3 shadow-inner">
-          <div class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100">Jumlah Nilai Jari</div>
+          <div id="sim-total-label" class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100">Jumlah Nilai Jari</div>
           <div id="sim-total-val" class="text-4xl font-black">0</div>
           <div id="sim-breakdown" class="text-xs font-bold text-emerald-100 mt-0.5">Kiri (Puluh): 0 + Kanan (Sa): 0</div>
         </div>
 
-        <p class="text-xs font-bold text-slate-500">Tekan pada mana-mana jari di bawah untuk buka atau lipat!</p>
+        <p id="sim-instruction" class="text-xs font-bold text-slate-500">Tekan pada mana-mana jari di bawah untuk buka atau lipat!</p>
 
         <div id="sim-hands-container" class="grid grid-cols-2 gap-2 items-center justify-items-center bg-slate-50 rounded-2xl p-3 border-2 border-slate-200"></div>
 
-        <button onclick="resetFingerSimulator()" class="bubbly-btn bg-rose-500 text-white text-xs font-black px-5 py-2.5 border-2 border-rose-700">🔄 Lipat Semua Jari (0)</button>
+        <button id="btn-sim-reset" onclick="resetFingerSimulator()" class="bubbly-btn bg-rose-500 text-white text-xs font-black px-5 py-2.5 border-2 border-rose-700">🔄 Lipat Semua Jari (0)</button>
       </div>
     </section>
 
@@ -409,22 +413,22 @@
          ======================================================== -->
     <section id="screen-abacus" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-slate-800">🧮 Abakus 4-Tiang</h2>
+        <button id="btn-aba-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="aba-screen-title" class="text-lg font-bold text-slate-800">🧮 Abakus 4-Tiang</h2>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-amber-400 p-4 text-center space-y-3">
         <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3 shadow-inner">
-          <div class="text-[11px] font-extrabold uppercase tracking-wider text-amber-100">Nilai Bacaan Sempoa</div>
+          <div id="aba-total-label" class="text-[11px] font-extrabold uppercase tracking-wider text-amber-100">Nilai Bacaan Sempoa</div>
           <div id="abacus-total-val" class="text-4xl font-black">0</div>
           <div id="abacus-breakdown" class="text-[11px] font-bold text-amber-100 mt-0.5">Ribu: 0 | Ratus: 0 | Puluh: 0 | Sa: 0</div>
         </div>
 
-        <p class="text-xs font-bold text-slate-500">Gerakkan manik merapati <b>Palang Pemisah Tengah</b> untuk mengira!</p>
+        <p id="aba-instruction" class="text-xs font-bold text-slate-500">Gerakkan manik merapati <b>Palang Pemisah Tengah</b> untuk mengira!</p>
 
         <div id="interactive-abacus-board" class="bg-amber-950 rounded-3xl p-3 border-4 border-amber-800 shadow-inner"></div>
 
-        <button onclick="resetAbacusBoard()" class="bubbly-btn bg-rose-500 text-white text-xs font-black px-5 py-2.5 border-2 border-rose-700">🔄 Kosongkan Sempoa (0)</button>
+        <button id="btn-aba-reset" onclick="resetAbacusBoard()" class="bubbly-btn bg-rose-500 text-white text-xs font-black px-5 py-2.5 border-2 border-rose-700">🔄 Kosongkan Sempoa (0)</button>
       </div>
     </section>
 
@@ -433,8 +437,8 @@
          ======================================================== -->
     <section id="screen-quiz" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-slate-800">⚡ Cabaran Kilat</h2>
+        <button id="btn-quiz-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="quiz-screen-title" class="text-lg font-bold text-slate-800">⚡ Cabaran Kilat</h2>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-purple-400 p-4 space-y-3">
@@ -453,7 +457,10 @@
         </div>
 
         <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 text-center space-y-2">
-          <div id="blitz-tag" class="inline-block text-[10px] font-black uppercase bg-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded-full">Soalan Pantas</div>
+          <div class="flex items-center justify-center gap-2">
+            <div id="blitz-tag" class="inline-block text-[10px] font-black uppercase bg-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded-full">Soalan Pantas</div>
+            <div id="blitz-q-timer-badge" class="inline-flex items-center gap-1 text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full">⏱️ 0.0s</div>
+          </div>
           <div id="blitz-question-text" class="text-2xl sm:text-3xl font-black text-slate-800">5 + 4 = ?</div>
           <div id="blitz-visual-box" class="flex justify-center pt-1"></div>
         </div>
@@ -464,7 +471,7 @@
             <button type="button" onclick="toggleHelperAbacus('blitz')" id="blitz-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5">
               <span>🧮</span> <span id="blitz-helper-toggle-label">Buka Sempoa Kira</span>
             </button>
-            <span class="text-[10px] font-extrabold text-purple-700">Buka sempoa hanya jika perlukan bantuan</span>
+            <span id="blitz-helper-hint" class="text-[10px] font-extrabold text-purple-700">Buka sempoa hanya jika perlukan bantuan</span>
           </div>
           <div id="blitz-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
             <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
@@ -521,6 +528,7 @@
         <!-- Tab Kategori Kedai -->
         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 pt-1">
           <button onclick="switchStudioTab('face')" id="tab-studio-face" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-amber-950 flex-shrink-0">🧑 Watak 3D</button>
+          <button onclick="switchStudioTab('frame')" id="tab-studio-frame" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🖼️ Bingkai Profil</button>
           <button onclick="switchStudioTab('hair')" id="tab-studio-hair" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">💇 Rambut</button>
           <button onclick="switchStudioTab('headwear')" id="tab-studio-headwear" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🧢 Tudung/Topi</button>
           <button onclick="switchStudioTab('accessory')" id="tab-studio-accessory" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">👓 Aksesori (Stack)</button>
@@ -537,14 +545,14 @@
          ======================================================== -->
     <section id="screen-scoreboard" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <button onclick="loadScoreboard()" class="bubbly-btn bg-indigo-100 border-2 border-indigo-300 px-3 py-2 text-xs font-black text-indigo-800">🔄 Segar Semula</button>
+        <button id="btn-score-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <button id="btn-score-refresh" onclick="loadScoreboard()" class="bubbly-btn bg-indigo-100 border-2 border-indigo-300 px-3 py-2 text-xs font-black text-indigo-800">🔄 Segar Semula</button>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-3">
         <div class="text-center">
-          <h2 class="text-lg font-bold text-indigo-950">🏆 Papan Skor Juara Online</h2>
-          <p class="text-xs font-bold text-slate-500">Kedudukan markah, bintang & masa aktif semua pelajar secara langsung</p>
+          <h2 id="score-screen-title" class="text-lg font-bold text-indigo-950">🏆 Papan Skor Juara Online</h2>
+          <p id="score-screen-sub" class="text-xs font-bold text-slate-500">Kedudukan markah, bintang & masa aktif semua pelajar secara langsung</p>
           <div id="scoreboard-sync-status" class="inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">⏳ Menyemak sambungan awan...</div>
           <div id="scoreboard-apikey-fix" class="hidden mt-2 bg-rose-50 border border-rose-200 rounded-xl p-2 text-left space-y-1.5">
             <div class="text-[10px] font-black text-rose-800">🔑 Tampal teks sebenar <code>apiKey</code> dari Firebase Console > Project Settings:</div>
@@ -563,8 +571,8 @@
          ======================================================== -->
     <section id="screen-anzan" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-rose-950">🧠 Akademi Master Anzan</h2>
+        <button id="btn-anzan-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="anzan-screen-title" class="text-lg font-bold text-rose-950">🧠 Akademi Master Anzan</h2>
       </div>
 
       <!-- Tab 3 Latihan Teras Master Abakus & Jari -->
@@ -901,7 +909,54 @@
         accLangTitle: '🌐 Pilihan Bahasa Laman Web',
         accLangSaved: '✅ Disimpan Kekal',
         accLangDesc: 'Pilihan bahasa anda akan disimpan secara automatik untuk sesi seterusnya dan turut menyelaraskan bahasa Dikte Suara.',
-        toastSaved: '🌐 Bahasa laman web ditukar kepada Bahasa Melayu & disimpan!'
+        toastSaved: '🌐 Bahasa laman web ditukar kepada Bahasa Melayu & disimpan!',
+        backHome: '⬅️ Menu Utama',
+        backLevels: '⬅️ Senarai Tahap',
+        modHeading: '📚 6 Tahap Master Abacus',
+        parentTitle: 'Ni hao! Kurikulum 6 Tahap Kalkulator Manusia',
+        parentSub: 'Rahsia juara dunia: Konsisten 15 minit setiap hari!',
+        parentBtn: '📖 Panduan 15 Minit',
+        levelWord: 'Tahap',
+        needWord: 'Perlu',
+        lockedWord: 'Terkunci',
+        intensiveLbl: '🎯 Latihan Intensif: Soalan',
+        bestScoreLbl: 'Rekod Terbaik Tahap:',
+        reshuffleBtn: '🔀 Kocok Semula',
+        openAbacusBtn: 'Buka Sempoa Kira',
+        hideAbacusBtn: 'Sembunyi Sempoa Kira',
+        abacusReadLbl: 'Bacaan Sempoa Anda:',
+        clearBtn: '🔄 Kosongkan',
+        simTotalLbl: 'Jumlah Nilai Jari',
+        simInst: 'Tekan pada mana-mana jari di bawah untuk buka atau lipat!',
+        simReset: '🔄 Lipat Semua Jari (0)',
+        abaTotalLbl: 'Nilai Bacaan Sempoa',
+        abaInst: 'Gerakkan manik merapati Palang Pemisah Tengah untuk mengira!',
+        abaReset: '🔄 Kosongkan Sempoa (0)',
+        blitzHint: 'Buka sempoa hanya jika perlukan bantuan',
+        refreshBtn: '🔄 Segar Semula',
+        scoreTitle: '🏆 Papan Skor Juara Online',
+        scoreSub: 'Kedudukan markah, bintang & masa aktif semua pelajar secara langsung',
+        tabFlash: '⚡ Flash Anzan',
+        tabDrill: '🎯 Pecut Jari/Manik',
+        tabDict: '👂 Dikte Suara',
+        mod1Title: 'Keajaiban 10 Jari (Chisanbop)',
+        mod1Sub: 'Membina kefahaman nombor secara fizikal (0 – 99) tanpa bergantung pada sempoa.',
+        mod1Age: '👶 Sasaran Umur: 4 – 6 Tahun (Prasekolah / Tadika)',
+        mod2Title: 'Rakan Sempoa Saya (Suanpan 1:4)',
+        mod2Sub: 'Mengenali anatomi sempoa 1:4, postur badan & teknik penjarian pantas.',
+        mod2Age: '🧒 Sasaran Umur: 6 – 7 Tahun',
+        mod3Title: 'Kawan Kecil & Kawan Besar (Formula Rahsia)',
+        mod3Sub: 'Menyelesaikan kiraan apabila manik pada satu tiang tidak mencukupi.',
+        mod3Age: '🎒 Sasaran Umur: 7 – 8 Tahun',
+        mod4Title: 'Darab & Bahagi Kilat',
+        mod4Sub: 'Menguasai darab dan bahagi nombor besar dari Kiri ke Kanan pada sempoa.',
+        mod4Age: '🚀 Sasaran Umur: 8 – 10 Tahun',
+        mod5Title: 'Silat Jari Kilat (Anzan / Bayangan Minda)',
+        mod5Sub: 'Memindahkan bayangan manik terus ke otak kanan & latihan Flash Anzan.',
+        mod5Age: '⚡ Sasaran Umur: 9 – 12 Tahun',
+        mod6Title: 'Pejuang Antarabangsa (Peringkat Master)',
+        mod6Sub: 'Kelajuan maksimum, ketepatan 100%, perpuluhan, negatif & kawalan fokus.',
+        mod6Age: '🏆 Sasaran Umur: 10 Tahun ke Atas (Pertandingan Dunia)'
       },
       en: {
         langLabel: '🌐 Language:',
@@ -939,7 +994,54 @@
         accLangTitle: '🌐 Website Language Preference',
         accLangSaved: '✅ Saved Permanently',
         accLangDesc: 'Your selected language is saved automatically for future visits and syncs with Voice Dictation.',
-        toastSaved: '🌐 Website language switched to English & saved!'
+        toastSaved: '🌐 Website language switched to English & saved!',
+        backHome: '⬅️ Main Menu',
+        backLevels: '⬅️ Level List',
+        modHeading: '📚 6 Master Abacus Levels',
+        parentTitle: 'Ni hao! 6-Level Human Calculator Curriculum',
+        parentSub: 'World champion secret: Be consistent 15 minutes every day!',
+        parentBtn: '📖 15-Min Guide',
+        levelWord: 'Level',
+        needWord: 'Need',
+        lockedWord: 'Locked',
+        intensiveLbl: '🎯 Intensive Practice: Question',
+        bestScoreLbl: 'Level Best Record:',
+        reshuffleBtn: '🔀 Reshuffle',
+        openAbacusBtn: 'Open Abacus',
+        hideAbacusBtn: 'Hide Abacus',
+        abacusReadLbl: 'Your Abacus Reading:',
+        clearBtn: '🔄 Clear',
+        simTotalLbl: 'Total Finger Value',
+        simInst: 'Tap any finger below to raise or fold!',
+        simReset: '🔄 Fold All Fingers (0)',
+        abaTotalLbl: 'Abacus Reading Value',
+        abaInst: 'Move beads toward the Center Beam to count!',
+        abaReset: '🔄 Clear Abacus (0)',
+        blitzHint: 'Open abacus only if you need help',
+        refreshBtn: '🔄 Refresh',
+        scoreTitle: '🏆 Online Champions Scoreboard',
+        scoreSub: 'Live rankings of points, stars & active time of all students',
+        tabFlash: '⚡ Flash Anzan',
+        tabDrill: '🎯 Finger/Bead Drill',
+        tabDict: '👂 Voice Dictation',
+        mod1Title: '10-Finger Magic (Chisanbop)',
+        mod1Sub: 'Build physical number sense (0 – 99) using both hands without an abacus.',
+        mod1Age: '👶 Target Age: 4 – 6 Years (Preschool / Kindergarten)',
+        mod2Title: 'My Abacus Friend (Suanpan 1:4)',
+        mod2Sub: 'Master 1:4 abacus anatomy, posture & fast fingering techniques.',
+        mod2Age: '🧒 Target Age: 6 – 7 Years',
+        mod3Title: 'Small & Big Friends (Secret Formulas)',
+        mod3Sub: 'Solve calculations when beads on a single rod are not enough.',
+        mod3Age: '🎒 Target Age: 7 – 8 Years',
+        mod4Title: 'Lightning Multiplication & Division',
+        mod4Sub: 'Master multiplying and dividing large numbers Left-to-Right on the abacus.',
+        mod4Age: '🚀 Target Age: 8 – 10 Years',
+        mod5Title: 'Mental Abacus (Anzan Visualization)',
+        mod5Sub: 'Transfer bead visualization directly to the right brain & Flash Anzan.',
+        mod5Age: '⚡ Target Age: 9 – 12 Years',
+        mod6Title: 'International Warrior (Master Tier)',
+        mod6Sub: 'Maximum speed, 100% accuracy, decimals, negatives & focus control.',
+        mod6Age: '🏆 Target Age: 10+ Years (World Competition)'
       },
       zh: {
         langLabel: '🌐 语言:',
@@ -977,7 +1079,54 @@
         accLangTitle: '🌐 网站语言设置',
         accLangSaved: '✅ 已永久保存',
         accLangDesc: '您选择的语言将自动永久保存，下次打开不会恢复默认，并同步至语音听算。',
-        toastSaved: '🌐 网站语言已切换为中文并保存！'
+        toastSaved: '🌐 网站语言已切换为中文并保存！',
+        backHome: '⬅️ 返回主页',
+        backLevels: '⬅️ 阶段列表',
+        modHeading: '📚 珠心算大师6个阶段',
+        parentTitle: '你好！人体计算器6阶段课程',
+        parentSub: '世界冠军秘诀：每天坚持练习15分钟！',
+        parentBtn: '📖 15分钟指南',
+        levelWord: '阶段',
+        needWord: '需要',
+        lockedWord: '未解锁',
+        intensiveLbl: '🎯 强化练习：第',
+        bestScoreLbl: '阶段最高记录：',
+        reshuffleBtn: '🔀 重新洗牌',
+        openAbacusBtn: '打开练习算盘',
+        hideAbacusBtn: '隐藏练习算盘',
+        abacusReadLbl: '当前算盘读数：',
+        clearBtn: '🔄 清零',
+        simTotalLbl: '手指总数值',
+        simInst: '点击下方任意手指即可伸出或弯曲！',
+        simReset: '🔄 握紧所有手指 (0)',
+        abaTotalLbl: '算盘当前数值',
+        abaInst: '拨动算珠靠近中间横梁即可计数！',
+        abaReset: '🔄 算盘清零 (0)',
+        blitzHint: '仅在需要辅助时打开算盘',
+        refreshBtn: '🔄 刷新',
+        scoreTitle: '🏆 在线冠军积分榜',
+        scoreSub: '所有学生积分、星星与活跃时间实时排名',
+        tabFlash: '⚡ 闪电心算',
+        tabDrill: '🎯 指算/拨珠速练',
+        tabDict: '👂 语音听算',
+        mod1Title: '十指魔法（指算 Chisanbop）',
+        mod1Sub: '无需算盘，用双手建立 0 – 99 的数字概念。',
+        mod1Age: '👶 适合年龄：4 – 6 岁（学前班/幼儿园）',
+        mod2Title: '我的算盘伙伴（1:4 算盘）',
+        mod2Sub: '认识算盘结构、坐姿及快速拨珠指法技巧。',
+        mod2Age: '🧒 适合年龄：6 – 7 岁',
+        mod3Title: '小数友与大数友（凑五与凑十口诀）',
+        mod3Sub: '解决单档算珠不足时的进位与退位计算。',
+        mod3Age: '🎒 适合年龄：7 – 8 岁',
+        mod4Title: '闪电乘除法',
+        mod4Sub: '掌握在算盘上从左到右快速计算大数乘除法。',
+        mod4Age: '🚀 适合年龄：8 – 10 岁',
+        mod5Title: '闪电心算（脑海映象 Anzan）',
+        mod5Sub: '将算珠图像直接映入右脑进行闪电心算训练。',
+        mod5Age: '⚡ 适合年龄：9 – 12 岁',
+        mod6Title: '国际珠心算战士（大师级）',
+        mod6Sub: '极致速度、100%准确率、小数、负数与专注力控制。',
+        mod6Age: '🏆 适合年龄：10 岁及以上（国际竞赛级）'
       },
       ar: {
         langLabel: '🌐 اللغة:',
@@ -1015,7 +1164,54 @@
         accLangTitle: '🌐 اختيار لغة الموقع',
         accLangSaved: '✅ محفوظة دائماً',
         accLangDesc: 'يتم حفظ لغتك المختارة تلقائياً ولن تتغير عند إعادة فتح الموقع، وتُزامن مع الإملاء الصوتي.',
-        toastSaved: '🌐 تم تغيير لغة الموقع إلى العربية وحفظها!'
+        toastSaved: '🌐 تم تغيير لغة الموقع إلى العربية وحفظها!',
+        backHome: '⬅️ القائمة الرئيسية',
+        backLevels: '⬅️ قائمة المستويات',
+        modHeading: '📚 مستويات المعداد الستة',
+        parentTitle: 'مرحباً! منهج الحاسبة البشرية ذو 6 مستويات',
+        parentSub: 'سر أبطال العالم: الاستمرار 15 دقيقة يومياً!',
+        parentBtn: '📖 دليل 15 دقيقة',
+        levelWord: 'المستوى',
+        needWord: 'يتطلب',
+        lockedWord: 'مقفل',
+        intensiveLbl: '🎯 تدريب مكثف: السؤال',
+        bestScoreLbl: 'أفضل نتيجة للمستوى:',
+        reshuffleBtn: '🔀 خلط الأسئلة',
+        openAbacusBtn: 'فتح المعداد المساعد',
+        hideAbacusBtn: 'إخفاء المعداد',
+        abacusReadLbl: 'قراءة معدادك:',
+        clearBtn: '🔄 تصفير',
+        simTotalLbl: 'مجموع قيمة الأصابع',
+        simInst: 'اضغط على أي إصبع أدناه لرفعه أو طيه!',
+        simReset: '🔄 طي جميع الأصابع (0)',
+        abaTotalLbl: 'قيمة قراءة المعداد',
+        abaInst: 'حرّك الخرز نحو العارضة الوسطى للعد!',
+        abaReset: '🔄 تصفير المعداد (0)',
+        blitzHint: 'افتح المعداد فقط عند الحاجة للمساعدة',
+        refreshBtn: '🔄 تحديث',
+        scoreTitle: '🏆 لوحة أبطال النتائج المباشرة',
+        scoreSub: 'ترتيب النقاط والنجوم ووقت النشاط لجميع الطلاب مباشرة',
+        tabFlash: '⚡ أنزان السريع',
+        tabDrill: '🎯 تدريب الأصابع/الخرز',
+        tabDict: '👂 الإملاء الصوتي',
+        mod1Title: 'سحر الأصابع العشرة (تشيسانبوب)',
+        mod1Sub: 'بناء الفهم العددي (0 – 99) باليدين دون الحاجة إلى معداد.',
+        mod1Age: '👶 الفئة العمرية: 4 – 6 سنوات (الروضة والتمهيدي)',
+        mod2Title: 'صديقي المعداد (سوروبان 1:4)',
+        mod2Sub: 'التعرف على أجزاء المعداد والوضعية الصحيحة وتقنيات الأصابع.',
+        mod2Age: '🧒 الفئة العمرية: 6 – 7 سنوات',
+        mod3Title: 'الأصدقاء الصغار والكبار (القواعد السرية)',
+        mod3Sub: 'حل العمليات الحسابية عندما لا تكفي الخرزات في عمود واحد.',
+        mod3Age: '🎒 الفئة العمرية: 7 – 8 سنوات',
+        mod4Title: 'الضرب والقسمة الخاطفة',
+        mod4Sub: 'إتقان ضرب وقسمة الأعداد الكبيرة من اليسار إلى اليمين على المعداد.',
+        mod4Age: '🚀 الفئة العمرية: 8 – 10 سنوات',
+        mod5Title: 'الحساب الذهني التخيلي (أنزان)',
+        mod5Sub: 'نقل صورة الخرز إلى الدماغ الأيمن والتدريب على أنزان السريع.',
+        mod5Age: '⚡ الفئة العمرية: 9 – 12 سنة',
+        mod6Title: 'المحارب الدولي (مستوى الاحتراف)',
+        mod6Sub: 'أقصى سرعة ودقة 100% والكسور العشرية والأعداد السالبة والتركيز.',
+        mod6Age: '🏆 الفئة العمرية: 10 سنوات فأكثر (المسابقات الدولية)'
       }
     };
 
@@ -1067,6 +1263,48 @@
       setTxt('acc-lang-saved-badge', t.accLangSaved);
       setTxt('acc-lang-desc', t.accLangDesc);
 
+      ['btn-mod-back-home', 'btn-sim-back', 'btn-aba-back', 'btn-quiz-back', 'btn-score-back', 'btn-anzan-back'].forEach(id => setTxt(id, t.backHome));
+      setTxt('btn-mod-back-list', t.backLevels);
+      setTxt('mod-screen-heading', t.modHeading);
+      setTxt('parent-guide-title', t.parentTitle);
+      setTxt('parent-guide-sub', t.parentSub);
+      setTxt('btn-toggle-parent-guide', t.parentBtn);
+      setTxt('lbl-mod-intensive', t.intensiveLbl);
+      setTxt('lbl-mod-best', t.bestScoreLbl);
+      setTxt('btn-mod-reshuffle', t.reshuffleBtn);
+      setTxt('lbl-mod-abacus-read', t.abacusReadLbl);
+      setTxt('btn-mod-abacus-clear', t.clearBtn);
+      setTxt('sim-screen-title', `🖐️ ${t.simTitle}`);
+      setTxt('sim-total-label', t.simTotalLbl);
+      setTxt('sim-instruction', t.simInst);
+      setTxt('btn-sim-reset', t.simReset);
+      setTxt('aba-screen-title', `🧮 ${t.abaTitle}`);
+      setTxt('aba-total-label', t.abaTotalLbl);
+      setTxt('aba-instruction', t.abaInst);
+      setTxt('btn-aba-reset', t.abaReset);
+      setTxt('quiz-screen-title', `⚡ ${t.quizTitle}`);
+      setTxt('blitz-helper-hint', t.blitzHint);
+      setTxt('btn-score-refresh', t.refreshBtn);
+      setTxt('score-screen-title', t.scoreTitle);
+      setTxt('score-screen-sub', t.scoreSub);
+      setTxt('anzan-screen-title', `🧠 ${t.anzanTitle}`);
+      setTxt('tab-anzan-flash', t.tabFlash);
+      setTxt('tab-anzan-drill', t.tabDrill);
+      setTxt('tab-anzan-dictation', t.tabDict);
+
+      if (typeof MODULES_META !== 'undefined') {
+        for (let m = 1; m <= 6; m++) {
+          if (MODULES_META[m]) {
+            MODULES_META[m].title = t[`mod${m}Title`] || MODULES_META[m].title;
+            MODULES_META[m].subtitle = t[`mod${m}Sub`] || MODULES_META[m].subtitle;
+            MODULES_META[m].ageGroup = t[`mod${m}Age`] || MODULES_META[m].ageGroup;
+          }
+        }
+        if (currentPlayer && !document.getElementById('screen-modules')?.classList.contains('hidden')) {
+          renderModulesMenu();
+        }
+      }
+
       document.querySelectorAll('.lang-switch-btn').forEach(btn => {
         const bLang = btn.getAttribute('data-lang-btn');
         const isActive = bLang === code;
@@ -1096,7 +1334,6 @@
       }
     };
 
-    applyAppLanguageUI(currentAppLang);
     const TEACHER_RESET_MASTER_CODE = 'GURU2026';
     const ADMIN_ACCOUNT_ID = 'acc_admin_master';
     const ADMIN_DEFAULT_NAME = 'admin';
@@ -1238,8 +1475,70 @@
         { id: 'bg_sunset', name: 'Senja Emas', gender: 'unisex', cost: 15, c1: '#FEF3C7', c2: '#FDBA74' },
         { id: 'bg_sakura', name: 'Bunga Sakura', gender: 'unisex', cost: 18, c1: '#FCE7F3', c2: '#F9A8D4' },
         { id: 'bg_galaxy', name: 'Galaksi Ungu', gender: 'unisex', cost: 25, c1: '#EDE9FE', c2: '#A78BFA' }
+      ],
+      frame: [
+        { id: 'fr_none', name: 'Bingkai Asas', tier: 'Biasa', cost: 0 },
+        { id: 'fr_candy', name: 'Gula-Gula Pastel', tier: 'Comel', cost: 10 },
+        { id: 'fr_bear', name: 'Telapak Beruang Comel', tier: 'Comel', cost: 18 },
+        { id: 'fr_sakura', name: 'Kelopak Sakura', tier: 'Comel', cost: 25 },
+        { id: 'fr_rainbow', name: 'Pelangi Ceria', tier: 'Istimewa', cost: 35 },
+        { id: 'fr_starlight', name: 'Bintang Kilau', tier: 'Istimewa', cost: 48 },
+        { id: 'fr_cyber', name: 'Neon Kilat Biru', tier: 'Gah', cost: 65 },
+        { id: 'fr_royal_gold', name: 'Mahkota Emas Raja', tier: 'Gah', cost: 85 },
+        { id: 'fr_dragon_fire', name: 'Naga Api Juara', tier: 'Epik', cost: 110 },
+        { id: 'fr_galaxy_diamond', name: 'Galaksi Berlian', tier: 'Legenda', cost: 150 }
       ]
     };
+
+    let modQuestionStartTime = 0;
+    let modQuestionTimerInterval = null;
+    let blitzQuestionStartTime = 0;
+    let blitzQuestionTimerInterval = null;
+
+    function calculateSpeedBonusPoints(elapsedSec) {
+      if (elapsedSec < 2.0) return { total: 20, bonus: 10, label: '⚡ KILAT SUPER (+10 Bonus)' };
+      if (elapsedSec < 5.0) return { total: 15, bonus: 5, label: '🚀 PANTAS (+5 Bonus)' };
+      if (elapsedSec < 9.0) return { total: 10, bonus: 0, label: '✅ MARKAH PENUH (10)' };
+      return { total: 5, bonus: 0, label: '🐢 SEPARUH MARKAH (5)' };
+    }
+
+    function startQuestionLiveTimer(ctx) {
+      if (ctx === 'mod') {
+        if (modQuestionTimerInterval) clearInterval(modQuestionTimerInterval);
+        modQuestionStartTime = performance.now();
+        const badge = document.getElementById('mod-q-timer-badge');
+        if (badge) badge.innerText = '⏱️ 0.0s';
+        modQuestionTimerInterval = setInterval(() => {
+          const el = document.getElementById('mod-q-timer-badge');
+          if (!el) return;
+          const sec = ((performance.now() - modQuestionStartTime) / 1000).toFixed(1);
+          el.innerText = `⏱️ ${sec}s`;
+        }, 100);
+      } else {
+        if (blitzQuestionTimerInterval) clearInterval(blitzQuestionTimerInterval);
+        blitzQuestionStartTime = performance.now();
+        const badge = document.getElementById('blitz-q-timer-badge');
+        if (badge) badge.innerText = '⏱️ 0.0s';
+        blitzQuestionTimerInterval = setInterval(() => {
+          const el = document.getElementById('blitz-q-timer-badge');
+          if (!el) return;
+          const sec = ((performance.now() - blitzQuestionStartTime) / 1000).toFixed(1);
+          el.innerText = `⏱️ ${sec}s`;
+        }, 100);
+      }
+    }
+
+    function stopQuestionLiveTimer(ctx) {
+      if (ctx === 'mod') {
+        if (modQuestionTimerInterval) clearInterval(modQuestionTimerInterval);
+        modQuestionTimerInterval = null;
+        return Math.max(0.1, (performance.now() - (modQuestionStartTime || performance.now())) / 1000);
+      } else {
+        if (blitzQuestionTimerInterval) clearInterval(blitzQuestionTimerInterval);
+        blitzQuestionTimerInterval = null;
+        return Math.max(0.1, (performance.now() - (blitzQuestionStartTime || performance.now())) / 1000);
+      }
+    }
 
     let sharedAudioCtx = null;
     function playTone(freq = 520, type = 'sine', duration = 0.08, gainVal = 0.08) {
@@ -1424,7 +1723,8 @@
         hair: gender === 'girl' ? 'hair_wavy_girl' : 'hair_quiff',
         headwear: 'hw_none',
         accessories: [],
-        bg: 'bg_sky'
+        bg: 'bg_sky',
+        frame: 'fr_none'
       };
     }
 
@@ -1456,6 +1756,11 @@
         cfg.headwear = 'hw_none';
       }
 
+      const validFrame = AVATAR_STUDIO_CATALOG.frame.find(fr => fr.id === cfg.frame);
+      if (!validFrame) {
+        cfg.frame = 'fr_none';
+      }
+
       if (!Array.isArray(cfg.accessories)) {
         cfg.accessories = [];
       }
@@ -1469,7 +1774,7 @@
     function ensurePlayerAvatarConfig(player) {
       if (!player) return getDefaultAvatarConfig('boy');
       if (!player.avatarConfig) player.avatarConfig = getDefaultAvatarConfig('boy');
-      const freeDefaults = ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky'];
+      const freeDefaults = ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky', 'fr_none'];
       if (!Array.isArray(player.ownedAvatarItems)) {
         player.ownedAvatarItems = [...freeDefaults];
       } else {
@@ -1478,6 +1783,112 @@
         });
       }
       return sanitizeAvatarForGender(player.avatarConfig);
+    }
+
+    function renderAvatarFrameOverlaySVG(frameId, uid) {
+      if (!frameId || frameId === 'fr_none') return '';
+      if (frameId === 'fr_candy') {
+        return `
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="#F472B6" stroke-width="5"/>
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="#FEF08A" stroke-width="3" stroke-dasharray="8 8"/>
+          <circle cx="11" cy="11" r="4.5" fill="#EC4899" stroke="#FFFFFF" stroke-width="1.5"/>
+          <circle cx="89" cy="11" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5"/>
+          <circle cx="11" cy="89" r="4.5" fill="#34D399" stroke="#FFFFFF" stroke-width="1.5"/>
+          <circle cx="89" cy="89" r="4.5" fill="#FBBF24" stroke="#FFFFFF" stroke-width="1.5"/>
+        `;
+      }
+      if (frameId === 'fr_bear') {
+        return `
+          <circle cx="16" cy="14" r="9.5" fill="#B45309" stroke="#78350F" stroke-width="2.2"/>
+          <circle cx="16" cy="14" r="5" fill="#FDE68A"/>
+          <circle cx="84" cy="14" r="9.5" fill="#B45309" stroke="#78350F" stroke-width="2.2"/>
+          <circle cx="84" cy="14" r="5" fill="#FDE68A"/>
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="#D97706" stroke-width="5"/>
+        `;
+      }
+      if (frameId === 'fr_sakura') {
+        return `
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="#F43F5E" stroke-width="4.5"/>
+          <g transform="translate(13,13)">
+            <circle cx="0" cy="-4" r="4" fill="#FBCFE8"/><circle cx="4" cy="0" r="4" fill="#FBCFE8"/>
+            <circle cx="0" cy="4" r="4" fill="#FBCFE8"/><circle cx="-4" cy="0" r="4" fill="#FBCFE8"/>
+            <circle cx="0" cy="0" r="2.2" fill="#F59E0B"/>
+          </g>
+          <g transform="translate(87,87)">
+            <circle cx="0" cy="-4" r="4" fill="#FBCFE8"/><circle cx="4" cy="0" r="4" fill="#FBCFE8"/>
+            <circle cx="0" cy="4" r="4" fill="#FBCFE8"/><circle cx="-4" cy="0" r="4" fill="#FBCFE8"/>
+            <circle cx="0" cy="0" r="2.2" fill="#F59E0B"/>
+          </g>
+        `;
+      }
+      if (frameId === 'fr_rainbow') {
+        return `
+          <defs>
+            <linearGradient id="${uid}_rb" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#EF4444"/>
+              <stop offset="25%" stop-color="#F59E0B"/>
+              <stop offset="50%" stop-color="#10B981"/>
+              <stop offset="75%" stop-color="#3B82F6"/>
+              <stop offset="100%" stop-color="#A855F7"/>
+            </linearGradient>
+          </defs>
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="url(#${uid}_rb)" stroke-width="6"/>
+        `;
+      }
+      if (frameId === 'fr_starlight') {
+        return `
+          <rect x="2.5" y="2.5" width="95" height="95" rx="20" fill="none" stroke="#2563EB" stroke-width="5"/>
+          <rect x="5.5" y="5.5" width="89" height="89" rx="17" fill="none" stroke="#FDE047" stroke-width="2" stroke-dasharray="6 4"/>
+          <polygon points="50,1 52.5,6.5 58.5,7 54,11 55.2,17 50,14 44.8,17 46,11 41.5,7 47.5,6.5" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+        `;
+      }
+      if (frameId === 'fr_cyber') {
+        return `
+          <rect x="2.5" y="2.5" width="95" height="95" rx="18" fill="none" stroke="#06B6D4" stroke-width="5.5"/>
+          <path d="M 4 22 L 4 6 L 22 6 M 78 6 L 96 6 L 96 22 M 4 78 L 4 94 L 22 94 M 78 94 L 96 94 L 96 78" fill="none" stroke="#FDE047" stroke-width="3.5" stroke-linecap="round"/>
+        `;
+      }
+      if (frameId === 'fr_royal_gold') {
+        return `
+          <rect x="3" y="3" width="94" height="94" rx="20" fill="none" stroke="url(#${uid}_gold)" stroke-width="6.5"/>
+          <polygon points="34,11 39,2 45,8 50,1 55,8 61,2 66,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+          <circle cx="50" cy="7.5" r="2" fill="#E11D48"/>
+        `;
+      }
+      if (frameId === 'fr_dragon_fire') {
+        return `
+          <defs>
+            <linearGradient id="${uid}_fire" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#991B1B"/>
+              <stop offset="50%" stop-color="#EA580C"/>
+              <stop offset="100%" stop-color="#FACC15"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="94" height="94" rx="20" fill="none" stroke="url(#${uid}_fire)" stroke-width="7"/>
+          <path d="M 10 92 Q 3 78 12 70 Q 15 80 20 86 Z" fill="#F97316"/>
+          <path d="M 90 92 Q 97 78 88 70 Q 85 80 80 86 Z" fill="#F97316"/>
+          <polygon points="50,1 54,9 46,9" fill="#FACC15"/>
+        `;
+      }
+      if (frameId === 'fr_galaxy_diamond') {
+        return `
+          <defs>
+            <linearGradient id="${uid}_gal" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#312E81"/>
+              <stop offset="45%" stop-color="#9333EA"/>
+              <stop offset="75%" stop-color="#EC4899"/>
+              <stop offset="100%" stop-color="#38BDF8"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="94" height="94" rx="20" fill="none" stroke="url(#${uid}_gal)" stroke-width="7.5"/>
+          <polygon points="50,1 55,7 50,13 45,7" fill="#7DD3FC" stroke="#FFFFFF" stroke-width="1.2"/>
+          <polygon points="10,50 15,54 10,58 5,54" fill="#FDE047"/>
+          <polygon points="90,50 95,54 90,58 85,54" fill="#FDE047"/>
+          <circle cx="14" cy="14" r="3" fill="#FFFFFF"/>
+          <circle cx="86" cy="14" r="3" fill="#FFFFFF"/>
+        `;
+      }
+      return '';
     }
 
     /* Penjana 12 Watak 3D Pixar Tulen */
@@ -1989,6 +2400,7 @@
           ${tudungFrontLayer}
           ${accLayer}
           ${hatLayer}
+          ${renderAvatarFrameOverlaySVG(cfg.frame, uid)}
         </svg>
       `;
     }
@@ -2242,6 +2654,8 @@
         `
       }
     };
+
+    applyAppLanguageUI(currentAppLang);
 
     window.toggleParentGuideDetails = function() {
       playClick();
@@ -2912,25 +3326,28 @@
         btn.onclick = () => checkBlitzAnswer(opt, btn);
         grid.appendChild(btn);
       });
+      startQuestionLiveTimer('blitz');
     };
 
     function checkBlitzAnswer(chosen, btnEl) {
+      const elapsedSec = stopQuestionLiveTimer('blitz');
       const fb = document.getElementById('blitz-feedback');
       const allBtns = document.querySelectorAll('#blitz-options-grid button');
       allBtns.forEach(b => b.disabled = true);
 
       if (chosen === currentBlitzAnswer) {
         playCheer();
-        blitzScore += 10;
+        const reward = calculateSpeedBonusPoints(elapsedSec);
+        blitzScore += reward.total;
         blitzStreak += 1;
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerText = '🎉 Tepat Sekali! +10 Markah & +1 Bintang ⭐';
+        fb.innerText = `🎉 Tepat dalam ${elapsedSec.toFixed(1)}s! +${reward.total} Markah (${reward.label}) & +1 Bintang ⭐`;
         fb.classList.remove('hidden');
 
         if (currentPlayer) {
           currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 10;
+          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + reward.total;
           syncPlayerUI();
           savePlayerCloud();
         }
@@ -2941,7 +3358,7 @@
         blitzStreak = 0;
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        fb.innerText = `❌ Kurang tepat! Jawapan sebenar ialah ${currentBlitzAnswer}.`;
+        fb.innerText = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah ${currentBlitzAnswer}.`;
         fb.classList.remove('hidden');
         setTimeout(() => generateNextBlitzQuestion(), 1400);
       }
@@ -2969,6 +3386,7 @@
           currentPlayer.unlockedModules.push(m);
         }
         const best = (currentPlayer.modScores && currentPlayer.modScores[m]) || 0;
+        const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
 
         const card = document.createElement('button');
         card.className = `bubbly-card bg-gradient-to-r ${meta.bgGradient} border-4 ${meta.border} p-4 text-left text-white flex items-center justify-between gap-3 ${unlocked ? '' : 'opacity-85'}`;
@@ -2986,13 +3404,13 @@
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl flex-shrink-0">${unlocked ? meta.icon : '🔒'}</div>
             <div class="min-w-0">
-              <div class="text-[10px] font-black uppercase tracking-wider text-white/90">Tahap ${m} ${unlocked ? `• ${meta.ageGroup.replace(/^[^\s]+\s/, '')}` : `• Perlu ${req} ⭐`}</div>
+              <div class="text-[10px] font-black uppercase tracking-wider text-white/90">${t.levelWord} ${m} ${unlocked ? `• ${meta.ageGroup.replace(/^[^\s]+\s/, '')}` : `• ${t.needWord} ${req} ⭐`}</div>
               <div class="text-sm sm:text-base font-bold truncate">${meta.title}</div>
               <div class="text-[11px] font-bold text-white/90 truncate">${meta.subtitle}</div>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
-            <span class="inline-block bg-black/25 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ⭐` : 'Terkunci'}</span>
+            <span class="inline-block bg-black/25 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ⭐` : t.lockedWord}</span>
           </div>
         `;
         grid.appendChild(card);
@@ -3007,14 +3425,15 @@
       activeModSessionCorrect = 0;
 
       const meta = MODULES_META[modId];
+      const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
       document.getElementById('modules-menu-grid').classList.add('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
       if (pCard) pCard.classList.add('hidden');
       document.getElementById('module-detail-view').classList.remove('hidden');
-      document.getElementById('mod-badge-level').innerText = `Tahap ${modId}`;
+      document.getElementById('mod-badge-level').innerText = `${t.levelWord} ${modId}`;
       const ageEl = document.getElementById('mod-guide-age-badge');
-      if (ageEl) ageEl.innerText = meta.ageGroup || `Tahap ${modId}`;
-      document.getElementById('mod-guide-title').innerText = `Tahap ${modId}: ${meta.title}`;
+      if (ageEl) ageEl.innerText = meta.ageGroup || `${t.levelWord} ${modId}`;
+      document.getElementById('mod-guide-title').innerText = `${t.levelWord} ${modId}: ${meta.title}`;
       document.getElementById('mod-guide-subtitle').innerText = meta.subtitle;
       document.getElementById('mod-guide-content').innerHTML = meta.renderGuide();
       if (modId === 3) {
@@ -3057,7 +3476,9 @@
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
-      hideHelperAbacusDefault('mod');
+      /* Tahap 2, 3 & 4 adalah tahap pembelajaran sempoa -> buka sempoa secara default; Tahap 1 (Jari) & 5-6 (Anzan) -> tutup secara default */
+      const shouldAutoOpenAbacus = activeModId >= 2 && activeModId <= 4;
+      setHelperAbacusVisibility('mod', shouldAutoOpenAbacus);
       resetHelperAbacus('mod', true);
       document.getElementById('mod-q-num').innerText = activeModIndex + 1;
       const pct = Math.round(((activeModIndex + 1) / 50) * 100);
@@ -3077,9 +3498,11 @@
         btn.onclick = () => checkModuleQuestionAnswer(opt, btn);
         optBox.appendChild(btn);
       });
+      startQuestionLiveTimer('mod');
     }
 
     function checkModuleQuestionAnswer(chosen, btnEl) {
+      const elapsedSec = stopQuestionLiveTimer('mod');
       const q = activeModQuestions[activeModIndex];
       const allBtns = document.querySelectorAll('#mod-q-options button');
       allBtns.forEach(b => b.disabled = true);
@@ -3087,15 +3510,16 @@
       const fb = document.getElementById('mod-q-feedback');
       if (chosen === q.answer) {
         playCheer();
+        const reward = calculateSpeedBonusPoints(elapsedSec);
         activeModSessionCorrect++;
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerText = '🌟 Hebat! Jawapan Betul! +1 Bintang ⭐ & +10 Markah';
+        fb.innerText = `🌟 Hebat (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Bintang ⭐`;
         fb.classList.remove('hidden');
 
         if (currentPlayer) {
           currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 10;
+          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + reward.total;
           if (!currentPlayer.modScores) currentPlayer.modScores = {};
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
             currentPlayer.modScores[activeModId] = activeModSessionCorrect;
@@ -3109,7 +3533,7 @@
         playWrong();
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3 text-base font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        fb.innerText = `❌ Jawapan kurang tepat. Jawapan betul ialah ${q.answer}.`;
+        fb.innerText = `❌ Jawapan kurang tepat (${elapsedSec.toFixed(1)}s). Jawapan betul ialah ${q.answer}.`;
         fb.classList.remove('hidden');
       }
 
@@ -3148,14 +3572,19 @@
       }
     };
 
-    function hideHelperAbacusDefault(ctxKey) {
+    function setHelperAbacusVisibility(ctxKey, isVisible) {
       const st = helperAbacusState[ctxKey];
       if (!st) return;
-      st.visible = false;
+      const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
+      st.visible = Boolean(isVisible);
       const wrap = document.getElementById(`${ctxKey}-helper-abacus-wrap`);
       const lbl = document.getElementById(`${ctxKey}-helper-toggle-label`);
-      if (wrap) wrap.classList.add('hidden');
-      if (lbl) lbl.innerText = 'Buka Sempoa Kira';
+      if (wrap) wrap.classList.toggle('hidden', !st.visible);
+      if (lbl) lbl.innerText = st.visible ? t.hideAbacusBtn : t.openAbacusBtn;
+    }
+
+    function hideHelperAbacusDefault(ctxKey) {
+      setHelperAbacusVisibility(ctxKey, false);
     }
 
     function renderHelperAbacus(ctxKey) {
@@ -3206,11 +3635,7 @@
       playClick();
       const st = helperAbacusState[ctxKey];
       if (!st) return;
-      st.visible = !st.visible;
-      const wrap = document.getElementById(`${ctxKey}-helper-abacus-wrap`);
-      const lbl = document.getElementById(`${ctxKey}-helper-toggle-label`);
-      if (wrap) wrap.classList.toggle('hidden', !st.visible);
-      if (lbl) lbl.innerText = st.visible ? 'Sembunyi Sempoa Kira' : 'Buka Sempoa Kira';
+      setHelperAbacusVisibility(ctxKey, !st.visible);
     };
 
     window.toggleHelperTop = function(ctxKey, rIdx) {
@@ -3443,6 +3868,21 @@
         thumb.className = 'w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 mb-1 shadow-sm bg-sky-50';
         thumb.innerHTML = renderRealisticAvatarSVG(previewCfg, 'w-full h-full');
         card.appendChild(thumb);
+
+        if (item.tier) {
+          const tierColors = {
+            Biasa: 'bg-slate-100 text-slate-600',
+            Comel: 'bg-pink-100 text-pink-800',
+            Istimewa: 'bg-sky-100 text-sky-800',
+            Gah: 'bg-amber-100 text-amber-900',
+            Epik: 'bg-orange-100 text-orange-900',
+            Legenda: 'bg-purple-100 text-purple-900'
+          };
+          const tierEl = document.createElement('span');
+          tierEl.className = `text-[9px] font-black px-2 py-0.5 rounded-full mb-0.5 ${tierColors[item.tier] || 'bg-slate-100 text-slate-600'}`;
+          tierEl.innerText = item.tier;
+          card.appendChild(tierEl);
+        }
 
         const titleEl = document.createElement('div');
         titleEl.className = 'text-[10px] font-black text-slate-800 text-center leading-tight mb-1.5';

@@ -153,7 +153,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.3
+            Versi 1.9.5
           </span>
         </div>
 
@@ -1478,14 +1478,22 @@
       ],
       frame: [
         { id: 'fr_none', name: 'Bingkai Asas', tier: 'Biasa', cost: 0 },
-        { id: 'fr_candy', name: 'Lilitan Candy', tier: 'Comel', cost: 10 },
-        { id: 'fr_flower', name: 'Lilitan Bunga', tier: 'Comel', cost: 18 },
-        { id: 'fr_roman', name: 'Laurel Zaman Rom', tier: 'Istimewa', cost: 28 },
-        { id: 'fr_thorns', name: 'Lilitan Akar Duri', tier: 'Istimewa', cost: 40 },
-        { id: 'fr_ice', name: 'Kristal Ais Keliling', tier: 'Gah', cost: 55 },
-        { id: 'fr_fire', name: 'Api Keliling Juara', tier: 'Gah', cost: 75 },
-        { id: 'fr_gold_chain', name: 'Rantai Emas Raja', tier: 'Epik', cost: 100 },
-        { id: 'fr_diamond_chain', name: 'Rantai Berlian', tier: 'Legenda', cost: 150 }
+        { id: 'fr_candy', name: 'Lilitan Candy', tier: 'Comel', cost: 25 },
+        { id: 'fr_bunny', name: 'Telinga Arnab Comel', tier: 'Comel', cost: 45 },
+        { id: 'fr_flower', name: 'Lilitan Bunga', tier: 'Comel', cost: 70 },
+        { id: 'fr_sakura', name: 'Bunga Sakura', tier: 'Comel', cost: 100 },
+        { id: 'fr_rainbow', name: 'Pelangi Ceria', tier: 'Istimewa', cost: 140 },
+        { id: 'fr_roman', name: 'Laurel Zaman Rom', tier: 'Istimewa', cost: 190 },
+        { id: 'fr_thorns', name: 'Lilitan Akar Duri', tier: 'Istimewa', cost: 250 },
+        { id: 'fr_starlight', name: 'Bintang Berkilau', tier: 'Istimewa', cost: 320 },
+        { id: 'fr_ice', name: 'Kristal Ais Keliling', tier: 'Gah', cost: 400 },
+        { id: 'fr_neon', name: 'Neon Kilat Biru', tier: 'Gah', cost: 500 },
+        { id: 'fr_fire', name: 'Api Keliling Juara', tier: 'Gah', cost: 620 },
+        { id: 'fr_crown_gold', name: 'Mahkota Emas Raja', tier: 'Gah', cost: 750 },
+        { id: 'fr_gold_chain', name: 'Rantai Emas Raja', tier: 'Epik', cost: 880 },
+        { id: 'fr_dragon', name: 'Naga Api Juara', tier: 'Epik', cost: 980 },
+        { id: 'fr_diamond_chain', name: 'Rantai Berlian', tier: 'Legenda', cost: 1100 },
+        { id: 'fr_galaxy', name: 'Galaksi Berlian', tier: 'Legenda', cost: 1200 }
       ]
     };
 
@@ -1947,6 +1955,84 @@
           <circle cx="50" cy="50" r="42" fill="none" stroke="#1D4ED8" stroke-width="5.5"/>
           ${gems.join('')}
           <polygon points="50,1 56,7 50,14 44,7" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.4"/>
+        `;
+      }
+      if (frameId === 'fr_bunny') {
+        return `
+          <ellipse cx="32" cy="10" rx="5.5" ry="13" transform="rotate(-14 32 10)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2.2"/>
+          <ellipse cx="32" cy="10" rx="2.6" ry="8" transform="rotate(-14 32 10)" fill="#FBCFE8"/>
+          <ellipse cx="68" cy="10" rx="5.5" ry="13" transform="rotate(14 68 10)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2.2"/>
+          <ellipse cx="68" cy="10" rx="2.6" ry="8" transform="rotate(14 68 10)" fill="#FBCFE8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F472B6" stroke-width="4.5"/>
+        `;
+      }
+      if (frameId === 'fr_sakura') {
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#EC4899" stroke-width="4.5"/>
+          <g transform="translate(20,20)"><circle r="5" fill="#F9A8D4"/><circle r="2" fill="#FDE047"/></g>
+          <g transform="translate(80,20)"><circle r="5" fill="#F472B6"/><circle r="2" fill="#FDE047"/></g>
+          <g transform="translate(20,80)"><circle r="5" fill="#F472B6"/><circle r="2" fill="#FDE047"/></g>
+          <g transform="translate(80,80)"><circle r="5" fill="#F9A8D4"/><circle r="2" fill="#FDE047"/></g>
+          <g transform="translate(50,7)"><circle r="5.5" fill="#EC4899"/><circle r="2.2" fill="#FEF08A"/></g>
+        `;
+      }
+      if (frameId === 'fr_rainbow') {
+        return `
+          <circle cx="50" cy="50" r="43.5" fill="none" stroke="#EF4444" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#FACC15" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="39.5" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
+          <circle cx="19" cy="79" r="5" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
+          <circle cx="81" cy="79" r="5" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
+        `;
+      }
+      if (frameId === 'fr_starlight') {
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#6366F1" stroke-width="4.5"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#FDE047" stroke-width="2" stroke-dasharray="6 6"/>
+          <polygon points="50,1 52.5,6.5 58.5,7.2 54,11.2 55.2,17 50,14 44.8,17 46,11.2 41.5,7.2 47.5,6.5" fill="#FACC15" stroke="#B45309" stroke-width="0.9"/>
+          <polygon points="16,50 18,54 22.5,54.5 19.2,57.5 20,62 16,59.8 12,62 12.8,57.5 9.5,54.5 14,54" fill="#FDE047"/>
+          <polygon points="84,50 86,54 90.5,54.5 87.2,57.5 88,62 84,59.8 80,62 80.8,57.5 77.5,54.5 82,54" fill="#FDE047"/>
+        `;
+      }
+      if (frameId === 'fr_neon') {
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#06B6D4" stroke-width="5.5"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-dasharray="10 5"/>
+          <polygon points="24,13 18,24 23,24 19,33 29,21 24,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+          <polygon points="76,13 82,24 77,24 81,33 71,21 76,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+        `;
+      }
+      if (frameId === 'fr_crown_gold') {
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="url(#${uid}_gold)" stroke-width="5.5"/>
+          <polygon points="31,11 36,1 43,8 50,0 57,8 64,1 69,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+          <circle cx="50" cy="7" r="2.2" fill="#E11D48"/>
+          <circle cx="39" cy="8.5" r="1.6" fill="#0284C7"/>
+          <circle cx="61" cy="8.5" r="1.6" fill="#0284C7"/>
+        `;
+      }
+      if (frameId === 'fr_dragon') {
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#DC2626" stroke-width="5.5"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F59E0B" stroke-width="2.2" stroke-dasharray="9 4"/>
+          <polygon points="10,42 2,32 14,35 7,24 20,31 18,45" fill="#F97316" stroke="#7F1D1D" stroke-width="1"/>
+          <polygon points="90,42 98,32 86,35 93,24 80,31 82,45" fill="#F97316" stroke="#7F1D1D" stroke-width="1"/>
+          <polygon points="43,10 50,1 57,10" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+        `;
+      }
+      if (frameId === 'fr_galaxy') {
+        const stars = [];
+        for (let i = 0; i < 12; i++) {
+          const ang = (i * 30) * Math.PI / 180;
+          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
+          stars.push(`<circle cx="${cx}" cy="${cy}" r="${i % 2 === 0 ? '3.4' : '2.2'}" fill="${i % 2 === 0 ? '#E879F9' : '#38BDF8'}" stroke="#FFFFFF" stroke-width="0.9"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#6D28D9" stroke-width="5.5"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#C084FC" stroke-width="2" stroke-dasharray="7 5"/>
+          ${stars.join('')}
+          <polygon points="50,0 55,6 50,13 45,6" fill="#F0ABFC" stroke="#FFFFFF" stroke-width="1.2"/>
         `;
       }
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;

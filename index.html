@@ -153,7 +153,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.7.0
+            Versi 1.7.1
           </span>
         </div>
 
@@ -660,9 +660,10 @@
 
         <div id="drill-interactive-stage" class="bg-slate-50 rounded-2xl p-3 border-2 border-slate-200 flex justify-center"></div>
 
-        <div class="flex gap-2">
-          <button type="button" onclick="resetDrillStage()" class="flex-1 bubbly-btn bg-rose-100 text-rose-800 border-2 border-rose-300 py-2.5 text-xs font-black">🔄 Kosongkan (0)</button>
-          <button type="button" onclick="startNewSpeedDrill()" class="flex-1 bubbly-btn bg-sky-100 text-sky-800 border-2 border-sky-300 py-2.5 text-xs font-black">⏭️ Tukar Nombor</button>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-drill-primary" type="button" onclick="resetDrillStage(false)" class="bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border-2 border-rose-300 py-2.5 text-xs font-black">🔄 Kosongkan (0)</button>
+          <button type="button" onclick="startNewSpeedDrill()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 text-sky-800 border-2 border-sky-300 py-2.5 text-xs font-black">⏭️ Tukar Nombor</button>
+          <button type="button" onclick="showDrillAnswerHint()" class="col-span-2 bubbly-btn bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 py-2 text-xs font-black">💡 Tunjuk Jawapan</button>
         </div>
         <div id="drill-feedback" class="hidden rounded-2xl p-2.5 text-center text-xs font-black"></div>
       </div>
@@ -671,7 +672,7 @@
       <div id="anzan-panel-dictation" class="hidden bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-3">
         <div class="text-center">
           <div class="text-sm font-black text-indigo-950">👂 Dikte Kiraan Suara (Listening Anzan)</div>
-          <p class="text-[11px] font-bold text-slate-500">Dengar sebutannya & gerakkan jari atau sempoa bayangan tanpa melihat angka!</p>
+          <p class="text-[11px] font-bold text-slate-500">Dengar sebutan operasi nombor dan kira dalam minda tanpa melihat skrin!</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2 bg-indigo-50 p-2.5 rounded-2xl border-2 border-indigo-200">
@@ -4824,6 +4825,7 @@
     /* 12. PECUT BENTUK JARI & MANIK SEMPOA (MUSCLE MEMORY) */
     let drillTarget = 47;
     let drillSolvedCount = 0;
+    let drillLocked = false;
     let drillLeftFingers = [false, false, false, false, false];
     let drillRightFingers = [false, false, false, false, false];
     let drillAbacusRods = [
@@ -4832,7 +4834,214 @@
       { top: false, bot: 0, mult: 1, label: 'Sa' }
     ];
 
+    function renderDrillHandSVG(handSide, fingerState) {
+      const isLeft = handSide === 'left';
+      const labels = isLeft ? ['50', '10', '10', '10', '10'] : ['5', '1', '1', '1', '1'];
+      const fingerColors = isLeft
+        ? ['#F59E0B', '#10B981', '#10B981', '#10B981', '#10B981']
+        : ['#F59E0B', '#3B82F6', '#3B82F6', '#3B82F6', '#3B82F6'];
+
+      const fingers = [0, 1, 2, 3, 4].map(idx => {
+        const active = !!fingerState[idx];
+        const col = active ? fingerColors[idx] : '#E2E8F0';
+        const stroke = active ? '#1E293B' : '#94A3B8';
+        const clickAttr = `onclick="toggleDrillFinger('${handSide}', ${idx})" style="cursor:pointer"`;
+
+        if (idx === 0) {
+          const tx = isLeft ? 88 : 12;
+          const rot = isLeft ? (active ? 28 : 58) : (active ? -28 : -58);
+          return `
+            <g ${clickAttr} transform="translate(${tx}, 74) rotate(${rot})">
+              <rect x="-9" y="-28" width="18" height="32" rx="9" fill="${col}" stroke="${stroke}" stroke-width="2.2"/>
+              <text x="0" y="-10" text-anchor="middle" font-size="9" font-weight="900" fill="${active ? '#FFFFFF' : '#64748B'}">${labels[0]}</text>
+            </g>
+          `;
+        }
+        const order = isLeft ? (5 - idx) : idx;
+        const xPos = 22 + (order - 1) * 16;
+        const fullH = [38, 44, 41, 33][idx - 1];
+        const h = active ? fullH : 16;
+        const yPos = 64 - h;
+        return `
+          <g ${clickAttr}>
+            <rect x="${xPos}" y="${yPos}" width="13" height="${h}" rx="6.5" fill="${col}" stroke="${stroke}" stroke-width="2.2"/>
+            <text x="${xPos + 6.5}" y="${yPos + 11}" text-anchor="middle" font-size="8" font-weight="900" fill="${active ? '#FFFFFF' : '#64748B'}">${labels[idx]}</text>
+          </g>
+        `;
+      }).join('');
+
+      return `
+        <svg viewBox="0 0 110 115" class="w-36 h-40">
+          ${fingers}
+          <rect x="20" y="56" width="66" height="44" rx="20" fill="#FDE68A" stroke="#B45309" stroke-width="2.4"/>
+          <path d="M 32 72 Q 53 67 74 72" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+          <text x="53" y="91" text-anchor="middle" font-size="9" font-weight="900" fill="#78350F">${isLeft ? 'KIRI (PULUH)' : 'KANAN (SA)'}</text>
+        </svg>
+      `;
+    }
+
+    function renderDrillInteractiveStage() {
+      const mode = document.getElementById('drill-mode-select')?.value || 'finger';
+      const stage = document.getElementById('drill-interactive-stage');
+      const curEl = document.getElementById('drill-current-val');
+      if (!stage) return;
+
+      if (mode === 'finger') {
+        stage.innerHTML = `
+          <div class="grid grid-cols-2 gap-2 items-center justify-items-center w-full">
+            ${renderDrillHandSVG('left', drillLeftFingers)}
+            ${renderDrillHandSVG('right', drillRightFingers)}
+          </div>
+        `;
+        const calcHand = (arr, mult) => {
+          let s = arr[0] ? 5 * mult : 0;
+          for (let i = 1; i <= 4; i++) if (arr[i]) s += mult;
+          return s;
+        };
+        const currentVal = calcHand(drillLeftFingers, 10) + calcHand(drillRightFingers, 1);
+        if (curEl) curEl.innerText = currentVal;
+        checkDrillMatch(currentVal);
+      } else {
+        let html = `<div class="w-full bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner">`;
+        html += `<div class="bg-amber-50 rounded-xl p-2.5 relative border-2 border-amber-700">`;
+        html += `<div class="grid grid-cols-3 gap-2 text-center">`;
+
+        drillAbacusRods.forEach((rod, rIdx) => {
+          html += `<div class="flex flex-col items-center relative">`;
+          html += `<div class="text-[10px] font-black text-amber-950 mb-1">${rod.label}</div>`;
+          html += `<div class="w-1.5 h-36 bg-amber-800 rounded-full relative flex flex-col items-center justify-between py-1">`;
+          html += `
+            <button type="button" onclick="toggleDrillAbacusTop(${rIdx})"
+              class="bead-transition w-11 h-4.5 rounded-full border-2 border-rose-900 shadow-sm z-10 ${rod.top ? 'bg-rose-500 translate-y-3' : 'bg-rose-300 translate-y-0'}">
+            </button>
+          `;
+          html += `<div class="w-14 h-1.5 bg-amber-950 rounded-full z-20 my-0.5"></div>`;
+          html += `<div class="flex flex-col gap-0.5 z-10 pb-0.5">`;
+          for (let b = 1; b <= 4; b++) {
+            const active = b <= rod.bot;
+            html += `
+              <button type="button" onclick="setDrillAbacusBot(${rIdx}, ${b})"
+                class="bead-transition w-11 h-3.5 rounded-full border-2 border-amber-900 shadow-sm ${active ? 'bg-amber-500 -translate-y-1.5' : 'bg-amber-200 translate-y-0'}">
+              </button>
+            `;
+          }
+          html += `</div></div>`;
+          const rodVal = (rod.top ? 5 : 0) + rod.bot;
+          html += `<div class="text-[11px] font-black text-amber-900 mt-1">${rodVal}</div>`;
+          html += `</div>`;
+        });
+
+        html += `</div></div></div>`;
+        stage.innerHTML = html;
+
+        const currentVal = drillAbacusRods.reduce((sum, r) => sum + ((r.top ? 5 : 0) + r.bot) * r.mult, 0);
+        if (curEl) curEl.innerText = currentVal;
+        checkDrillMatch(currentVal);
+      }
+    }
+
+    function checkDrillMatch(currentVal) {
+      if (drillLocked || currentVal !== drillTarget) return;
+      drillLocked = true;
+      drillSolvedCount++;
+      const scoreEl = document.getElementById('drill-score-val');
+      if (scoreEl) scoreEl.innerText = drillSolvedCount;
+
+      playCheer();
+      const fb = document.getElementById('drill-feedback');
+      if (fb) {
+        fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
+        fb.innerText = `⚡ Tepat (${drillTarget})! +1 Bintang ⭐ & +10 Markah — Seterusnya...`;
+        fb.classList.remove('hidden');
+      }
+
+      if (currentPlayer) {
+        currentPlayer.stars = (currentPlayer.stars || 0) + 1;
+        currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 10;
+        syncPlayerUI();
+        savePlayerCloud();
+      }
+      if (drillSolvedCount % 5 === 0) triggerConfetti();
+
+      setTimeout(() => {
+        startNewSpeedDrill();
+      }, 750);
+    }
+
+    window.toggleDrillFinger = function(side, idx) {
+      if (drillLocked) return;
+      playClick();
+      if (side === 'left') drillLeftFingers[idx] = !drillLeftFingers[idx];
+      else drillRightFingers[idx] = !drillRightFingers[idx];
+      renderDrillInteractiveStage();
+    };
+
+    window.toggleDrillAbacusTop = function(rIdx) {
+      if (drillLocked) return;
+      playClick();
+      drillAbacusRods[rIdx].top = !drillAbacusRods[rIdx].top;
+      renderDrillInteractiveStage();
+    };
+
+    window.setDrillAbacusBot = function(rIdx, beadNum) {
+      if (drillLocked) return;
+      playClick();
+      if (drillAbacusRods[rIdx].bot >= beadNum) {
+        drillAbacusRods[rIdx].bot = beadNum - 1;
+      } else {
+        drillAbacusRods[rIdx].bot = beadNum;
+      }
+      renderDrillInteractiveStage();
+    };
+
+    window.showDrillAnswerHint = function() {
+      const mode = document.getElementById('drill-mode-select')?.value || 'finger';
+      playClick();
+      drillLocked = true;
+      const fb = document.getElementById('drill-feedback');
+      if (mode === 'finger') {
+        const st = numberToFingerStates(drillTarget);
+        drillLeftFingers = [...st.left];
+        drillRightFingers = [...st.right];
+        renderDrillInteractiveStage();
+        const tens = Math.floor(drillTarget / 10) * 10;
+        const ones = drillTarget % 10;
+        if (fb) {
+          fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Kiri (Puluh) = ${tens} + Kanan (Sa) = ${ones}. Tekan "Tukar Nombor" untuk soalan baharu!`;
+          fb.classList.remove('hidden');
+        }
+      } else {
+        const dHundreds = Math.floor(drillTarget / 100) % 10;
+        const dTens = Math.floor(drillTarget / 10) % 10;
+        const dOnes = drillTarget % 10;
+        const digits = [dHundreds, dTens, dOnes];
+        drillAbacusRods.forEach((r, idx) => {
+          r.top = digits[idx] >= 5;
+          r.bot = digits[idx] % 5;
+        });
+        renderDrillInteractiveStage();
+        if (fb) {
+          fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Ratus = ${dHundreds}, Puluh = ${dTens}, Sa = ${dOnes}. Tekan "Tukar Nombor" untuk soalan baharu!`;
+          fb.classList.remove('hidden');
+        }
+      }
+    };
+
+    window.resetDrillStage = function(silent = false) {
+      if (!silent) playClick();
+      drillLocked = false;
+      const fb = document.getElementById('drill-feedback');
+      if (fb) fb.classList.add('hidden');
+      drillLeftFingers = [false, false, false, false, false];
+      drillRightFingers = [false, false, false, false, false];
+      drillAbacusRods.forEach(r => { r.top = false; r.bot = 0; });
+      renderDrillInteractiveStage();
+    };
+
     window.startNewSpeedDrill = function() {
+      drillLocked = false;
       const mode = document.getElementById('drill-mode-select')?.value || 'finger';
       const fb = document.getElementById('drill-feedback');
       if (fb) fb.classList.add('hidden');
@@ -4842,7 +5051,8 @@
       } else {
         drillTarget = Math.floor(Math.random() * 988) + 11;
       }
-      document.getElementById('drill-target-number').innerText = drillTarget;
+      const targetEl = document.getElementById('drill-target-number');
+      if (targetEl) targetEl.innerText = drillTarget;
       resetDrillStage(true);
     };
     /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA: MELAYU, ENGLISH, MANDARIN, ARAB) */

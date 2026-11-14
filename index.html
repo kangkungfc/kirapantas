@@ -73,8 +73,8 @@
       </div>
       <div class="flex items-center gap-1.5 flex-shrink-0">
         <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️ Admin</button>
-        <button onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ Akaun</button>
-        <button onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-xs font-black px-2.5 py-2 border-2 border-indigo-700">🏆 Skor</button>
+        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ Akaun</button>
+        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-xs font-black px-2.5 py-2 border-2 border-indigo-700">🏆 Skor</button>
         <button onclick="logoutPlayer()" class="bubbly-btn bg-rose-100 text-rose-700 text-xs font-black px-2.5 py-2 border-2 border-rose-300" title="Log Keluar">🚪</button>
       </div>
     </div>
@@ -87,6 +87,15 @@
          ======================================================== -->
     <section id="screen-login" class="py-4 space-y-4">
       <div class="bubbly-card bg-white border-4 border-amber-400 p-6 text-center">
+        <!-- Pemilih Bahasa Laman Web (Disimpan Secara Kekal) -->
+        <div class="flex flex-wrap items-center justify-center gap-1.5 mb-4 pb-3 border-b border-amber-100">
+          <span id="login-lang-label" class="text-[11px] font-black text-amber-900 mr-1">🌐 Bahasa:</span>
+          <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Melayu</button>
+          <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
+          <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文</button>
+          <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية</button>
+        </div>
+
         <div class="w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center border-4 border-white shadow-lg animate-float">
           <svg viewBox="0 0 100 100" class="w-16 h-16">
             <rect x="14" y="16" width="72" height="68" rx="10" fill="#78350F" stroke="#451A03" stroke-width="4"/>
@@ -104,24 +113,24 @@
             <ellipse cx="65" cy="51" rx="6" ry="4" fill="#F59E0B"/>
           </svg>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-amber-900">Jari & Abakus Pintar</h1>
-        <p class="text-xs sm:text-sm font-bold text-slate-500 mt-1 mb-5">Platform Belajar Kira Pantas Chisanbop & Soroban</p>
+        <h1 id="login-app-title" class="text-2xl sm:text-3xl font-bold text-amber-900">Jari & Abakus Pintar</h1>
+        <p id="login-app-subtitle" class="text-xs sm:text-sm font-bold text-slate-500 mt-1 mb-5">Platform Belajar Kira Pantas Chisanbop & Soroban</p>
 
         <form onsubmit="handlePlayerLogin(event)" class="space-y-3 text-left">
           <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
+            <label id="lbl-login-name" class="block text-xs font-black text-slate-700 mb-1">Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
             <input id="input-player-name" type="text" required minlength="2" maxlength="25" placeholder="Contoh: Aiman / aiman_01 / Siti Nur" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
           </div>
           <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Kata Laluan</label>
+            <label id="lbl-login-pass" class="block text-xs font-black text-slate-700 mb-1">Kata Laluan</label>
             <input id="input-player-pass" type="password" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
             <label class="inline-flex items-center gap-2 mt-2 cursor-pointer select-none">
               <input id="toggle-show-pass" type="checkbox" onchange="togglePasswordVisibility()" class="w-4 h-4 rounded accent-amber-500 border-slate-300 cursor-pointer" />
-              <span class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan yang ditaip</span>
+              <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan yang ditaip</span>
             </label>
           </div>
           <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">PIN Pemulihan 4-Digit <span class="text-slate-400 font-bold">(Pilihan untuk murid baharu — lalai: 0000)</span></label>
+            <label id="lbl-login-pin" class="block text-xs font-black text-slate-700 mb-1">PIN Pemulihan 4-Digit <span class="text-slate-400 font-bold">(Pilihan untuk murid baharu — lalai: 0000)</span></label>
             <input id="input-player-pin" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="Contoh: 1234 (digunakan jika lupa kata laluan)" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
           </div>
           <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
@@ -131,12 +140,12 @@
         </form>
 
         <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
-          <button type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
+          <button id="btn-forgot-pass" type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
             🔑 Lupa Kata Laluan? Tetapkan Semula
           </button>
-          <p class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
+          <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.6.0
+            Versi 1.7.0
           </span>
         </div>
 
@@ -178,7 +187,7 @@
         <div class="flex items-center gap-3 min-w-0">
           <div id="home-avatar-box" onclick="navTo('rewards')" class="w-16 h-16 rounded-2xl overflow-hidden border-3 border-amber-400 bg-sky-100 flex-shrink-0 cursor-pointer shadow-md"></div>
           <div class="min-w-0">
-            <div class="text-[11px] font-extrabold text-amber-600 uppercase tracking-wide">Selamat Datang!</div>
+            <div id="home-welcome-tag" class="text-[11px] font-extrabold text-amber-600 uppercase tracking-wide">Selamat Datang!</div>
             <h2 id="home-player-name" class="text-lg font-bold text-slate-800 truncate">Pelajar</h2>
             <div class="flex flex-wrap items-center gap-1.5 mt-1">
               <span class="text-[11px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded-lg">⭐ <span id="home-star-count">0</span> Bintang</span>
@@ -187,10 +196,10 @@
           </div>
         </div>
         <div class="flex flex-col gap-1.5 flex-shrink-0">
-          <button onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[11px] font-black px-3 py-2 border-2 border-rose-700">
+          <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[11px] font-black px-3 py-2 border-2 border-rose-700">
             🎨 Avatar & Kedai
           </button>
-          <button onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-950 text-[11px] font-black px-3 py-1.5 border-2 border-amber-400">
+          <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-950 text-[11px] font-black px-3 py-1.5 border-2 border-amber-400">
             ⚙️ Urus Akaun
           </button>
         </div>
@@ -201,32 +210,32 @@
         <button onclick="navTo('modules')" class="bubbly-card bg-gradient-to-br from-sky-400 to-blue-600 border-4 border-blue-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
           <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">📚</div>
           <div>
-            <div class="text-base sm:text-lg font-bold leading-tight">Modul Belajar</div>
-            <div class="text-[11px] font-bold text-sky-100 mt-0.5">6 Tahap + 300 Soalan</div>
+            <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar</div>
+            <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">6 Tahap + 300 Soalan</div>
           </div>
         </button>
 
         <button onclick="navTo('simulator')" class="bubbly-card bg-gradient-to-br from-emerald-400 to-teal-600 border-4 border-teal-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
           <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🖐️</div>
           <div>
-            <div class="text-base sm:text-lg font-bold leading-tight">Simulator Jari</div>
-            <div class="text-[11px] font-bold text-emerald-100 mt-0.5">Kira 0 hingga 99</div>
+            <div id="menu-title-simulator" class="text-base sm:text-lg font-bold leading-tight">Simulator Jari</div>
+            <div id="menu-sub-simulator" class="text-[11px] font-bold text-emerald-100 mt-0.5">Kira 0 hingga 99</div>
           </div>
         </button>
 
         <button onclick="navTo('abacus')" class="bubbly-card bg-gradient-to-br from-amber-400 to-orange-500 border-4 border-orange-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
           <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🧮</div>
           <div>
-            <div class="text-base sm:text-lg font-bold leading-tight">Abakus 4-Tiang</div>
-            <div class="text-[11px] font-bold text-amber-100 mt-0.5">Kira 0 hingga 9,999</div>
+            <div id="menu-title-abacus" class="text-base sm:text-lg font-bold leading-tight">Abakus 4-Tiang</div>
+            <div id="menu-sub-abacus" class="text-[11px] font-bold text-amber-100 mt-0.5">Kira 0 hingga 9,999</div>
           </div>
         </button>
 
         <button onclick="navTo('quiz')" class="bubbly-card bg-gradient-to-br from-purple-500 to-indigo-700 border-4 border-indigo-900 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
           <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">⚡</div>
           <div>
-            <div class="text-base sm:text-lg font-bold leading-tight">Cabaran Kilat</div>
-            <div class="text-[11px] font-bold text-purple-100 mt-0.5">Uji Kepantasan Tanpa Had</div>
+            <div id="menu-title-quiz" class="text-base sm:text-lg font-bold leading-tight">Cabaran Kilat</div>
+            <div id="menu-sub-quiz" class="text-[11px] font-bold text-purple-100 mt-0.5">Uji Kepantasan Tanpa Had</div>
           </div>
         </button>
 
@@ -234,20 +243,20 @@
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner flex-shrink-0">🧠</div>
             <div>
-              <div class="text-base sm:text-lg font-bold leading-tight">Akademi Master Anzan & Pecut</div>
-              <div class="text-[11px] font-bold text-pink-100 mt-0.5">Flash Anzan • Pecut Bentuk Manik/Jari • Dikte Suara</div>
+              <div id="menu-title-anzan" class="text-base sm:text-lg font-bold leading-tight">Akademi Master Anzan & Pecut</div>
+              <div id="menu-sub-anzan" class="text-[11px] font-bold text-pink-100 mt-0.5">Flash Anzan • Pecut Bentuk Manik/Jari • Dikte Suara</div>
             </div>
           </div>
-          <span class="bg-amber-300 text-amber-950 text-[10px] font-black px-2.5 py-1 rounded-full flex-shrink-0">BAHARU!</span>
+          <span class="bg-amber-300 text-amber-950 text-[10px] font-black px-2.5 py-1 rounded-full flex-shrink-0">PRO</span>
         </button>
       </div>
 
       <!-- Bar Pintasan Bawah -->
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="navTo('rewards')" class="bubbly-btn bg-white border-3 border-amber-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-amber-900">
+        <button id="btn-bottom-studio" onclick="navTo('rewards')" class="bubbly-btn bg-white border-3 border-amber-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-amber-900">
           <span>🛍️</span> Kedai & Studio Avatar
         </button>
-        <button onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
+        <button id="btn-bottom-scoreboard" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
         </button>
         <button id="btn-home-admin-panel" onclick="navTo('admin')" class="hidden col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
@@ -337,13 +346,13 @@
             <div id="mod-q-visual" class="flex flex-wrap items-center justify-center gap-3 py-1"></div>
           </div>
 
-          <!-- Sempoa Bantu Kira Interaktif (Disembunyikan Secara Default Untuk Latihan Anzan) -->
+          <!-- Sempoa Bantu Kira Interaktif (Disembunyikan Secara Default) -->
           <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5">
-                <span>🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
+            <div class="flex items-center justify-between gap-2">
+              <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5 flex-shrink-0">
+                <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
               </button>
-              <span class="text-[10px] font-extrabold text-slate-500">Cuba kira dalam minda dahulu!</span>
+              <span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-right">Praktis gerakkan jari & sempoa untuk memori otot!</span>
             </div>
             <div id="mod-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
               <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
@@ -657,7 +666,16 @@
           <p class="text-[11px] font-bold text-slate-500">Dengar sebutannya & gerakkan jari atau sempoa bayangan tanpa melihat angka!</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-2 bg-indigo-50 p-2.5 rounded-2xl border-2 border-indigo-200">
+        <div class="grid grid-cols-3 gap-2 bg-indigo-50 p-2.5 rounded-2xl border-2 border-indigo-200">
+          <div>
+            <label class="block text-[10px] font-black text-indigo-900 mb-0.5">🗣️ Bahasa Suara</label>
+            <select id="dict-lang" onchange="previewDictationVoice()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
+              <option value="ms" selected>1. Bahasa Melayu</option>
+              <option value="en">2. English</option>
+              <option value="zh">3. Mandarin (中文)</option>
+              <option value="ar">4. Arab (العربية)</option>
+            </select>
+          </div>
           <div>
             <label class="block text-[10px] font-black text-indigo-900 mb-0.5">Julat Nombor</label>
             <select id="dict-level" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
@@ -666,7 +684,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-[10px] font-black text-indigo-900 mb-0.5">Bilangan Sebutan</label>
+            <label class="block text-[10px] font-black text-indigo-900 mb-0.5">Bil. Sebutan</label>
             <select id="dict-count" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
               <option value="4" selected>4 Sebutan</option>
               <option value="6">6 Sebutan</option>
@@ -677,7 +695,8 @@
 
         <div class="bg-indigo-950 text-white rounded-3xl p-5 text-center border-4 border-indigo-700 space-y-2">
           <div id="dict-status-icon" class="text-4xl">🎧</div>
-          <div id="dict-status-text" class="text-xs font-bold text-indigo-200">Tekan mula untuk mendengar dikte kiraan</div>
+          <div id="dict-status-text" class="text-xs font-bold text-indigo-200">Pilih bahasa & tekan mula untuk mendengar dikte kiraan</div>
+          <div id="dict-voice-badge" class="inline-block text-[10px] font-black bg-white/10 text-amber-300 px-2.5 py-0.5 rounded-full">Suara: Bahasa Melayu</div>
         </div>
 
         <button id="btn-start-dict" onclick="startDictationAnzan()" class="w-full bubbly-btn bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-black text-sm py-3 border-2 border-indigo-800">
@@ -685,7 +704,7 @@
         </button>
 
         <form id="dict-answer-form" onsubmit="submitDictationAnzan(event)" class="hidden space-y-2 pt-1">
-          <label class="block text-xs font-black text-slate-700 text-center">Masukkan jumlah hasil dikte kiraan:</label>
+          <label id="dict-answer-label" class="block text-xs font-black text-slate-700 text-center">Masukkan jumlah hasil dikte kiraan:</label>
           <div class="flex gap-2">
             <input id="dict-user-input" type="number" required placeholder="Jumlah..." class="flex-1 px-4 py-3 rounded-2xl border-2 border-indigo-400 font-black text-lg text-center bg-indigo-50 focus:outline-none" />
             <button type="submit" class="bubbly-btn bg-emerald-500 text-white font-black px-5 py-3 border-2 border-emerald-700 text-sm">Semak ✅</button>
@@ -701,8 +720,23 @@
          ======================================================== -->
     <section id="screen-account" class="hidden space-y-4">
       <div class="flex items-center justify-between">
-        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 class="text-lg font-bold text-amber-950">⚙️ Pengurusan Akaun</h2>
+        <button id="btn-acc-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 id="acc-screen-title" class="text-lg font-bold text-amber-950">⚙️ Pengurusan Akaun</h2>
+      </div>
+
+      <!-- Kad Pilihan Bahasa Laman Web (Kekal Disimpan) -->
+      <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h3 id="acc-lang-title" class="text-sm font-black text-indigo-950">🌐 Pilihan Bahasa Laman Web</h3>
+          <span id="acc-lang-saved-badge" class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">✅ Disimpan Kekal</span>
+        </div>
+        <p id="acc-lang-desc" class="text-[11px] font-bold text-slate-500">Pilihan bahasa anda akan disimpan secara automatik untuk sesi seterusnya dan turut menyelaraskan bahasa Dikte Suara.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Bahasa Melayu</button>
+          <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
+          <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文 (Mandarin)</button>
+          <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية (Arab)</button>
+        </div>
       </div>
 
       <!-- Kad Ringkasan Akaun Kekal -->
@@ -817,6 +851,238 @@
     let authReadyPromise = Promise.resolve(null);
     let scoreboardUnsubscribe = null;
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jari-abakus-pintar';
+    const APP_LANG_STORAGE_KEY = 'kirapantas_selected_lang_v1';
+    let currentAppLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || 'ms';
+    if (!['ms', 'en', 'zh', 'ar'].includes(currentAppLang)) currentAppLang = 'ms';
+
+    const UI_TRANSLATIONS = {
+      ms: {
+        langLabel: '🌐 Bahasa:',
+        appTitle: 'Jari & Abakus Pintar',
+        appSubtitle: 'Platform Belajar Kira Pantas Chisanbop & Soroban',
+        lblName: 'Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)',
+        phName: 'Contoh: Aiman / aiman_01 / Siti Nur',
+        lblPass: 'Kata Laluan',
+        phPass: 'Masukkan kata laluan',
+        lblShowPass: '👁️ Lihat kata laluan yang ditaip',
+        lblPin: 'PIN Pemulihan 4-Digit (Pilihan untuk murid baharu — lalai: 0000)',
+        btnLogin: '🚀 Mula Belajar Sekarang',
+        btnForgot: '🔑 Lupa Kata Laluan? Tetapkan Semula',
+        footerNote: 'Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.',
+        headerAcc: '⚙️ Akaun',
+        headerScore: '🏆 Skor',
+        welcomeTag: 'Selamat Datang!',
+        btnAvatar: '🎨 Avatar & Kedai',
+        btnManageAcc: '⚙️ Urus Akaun',
+        modTitle: 'Modul Belajar',
+        modSub: '6 Tahap + 300 Soalan',
+        simTitle: 'Simulator Jari',
+        simSub: 'Kira 0 hingga 99',
+        abaTitle: 'Abakus 4-Tiang',
+        abaSub: 'Kira 0 hingga 9,999',
+        quizTitle: 'Cabaran Kilat',
+        quizSub: 'Uji Kepantasan Tanpa Had',
+        anzanTitle: 'Akademi Master Anzan & Pecut',
+        anzanSub: 'Flash Anzan • Pecut Bentuk Manik/Jari • Dikte Suara',
+        bottomStudio: '🛍️ Kedai & Studio Avatar',
+        bottomScore: '🏆 Papan Skor Online',
+        accTitle: '⚙️ Pengurusan Akaun',
+        accBack: '⬅️ Menu Utama',
+        accLangTitle: '🌐 Pilihan Bahasa Laman Web',
+        accLangSaved: '✅ Disimpan Kekal',
+        accLangDesc: 'Pilihan bahasa anda akan disimpan secara automatik untuk sesi seterusnya dan turut menyelaraskan bahasa Dikte Suara.',
+        toastSaved: '🌐 Bahasa laman web ditukar kepada Bahasa Melayu & disimpan!'
+      },
+      en: {
+        langLabel: '🌐 Language:',
+        appTitle: 'Smart Finger & Abacus',
+        appSubtitle: 'Chisanbop & Soroban Mental Math Learning Platform',
+        lblName: 'Student Name (Unique — Case, Space & Symbol Sensitive)',
+        phName: 'Example: Aiman / aiman_01 / Siti Nur',
+        lblPass: 'Password',
+        phPass: 'Enter password',
+        lblShowPass: '👁️ Show typed password',
+        lblPin: '4-Digit Recovery PIN (Optional for new students — default: 0000)',
+        btnLogin: '🚀 Start Learning Now',
+        btnForgot: '🔑 Forgot Password? Reset Here',
+        footerNote: 'Each student name is unique and saves its own levels, score, and avatar.',
+        headerAcc: '⚙️ Account',
+        headerScore: '🏆 Scores',
+        welcomeTag: 'Welcome Back!',
+        btnAvatar: '🎨 Avatar & Shop',
+        btnManageAcc: '⚙️ Manage Account',
+        modTitle: 'Learning Modules',
+        modSub: '6 Levels + 300 Questions',
+        simTitle: 'Finger Simulator',
+        simSub: 'Count 0 to 99',
+        abaTitle: '4-Rod Abacus',
+        abaSub: 'Count 0 to 9,999',
+        quizTitle: 'Lightning Quiz',
+        quizSub: 'Unlimited Speed Challenge',
+        anzanTitle: 'Master Anzan & Speed Academy',
+        anzanSub: 'Flash Anzan • Bead/Finger Drill • Voice Dictation',
+        bottomStudio: '🛍️ Avatar Studio & Shop',
+        bottomScore: '🏆 Online Scoreboard',
+        accTitle: '⚙️ Account Settings',
+        accBack: '⬅️ Main Menu',
+        accLangTitle: '🌐 Website Language Preference',
+        accLangSaved: '✅ Saved Permanently',
+        accLangDesc: 'Your selected language is saved automatically for future visits and syncs with Voice Dictation.',
+        toastSaved: '🌐 Website language switched to English & saved!'
+      },
+      zh: {
+        langLabel: '🌐 语言:',
+        appTitle: '智能手指与珠心算',
+        appSubtitle: '指算与算盘心算学习平台',
+        lblName: '学生姓名（唯一账号 — 区分大小写、空格和符号）',
+        phName: '例如：Aiman / aiman_01 / 小明',
+        lblPass: '密码',
+        phPass: '请输入密码',
+        lblShowPass: '👁️ 显示输入的密码',
+        lblPin: '4位恢复PIN码（新学生选填 — 默认：0000）',
+        btnLogin: '🚀 立即开始学习',
+        btnForgot: '🔑 忘记密码？点击重置',
+        footerNote: '每个学生姓名都是唯一的，并独立保存关卡、积分与形象。',
+        headerAcc: '⚙️ 账号',
+        headerScore: '🏆 排行榜',
+        welcomeTag: '欢迎回来！',
+        btnAvatar: '🎨 形象与商店',
+        btnManageAcc: '⚙️ 管理账号',
+        modTitle: '学习课程',
+        modSub: '6个阶段 + 300道练习题',
+        simTitle: '手指模拟器',
+        simSub: '计算 0 到 99',
+        abaTitle: '四档算盘',
+        abaSub: '计算 0 到 9,999',
+        quizTitle: '闪电挑战',
+        quizSub: '无限极速测试',
+        anzanTitle: '珠心算大师学院',
+        anzanSub: '闪电心算 • 拨珠/指算速练 • 语音听算',
+        bottomStudio: '🛍️ 商店与3D形象工作室',
+        bottomScore: '🏆 在线积分榜',
+        accTitle: '⚙️ 账号管理',
+        accBack: '⬅️ 返回主页',
+        accLangTitle: '🌐 网站语言设置',
+        accLangSaved: '✅ 已永久保存',
+        accLangDesc: '您选择的语言将自动永久保存，下次打开不会恢复默认，并同步至语音听算。',
+        toastSaved: '🌐 网站语言已切换为中文并保存！'
+      },
+      ar: {
+        langLabel: '🌐 اللغة:',
+        appTitle: 'الأصابع والمعداد الذكي',
+        appSubtitle: 'منصة تعلم الحساب الذهني السريع (تشيسانبوب وسوروبان)',
+        lblName: 'اسم الطالب (فريد — يميز الأحرف والمسافات والرموز)',
+        phName: 'مثال: Aiman / أحمد / aiman_01',
+        lblPass: 'كلمة المرور',
+        phPass: 'أدخل كلمة المرور',
+        lblShowPass: '👁️ إظهار كلمة المرور المكتوبة',
+        lblPin: 'رمز الاسترداد المكون من 4 أرقام (اختياري — الافتراضي: 0000)',
+        btnLogin: '🚀 ابدأ التعلم الآن',
+        btnForgot: '🔑 نسيت كلمة المرور؟ إعادة تعيين',
+        footerNote: 'كل اسم طالب فريد ويحفظ مستوياته ونقاطه وشخصيته الخاصة.',
+        headerAcc: '⚙️ الحساب',
+        headerScore: '🏆 النتائج',
+        welcomeTag: 'أهلاً بعودتك!',
+        btnAvatar: '🎨 الشخصية والمتجر',
+        btnManageAcc: '⚙️ إدارة الحساب',
+        modTitle: 'وحدات التعلم',
+        modSub: '6 مستويات + 300 سؤال',
+        simTitle: 'محاكي الأصابع',
+        simSub: 'احسب من 0 إلى 99',
+        abaTitle: 'معداد 4 أعمدة',
+        abaSub: 'احسب من 0 إلى 9,999',
+        quizTitle: 'تحدي البرق',
+        quizSub: 'اختبار سرعة بلا حدود',
+        anzanTitle: 'أكاديمية أنزان والسرعة',
+        anzanSub: 'أنزان السريع • تدريب الخرز والأصابع • الإملاء الصوتي',
+        bottomStudio: '🛍️ المتجر واستوديو الشخصية',
+        bottomScore: '🏆 لوحة المتصدرين',
+        accTitle: '⚙️ إدارة الحساب',
+        accBack: '⬅️ القائمة الرئيسية',
+        accLangTitle: '🌐 اختيار لغة الموقع',
+        accLangSaved: '✅ محفوظة دائماً',
+        accLangDesc: 'يتم حفظ لغتك المختارة تلقائياً ولن تتغير عند إعادة فتح الموقع، وتُزامن مع الإملاء الصوتي.',
+        toastSaved: '🌐 تم تغيير لغة الموقع إلى العربية وحفظها!'
+      }
+    };
+
+    function applyAppLanguageUI(langCode) {
+      const code = ['ms', 'en', 'zh', 'ar'].includes(langCode) ? langCode : 'ms';
+      currentAppLang = code;
+      const t = UI_TRANSLATIONS[code];
+      document.documentElement.lang = code;
+
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      const setPh = (id, val) => { const el = document.getElementById(id); if (el) el.placeholder = val; };
+
+      setTxt('login-lang-label', t.langLabel);
+      setTxt('login-app-title', t.appTitle);
+      setTxt('login-app-subtitle', t.appSubtitle);
+      setTxt('lbl-login-name', t.lblName);
+      setPh('input-player-name', t.phName);
+      setTxt('lbl-login-pass', t.lblPass);
+      setPh('input-player-pass', t.phPass);
+      setTxt('lbl-show-pass', t.lblShowPass);
+      setTxt('lbl-login-pin', t.lblPin);
+      setTxt('btn-login-submit', t.btnLogin);
+      setTxt('btn-forgot-pass', t.btnForgot);
+      setTxt('login-footer-note', t.footerNote);
+
+      setTxt('btn-header-account', t.headerAcc);
+      setTxt('btn-header-score', t.headerScore);
+      setTxt('home-welcome-tag', t.welcomeTag);
+      setTxt('btn-home-avatar', t.btnAvatar);
+      setTxt('btn-home-account', t.btnManageAcc);
+
+      setTxt('menu-title-modules', t.modTitle);
+      setTxt('menu-sub-modules', t.modSub);
+      setTxt('menu-title-simulator', t.simTitle);
+      setTxt('menu-sub-simulator', t.simSub);
+      setTxt('menu-title-abacus', t.abaTitle);
+      setTxt('menu-sub-abacus', t.abaSub);
+      setTxt('menu-title-quiz', t.quizTitle);
+      setTxt('menu-sub-quiz', t.quizSub);
+      setTxt('menu-title-anzan', t.anzanTitle);
+      setTxt('menu-sub-anzan', t.anzanSub);
+
+      setTxt('btn-bottom-studio', t.bottomStudio);
+      setTxt('btn-bottom-scoreboard', t.bottomScore);
+      setTxt('acc-screen-title', t.accTitle);
+      setTxt('btn-acc-back', t.accBack);
+      setTxt('acc-lang-title', t.accLangTitle);
+      setTxt('acc-lang-saved-badge', t.accLangSaved);
+      setTxt('acc-lang-desc', t.accLangDesc);
+
+      document.querySelectorAll('.lang-switch-btn').forEach(btn => {
+        const bLang = btn.getAttribute('data-lang-btn');
+        const isActive = bLang === code;
+        if (btn.classList.contains('bubbly-btn')) {
+          btn.className = `lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 ${isActive ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white text-slate-700 border-slate-200'}`;
+        } else {
+          btn.className = `lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 ${isActive ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white text-slate-700 border-slate-200'}`;
+        }
+      });
+
+      const dictSel = document.getElementById('dict-lang');
+      if (dictSel) dictSel.value = code;
+    }
+
+    window.setAppLanguage = function(langCode, silent = false) {
+      if (!silent) playClick();
+      const code = ['ms', 'en', 'zh', 'ar'].includes(langCode) ? langCode : 'ms';
+      localStorage.setItem(APP_LANG_STORAGE_KEY, code);
+      applyAppLanguageUI(code);
+      if (currentPlayer) {
+        currentPlayer.preferredLang = code;
+        savePlayerCloud();
+      }
+      if (!silent) {
+        const t = UI_TRANSLATIONS[code];
+        showAppToast(t.toastSaved);
+      }
+    };
+
+    applyAppLanguageUI(currentAppLang);
     const TEACHER_RESET_MASTER_CODE = 'GURU2026';
     const ADMIN_ACCOUNT_ID = 'acc_admin_master';
     const ADMIN_DEFAULT_NAME = 'admin';
@@ -2742,6 +3008,17 @@
       }
       document.getElementById('mod-best-score').innerText = (currentPlayer?.modScores?.[modId]) || 0;
 
+      const hintTextEl = document.getElementById('mod-helper-hint-text');
+      if (hintTextEl) {
+        if (modId === 1) {
+          hintTextEl.innerText = '🖐️ Praktis gerakkan 10 jari untuk latih memori otot!';
+        } else if (modId >= 2 && modId <= 4) {
+          hintTextEl.innerText = '🧮 Praktis gerakkan manik sempoa untuk memori otot!';
+        } else {
+          hintTextEl.innerText = '🧠 Cuba kira dalam bayangan minda (Anzan) dahulu!';
+        }
+      }
+
       renderCurrentModuleQuestion();
     }
 
@@ -3405,6 +3682,24 @@
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
+    function formatLastActiveText(ts, isOnlineNow) {
+      if (isOnlineNow) return 'Aktif sekarang';
+      const last = Number(ts || 0);
+      if (!last) return 'Baru daftar';
+      const diffSec = Math.max(0, Math.floor((Date.now() - last) / 1000));
+      if (diffSec < 60) return 'Baru sebentar tadi';
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return `${diffMin}m lepas`;
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour < 24) return `${diffHour}j lepas`;
+      const d = new Date(last);
+      const day = String(d.getDate()).padStart(2, '0');
+      const mon = String(d.getMonth() + 1).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return `${day}/${mon} ${hh}:${mm}`;
+    }
+
     /* Cari akaun sedia ada berdasarkan nama tepat (menyokong kedua-dua akaun lama & baharu) */
     async function findAccountByExactName(exactName) {
       const targetNameKey = normalizePlayerKey(exactName);
@@ -3521,6 +3816,9 @@
       if (accStarsEl) accStarsEl.innerText = stars;
       if (accPtsEl) accPtsEl.innerText = pts;
       if (accPinEl) accPinEl.innerText = currentPlayer.recoveryPin || '0000';
+      if (currentPlayer.preferredLang && ['ms', 'en', 'zh', 'ar'].includes(currentPlayer.preferredLang)) {
+        applyAppLanguageUI(currentPlayer.preferredLang);
+      }
     }
 
     async function savePlayerCloud() {
@@ -3535,6 +3833,7 @@
             name: currentPlayer.name,
             password: currentPlayer.password,
             recoveryPin: currentPlayer.recoveryPin || '2026',
+            preferredLang: currentPlayer.preferredLang || currentAppLang,
             avatarConfig: currentPlayer.avatarConfig
           }));
         } catch (e) {}
@@ -3546,6 +3845,7 @@
       currentPlayer.key = docId;
       currentPlayer.nameKey = normalizePlayerKey(currentPlayer.name);
       currentPlayer.recoveryPin = currentPlayer.recoveryPin || '0000';
+      currentPlayer.preferredLang = currentPlayer.preferredLang || currentAppLang;
       const todayKey = getTodayDateKey();
       if (currentPlayer.todayDateKey !== todayKey) {
         currentPlayer.todayDateKey = todayKey;
@@ -3570,6 +3870,7 @@
           name: currentPlayer.name,
           password: currentPlayer.password,
           recoveryPin: currentPlayer.recoveryPin,
+          preferredLang: currentPlayer.preferredLang,
           isAdmin: false,
           stars: currentPlayer.stars || 0,
           totalPoints: currentPlayer.totalPoints || 0,
@@ -3714,6 +4015,7 @@
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
           const savedTodaySec = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todaySeconds) || 0) : 0;
+          const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || existingAccount.preferredLang || currentAppLang || 'ms';
           currentPlayer = {
             accountId: permanentId,
             key: permanentId,
@@ -3721,6 +4023,7 @@
             name: existingAccount.name || displayName,
             password: existingAccount.password,
             recoveryPin: existingAccount.recoveryPin || validPin || '0000',
+            preferredLang: keptLang,
             isAdmin: isAdminUser,
             stars: Number(existingAccount.stars) || 0,
             totalPoints: Number(existingAccount.totalPoints) || 0,
@@ -3742,6 +4045,8 @@
               ? existingAccount.ownedAvatarItems
               : ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky']
           };
+          localStorage.setItem(APP_LANG_STORAGE_KEY, keptLang);
+          applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
           playCheer();
@@ -3750,6 +4055,7 @@
             : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
         } else {
           const newAccountId = generatePermanentAccountId();
+          const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || currentAppLang || 'ms';
           currentPlayer = {
             accountId: newAccountId,
             key: newAccountId,
@@ -3757,6 +4063,7 @@
             name: displayName,
             password: password,
             recoveryPin: validPin,
+            preferredLang: keptLang,
             stars: 0,
             totalPoints: 0,
             playSeconds: 0,
@@ -3769,6 +4076,8 @@
             avatarConfig: getDefaultAvatarConfig('boy'),
             ownedAvatarItems: ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky']
           };
+          localStorage.setItem(APP_LANG_STORAGE_KEY, keptLang);
+          applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
           playCheer();
@@ -4028,6 +4337,7 @@
 
         const lastPing = Number(p.lastActiveAt || p.updatedAt || 0);
         const isOnlineNow = isMe || (p.isOnline !== false && lastPing > 0 && (nowMs - lastPing) <= 45000);
+        const lastActiveLabel = formatLastActiveText(lastPing, isOnlineNow);
         const todaySec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
         const todayHHMM = formatDurationHHMM(todaySec);
         const totalHHMM = formatDurationHHMM(p.playSeconds || 0);
@@ -4046,6 +4356,7 @@
                   <span class="text-xs font-black text-slate-800 truncate">${safeName}</span>
                   ${isMe ? '<span class="text-[9px] font-black bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full">Anda</span>' : ''}
                   ${statusBadge}
+                  <span class="text-[9px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full" title="Masa terakhir aktif">📅 ${lastActiveLabel}</span>
                   <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini (Jam:Min)">🕒 ${todayHHMM}</span>
                 </div>
                 <div class="text-[10px] font-bold text-slate-500 mt-0.5">Tahap Pencapaian: Tahap ${maxMod} • Jumlah Masa Bermain: ${totalHHMM}</div>
@@ -4519,118 +4830,118 @@
       document.getElementById('drill-target-number').innerText = drillTarget;
       resetDrillStage(true);
     };
-
-    window.resetDrillStage = function(silent = false) {
-      if (!silent) playClick();
-      drillLeftFingers = [false, false, false, false, false];
-      drillRightFingers = [false, false, false, false, false];
-      drillAbacusRods.forEach(r => { r.top = false; r.bot = 0; });
-      renderDrillStage();
-    };
-
-    function renderDrillStage() {
-      const mode = document.getElementById('drill-mode-select')?.value || 'finger';
-      const stage = document.getElementById('drill-interactive-stage');
-      if (!stage) return;
-
-      let currentVal = 0;
-      if (mode === 'finger') {
-        const calcH = (arr, m) => (arr[0] ? 5 * m : 0) + [1, 2, 3, 4].reduce((s, i) => s + (arr[i] ? m : 0), 0);
-        currentVal = calcH(drillLeftFingers, 10) + calcH(drillRightFingers, 1);
-
-        stage.innerHTML = `
-          <div class="grid grid-cols-2 gap-2 items-center justify-items-center w-full">
-            ${renderRealisticHandSVG('left', drillLeftFingers, false, 'w-32 h-36 cursor-pointer').replace('<svg ', '<svg onclick="handleDrillHandClick(event, \'left\')" ')}
-            ${renderRealisticHandSVG('right', drillRightFingers, false, 'w-32 h-36 cursor-pointer').replace('<svg ', '<svg onclick="handleDrillHandClick(event, \'right\')" ')}
-          </div>
-        `;
-        const svgs = stage.querySelectorAll('svg');
-        svgs.forEach((svgEl, sIdx) => {
-          const side = sIdx === 0 ? 'left' : 'right';
-          const groups = svgEl.querySelectorAll('g');
-          groups.forEach((gEl, fIdx) => {
-            gEl.style.cursor = 'pointer';
-            gEl.onclick = (ev) => {
-              ev.stopPropagation();
-              playClick();
-              if (side === 'left') drillLeftFingers[fIdx] = !drillLeftFingers[fIdx];
-              else drillRightFingers[fIdx] = !drillRightFingers[fIdx];
-              renderDrillStage();
-            };
-          });
-        });
-      } else {
-        currentVal = drillAbacusRods.reduce((s, r) => s + ((r.top ? 5 : 0) + r.bot) * r.mult, 0);
-        let html = `<div class="w-full bg-amber-50 rounded-2xl p-2.5 border-2 border-amber-700"><div class="grid grid-cols-3 gap-2 text-center">`;
-        drillAbacusRods.forEach((rod, rIdx) => {
-          html += `<div class="flex flex-col items-center">`;
-          html += `<div class="text-[10px] font-black text-amber-950 mb-1">${rod.label}</div>`;
-          html += `<div class="w-1.5 h-36 bg-amber-800 rounded-full relative flex flex-col items-center justify-between py-1">`;
-          html += `<button type="button" onclick="toggleDrillAbacusTop(${rIdx})" class="bead-transition w-11 h-4.5 rounded-full border-2 border-rose-900 shadow-sm z-10 ${rod.top ? 'bg-rose-500 translate-y-3' : 'bg-rose-300 translate-y-0'}"></button>`;
-          html += `<div class="w-14 h-1.5 bg-amber-950 rounded-full z-20 my-0.5"></div>`;
-          html += `<div class="flex flex-col gap-0.5 z-10 pb-0.5">`;
-          for (let b = 1; b <= 4; b++) {
-            const active = b <= rod.bot;
-            html += `<button type="button" onclick="setDrillAbacusBot(${rIdx}, ${b})" class="bead-transition w-11 h-3.5 rounded-full border-2 border-amber-900 shadow-sm ${active ? 'bg-amber-500 -translate-y-1.5' : 'bg-amber-200 translate-y-0'}"></button>`;
-          }
-          html += `</div></div></div>`;
-        });
-        html += `</div></div>`;
-        stage.innerHTML = html;
-      }
-
-      document.getElementById('drill-current-val').innerText = currentVal;
-
-      if (currentVal === drillTarget) {
-        playCheer();
-        drillSolvedCount++;
-        document.getElementById('drill-score-val').innerText = drillSolvedCount;
-        const fb = document.getElementById('drill-feedback');
-        fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
-        fb.innerText = `⚡ Pantas! Susunan ${drillTarget} tepat! +1 Bintang ⭐`;
-        fb.classList.remove('hidden');
-
-        if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 10;
-          syncPlayerUI();
-          savePlayerCloud();
-        }
-        if (drillSolvedCount % 5 === 0) triggerConfetti();
-        setTimeout(() => startNewSpeedDrill(), 750);
-      }
-    }
-
-    window.toggleDrillAbacusTop = function(rIdx) {
-      playClick();
-      drillAbacusRods[rIdx].top = !drillAbacusRods[rIdx].top;
-      renderDrillStage();
-    };
-
-    window.setDrillAbacusBot = function(rIdx, b) {
-      playClick();
-      drillAbacusRods[rIdx].bot = drillAbacusRods[rIdx].bot >= b ? b - 1 : b;
-      renderDrillStage();
-    };
-
-    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN) */
+    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA: MELAYU, ENGLISH, MANDARIN, ARAB) */
     let dictCorrectAnswer = 0;
     let dictSequenceList = [];
 
-    function speakMalayPhrase(text) {
+    const DICTATION_LANG_CONFIG = {
+      ms: {
+        label: 'Bahasa Melayu',
+        bcp47: 'ms-MY',
+        fallbacks: ['ms-MY', 'ms', 'id-ID', 'id'],
+        first: (v) => `${v}`,
+        add: (v) => `Tambah ${v}`,
+        sub: (v) => `Tolak ${Math.abs(v)}`,
+        ask: 'Berapakah jumlahnya?',
+        sample: 'Bahasa Melayu sedia'
+      },
+      en: {
+        label: 'English',
+        bcp47: 'en-US',
+        fallbacks: ['en-US', 'en-GB', 'en-AU', 'en'],
+        first: (v) => `${v}`,
+        add: (v) => `Plus ${v}`,
+        sub: (v) => `Minus ${Math.abs(v)}`,
+        ask: 'What is the total?',
+        sample: 'English voice ready'
+      },
+      zh: {
+        label: 'Mandarin (中文)',
+        bcp47: 'zh-CN',
+        fallbacks: ['zh-CN', 'zh-TW', 'zh-HK', 'zh'],
+        first: (v) => `${v}`,
+        add: (v) => `加 ${v}`,
+        sub: (v) => `减 ${Math.abs(v)}`,
+        ask: '等于多少？',
+        sample: '普通话准备好了'
+      },
+      ar: {
+        label: 'Arab (العربية)',
+        bcp47: 'ar-SA',
+        fallbacks: ['ar-SA', 'ar-AE', 'ar-EG', 'ar'],
+        first: (v) => `${v}`,
+        add: (v) => `زائد ${v}`,
+        sub: (v) => `ناقص ${Math.abs(v)}`,
+        ask: 'كم المجموع؟',
+        sample: 'اللغة العربية جاهزة'
+      }
+    };
+
+    function pickBestSpeechVoice(langKey) {
+      if (!('speechSynthesis' in window)) return null;
+      const voices = window.speechSynthesis.getVoices() || [];
+      if (!voices.length) return null;
+      const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
+      for (const code of cfg.fallbacks) {
+        const exact = voices.find(v => (v.lang || '').toLowerCase() === code.toLowerCase());
+        if (exact) return exact;
+        const prefix = voices.find(v => (v.lang || '').toLowerCase().startsWith(code.toLowerCase()));
+        if (prefix) return prefix;
+      }
+      return null;
+    }
+
+    if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        const langKey = document.getElementById('dict-lang')?.value || 'ms';
+        const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
+        const badge = document.getElementById('dict-voice-badge');
+        const matched = pickBestSpeechVoice(langKey);
+        if (badge) {
+          badge.innerText = matched
+            ? `Suara: ${cfg.label} (${matched.lang})`
+            : `Suara: ${cfg.label} (Standard Peranti)`;
+        }
+      };
+    }
+
+    function speakDictationPhrase(text, langKey = 'ms') {
       try {
         if ('speechSynthesis' in window) {
           window.speechSynthesis.cancel();
+          const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
           const utter = new SpeechSynthesisUtterance(text);
-          utter.lang = 'ms-MY';
-          utter.rate = 0.95;
+          const matchedVoice = pickBestSpeechVoice(langKey);
+          if (matchedVoice) {
+            utter.voice = matchedVoice;
+            utter.lang = matchedVoice.lang;
+          } else {
+            utter.lang = cfg.bcp47;
+          }
+          utter.rate = 0.92;
           window.speechSynthesis.speak(utter);
         }
       } catch (e) {}
     }
 
+    window.previewDictationVoice = function() {
+      playClick();
+      const langKey = document.getElementById('dict-lang')?.value || 'ms';
+      const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
+      const badge = document.getElementById('dict-voice-badge');
+      const matched = pickBestSpeechVoice(langKey);
+      if (badge) {
+        badge.innerText = matched
+          ? `Suara: ${cfg.label} (${matched.lang})`
+          : `Suara: ${cfg.label} (Standard Peranti)`;
+      }
+      speakDictationPhrase(cfg.sample, langKey);
+    };
+
     window.startDictationAnzan = function() {
       playClick();
+      const langKey = document.getElementById('dict-lang')?.value || 'ms';
+      const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
       const level = document.getElementById('dict-level').value;
       const count = parseInt(document.getElementById('dict-count').value, 10) || 4;
       const btn = document.getElementById('btn-start-dict');
@@ -4669,7 +4980,7 @@
         if (step >= seq.length) {
           iconEl.innerText = '✍️';
           txtEl.innerText = 'Sebutan tamat! Masukkan jawapan anda di bawah.';
-          speakMalayPhrase('Berapakah jumlahnya?');
+          speakDictationPhrase(cfg.ask, langKey);
           btn.disabled = false;
           btn.classList.remove('opacity-60');
           form.classList.remove('hidden');
@@ -4679,20 +4990,20 @@
 
         const val = seq[step];
         const phrase = step === 0
-          ? `${val}`
-          : val > 0 ? `Tambah ${val}` : `Tolak ${Math.abs(val)}`;
+          ? cfg.first(val)
+          : val > 0 ? cfg.add(val) : cfg.sub(val);
 
         iconEl.innerText = '🔊';
-        txtEl.innerText = `Sebutan ke-${step + 1} daripada ${seq.length}... (Dengar teliti)`;
+        txtEl.innerText = `[${cfg.label}] Sebutan ke-${step + 1} daripada ${seq.length}...`;
         playTone(val > 0 ? 580 : 420, 'triangle', 0.1, 0.08);
-        speakMalayPhrase(phrase);
+        speakDictationPhrase(phrase, langKey);
 
         step++;
-        setTimeout(playNextDictStep, 1750);
+        setTimeout(playNextDictStep, 1800);
       }
 
       iconEl.innerText = '🎧';
-      txtEl.innerText = 'Bersedia mendengar...';
+      txtEl.innerText = `Bersedia mendengar dalam ${cfg.label}...`;
       setTimeout(playNextDictStep, 600);
     };
 

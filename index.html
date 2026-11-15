@@ -175,7 +175,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.16
+            Versi 1.9.18
           </span>
         </div>
 
@@ -514,7 +514,10 @@
           <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 text-center space-y-2 relative">
             <div class="flex items-center justify-between gap-2">
               <span id="mod-q-timer-badge" class="inline-flex items-center gap-1 text-[11px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full">⏱️ 0.0s</span>
-              <span id="mod-q-speed-hint" class="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">⚡ Jawab pantas = Bonus skor!</span>
+              <div class="flex items-center gap-1.5">
+                <span id="mod-q-streak-badge" class="text-[10px] font-black text-rose-800 bg-rose-100 border border-rose-300 px-2 py-0.5 rounded-full">🔥 Berturut: 0</span>
+                <span id="mod-q-speed-hint" class="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">⚡ Pantas + 10 Berturut = Bonus!</span>
+              </div>
             </div>
             <div id="mod-q-prompt" class="text-sm sm:text-base font-black text-slate-800">Soalan</div>
             <div id="mod-q-visual" class="flex flex-wrap items-center justify-center gap-3 py-1"></div>
@@ -1097,7 +1100,7 @@
         btnAvatar: '🎨 Avatar & Kedai',
         btnManageAcc: '⚙️ Urus Akaun',
         modTitle: 'Modul Belajar',
-        modSub: '6 Tahap + 300 Soalan',
+        modSub: '6 Tahap • Ribuan Soalan Unik',
         simTitle: 'Simulator Jari',
         simSub: 'Kira 0 hingga 99',
         abaTitle: 'Abakus 4-Tiang',
@@ -1182,7 +1185,7 @@
         btnAvatar: '🎨 Avatar & Shop',
         btnManageAcc: '⚙️ Manage Account',
         modTitle: 'Learning Modules',
-        modSub: '6 Levels + 300 Questions',
+        modSub: '6 Levels • Infinite Unique Questions',
         simTitle: 'Finger Simulator',
         simSub: 'Count 0 to 99',
         abaTitle: '4-Rod Abacus',
@@ -3340,15 +3343,37 @@
       return shuffleArray(Array.from(set));
     }
 
-    function build50QuestionsForModule(modId, mod3Filter = 'random') {
-      const list = [];
-      for (let i = 0; i < 50; i++) {
+    const moduleRecentSignatures = new Map();
+
+    function getModuleHistorySet(cacheKey) {
+      if (!moduleRecentSignatures.has(cacheKey)) {
+        moduleRecentSignatures.set(cacheKey, new Set());
+      }
+      return moduleRecentSignatures.get(cacheKey);
+    }
+
+    function buildProcedural50QuestionsForModule(modId, mod3Filter = 'random') {
+      const cacheKey = `${modId}_${modId === 3 ? mod3Filter : 'default'}`;
+      const historySet = getModuleHistorySet(cacheKey);
+      const bank = [];
+      const sessionKeys = new Set();
+
+      const pushFresh = (sig, qObj, allowFallback = false) => {
+        if (sessionKeys.has(sig)) return false;
+        if (!allowFallback && historySet.has(sig)) return false;
+        sessionKeys.add(sig);
+        bank.push({ ...qObj, _sig: sig });
+        return true;
+      };
+
+      const generatePass = (allowFallback) => {
         if (modId === 1) {
-          /* TAHAP 1: Keajaiban 10 Jari (0-99 & Tambah/Tolak Terus Tanpa Formula) */
-          if (i < 22) {
-            const target = ((i * 11 + 3) % 99) + 1;
+          /* TAHAP 1: Penjanaan Dinamik Tanpa Had (Bacaan 10 Jari 1-99, Tambah/Tolak Terus & Rantaian 3-Nombor) */
+          const fingerTargets = shuffleArray(Array.from({ length: 99 }, (_, k) => k + 1));
+          for (const target of fingerTargets) {
+            if (bank.length >= 18) break;
             const st = numberToFingerStates(target);
-            list.push({
+            pushFresh(`m1_f_${target}`, {
               prompt: 'Teka Nombor Rahsia: Berapakah nilai jari kedua-dua tangan ini?',
               visualHtml: `
                 <div class="flex gap-2 justify-center">
@@ -3358,238 +3383,393 @@
               `,
               options: makeNumericOptions(target, 1, 99),
               answer: target
-            });
-          } else if (i < 38) {
-            const directAdds = [
-              [2, 2], [5, 3], [5, 4], [1, 3], [6, 2], [15, 21], [12, 25], [31, 13],
-              [50, 24], [52, 16], [61, 23], [40, 55], [71, 13], [22, 51], [60, 34], [53, 21]
-            ];
-            const [a, b] = directAdds[i % directAdds.length];
-            const ans = a + b;
-            list.push({
-              prompt: `Kira terus menggunakan 10 jari: ${a} + ${b} = ?`,
-              visualHtml: `<div class="text-2xl font-black text-sky-800 bg-white px-5 py-2 rounded-2xl border-2 border-sky-200">${a} + ${b}</div>`,
-              options: makeNumericOptions(ans, 1, 99),
-              answer: ans
-            });
-          } else {
-            const directSubs = [
-              [9, 4], [8, 3], [7, 5], [28, 12], [69, 14], [87, 32],
-              [99, 44], [76, 25], [58, 53], [49, 24], [64, 12], [88, 55]
-            ];
-            const [a, b] = directSubs[i % directSubs.length];
-            const ans = a - b;
-            list.push({
-              prompt: `Lipat jari untuk tolak terus: ${a} - ${b} = ?`,
-              visualHtml: `<div class="text-2xl font-black text-emerald-800 bg-white px-5 py-2 rounded-2xl border-2 border-emerald-200">${a} - ${b}</div>`,
-              options: makeNumericOptions(ans, 0, 99),
-              answer: ans
-            });
+            }, allowFallback);
+          }
+
+          let guard = 0;
+          while (bank.length < 36 && guard < 3000) {
+            guard++;
+            const a = Math.floor(Math.random() * 88) + 1;
+            const b = Math.floor(Math.random() * 88) + 1;
+            const a1 = a % 10, b1 = b % 10;
+            const a10 = Math.floor(a / 10), b10 = Math.floor(b / 10);
+            const onesOk = (a1 + b1 <= 4) || (a1 >= 5 && b1 <= 4 && a1 + b1 <= 9) || (b1 >= 5 && a1 <= 4 && a1 + b1 <= 9);
+            const tensOk = (a10 + b10 <= 4) || (a10 >= 5 && b10 <= 4 && a10 + b10 <= 9) || (b10 >= 5 && a10 <= 4 && a10 + b10 <= 9);
+            if (onesOk && tensOk && a + b <= 99) {
+              const ans = a + b;
+              pushFresh(`m1_add_${a}_${b}`, {
+                prompt: `Kira terus menggunakan 10 jari: ${a} + ${b} = ?`,
+                visualHtml: `<div class="text-2xl font-black text-sky-800 bg-white px-5 py-2 rounded-2xl border-2 border-sky-200">${a} + ${b}</div>`,
+                options: makeNumericOptions(ans, 1, 99),
+                answer: ans
+              }, allowFallback);
+            }
+          }
+
+          while (bank.length < 50 && guard < 6000) {
+            guard++;
+            const a = Math.floor(Math.random() * 94) + 6;
+            const b = Math.floor(Math.random() * (a - 1)) + 1;
+            const a1 = a % 10, b1 = b % 10;
+            const a10 = Math.floor(a / 10), b10 = Math.floor(b / 10);
+            const onesOk = (a1 >= b1) && !((a1 >= 5) && (a1 - b1 < 5) && (b1 < 5));
+            const tensOk = (a10 >= b10) && !((a10 >= 5) && (a10 - b10 < 5) && (b10 < 5));
+            if (onesOk && tensOk) {
+              const ans = a - b;
+              pushFresh(`m1_sub_${a}_${b}`, {
+                prompt: `Lipat jari untuk tolak terus: ${a} - ${b} = ?`,
+                visualHtml: `<div class="text-2xl font-black text-emerald-800 bg-white px-5 py-2 rounded-2xl border-2 border-emerald-200">${a} - ${b}</div>`,
+                options: makeNumericOptions(ans, 0, 99),
+                answer: ans
+              }, allowFallback);
+            }
           }
         } else if (modId === 2) {
-          /* TAHAP 2: Rakan Sempoa Saya (Anatomi Sempoa 1:4 & Tambah/Tolak Asas) */
-          if (i < 26) {
-            const rods = i < 12 ? 2 : i < 20 ? 3 : 4;
+          /* TAHAP 2: 9,989 Kombinasi Sempoa 2-4 Tiang & Operasi Manik Terus */
+          let guard = 0;
+          while (bank.length < 26 && guard < 3000) {
+            guard++;
+            const rods = bank.length < 9 ? 2 : bank.length < 18 ? 3 : 4;
             const maxV = rods === 2 ? 99 : rods === 3 ? 999 : 9999;
             const minV = rods === 2 ? 11 : rods === 3 ? 105 : 1025;
-            const target = ((i * 197 + 23) % (maxV - minV)) + minV;
-            list.push({
+            const target = Math.floor(Math.random() * (maxV - minV + 1)) + minV;
+            pushFresh(`m2_aba_${rods}_${target}`, {
               prompt: 'Baca nilai Manik Syurga (5) & Manik Bumi (1) yang rapat palang:',
               visualHtml: renderAbacusQuestionSVG(target, rods),
               options: makeNumericOptions(target, 1, maxV),
               answer: target
-            });
-          } else {
-            const directPairs = [
-              [12, 25, '+'], [51, 33, '+'], [24, 65, '+'], [31, 58, '+'],
-              [42, 57, '+'], [13, 71, '+'], [55, 44, '+'], [62, 26, '+'],
-              [89, 34, '-'], [78, 25, '-'], [96, 41, '-'], [67, 52, '-']
-            ];
-            const [a, b, op] = directPairs[i % directPairs.length];
-            const ans = op === '+' ? a + b : a - b;
-            list.push({
-              prompt: `Gerakkan manik dengan Ibu Jari & Telunjuk: ${a} ${op} ${b} = ?`,
-              visualHtml: `<div class="text-2xl font-black text-amber-900 bg-white px-5 py-2 rounded-2xl border-2 border-amber-300">${a} ${op} ${b}</div>`,
-              options: makeNumericOptions(ans, 0, 99),
-              answer: ans
-            });
+            }, allowFallback);
+          }
+
+          while (bank.length < 50 && guard < 7000) {
+            guard++;
+            const a = Math.floor(Math.random() * 88) + 11;
+            const b = Math.floor(Math.random() * 88) + 11;
+            const isAdd = bank.length % 2 === 0;
+            const a1 = a % 10, b1 = b % 10;
+            const a10 = Math.floor(a / 10), b10 = Math.floor(b / 10);
+            if (isAdd) {
+              const onesOk = (a1 + b1 <= 4) || (a1 >= 5 && b1 <= 4 && a1 + b1 <= 9) || (b1 >= 5 && a1 <= 4 && a1 + b1 <= 9);
+              const tensOk = (a10 + b10 <= 4) || (a10 >= 5 && b10 <= 4 && a10 + b10 <= 9) || (b10 >= 5 && a10 <= 4 && a10 + b10 <= 9);
+              if (onesOk && tensOk && a + b <= 99) {
+                const ans = a + b;
+                pushFresh(`m2_add_${a}_${b}`, {
+                  prompt: `Gerakkan manik dengan Ibu Jari & Telunjuk: ${a} + ${b} = ?`,
+                  visualHtml: `<div class="text-2xl font-black text-amber-900 bg-white px-5 py-2 rounded-2xl border-2 border-amber-300">${a} + ${b}</div>`,
+                  options: makeNumericOptions(ans, 0, 99),
+                  answer: ans
+                }, allowFallback);
+              }
+            } else if (a > b) {
+              const subOnesOk = (a1 >= b1) && !((a1 >= 5) && (a1 - b1 < 5) && (b1 < 5));
+              const subTensOk = (a10 >= b10) && !((a10 >= 5) && (a10 - b10 < 5) && (b10 < 5));
+              if (subOnesOk && subTensOk) {
+                const ans = a - b;
+                pushFresh(`m2_sub_${a}_${b}`, {
+                  prompt: `Gerakkan manik dengan Ibu Jari & Telunjuk: ${a} - ${b} = ?`,
+                  visualHtml: `<div class="text-2xl font-black text-amber-900 bg-white px-5 py-2 rounded-2xl border-2 border-amber-300">${a} - ${b}</div>`,
+                  options: makeNumericOptions(ans, 0, 99),
+                  answer: ans
+                }, allowFallback);
+              }
+            }
           }
         } else if (modId === 3) {
-          /* TAHAP 3: Kawan Kecil (5), Kawan Besar (10), Formula Gabungan atau Random */
-          const qType = mod3Filter === 'random'
-            ? (i < 17 ? 'kecil' : i < 34 ? 'besar' : 'gabung')
-            : mod3Filter;
+          /* TAHAP 3: Penjanaan Dinamik 2-Nombor & Rantaian 3-Nombor bagi Kawan Kecil, Kawan Besar, Gabungan & Random */
+          const genKecil = (targetCount) => {
+            const basePatterns = [
+              [1, 4, '+'], [2, 3, '+'], [2, 4, '+'], [3, 2, '+'], [3, 3, '+'], [3, 4, '+'],
+              [4, 1, '+'], [4, 2, '+'], [4, 3, '+'], [4, 4, '+'],
+              [5, 1, '-'], [5, 2, '-'], [5, 3, '-'], [5, 4, '-'],
+              [6, 2, '-'], [6, 3, '-'], [6, 4, '-'], [7, 3, '-'], [7, 4, '-'], [8, 4, '-']
+            ];
+            let g = 0;
+            while (bank.length < targetCount && g < 3000) {
+              g++;
+              const [a, b, op] = basePatterns[Math.floor(Math.random() * basePatterns.length)];
+              const tens = Math.floor(Math.random() * 9);
+              const start = tens * 10 + a;
+              const mid = op === '+' ? start + b : start - b;
+              if (mid < 0 || mid > 99) continue;
 
-          if (qType === 'kecil') {
-            const kawanKecil = [
-              [3, 4, '+'], [4, 1, '+'], [4, 2, '+'], [4, 3, '+'], [2, 3, '+'], [2, 4, '+'], [1, 4, '+'],
-              [5, 1, '-'], [5, 2, '-'], [5, 3, '-'], [5, 4, '-'], [6, 2, '-'], [7, 3, '-'], [8, 4, '-']
-            ];
-            const [a, b, op] = kawanKecil[i % kawanKecil.length];
-            const bonus = ((i + Math.floor(i / 14)) % 8) * 10;
-            const start = a + bonus;
-            const ans = op === '+' ? start + b : start - b;
-            list.push({
-              prompt: `Formula Kawan Kecil 5: ${start} ${op} ${b} = ?`,
-              visualHtml: `<div class="text-2xl font-black text-rose-800 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${start} ${op} ${b}</div>`,
-              options: makeNumericOptions(ans, 0, 99),
-              answer: ans
-            });
-          } else if (qType === 'besar') {
-            const isAdd = i % 2 === 0;
-            if (isAdd) {
-              const base = (((i + Math.floor(i / 7)) % 7) + 1) * 10 + ((i % 4) + 6);
-              const addV = ((i * 3) % 9) + 1;
-              const ans = base + addV;
-              list.push({
-                prompt: `Formula Kawan Besar 10: ${base} + ${addV} = ?`,
-                visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} + ${addV}</div>`,
-                options: makeNumericOptions(ans, 10, 99),
-                answer: ans
-              });
-            } else {
-              const base = (((i + Math.floor(i / 7)) % 7) + 2) * 10 + (i % 4);
-              const subV = ((i * 3) % 9) + 1;
-              const ans = base - subV;
-              list.push({
-                prompt: `Formula Kawan Besar 10: ${base} - ${subV} = ?`,
-                visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} - ${subV}</div>`,
-                options: makeNumericOptions(ans, 1, 99),
-                answer: ans
-              });
+              if (g % 3 === 0) {
+                // Variasi rantaian 3 nombor (Kawan Kecil + langkah susulan)
+                const c = (Math.floor(Math.random() * 3) + 1) * 10;
+                if (mid + c <= 99) {
+                  const ans = mid + c;
+                  const expr = `${start} ${op} ${b} + ${c}`;
+                  pushFresh(`m3_k3_${expr}`, {
+                    prompt: `Rantaian Kawan Kecil 5: ${expr} = ?`,
+                    visualHtml: `<div class="text-xl sm:text-2xl font-black text-rose-800 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${expr}</div>`,
+                    options: makeNumericOptions(ans, 0, 99),
+                    answer: ans
+                  }, allowFallback);
+                }
+              } else {
+                pushFresh(`m3_k_${start}_${op}_${b}`, {
+                  prompt: `Formula Kawan Kecil 5: ${start} ${op} ${b} = ?`,
+                  visualHtml: `<div class="text-2xl font-black text-rose-800 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${start} ${op} ${b}</div>`,
+                  options: makeNumericOptions(mid, 0, 99),
+                  answer: mid
+                }, allowFallback);
+              }
             }
-          } else {
-            const gabungan = [
-              [5, 6, '+'], [6, 6, '+'], [7, 6, '+'], [8, 6, '+'],
-              [5, 7, '+'], [6, 7, '+'], [7, 7, '+'], [5, 8, '+'], [6, 8, '+'], [5, 9, '+'],
-              [11, 6, '-'], [12, 6, '-'], [13, 7, '-'], [14, 8, '-'], [14, 9, '-']
+          };
+
+          const genBesar = (targetCount) => {
+            let g = 0;
+            while (bank.length < targetCount && g < 3500) {
+              g++;
+              const isAdd = Math.random() > 0.45;
+              if (isAdd) {
+                const tens = Math.floor(Math.random() * 8) + 1;
+                const ones = Math.floor(Math.random() * 9) + 1;
+                const addV = Math.floor(Math.random() * 9) + 1;
+                if (ones + addV >= 10) {
+                  const base = tens * 10 + ones;
+                  const ans = base + addV;
+                  if (ans <= 99) {
+                    pushFresh(`m3_b_add_${base}_${addV}`, {
+                      prompt: `Formula Kawan Besar 10: ${base} + ${addV} = ?`,
+                      visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} + ${addV}</div>`,
+                      options: makeNumericOptions(ans, 10, 99),
+                      answer: ans
+                    }, allowFallback);
+                  }
+                }
+              } else {
+                const tens = Math.floor(Math.random() * 8) + 2;
+                const ones = Math.floor(Math.random() * 9);
+                const subV = Math.floor(Math.random() * 9) + 1;
+                if (ones < subV) {
+                  const base = tens * 10 + ones;
+                  const ans = base - subV;
+                  if (ans >= 1) {
+                    pushFresh(`m3_b_sub_${base}_${subV}`, {
+                      prompt: `Formula Kawan Besar 10: ${base} - ${subV} = ?`,
+                      visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} - ${subV}</div>`,
+                      options: makeNumericOptions(ans, 1, 99),
+                      answer: ans
+                    }, allowFallback);
+                  }
+                }
+              }
+            }
+          };
+
+          const genGabung = (targetCount) => {
+            const basePatterns = [
+              [5, 6, '+'], [5, 7, '+'], [5, 8, '+'], [5, 9, '+'],
+              [6, 6, '+'], [6, 7, '+'], [6, 8, '+'],
+              [7, 6, '+'], [7, 7, '+'], [8, 6, '+'],
+              [11, 6, '-'], [11, 7, '-'], [11, 8, '-'], [11, 9, '-'],
+              [12, 6, '-'], [12, 7, '-'], [12, 8, '-'],
+              [13, 6, '-'], [13, 7, '-'], [14, 6, '-'], [14, 7, '-'], [14, 8, '-'], [14, 9, '-']
             ];
-            const [a, b, op] = gabungan[i % gabungan.length];
-            const bonus = ((i + Math.floor(i / 15)) % 7) * 10;
-            const start = a + bonus;
-            const ans = op === '+' ? start + b : start - b;
-            list.push({
-              prompt: `Formula Gabungan (10 & 5): ${start} ${op} ${b} = ?`,
-              visualHtml: `<div class="text-2xl font-black text-purple-800 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${start} ${op} ${b}</div>`,
-              options: makeNumericOptions(ans, 1, 99),
-              answer: ans
-            });
+            let g = 0;
+            while (bank.length < targetCount && g < 3500) {
+              g++;
+              const [a, b, op] = basePatterns[Math.floor(Math.random() * basePatterns.length)];
+              const tens = Math.floor(Math.random() * 8);
+              const start = tens * 10 + a;
+              const mid = op === '+' ? start + b : start - b;
+              if (mid < 1 || mid > 99) continue;
+
+              if (g % 3 === 0 && mid > 15) {
+                const c = 10;
+                const ans = mid - c;
+                const expr = `${start} ${op} ${b} - ${c}`;
+                pushFresh(`m3_g3_${expr}`, {
+                  prompt: `Rantaian Formula Gabungan: ${expr} = ?`,
+                  visualHtml: `<div class="text-xl sm:text-2xl font-black text-purple-800 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${expr}</div>`,
+                  options: makeNumericOptions(ans, 1, 99),
+                  answer: ans
+                }, allowFallback);
+              } else {
+                pushFresh(`m3_g_${start}_${op}_${b}`, {
+                  prompt: `Formula Gabungan (10 & 5): ${start} ${op} ${b} = ?`,
+                  visualHtml: `<div class="text-2xl font-black text-purple-800 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${start} ${op} ${b}</div>`,
+                  options: makeNumericOptions(mid, 1, 99),
+                  answer: mid
+                }, allowFallback);
+              }
+            }
+          };
+
+          if (mod3Filter === 'kecil') genKecil(50);
+          else if (mod3Filter === 'besar') genBesar(50);
+          else if (mod3Filter === 'gabung') genGabung(50);
+          else {
+            genKecil(17);
+            genBesar(34);
+            genGabung(50);
           }
         } else if (modId === 4) {
-          /* TAHAP 4: Darab & Bahagi Kilat (2d×1d, 3d×1d, 2d×2d & 2d÷1d, 3d÷1d, 4d÷2d) */
-          if (i < 16) {
-            const a = ((i * 7) % 85) + 14;
-            const b = (i % 8) + 2;
+          /* TAHAP 4: Puluhan Ribu Kombinasi Darab & Bahagi Kilat */
+          let guard = 0;
+          while (bank.length < 16 && guard < 2000) {
+            guard++;
+            const a = Math.floor(Math.random() * 86) + 14;
+            const b = Math.floor(Math.random() * 8) + 2;
             const ans = a * b;
-            list.push({
+            pushFresh(`m4_2x1_${a}_${b}`, {
               prompt: `Darab Kilat (Kiri → Kanan): ${a} × ${b} = ?`,
               visualHtml: `<div class="text-2xl font-black text-orange-800 bg-white px-5 py-2 rounded-2xl border-2 border-orange-200">${a} × ${b}</div>`,
               options: makeNumericOptions(ans, 20, 999),
               answer: ans
-            });
-          } else if (i < 28) {
-            const a = ((i * 19) % 420) + 115;
-            const b = (i % 7) + 3;
+            }, allowFallback);
+          }
+          while (bank.length < 28 && guard < 4000) {
+            guard++;
+            const a = Math.floor(Math.random() * 780) + 112;
+            const b = Math.floor(Math.random() * 8) + 2;
             const ans = a * b;
-            list.push({
+            pushFresh(`m4_3x1_${a}_${b}`, {
               prompt: `Darab 3 Digit × 1 Digit: ${a} × ${b} = ?`,
               visualHtml: `<div class="text-2xl font-black text-orange-800 bg-white px-5 py-2 rounded-2xl border-2 border-orange-200">${a} × ${b}</div>`,
               options: makeNumericOptions(ans, 200, 9999),
               answer: ans
-            });
-          } else if (i < 36) {
-            const a = ((i * 11) % 35) + 12;
-            const b = ((i * 7) % 28) + 11;
+            }, allowFallback);
+          }
+          while (bank.length < 37 && guard < 6000) {
+            guard++;
+            const a = Math.floor(Math.random() * 65) + 12;
+            const b = Math.floor(Math.random() * 45) + 11;
             const ans = a * b;
-            list.push({
+            pushFresh(`m4_2x2_${a}_${b}`, {
               prompt: `Darab 2 Digit × 2 Digit: ${a} × ${b} = ?`,
               visualHtml: `<div class="text-2xl font-black text-amber-900 bg-white px-5 py-2 rounded-2xl border-2 border-amber-300">${a} × ${b}</div>`,
-              options: makeNumericOptions(ans, 100, 5000),
+              options: makeNumericOptions(ans, 100, 9000),
               answer: ans
-            });
-          } else {
-            const divisor = (i % 14) + 4;
-            const quotient = ((i * 13) % 145) + 18;
+            }, allowFallback);
+          }
+          while (bank.length < 50 && guard < 9000) {
+            guard++;
+            const divisor = Math.floor(Math.random() * 18) + 3;
+            const quotient = Math.floor(Math.random() * 220) + 15;
             const dividend = divisor * quotient;
-            list.push({
+            pushFresh(`m4_div_${dividend}_${divisor}`, {
               prompt: `Bahagi Kilat (Kiri → Kanan): ${dividend.toLocaleString()} ÷ ${divisor} = ?`,
               visualHtml: `<div class="text-2xl font-black text-sky-900 bg-white px-5 py-2 rounded-2xl border-2 border-sky-200">${dividend.toLocaleString()} ÷ ${divisor}</div>`,
-              options: makeNumericOptions(quotient, 10, 500),
+              options: makeNumericOptions(quotient, 10, 900),
               answer: quotient
-            });
+            }, allowFallback);
           }
         } else if (modId === 5) {
-          /* TAHAP 5: Silat Jari Kilat (Anzan / Bayangan Minda - Rantaian 3-5 Nombor) */
-          if (i % 4 === 0) {
-            const target = ((i * 173 + 47) % 880) + 112;
-            list.push({
+          /* TAHAP 5: Sempoa Minda 3-Tiang & Rantaian Anzan 3-4 Nombor Tanpa Had */
+          let guard = 0;
+          while (bank.length < 14 && guard < 2000) {
+            guard++;
+            const target = Math.floor(Math.random() * 888) + 111;
+            pushFresh(`m5_aba_${target}`, {
               prompt: 'Bayangkan sempoa minda: Berapakah nilai susunan manik ini?',
               visualHtml: renderAbacusQuestionSVG(target, 3),
               options: makeNumericOptions(target, 100, 999),
               answer: target
-            });
-          } else {
-            const n1 = ((i * 7) % 35) + 12;
-            const n2 = ((i * 11) % 29) + 11;
-            const n3 = ((i * 5) % 19) + 6;
-            const isSub = i % 2 === 1;
-            const ans = isSub ? (n1 + n2 - n3) : (n1 + n2 + n3);
-            const expr = isSub ? `${n1} + ${n2} - ${n3}` : `${n1} + ${n2} + ${n3}`;
-            list.push({
-              prompt: `Anzan (Kira dalam bayangan minda tanpa sempoa): ${expr} = ?`,
-              visualHtml: `<div class="text-xl sm:text-2xl font-black text-purple-900 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${expr}</div>`,
-              options: makeNumericOptions(ans, 5, 250),
-              answer: ans
-            });
+            }, allowFallback);
+          }
+          while (bank.length < 50 && guard < 8000) {
+            guard++;
+            const isFourTerms = bank.length % 3 === 0;
+            const n1 = Math.floor(Math.random() * 55) + 12;
+            const n2 = Math.floor(Math.random() * 48) + 11;
+            const n3 = Math.floor(Math.random() * 28) + 6;
+            if (isFourTerms) {
+              const n4 = Math.floor(Math.random() * 25) + 5;
+              const ans = n1 + n2 - n3 + n4;
+              const expr = `${n1} + ${n2} - ${n3} + ${n4}`;
+              pushFresh(`m5_4t_${expr}`, {
+                prompt: `Anzan 4 Langkah (Bayangan Minda): ${expr} = ?`,
+                visualHtml: `<div class="text-lg sm:text-xl font-black text-purple-900 bg-white px-4 py-2 rounded-2xl border-2 border-purple-200">${expr}</div>`,
+                options: makeNumericOptions(ans, 5, 300),
+                answer: ans
+              }, allowFallback);
+            } else {
+              const isSub = bank.length % 2 === 1;
+              const ans = isSub ? (n1 + n2 - n3) : (n1 + n2 + n3);
+              const expr = isSub ? `${n1} + ${n2} - ${n3}` : `${n1} + ${n2} + ${n3}`;
+              pushFresh(`m5_3t_${expr}`, {
+                prompt: `Anzan (Kira dalam bayangan minda tanpa sempoa): ${expr} = ?`,
+                visualHtml: `<div class="text-xl sm:text-2xl font-black text-purple-900 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${expr}</div>`,
+                options: makeNumericOptions(ans, 5, 250),
+                answer: ans
+              }, allowFallback);
+            }
           }
         } else {
-          /* TAHAP 6: Pejuang Antarabangsa (3-4 Digit, Perpuluhan, Negatif & Darab/Bahagi Besar) */
-          const mode = i % 4;
-          if (mode === 0) {
-            const a = ((i * 137) % 650) + 245;
-            const b = ((i * 97) % 520) + 185;
-            const c = ((i * 53) % 210) + 65;
+          /* TAHAP 6: Puluhan Ribu Kombinasi Pertandingan (3-4 Digit, Perpuluhan, Negatif & Darab Kompleks) */
+          let guard = 0;
+          while (bank.length < 13 && guard < 2500) {
+            guard++;
+            const a = Math.floor(Math.random() * 750) + 180;
+            const b = Math.floor(Math.random() * 620) + 140;
+            const c = Math.floor(Math.random() * 280) + 55;
             const ans = a + b - c;
-            list.push({
+            pushFresh(`m6_3d_${a}_${b}_${c}`, {
               prompt: `Pecut Pertandingan (3 Digit): ${a} + ${b} - ${c} = ?`,
               visualHtml: `<div class="text-xl font-black text-cyan-950 bg-white px-4 py-2 rounded-2xl border-2 border-cyan-200">${a} + ${b} - ${c}</div>`,
-              options: makeNumericOptions(ans, 100, 2000),
+              options: makeNumericOptions(ans, 100, 2500),
               answer: ans
-            });
-          } else if (mode === 1) {
-            const a = Number((((i * 13) % 180) / 10 + 11.5).toFixed(1));
-            const b = Number((((i * 7) % 95) / 10 + 4.2).toFixed(1));
+            }, allowFallback);
+          }
+          while (bank.length < 26 && guard < 5000) {
+            guard++;
+            const a = Number(((Math.floor(Math.random() * 350) + 65) / 10).toFixed(1));
+            const b = Number(((Math.floor(Math.random() * 220) + 25) / 10).toFixed(1));
             const ans = Number((a + b).toFixed(1));
-            list.push({
+            pushFresh(`m6_dec_${a}_${b}`, {
               prompt: `Kira Pantas Nombor Perpuluhan: ${a.toFixed(1)} + ${b.toFixed(1)} = ?`,
               visualHtml: `<div class="text-xl font-black text-teal-900 bg-white px-5 py-2 rounded-2xl border-2 border-teal-200">${a.toFixed(1)} + ${b.toFixed(1)}</div>`,
-              options: makeNumericOptions(ans, 1, 100, true),
+              options: makeNumericOptions(ans, 1, 150, true),
               answer: ans
-            });
-          } else if (mode === 2) {
-            const a = ((i * 11) % 65) + 25;
-            const b = a + ((i % 25) + 8);
+            }, allowFallback);
+          }
+          while (bank.length < 38 && guard < 7500) {
+            guard++;
+            const a = Math.floor(Math.random() * 95) + 15;
+            const b = a + Math.floor(Math.random() * 48) + 6;
             const ans = a - b;
-            list.push({
+            pushFresh(`m6_neg_${a}_${b}`, {
               prompt: `Cabaran Nombor Negatif: ${a} - ${b} = ?`,
               visualHtml: `<div class="text-xl font-black text-rose-900 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${a} - ${b}</div>`,
-              options: makeNumericOptions(ans, -100, 50),
+              options: makeNumericOptions(ans, -150, 50),
               answer: ans
-            });
-          } else {
-            const a = ((i * 43) % 380) + 124;
-            const b = ((i * 7) % 24) + 14;
+            }, allowFallback);
+          }
+          while (bank.length < 50 && guard < 10000) {
+            guard++;
+            const a = Math.floor(Math.random() * 580) + 115;
+            const b = Math.floor(Math.random() * 36) + 13;
             const ans = a * b;
-            list.push({
+            pushFresh(`m6_mul_${a}_${b}`, {
               prompt: `Master Darab Kompleks: ${a} × ${b} = ?`,
               visualHtml: `<div class="text-xl font-black text-indigo-950 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${a} × ${b}</div>`,
-              options: makeNumericOptions(ans, 1000, 50000),
+              options: makeNumericOptions(ans, 1000, 80000),
               answer: ans
-            });
+            }, allowFallback);
           }
         }
+      };
+
+      /* Pusingan 1: Jana 50 soalan yang langsung tidak bertindih dengan 150 soalan terkini */
+      generatePass(false);
+      /* Pusingan 2 (sandaran jika ruang kombinasi kecil hampir habis): lengkapkan baki hingga 50 */
+      if (bank.length < 50) {
+        generatePass(true);
       }
-      return shuffleArray(list);
+
+      /* Simpan tandatangan soalan baharu ke dalam memori anti-ulang (had 150 soalan terkini) */
+      bank.forEach(item => {
+        if (item._sig) {
+          historySet.add(item._sig);
+          if (historySet.size > 150) {
+            const oldest = historySet.values().next().value;
+            historySet.delete(oldest);
+          }
+        }
+      });
+
+      return shuffleArray(bank).slice(0, 50);
     }
 
     /* 6. PENJANA CABARAN KILAT INFINITI TANPA ULANGAN */
@@ -3702,20 +3882,36 @@
       if (chosen === currentBlitzAnswer) {
         playCheer();
         const reward = calculateSpeedBonusPoints(elapsedSec);
-        blitzScore += reward.total;
         blitzStreak += 1;
+
+        let blitzStreakPts = 0;
+        let blitzStreakCoins = 0;
+        let blitzStreakTag = '';
+        if (blitzStreak > 0 && blitzStreak % 10 === 0) {
+          const tier = blitzStreak / 10;
+          blitzStreakPts = 25 * tier;
+          blitzStreakCoins = 3 * tier;
+          blitzStreakTag = `<br><span class="inline-block mt-1 bg-amber-300 text-amber-950 px-2.5 py-0.5 rounded-full text-[11px] font-black border border-amber-600">🔥 BONUS ${blitzStreak} BERTURUT-TURUT: +${blitzStreakPts} Markah & +${blitzStreakCoins} Coin!</span>`;
+          triggerConfetti();
+        } else if (blitzStreak % 5 === 0) {
+          triggerConfetti();
+        }
+
+        const totalBlitzPts = reward.total + blitzStreakPts;
+        const totalBlitzCoins = 1 + blitzStreakCoins;
+        blitzScore += totalBlitzPts;
+
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
+        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}${blitzStreakTag}`;
         fb.innerHTML = bOkHtml;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(bOkHtml, reward.bonus > 0 ? 'bonus' : 'success');
+        showQuizInstantPopup(bOkHtml, (reward.bonus > 0 || blitzStreakPts > 0) ? 'bonus' : 'success');
 
         if (currentPlayer) {
-          addPlayerReward(1, reward.total);
+          addPlayerReward(totalBlitzCoins, totalBlitzPts);
         }
-        if (blitzStreak % 5 === 0) triggerConfetti();
-        setTimeout(() => generateNextBlitzQuestion(), 900);
+        setTimeout(() => generateNextBlitzQuestion(), blitzStreakPts > 0 ? 1450 : 900);
       } else {
         playWrong();
         blitzStreak = 0;
@@ -3737,6 +3933,7 @@
     let activeModQuestions = [];
     let activeModIndex = 0;
     let activeModSessionCorrect = 0;
+    let activeModConsecutiveStreak = 0;
 
     function renderModulesMenu() {
       const grid = document.getElementById('modules-menu-grid');
@@ -3865,9 +4062,10 @@
       }
 
       if (activeModId === 3) {
-        activeModQuestions = build50QuestionsForModule(3, activeMod3QuizCategory);
+        activeModQuestions = buildProcedural50QuestionsForModule(3, activeMod3QuizCategory);
         activeModIndex = 0;
         activeModSessionCorrect = 0;
+        activeModConsecutiveStreak = 0;
         renderCurrentModuleQuestion();
       }
     };
@@ -3876,9 +4074,10 @@
       playClick();
       activeModId = modId;
       activeMod3QuizCategory = 'random';
-      activeModQuestions = build50QuestionsForModule(modId, activeMod3QuizCategory);
+      activeModQuestions = buildProcedural50QuestionsForModule(modId, activeMod3QuizCategory);
       activeModIndex = 0;
       activeModSessionCorrect = 0;
+      activeModConsecutiveStreak = 0;
 
       const meta = MODULES_META[modId];
       const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
@@ -3934,9 +4133,10 @@
 
     window.reshuffleModuleQuestions = function() {
       playClick();
-      activeModQuestions = build50QuestionsForModule(activeModId, activeModId === 3 ? activeMod3QuizCategory : 'random');
+      activeModQuestions = buildProcedural50QuestionsForModule(activeModId, activeModId === 3 ? activeMod3QuizCategory : 'random');
       activeModIndex = 0;
       activeModSessionCorrect = 0;
+      activeModConsecutiveStreak = 0;
       renderCurrentModuleQuestion();
     };
 
@@ -3964,6 +4164,8 @@
         btn.onclick = () => checkModuleQuestionAnswer(opt, btn);
         optBox.appendChild(btn);
       });
+      const streakBadge = document.getElementById('mod-q-streak-badge');
+      if (streakBadge) streakBadge.innerText = `🔥 Berturut: ${activeModConsecutiveStreak}`;
       startQuestionLiveTimer('mod');
       keepQuizBottomInView();
     }
@@ -3979,26 +4181,47 @@
         playCheer();
         const reward = calculateSpeedBonusPoints(elapsedSec);
         activeModSessionCorrect++;
+        activeModConsecutiveStreak++;
+
+        let streakBonusPts = 0;
+        let streakBonusCoins = 0;
+        let streakTagHtml = '';
+        if (activeModConsecutiveStreak > 0 && activeModConsecutiveStreak % 10 === 0) {
+          const tier = activeModConsecutiveStreak / 10;
+          streakBonusPts = 25 * tier;
+          streakBonusCoins = 3 * tier;
+          streakTagHtml = `<br><span class="inline-block mt-1 bg-amber-300 text-amber-950 px-2.5 py-0.5 rounded-full text-[11px] font-black border border-amber-600">🔥 BONUS ${activeModConsecutiveStreak} BERTURUT-TURUT: +${streakBonusPts} Markah & +${streakBonusCoins} Coin!</span>`;
+          triggerConfetti();
+        }
+
+        const totalEarnedPts = reward.total + streakBonusPts;
+        const totalEarnedCoins = 1 + streakBonusCoins;
+
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
-        const msgHtml = `🌟 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
+        const msgHtml = `🌟 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}${streakTagHtml}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
         fb.innerHTML = msgHtml;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(msgHtml, reward.bonus > 0 ? 'bonus' : 'success');
+        showQuizInstantPopup(msgHtml, (reward.bonus > 0 || streakBonusPts > 0) ? 'bonus' : 'success');
+
+        const streakBadge = document.getElementById('mod-q-streak-badge');
+        if (streakBadge) streakBadge.innerText = `🔥 Berturut: ${activeModConsecutiveStreak}`;
 
         if (currentPlayer) {
-          addPlayerReward(1, reward.total);
+          addPlayerReward(totalEarnedCoins, totalEarnedPts);
           if (!currentPlayer.modScores) currentPlayer.modScores = {};
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
             currentPlayer.modScores[activeModId] = activeModSessionCorrect;
             document.getElementById('mod-best-score').innerText = activeModSessionCorrect;
           }
         }
-        if (activeModSessionCorrect % 10 === 0) triggerConfetti();
       } else {
         playWrong();
+        activeModConsecutiveStreak = 0;
+        const streakBadge = document.getElementById('mod-q-streak-badge');
+        if (streakBadge) streakBadge.innerText = '🔥 Berturut: 0';
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3 text-base font-black text-white';
-        const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>.`;
+        const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>. (Rentetan berturut ditetapkan semula ke 0)`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
         fb.innerHTML = wrongHtml;
         fb.classList.remove('hidden');

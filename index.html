@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.45
+            Versi 1.9.46
           </span>
         </div>
 
@@ -2150,92 +2150,113 @@
         { id: 'girl_aurora',name: 'Aurora (Ratu Kristal)',    gender: 'girl', cost: 0 }
       ],
       outfit: [
-        // Kategori Baju & Kostum (Dengan Padanan Set Rasmi!)
+        // Susunan Harga Berperingkat Mengikut Set Lengkap 5 Kategori (Baju + Rambut + Tudung/Topi + Aksesori + Bingkai)
         { id: 'out_hoodie_amber',  name: 'Hoodie Kuning Ceria',   tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_crew_charcoal', name: 'Baju T-Shirt Kolar',    tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_polo_teal',     name: 'Baju Polo Hijau',       tier: 'Biasa',    gender: 'unisex', cost: 15 },
         { id: 'out_sweater_navy',  name: 'Sweater Biru Laut',     tier: 'Biasa',    gender: 'unisex', cost: 18 },
-        { id: 'out_school_uniform',name: 'Uniform Sekolah Pintar',tier: 'Comel',    gender: 'unisex', cost: 25, setTag: '🎒 Set Sekolah', setApply: { outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
-        { id: 'out_jacket_orange', name: 'Jaket Sukan Oren',      tier: 'Comel',    gender: 'unisex', cost: 30, setTag: '🎧 Set Gaya Muzik', setApply: { outfit: 'out_jacket_orange', addAcc: ['acc_headphones', 'acc_shades'] } },
-        { id: 'out_baju_melayu',   name: 'Baju Melayu Cekak',     tier: 'Comel',    gender: 'boy',    cost: 35, setTag: '👑 Set Diraja', setApply: { outfit: 'out_baju_melayu', headwear: 'hw_crown' } },
-        { id: 'out_baju_kurung',   name: 'Baju Kurung Songket',   tier: 'Comel',    gender: 'girl',   cost: 35, setTag: '✨ Set Emas Raya', setApply: { outfit: 'out_baju_kurung', headwear: 'hw_tudung_gold' } },
-        { id: 'out_knit_bow',      name: 'Blouse Reben Comel',    tier: 'Istimewa', gender: 'girl',   cost: 45, setTag: '🌸 Set Sakura', setApply: { outfit: 'out_knit_bow', frame: 'fr_sakura' } },
-        { id: 'out_blazer_slate',  name: 'Blazer Pengawas',       tier: 'Istimewa', gender: 'unisex', cost: 50, setTag: '🎓 Set Graduan', setApply: { outfit: 'out_blazer_slate', headwear: 'hw_grad', addAcc: ['acc_glasses'] } },
-        { id: 'out_lab_coat',      name: 'Kot Saintis Muda',      tier: 'Istimewa', gender: 'unisex', cost: 58, setTag: '🔬 Set Saintis', setApply: { outfit: 'out_lab_coat', addAcc: ['acc_glasses'] } },
-        { id: 'out_astronaut',     name: 'Sut Angkasawan',        tier: 'Gah',      gender: 'unisex', cost: 75, setTag: '🌌 Set Galaksi', setApply: { outfit: 'out_astronaut', frame: 'fr_galaxy' } },
-        { id: 'out_prince_royal',  name: 'Sut Putera Diraja',     tier: 'Gah',      gender: 'boy',    cost: 85, setTag: '👑 Set Putera', setApply: { outfit: 'out_prince_royal', headwear: 'hw_crown', frame: 'fr_crown_gold' } },
-        { id: 'out_princess_gown', name: 'Gaun Puteri Emas',      tier: 'Gah',      gender: 'girl',   cost: 85, setTag: '🦄 Set Unicorn Suci', setApply: { outfit: 'out_princess_gown', headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } },
-        { id: 'out_cyber_armor',   name: 'Perisai Cyber Neon',    tier: 'Epik',     gender: 'unisex', cost: 115, setTag: '⚡ Set Cyber Neon', setApply: { outfit: 'out_cyber_armor', frame: 'fr_neon', addAcc: ['acc_shades'] } },
-        { id: 'out_dragon_emperor',name: 'Jubah Naga Maharaja',   tier: 'Legenda',  gender: 'unisex', cost: 150, setTag: '🐉 Set Maharaja Naga', setApply: { outfit: 'out_dragon_emperor', frame: 'fr_dragon', addAcc: ['acc_wings_dragon'] } }
+        { id: 'out_school_uniform',name: 'Uniform Sekolah Pintar',tier: 'Comel',    gender: 'unisex', cost: 25, setTag: '🎒 Set Sekolah',
+          setApply: { outfit: 'out_school_uniform', hair: 'hair_neat', headwear: 'hw_cap_blue', addAcc: ['acc_backpack', 'acc_pin_star'], frame: 'fr_starlight' } },
+        { id: 'out_jacket_orange', name: 'Jaket Sukan Oren',      tier: 'Comel',    gender: 'unisex', cost: 35, setTag: '🎧 Set Gaya Muzik',
+          setApply: { outfit: 'out_jacket_orange', hair: 'hair_messy', headwear: 'hw_beanie', addAcc: ['acc_headphones', 'acc_shades'], frame: 'fr_rainbow' } },
+        { id: 'out_baju_melayu',   name: 'Baju Melayu Cekak',     tier: 'Comel',    gender: 'boy',    cost: 40, setTag: '👑 Set Diraja',
+          setApply: { outfit: 'out_baju_melayu', hair: 'hair_neat', headwear: 'hw_songkok_gold', addAcc: ['acc_medal_gold'], frame: 'fr_roman' } },
+        { id: 'out_baju_kurung',   name: 'Baju Kurung Songket',   tier: 'Comel',    gender: 'girl',   cost: 40, setTag: '👑 Set Diraja',
+          setApply: { outfit: 'out_baju_kurung', hair: 'hair_princess', headwear: 'hw_tudung_gold', addAcc: ['acc_earring_pearl', 'acc_medal_gold'], frame: 'fr_roman' } },
+        { id: 'out_knit_bow',      name: 'Blouse Reben Comel',    tier: 'Istimewa', gender: 'girl',   cost: 48, setTag: '🌸 Set Sakura',
+          setApply: { outfit: 'out_knit_bow', hair: 'hair_twin_tails', headwear: 'hw_bunny_ears', addAcc: ['acc_ribbon', 'acc_earring_star'], frame: 'fr_sakura' } },
+        { id: 'out_blazer_slate',  name: 'Blazer Graduan Pintar', tier: 'Istimewa', gender: 'unisex', cost: 55, setTag: '🎓 Set Graduan',
+          setApply: { outfit: 'out_blazer_slate', hair: 'hair_neat', headwear: 'hw_grad', addAcc: ['acc_glasses', 'acc_medal_gold'], frame: 'fr_roman' } },
+        { id: 'out_lab_coat',      name: 'Kot Saintis Muda',      tier: 'Istimewa', gender: 'unisex', cost: 65, setTag: '🔬 Set Saintis',
+          setApply: { outfit: 'out_lab_coat', hair: 'hair_spiky', headwear: 'hw_goggles_sci', addAcc: ['acc_glasses', 'acc_pin_star'], frame: 'fr_ice' } },
+        { id: 'out_astronaut',     name: 'Sut Angkasawan',        tier: 'Gah',      gender: 'unisex', cost: 80, setTag: '🌌 Set Galaksi',
+          setApply: { outfit: 'out_astronaut', hair: 'hair_spiky', headwear: 'hw_astro_visor', addAcc: ['acc_star_glasses', 'acc_wings_angel'], frame: 'fr_galaxy' } },
+        { id: 'out_prince_royal',  name: 'Sut Putera Diraja',     tier: 'Gah',      gender: 'boy',    cost: 95, setTag: '🤴 Set Sut Putera',
+          setApply: { outfit: 'out_prince_royal', hair: 'hair_quiff', headwear: 'hw_crown', addAcc: ['acc_bowtie', 'acc_medal_gold'], frame: 'fr_crown_gold' } },
+        { id: 'out_princess_gown', name: 'Gaun Puteri Emas',      tier: 'Gah',      gender: 'girl',   cost: 95, setTag: '👸 Set Puteri Unicorn',
+          setApply: { outfit: 'out_princess_gown', hair: 'hair_princess', headwear: 'hw_tiara', addAcc: ['acc_wings_angel', 'acc_earring_star'], frame: 'fr_diamond_chain' } },
+        { id: 'out_cyber_armor',   name: 'Perisai Cyber Neon',    tier: 'Epik',     gender: 'unisex', cost: 125, setTag: '⚡ Set Cyber Neon',
+          setApply: { outfit: 'out_cyber_armor', hair: 'hair_cyber_spike', headwear: 'hw_cyber_visor', addAcc: ['acc_shades', 'acc_headphones'], frame: 'fr_neon' } },
+        { id: 'out_dragon_emperor',name: 'Jubah Maharaja Naga',   tier: 'Legenda',  gender: 'unisex', cost: 160, setTag: '🐉 Set Maharaja Naga',
+          setApply: { outfit: 'out_dragon_emperor', hair: 'hair_samurai', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon', 'acc_scarf_red'], frame: 'fr_dragon' } }
       ],
       hair: [
-        { id: 'hair_quiff',     name: 'Jambul Gaya',      tier: 'Biasa',    gender: 'boy',  cost: 0 },
-        { id: 'hair_neat',      name: 'Sikat Kemas',      tier: 'Biasa',    gender: 'boy',  cost: 12 },
-        { id: 'hair_messy',     name: 'Pacat Ceria',      tier: 'Comel',    gender: 'boy',  cost: 20 },
-        { id: 'hair_curly',     name: 'Keriting Afro',    tier: 'Comel',    gender: 'boy',  cost: 28 },
-        { id: 'hair_spiky',     name: 'Pacat Kilat Hero', tier: 'Istimewa', gender: 'boy',  cost: 40 },
-        { id: 'hair_samurai',   name: 'Sanggul Samurai',  tier: 'Gah',      gender: 'boy',  cost: 55 },
-        { id: 'hair_wavy_girl', name: 'Beralun Lembut',   tier: 'Biasa',    gender: 'girl', cost: 0 },
-        { id: 'hair_buns',      name: 'Sanggul Kembar',   tier: 'Biasa',    gender: 'girl', cost: 12 },
-        { id: 'hair_ponytail',  name: 'Ekor Kuda Tinggi', tier: 'Comel',    gender: 'girl', cost: 20 },
-        { id: 'hair_long_girl', name: 'Lurus Panjang',    tier: 'Comel',    gender: 'girl', cost: 28 },
-        { id: 'hair_twin_tails',name: 'Tocang Riben',     tier: 'Istimewa', gender: 'girl', cost: 40 },
-        { id: 'hair_princess',  name: 'Ikatan Puteri',    tier: 'Gah',      gender: 'girl', cost: 55 }
+        // Susunan Harga Rambut Mengikut Padanan Set
+        { id: 'hair_quiff',      name: 'Jambul Gaya (Putera)',   tier: 'Biasa',    gender: 'boy',  cost: 0,  setTag: '🤴 Set Sut Putera', setApply: { hair: 'hair_quiff', outfit: 'out_prince_royal', headwear: 'hw_crown' } },
+        { id: 'hair_wavy_girl',  name: 'Beralun Lembut',         tier: 'Biasa',    gender: 'girl', cost: 0 },
+        { id: 'hair_neat',       name: 'Sikat Kemas (Sekolah)',  tier: 'Biasa',    gender: 'boy',  cost: 12, setTag: '🎒 Set Sekolah/Graduan', setApply: { hair: 'hair_neat', outfit: 'out_school_uniform' } },
+        { id: 'hair_buns',       name: 'Sanggul Kembar',         tier: 'Biasa',    gender: 'girl', cost: 15 },
+        { id: 'hair_messy',      name: 'Pacat Muzik Ceria',      tier: 'Comel',    gender: 'boy',  cost: 22, setTag: '🎧 Set Gaya Muzik', setApply: { hair: 'hair_messy', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
+        { id: 'hair_ponytail',   name: 'Ekor Kuda Tinggi',       tier: 'Comel',    gender: 'girl', cost: 22, setTag: '🎒 Set Sekolah/Graduan', setApply: { hair: 'hair_ponytail', outfit: 'out_school_uniform' } },
+        { id: 'hair_curly',      name: 'Keriting Afro',          tier: 'Comel',    gender: 'boy',  cost: 28 },
+        { id: 'hair_long_girl',  name: 'Lurus Panjang',          tier: 'Comel',    gender: 'girl', cost: 28 },
+        { id: 'hair_spiky',      name: 'Pacat Saintis / Angkasa',tier: 'Istimewa', gender: 'boy',  cost: 42, setTag: '🔬 Set Saintis/Galaksi', setApply: { hair: 'hair_spiky', outfit: 'out_lab_coat' } },
+        { id: 'hair_twin_tails', name: 'Tocang Riben Sakura',    tier: 'Istimewa', gender: 'girl', cost: 42, setTag: '🌸 Set Sakura', setApply: { hair: 'hair_twin_tails', outfit: 'out_knit_bow', frame: 'fr_sakura' } },
+        { id: 'hair_cyber_spike',name: 'Rambut Neon Cyber',      tier: 'Epik',     gender: 'unisex',cost: 65, setTag: '⚡ Set Cyber Neon', setApply: { hair: 'hair_cyber_spike', outfit: 'out_cyber_armor', headwear: 'hw_cyber_visor', frame: 'fr_neon' } },
+        { id: 'hair_princess',   name: 'Ikatan Puteri Diraja',   tier: 'Gah',      gender: 'girl', cost: 68, setTag: '👸 Set Puteri Unicorn', setApply: { hair: 'hair_princess', outfit: 'out_princess_gown', headwear: 'hw_tiara' } },
+        { id: 'hair_samurai',    name: 'Sanggul Maharaja Naga',  tier: 'Legenda',  gender: 'boy',  cost: 75, setTag: '🐉 Set Maharaja Naga', setApply: { hair: 'hair_samurai', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
       ],
       headwear: [
+        // Tudung, Topi & Mahkota Mengikut Padanan Set
         { id: 'hw_none',           name: 'Tiada Penutup',        tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'hw_tudung_pink',    name: 'Tudung Bawal Pink',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
         { id: 'hw_tudung_blue',    name: 'Tudung Bawal Biru',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
         { id: 'hw_tudung_emerald', name: 'Tudung Bawal Hijau',   tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_cap_blue',       name: 'Topi Sekolah Biru',    tier: 'Biasa',    gender: 'unisex', cost: 15, setTag: '🎒 Set Sekolah', setApply: { headwear: 'hw_cap_blue', outfit: 'out_school_uniform', addAcc: ['acc_backpack'] } },
+        { id: 'hw_cap_red',        name: 'Topi Sukan Merah',     tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'hw_beanie',         name: 'Beanie Muzik Oren',    tier: 'Comel',    gender: 'unisex', cost: 24, setTag: '🎧 Set Gaya Muzik', setApply: { headwear: 'hw_beanie', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
         { id: 'hw_tudung_lavender',name: 'Shawl Lavender',       tier: 'Comel',    gender: 'girl',   cost: 24 },
-        { id: 'hw_tudung_gold',    name: 'Tudung Sulam Emas',    tier: 'Istimewa', gender: 'girl',   cost: 42, setTag: '✨ Padan Baju Kurung', setApply: { headwear: 'hw_tudung_gold', outfit: 'out_baju_kurung' } },
-        { id: 'hw_cap_red',        name: 'Topi Merah',           tier: 'Biasa',    gender: 'unisex', cost: 15 },
-        { id: 'hw_cap_blue',       name: 'Topi Biru',            tier: 'Biasa',    gender: 'unisex', cost: 15 },
-        { id: 'hw_beanie',         name: 'Beanie Oren',          tier: 'Comel',    gender: 'unisex', cost: 24 },
         { id: 'hw_cat_ears',       name: 'Cekak Kucing',         tier: 'Comel',    gender: 'unisex', cost: 30 },
-        { id: 'hw_bunny_ears',     name: 'Cekak Arnab Comel',    tier: 'Comel',    gender: 'unisex', cost: 35, setTag: '🐰 Padan Bingkai Arnab', setApply: { headwear: 'hw_bunny_ears', frame: 'fr_bunny' } },
-        { id: 'hw_wizard',         name: 'Topi Ahli Sihir',      tier: 'Istimewa', gender: 'unisex', cost: 48, setTag: '🌌 Padan Galaksi', setApply: { headwear: 'hw_wizard', frame: 'fr_galaxy' } },
+        { id: 'hw_bunny_ears',     name: 'Cekak Arnab Sakura',   tier: 'Comel',    gender: 'unisex', cost: 35, setTag: '🌸 Set Sakura/Arnab', setApply: { headwear: 'hw_bunny_ears', frame: 'fr_bunny' } },
+        { id: 'hw_songkok_gold',   name: 'Songkok Diraja Emas',  tier: 'Istimewa', gender: 'boy',    cost: 42, setTag: '👑 Set Diraja', setApply: { headwear: 'hw_songkok_gold', outfit: 'out_baju_melayu', frame: 'fr_roman' } },
+        { id: 'hw_tudung_gold',    name: 'Tudung Sulam Emas',    tier: 'Istimewa', gender: 'girl',   cost: 42, setTag: '👑 Set Diraja', setApply: { headwear: 'hw_tudung_gold', outfit: 'out_baju_kurung', frame: 'fr_roman' } },
+        { id: 'hw_goggles_sci',    name: 'Gogal Saintis Pintar', tier: 'Istimewa', gender: 'unisex', cost: 48, setTag: '🔬 Set Saintis', setApply: { headwear: 'hw_goggles_sci', outfit: 'out_lab_coat', addAcc: ['acc_glasses'], frame: 'fr_ice' } },
+        { id: 'hw_wizard',         name: 'Topi Ahli Sihir',      tier: 'Istimewa', gender: 'unisex', cost: 52 },
         { id: 'hw_ninja',          name: 'Ikatan Ninja Kilat',   tier: 'Istimewa', gender: 'unisex', cost: 55, setTag: '🧣 Padan Skaf Hero', setApply: { headwear: 'hw_ninja', addAcc: ['acc_scarf_red'] } },
-        { id: 'hw_grad',           name: 'Topi Graduasi',        tier: 'Gah',      gender: 'unisex', cost: 70, setTag: '🎓 Padan Blazer', setApply: { headwear: 'hw_grad', outfit: 'out_blazer_slate' } },
-        { id: 'hw_tiara',          name: 'Tiara Kristal',        tier: 'Gah',      gender: 'girl',   cost: 80, setTag: '💎 Padan Rantai Berlian', setApply: { headwear: 'hw_tiara', frame: 'fr_diamond_chain' } },
-        { id: 'hw_crown',          name: 'Mahkota Juara',        tier: 'Epik',     gender: 'unisex', cost: 105, setTag: '👑 Padan Bingkai Mahkota', setApply: { headwear: 'hw_crown', frame: 'fr_crown_gold' } },
-        { id: 'hw_halo',           name: 'Halo Cahaya Suci',     tier: 'Legenda',  gender: 'unisex', cost: 140, setTag: '🦄 Padan Sayap Unicorn', setApply: { headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } }
+        { id: 'hw_grad',           name: 'Topi Graduasi',        tier: 'Gah',      gender: 'unisex', cost: 68, setTag: '🎓 Set Graduan', setApply: { headwear: 'hw_grad', outfit: 'out_blazer_slate', addAcc: ['acc_glasses', 'acc_medal_gold'] } },
+        { id: 'hw_astro_visor',    name: 'Antena & Visor Angkasa',tier: 'Gah',     gender: 'unisex', cost: 78, setTag: '🌌 Set Galaksi', setApply: { headwear: 'hw_astro_visor', outfit: 'out_astronaut', frame: 'fr_galaxy' } },
+        { id: 'hw_tiara',          name: 'Tiara Puteri Kristal', tier: 'Gah',      gender: 'girl',   cost: 88, setTag: '👸 Set Puteri Unicorn', setApply: { headwear: 'hw_tiara', outfit: 'out_princess_gown', addAcc: ['acc_wings_angel'], frame: 'fr_diamond_chain' } },
+        { id: 'hw_crown',          name: 'Mahkota Putera Juara', tier: 'Epik',     gender: 'unisex', cost: 105, setTag: '🤴 Set Sut Putera', setApply: { headwear: 'hw_crown', outfit: 'out_prince_royal', frame: 'fr_crown_gold' } },
+        { id: 'hw_cyber_visor',    name: 'Visor Cyber Neon',     tier: 'Epik',     gender: 'unisex', cost: 115, setTag: '⚡ Set Cyber Neon', setApply: { headwear: 'hw_cyber_visor', outfit: 'out_cyber_armor', frame: 'fr_neon' } },
+        { id: 'hw_halo',           name: 'Halo Cahaya Unicorn',  tier: 'Legenda',  gender: 'unisex', cost: 135, setTag: '🦄 Padan Sayap Unicorn', setApply: { headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } },
+        { id: 'hw_dragon_crest',   name: 'Mahkota Tanduk Naga',  tier: 'Legenda',  gender: 'unisex', cost: 150, setTag: '🐉 Set Maharaja Naga', setApply: { headwear: 'hw_dragon_crest', outfit: 'out_dragon_emperor', addAcc: ['acc_wings_dragon'], frame: 'fr_dragon' } }
       ],
       accessory: [
-        { id: 'acc_glasses',       name: 'Cermin Mata',          tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 12 },
-        { id: 'acc_bowtie',        name: 'Tali Leher Kupu',      tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 15 },
-        { id: 'acc_ribbon',        name: 'Reben Merah Jambu',    tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 15 },
-        { id: 'acc_shades',        name: 'Kaca Hitam',           tier: 'Comel',    gender: 'unisex', slot: 'eyewear', cost: 22 },
-        { id: 'acc_earring_pearl', name: 'Subang Mutiara',       tier: 'Comel',    gender: 'girl',   slot: 'ear',     cost: 22 },
-        { id: 'acc_pin_star',      name: 'Pin Bintang Emas',     tier: 'Comel',    gender: 'unisex', slot: 'pin',     cost: 25, setTag: '🎒 Padan Uniform', setApply: { addAcc: ['acc_pin_star', 'acc_backpack'], outfit: 'out_school_uniform' } },
-        { id: 'acc_headphones',    name: 'Fon Kepala',           tier: 'Comel',    gender: 'unisex', slot: 'head',    cost: 28 },
-        { id: 'acc_earring_star',  name: 'Subang Bintang',       tier: 'Istimewa', gender: 'girl',   slot: 'ear',     cost: 32 },
-        { id: 'acc_backpack',      name: 'Beg Galas Sekolah',    tier: 'Istimewa', gender: 'unisex', slot: 'back',    cost: 35, setTag: '🎒 Padan Uniform', setApply: { addAcc: ['acc_backpack', 'acc_pin_star'], outfit: 'out_school_uniform' } },
-        { id: 'acc_star_glasses',  name: 'Cermin Mata Bintang',  tier: 'Istimewa', gender: 'unisex', slot: 'eyewear', cost: 40 },
-        { id: 'acc_scarf_red',     name: 'Skaf Hero Merah',      tier: 'Istimewa', gender: 'unisex', slot: 'neck',    cost: 42 },
-        { id: 'acc_medal_gold',    name: 'Pingat Juara Emas',    tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 55 },
-        { id: 'acc_wings_angel',   name: 'Sayap Unicorn',        tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 95, setTag: '😇 Padan Halo Suci', setApply: { addAcc: ['acc_wings_angel'], headwear: 'hw_halo' } },
-        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 130, setTag: '🐉 Padan Jubah Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', frame: 'fr_dragon' } }
+        // Aksesori Stackable Mengikut Set
+        { id: 'acc_glasses',       name: 'Cermin Mata Pintar',   tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 15, setTag: '🔬 Set Saintis/Graduan', setApply: { addAcc: ['acc_glasses'], outfit: 'out_lab_coat' } },
+        { id: 'acc_bowtie',        name: 'Tali Leher Putera',    tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 18, setTag: '🤴 Set Sut Putera', setApply: { addAcc: ['acc_bowtie'], outfit: 'out_prince_royal' } },
+        { id: 'acc_ribbon',        name: 'Reben Merah Jambu',    tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 18, setTag: '🌸 Set Sakura', setApply: { addAcc: ['acc_ribbon'], outfit: 'out_knit_bow' } },
+        { id: 'acc_pin_star',      name: 'Pin Bintang Sekolah',  tier: 'Comel',    gender: 'unisex', slot: 'pin',     cost: 22, setTag: '🎒 Set Sekolah', setApply: { addAcc: ['acc_pin_star', 'acc_backpack'], outfit: 'out_school_uniform' } },
+        { id: 'acc_shades',        name: 'Kaca Hitam Muzik',     tier: 'Comel',    gender: 'unisex', slot: 'eyewear', cost: 25, setTag: '🎧 Set Gaya Muzik', setApply: { addAcc: ['acc_shades', 'acc_headphones'], outfit: 'out_jacket_orange' } },
+        { id: 'acc_earring_pearl', name: 'Subang Mutiara Diraja',tier: 'Comel',    gender: 'girl',   slot: 'ear',     cost: 25, setTag: '👑 Set Diraja', setApply: { addAcc: ['acc_earring_pearl'], outfit: 'out_baju_kurung' } },
+        { id: 'acc_headphones',    name: 'Fon Kepala Muzik',     tier: 'Comel',    gender: 'unisex', slot: 'head',    cost: 28, setTag: '🎧 Set Gaya Muzik', setApply: { addAcc: ['acc_headphones', 'acc_shades'], outfit: 'out_jacket_orange' } },
+        { id: 'acc_backpack',      name: 'Beg Galas Sekolah',    tier: 'Istimewa', gender: 'unisex', slot: 'back',    cost: 32, setTag: '🎒 Set Sekolah', setApply: { addAcc: ['acc_backpack', 'acc_pin_star'], outfit: 'out_school_uniform' } },
+        { id: 'acc_earring_star',  name: 'Subang Bintang Puteri',tier: 'Istimewa', gender: 'girl',   slot: 'ear',     cost: 35, setTag: '👸 Set Puteri Unicorn', setApply: { addAcc: ['acc_earring_star'], outfit: 'out_princess_gown' } },
+        { id: 'acc_star_glasses',  name: 'Cermin Mata Galaksi',  tier: 'Istimewa', gender: 'unisex', slot: 'eyewear', cost: 42, setTag: '🌌 Set Galaksi', setApply: { addAcc: ['acc_star_glasses'], outfit: 'out_astronaut', frame: 'fr_galaxy' } },
+        { id: 'acc_scarf_red',     name: 'Skaf Naga Merah',      tier: 'Istimewa', gender: 'unisex', slot: 'neck',    cost: 45, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_scarf_red'], outfit: 'out_dragon_emperor' } },
+        { id: 'acc_medal_gold',    name: 'Pingat Emas Graduan',  tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 55, setTag: '🎓 Set Graduan/Putera', setApply: { addAcc: ['acc_medal_gold'], outfit: 'out_blazer_slate', headwear: 'hw_grad' } },
+        { id: 'acc_wings_angel',   name: 'Sayap Unicorn',        tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 95, setTag: '🦄 Padan Halo & Galaksi', setApply: { addAcc: ['acc_wings_angel'], headwear: 'hw_halo' } },
+        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } }
       ],
       frame: [
-        // Susunan Harga Mengikut Keunikan & Elemen 3D Terkeluar Dari Bulatan
+        // Bingkai Profil 3D Disusun Mengikut Harga & Padanan Set Rasmi
         { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
-        { id: 'fr_rainbow',       name: 'Bulatan Pelangi',       tier: 'Biasa',    cost: 18 },
-        { id: 'fr_neon',          name: 'Neon Kilat Biru',       tier: 'Comel',    cost: 30 },
-        { id: 'fr_starlight',     name: 'Bintang Berkilau',      tier: 'Comel',    cost: 45 },
-        { id: 'fr_sakura',        name: 'Kelopak Sakura',        tier: 'Comel',    cost: 60 },
-        { id: 'fr_bunny',         name: 'Telinga Arnab 3D',      tier: 'Istimewa', cost: 80 },
-        { id: 'fr_flower',        name: 'Kalungan Bunga 3D',     tier: 'Istimewa', cost: 100 },
-        { id: 'fr_candy',         name: 'Lilitan Candy 3D',      tier: 'Istimewa', cost: 125 },
-        { id: 'fr_roman',         name: 'Laurel Emas Rom',       tier: 'Gah',      cost: 155 },
-        { id: 'fr_thorns',        name: 'Akar Duri Rimba',       tier: 'Gah',      cost: 185 },
-        { id: 'fr_ice',           name: 'Kristal Ais Tajam',     tier: 'Gah',      cost: 215 },
-        { id: 'fr_fire',          name: 'Lingkaran Api Marak',   tier: 'Gah',      cost: 245 },
-        { id: 'fr_crown_gold',    name: 'Mahkota Emas 3D',       tier: 'Epik',     cost: 285 },
-        { id: 'fr_gold_chain',    name: 'Rantai Emas Diraja',    tier: 'Epik',     cost: 325 },
-        { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Epik',     cost: 365 },
-        { id: 'fr_diamond_chain', name: 'Rantai Berlian Mewah',  tier: 'Legenda',  cost: 410 },
-        { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 450 }
+        { id: 'fr_rainbow',       name: 'Bulatan Pelangi Muzik', tier: 'Biasa',    cost: 20,  setTag: '🎧 Set Gaya Muzik', setApply: { frame: 'fr_rainbow', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
+        { id: 'fr_starlight',     name: 'Bintang Sekolah',       tier: 'Comel',    cost: 35,  setTag: '🎒 Set Sekolah', setApply: { frame: 'fr_starlight', outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
+        { id: 'fr_sakura',        name: 'Kelopak Sakura',        tier: 'Comel',    cost: 55,  setTag: '🌸 Set Sakura', setApply: { frame: 'fr_sakura', outfit: 'out_knit_bow' } },
+        { id: 'fr_bunny',         name: 'Telinga Arnab 3D',      tier: 'Istimewa', cost: 75,  setTag: '🐰 Padan Cekak Arnab', setApply: { frame: 'fr_bunny', headwear: 'hw_bunny_ears' } },
+        { id: 'fr_flower',        name: 'Kalungan Bunga 3D',     tier: 'Istimewa', cost: 95 },
+        { id: 'fr_candy',         name: 'Lilitan Candy 3D',      tier: 'Istimewa', cost: 115 },
+        { id: 'fr_roman',         name: 'Laurel Emas Diraja',    tier: 'Gah',      cost: 140, setTag: '👑 Set Diraja/Graduan', setApply: { frame: 'fr_roman', outfit: 'out_baju_melayu', headwear: 'hw_grad' } },
+        { id: 'fr_ice',           name: 'Kristal Ais Saintis',   tier: 'Gah',      cost: 165, setTag: '🔬 Set Saintis', setApply: { frame: 'fr_ice', outfit: 'out_lab_coat', headwear: 'hw_goggles_sci' } },
+        { id: 'fr_thorns',        name: 'Akar Duri Rimba',       tier: 'Gah',      cost: 190 },
+        { id: 'fr_fire',          name: 'Lingkaran Api Marak',   tier: 'Gah',      cost: 220 },
+        { id: 'fr_neon',          name: 'Neon Kilat Cyber',      tier: 'Epik',     cost: 255, setTag: '⚡ Set Cyber Neon', setApply: { frame: 'fr_neon', outfit: 'out_cyber_armor', headwear: 'hw_cyber_visor' } },
+        { id: 'fr_crown_gold',    name: 'Mahkota Putera 3D',     tier: 'Epik',     cost: 295, setTag: '🤴 Set Sut Putera', setApply: { frame: 'fr_crown_gold', outfit: 'out_prince_royal', headwear: 'hw_crown' } },
+        { id: 'fr_gold_chain',    name: 'Rantai Emas Diraja',    tier: 'Epik',     cost: 330 },
+        { id: 'fr_diamond_chain', name: 'Rantai Berlian Puteri', tier: 'Legenda',  cost: 375, setTag: '👸 Set Puteri Unicorn', setApply: { frame: 'fr_diamond_chain', outfit: 'out_princess_gown', headwear: 'hw_tiara' } },
+        { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 415, setTag: '🌌 Set Galaksi', setApply: { frame: 'fr_galaxy', outfit: 'out_astronaut', headwear: 'hw_astro_visor' } },
+        { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Legenda',  cost: 450, setTag: '🐉 Set Maharaja Naga', setApply: { frame: 'fr_dragon', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
       ]
     };
 
@@ -2811,7 +2832,7 @@
       const hairPal = HAIR_COLOR_PALETTES[cfg.hairColor] || HAIR_COLOR_PALETTES.brown;
       const isGirl = cfg.gender === 'girl';
       const hasTudung = cfg.headwear && cfg.headwear.startsWith('hw_tudung');
-      const hasFullCap = ['hw_cap_red', 'hw_cap_blue', 'hw_beanie', 'hw_wizard', 'hw_grad', 'hw_ninja'].includes(cfg.headwear);
+      const hasFullCap = ['hw_cap_red', 'hw_cap_blue', 'hw_beanie', 'hw_wizard', 'hw_grad', 'hw_ninja', 'hw_songkok_gold'].includes(cfg.headwear);
       const accList = cfg.accessories || [];
       const charId = cfg.face || (isGirl ? 'girl_hana' : 'boy_leo');
       const outfitId = cfg.outfit || (isGirl ? 'out_crew_charcoal' : 'out_hoodie_amber');
@@ -3392,6 +3413,12 @@
               <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
               <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
             `;
+          } else if (cfg.hair === 'hair_cyber_spike') {
+            frontHairLayer = `
+              <polygon points="21,43 19,19 32,27 40,10 50,23 60,10 68,27 81,19 79,43 66,31 50,34 34,31" fill="#0F172A" stroke="#22D3EE" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+              <polygon points="40,10 45,23 50,23" fill="#22D3EE"/>
+              <polygon points="60,10 55,23 50,23" fill="#38BDF8"/>
+            `;
           } else {
             frontHairLayer = `
               <circle cx="27" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
@@ -3408,6 +3435,12 @@
               <path d="M 48 15 C 68 14, 84 28, 82 58 C 81 62, 77 61, 75 55 C 70 37, 58 27, 46 21 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
               <path d="M 27 28 C 33 21, 41 18, 47 17" fill="none" stroke="${hairPal.shine}" stroke-width="2.6" stroke-linecap="round" opacity="0.6"/>
               <path d="M 55 19 C 65 21, 73 28, 76 38" fill="none" stroke="${hairPal.shine}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+            `;
+          } else if (cfg.hair === 'hair_cyber_spike') {
+            frontHairLayer = `
+              <polygon points="21,43 19,19 32,27 40,10 50,23 60,10 68,27 81,19 79,43 66,31 50,34 34,31" fill="#0F172A" stroke="#22D3EE" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+              <polygon points="40,10 45,23 50,23" fill="#22D3EE"/>
+              <polygon points="60,10 55,23 50,23" fill="#38BDF8"/>
             `;
           } else {
             frontHairLayer = `
@@ -3579,6 +3612,44 @@
           <circle cx="50" cy="21.5" r="2.8" fill="#E11D48"/>
           <circle cx="37.5" cy="23.5" r="2" fill="#38BDF8"/>
           <circle cx="62.5" cy="23.5" r="2" fill="#38BDF8"/>
+        `;
+      } else if (cfg.headwear === 'hw_songkok_gold') {
+        hatLayer = `
+          <path d="M 24 35 L 27 17 C 35 14, 65 14, 73 17 L 76 35 Q 50 38 24 35 Z" fill="#0F172A" stroke="#FACC15" stroke-width="1.3" filter="url(#${uid}_shadow)"/>
+          <rect x="25" y="30.5" width="50" height="3.2" rx="1.5" fill="url(#${uid}_gold)"/>
+          <polygon points="50,19 52,23 56.5,23.5 53.2,26.5 54,30.5 50,28.5 46,30.5 46.8,26.5 43.5,23.5 48,23" fill="url(#${uid}_gold)"/>
+        `;
+      } else if (cfg.headwear === 'hw_goggles_sci') {
+        hatLayer = `
+          <rect x="22" y="27" width="56" height="6" rx="3" fill="#0284C7" filter="url(#${uid}_soft)"/>
+          <rect x="29" y="22.5" width="18" height="12" rx="4.5" fill="#E0F2FE" stroke="#0369A1" stroke-width="2.2" filter="url(#${uid}_soft)"/>
+          <rect x="53" y="22.5" width="18" height="12" rx="4.5" fill="#E0F2FE" stroke="#0369A1" stroke-width="2.2" filter="url(#${uid}_soft)"/>
+          <line x1="47" y1="28.5" x2="53" y2="28.5" stroke="#0369A1" stroke-width="2.5"/>
+          <circle cx="35" cy="26.5" r="2" fill="#FFFFFF" opacity="0.85"/>
+          <circle cx="59" cy="26.5" r="2" fill="#FFFFFF" opacity="0.85"/>
+        `;
+      } else if (cfg.headwear === 'hw_astro_visor') {
+        hatLayer = `
+          <line x1="50" y1="18" x2="50" y2="6" stroke="#94A3B8" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="50" cy="5.5" r="3.6" fill="#F97316" stroke="#FFFFFF" stroke-width="1.1"/>
+          <path d="M 21 34 C 22 14, 78 14, 79 34 Q 50 28 21 34 Z" fill="rgba(56, 189, 248, 0.35)" stroke="#38BDF8" stroke-width="2" filter="url(#${uid}_soft)"/>
+          <rect x="19" y="30" width="8" height="11" rx="3.5" fill="#F8FAFC" stroke="#64748B" stroke-width="1.3"/>
+          <rect x="73" y="30" width="8" height="11" rx="3.5" fill="#F8FAFC" stroke="#64748B" stroke-width="1.3"/>
+        `;
+      } else if (cfg.headwear === 'hw_cyber_visor') {
+        hatLayer = `
+          <path d="M 22 33 C 24 19, 76 19, 78 33 L 73 37 Q 50 32 27 37 Z" fill="#0F172A" stroke="#22D3EE" stroke-width="1.8" filter="url(#${uid}_shadow)"/>
+          <path d="M 27 30 Q 50 25 73 30" fill="none" stroke="#22D3EE" stroke-width="2.6" stroke-linecap="round"/>
+          <polygon points="50,18 54,24 50,28 46,24" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+        `;
+      } else if (cfg.headwear === 'hw_dragon_crest') {
+        hatLayer = `
+          <g filter="url(#${uid}_shadow)">
+            <polygon points="27,31 15,10 34,21" fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.2"/>
+            <polygon points="73,31 85,10 66,21" fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.2"/>
+            <path d="M 26 32 Q 50 21 74 32 L 70 35 Q 50 27 30 35 Z" fill="#B91C1C" stroke="#FACC15" stroke-width="1.2"/>
+            <polygon points="50,12 55,22 50,29 45,22" fill="#F97316" stroke="#FEF08A" stroke-width="1.1"/>
+          </g>
         `;
       } else if (cfg.headwear === 'hw_halo') {
         // Halo Cahaya Suci Legenda: Lingkaran cahaya emas bersinar terapung jelas di atas kepala + kilauan bintang!
@@ -5993,6 +6064,7 @@
       };
 
       if (plan.outfit) trySetSlot('outfit', plan.outfit);
+      if (plan.hair) trySetSlot('hair', plan.hair);
       if (plan.headwear) trySetSlot('headwear', plan.headwear);
       if (plan.frame) trySetSlot('frame', plan.frame);
       if (Array.isArray(plan.addAcc)) {

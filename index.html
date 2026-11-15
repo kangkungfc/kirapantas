@@ -117,6 +117,10 @@
           <span>🛡️</span>
           <span id="header-admin-notif-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-900 text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
+        <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
+          <span>💌</span>
+          <span id="header-inbox-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow">0</span>
+        </button>
         <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
         <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
         <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
@@ -203,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.24
+            Versi 1.9.28
           </span>
         </div>
 
@@ -496,6 +500,11 @@
         </button>
         <button id="btn-bottom-scoreboard" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
+        </button>
+        <button id="btn-bottom-inbox" onclick="openPlayerInboxModal()" class="col-span-2 relative bubbly-btn bg-gradient-to-r from-emerald-50 to-teal-50 border-3 border-emerald-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-emerald-950">
+          <span>💌</span>
+          <span>Peti Ucapan & Cabaran Rakan</span>
+          <span id="home-inbox-badge" class="hidden inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-rose-600 text-white text-[10px] font-black shadow animate-bounce">0</span>
         </button>
         <button id="btn-home-admin-panel" onclick="openAdminPanelWithAlerts()" class="hidden relative col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
           <span>🛡️</span>
@@ -798,9 +807,15 @@
          SKRIN 7: PAPAN SKOR ONLINE (REAL-TIME SCOREBOARD)
          ======================================================== -->
     <section id="screen-scoreboard" class="hidden space-y-4">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-1.5">
         <button id="btn-score-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <button id="btn-score-refresh" onclick="loadScoreboard()" class="bubbly-btn bg-indigo-100 border-2 border-indigo-300 px-3 py-2 text-xs font-black text-indigo-800">🔄 Segar Semula</button>
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 border-2 border-emerald-400 px-3 py-2 text-xs font-black text-emerald-950">
+            💌 Peti Ucapan
+            <span id="sb-inbox-badge" class="hidden ml-1 bg-rose-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full">0</span>
+          </button>
+          <button id="btn-score-refresh" onclick="loadScoreboard()" class="bubbly-btn bg-indigo-100 border-2 border-indigo-300 px-3 py-2 text-xs font-black text-indigo-800">🔄 Segar</button>
+        </div>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-3">
@@ -1161,14 +1176,17 @@
           <span id="admin-total-students-badge" class="text-xs font-black bg-rose-100 text-rose-900 px-3 py-1 rounded-full border border-rose-300">0 Pelajar</span>
         </div>
 
-        <!-- 2 Tab Utama Admin: Akaun Pelajar vs Peti Masuk Aduan -->
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" onclick="switchAdminPanelTab('students')" id="tab-admin-students" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black">
-            👥 Akaun Pelajar
+        <!-- 3 Tab Utama Admin: Akaun Pelajar, Aduan Pemain & Ayat Ucapan -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <button type="button" onclick="switchAdminPanelTab('students')" id="tab-admin-students" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-1.5 text-[11px] sm:text-xs font-black">
+            👥 Pelajar
           </button>
-          <button type="button" onclick="switchAdminPanelTab('tickets')" id="tab-admin-tickets" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5">
-            <span>📩 Aduan Pemain</span>
-            <span id="admin-open-tickets-badge" class="bg-amber-400 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+          <button type="button" onclick="switchAdminPanelTab('tickets')" id="tab-admin-tickets" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-1.5 text-[11px] sm:text-xs font-black inline-flex items-center justify-center gap-1">
+            <span>📩 Aduan</span>
+            <span id="admin-open-tickets-badge" class="bg-amber-400 text-amber-950 text-[10px] font-black px-1.5 py-0.5 rounded-full">0</span>
+          </button>
+          <button type="button" onclick="switchAdminPanelTab('presets')" id="tab-admin-presets" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-1.5 text-[11px] sm:text-xs font-black">
+            💬 Ayat Ucapan
           </button>
         </div>
 
@@ -1191,9 +1209,85 @@
 
         <!-- Peti Masuk Aduan & Bantuan Pemain -->
         <div id="admin-tickets-list" class="hidden space-y-2.5 max-h-[60vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+
+        <!-- Pengurusan Senarai Ayat Ucapan Pantas Pemain (Tambah, Ubah & Padam) -->
+        <div id="admin-presets-panel" class="hidden space-y-3">
+          <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-xs font-black text-sky-950">➕ Tambah Ayat Ucapan Baharu</div>
+              <button type="button" onclick="adminResetQuickChatPresetsDefault()" class="text-[10px] font-black text-indigo-700 hover:text-indigo-900 underline">🔄 Set Semula Lalai</button>
+            </div>
+            <p class="text-[10px] font-bold text-slate-600">Ayat yang disimpan di sini akan terus dipaparkan kepada semua pemain apabila mereka menghantar atau membalas ucapan rakan.</p>
+            <form onsubmit="adminAddQuickChatPreset(event)" class="flex gap-1.5">
+              <input id="admin-new-preset-input" type="text" required minlength="2" maxlength="90" placeholder="Contoh: 🌟 Tahniah kawan, teruskan usaha!" class="flex-1 px-3 py-2 rounded-xl border-2 border-sky-300 text-xs font-bold bg-white focus:outline-none" />
+              <button type="submit" class="bubbly-btn bg-sky-600 text-white border border-sky-900 px-3.5 py-2 text-xs font-black flex-shrink-0">
+                ➕ Tambah
+              </button>
+            </form>
+          </div>
+
+          <div id="admin-presets-list" class="space-y-2 max-h-[50vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        </div>
       </div>
     </section>
 
+    <!-- HAB MESEJ SATU HALAMAN (INBOX + SEND + SENT DALAM SATU PAGE) -->
+    <div id="player-inbox-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-2.5 sm:p-3">
+      <div class="bubbly-card bg-white border-4 border-emerald-400 w-full max-w-md p-4 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-base font-bold text-emerald-950">💌 Mesej & Ucapan Rakan</h3>
+            <p class="text-[10px] font-bold text-slate-500">Terima, hantar & balas ucapan semangat dalam satu halaman</p>
+          </div>
+          <button type="button" onclick="closePlayerInboxModal()" class="text-xs font-black text-slate-500 hover:text-slate-800 bg-slate-100 px-2.5 py-1.5 rounded-xl">✖️ Tutup</button>
+        </div>
+
+        <!-- 3 Tab Bersepadu Dalam Satu Halaman Mesej -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <button type="button" onclick="switchPlayerMsgTab('inbox')" id="tab-pmsg-inbox" class="bubbly-btn bg-emerald-600 text-white border-2 border-emerald-900 py-2 px-1.5 text-[11px] font-black inline-flex items-center justify-center gap-1">
+            <span>📥 Peti Masuk</span>
+            <span id="modal-inbox-tab-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
+          </button>
+          <button type="button" onclick="switchPlayerMsgTab('send')" id="tab-pmsg-send" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1.5 text-[11px] font-black">
+            📤 Hantar Mesej
+          </button>
+          <button type="button" onclick="switchPlayerMsgTab('sent')" id="tab-pmsg-sent" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1.5 text-[11px] font-black">
+            📨 Dihantar
+          </button>
+        </div>
+
+        <!-- PANEL 1: PETI MASUK (TERIMA MESEJ) -->
+        <div id="pmsg-panel-inbox" class="space-y-2">
+          <div id="player-inbox-list" class="space-y-2 max-h-[55vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        </div>
+
+        <!-- PANEL 2: HANTAR MESEJ (PILIH PENERIMA & AYAT UCAPAN) -->
+        <div id="pmsg-panel-send" class="hidden space-y-2.5">
+          <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-2.5 space-y-2">
+            <label class="block text-[10px] font-black text-sky-950 uppercase tracking-wide">👤 Pilih Rakan Penerima Mesej:</label>
+            <input id="qc-recipient-search" type="text" oninput="renderQuickChatRecipientSelector()" placeholder="🔍 Cari nama rakan..." class="w-full px-3 py-1.5 rounded-xl border border-sky-300 text-xs font-bold bg-white focus:outline-none" />
+            <div id="qc-recipient-chips" class="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5"></div>
+            <div id="qc-selected-recipient-card" class="flex items-center gap-2 bg-white border border-sky-300 rounded-xl px-2.5 py-1.5">
+              <div id="qc-target-avatar" class="w-8 h-8 rounded-full flex-shrink-0"></div>
+              <div class="min-w-0 flex-1">
+                <div class="text-[9px] font-bold text-slate-400">Hantar kepada:</div>
+                <div id="qc-target-name" class="text-xs font-black text-slate-900 truncate">Sila pilih rakan di atas</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-[10px] font-black text-slate-600">💬 Tekan ucapan untuk terus hantar:</div>
+            <div id="qc-presets-list" class="grid grid-cols-1 gap-1.5 max-h-[36vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: MESEJ DIHANTAR (SENT HISTORY) -->
+        <div id="pmsg-panel-sent" class="hidden space-y-2">
+          <div id="player-sent-list" class="space-y-2 max-h-[55vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- ========================================================
@@ -5011,6 +5105,83 @@
 
     let activeScoreboardTab = 'today';
     let lastScoreboardPlayers = [];
+    const SB_REACTIONS_STORAGE_KEY = 'kirapantas_sb_reactions_v1';
+    let scoreboardReactionsMap = {}; // { targetPlayerId: { like: [voterId...], love: [voterId...], fire: [voterId...] } }
+    let scoreboardReactionsUnsubscribe = null;
+
+    function loadLocalScoreboardReactions() {
+      try {
+        const raw = localStorage.getItem(SB_REACTIONS_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return (parsed && typeof parsed === 'object') ? parsed : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveLocalScoreboardReactions(mapObj) {
+      try {
+        localStorage.setItem(SB_REACTIONS_STORAGE_KEY, JSON.stringify(mapObj));
+      } catch (e) {}
+    }
+
+    scoreboardReactionsMap = loadLocalScoreboardReactions();
+
+    function spawnFloatingReactionEmoji(emojiChar) {
+      const el = document.createElement('div');
+      el.innerText = emojiChar;
+      el.className = 'fixed z-50 pointer-events-none text-3xl font-black transition-all duration-700 ease-out';
+      el.style.left = '50%';
+      el.style.bottom = '24%';
+      el.style.transform = 'translate(-50%, 0) scale(0.7)';
+      el.style.opacity = '1';
+      document.body.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.transform = 'translate(-50%, -95px) scale(1.35)';
+        el.style.opacity = '0';
+      });
+      setTimeout(() => el.remove(), 750);
+    }
+
+    window.toggleScoreboardReaction = async function(targetPlayerId, reactionType) {
+      if (!currentPlayer || !targetPlayerId || !['like', 'love', 'fire'].includes(reactionType)) return;
+      const myVoterId = currentPlayer.accountId || currentPlayer.key || 'guest';
+
+      const currentEntry = scoreboardReactionsMap[targetPlayerId] || { like: [], love: [], fire: [] };
+      const cleanEntry = {
+        like: Array.isArray(currentEntry.like) ? [...currentEntry.like] : [],
+        love: Array.isArray(currentEntry.love) ? [...currentEntry.love] : [],
+        fire: Array.isArray(currentEntry.fire) ? [...currentEntry.fire] : []
+      };
+
+      const alreadyReacted = cleanEntry[reactionType].includes(myVoterId);
+      if (alreadyReacted) {
+        playClick();
+        cleanEntry[reactionType] = cleanEntry[reactionType].filter(id => id !== myVoterId);
+      } else {
+        playCheer();
+        cleanEntry[reactionType].push(myVoterId);
+        const emojiMap = { like: '👍', love: '❤️', fire: '🔥' };
+        spawnFloatingReactionEmoji(emojiMap[reactionType]);
+      }
+
+      scoreboardReactionsMap[targetPlayerId] = cleanEntry;
+      saveLocalScoreboardReactions(scoreboardReactionsMap);
+      renderScoreboardList(lastScoreboardPlayers);
+
+      if (!db) return;
+      try {
+        await authReadyPromise;
+        if (!fbUser) return;
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scoreboard_reactions', targetPlayerId), {
+          targetId: targetPlayerId,
+          like: cleanEntry.like,
+          love: cleanEntry.love,
+          fire: cleanEntry.fire,
+          updatedAt: Date.now()
+        });
+      } catch (e) {}
+    };
 
     window.switchScoreboardTab = function(tabName) {
       playClick();
@@ -5569,6 +5740,8 @@
           startPlayerSessionTimer();
           if (isAdminUser) {
             refreshAdminAllData();
+          } else {
+            subscribePlayerQuickMessages();
           }
           navTo('home');
         } else {
@@ -5834,6 +6007,14 @@
         scoreboardUnsubscribe();
         scoreboardUnsubscribe = null;
       }
+      if (scoreboardReactionsUnsubscribe) {
+        scoreboardReactionsUnsubscribe();
+        scoreboardReactionsUnsubscribe = null;
+      }
+      if (playerMessagesUnsubscribe) {
+        playerMessagesUnsubscribe();
+        playerMessagesUnsubscribe = null;
+      }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
       ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
@@ -5929,9 +6110,48 @@
                 <div class="text-[9px] text-slate-500 font-bold leading-tight">${subScoreInfo}</div>
               </div>
             </div>
-            <div class="flex flex-wrap items-center justify-between gap-1.5 bg-white/90 border border-slate-200/90 rounded-xl px-2.5 py-1.5 text-[10px] sm:text-[11px] font-bold text-slate-700 leading-snug">
-              <span class="break-words">${activityText}</span>
-              <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 flex-shrink-0">⏱️ Jumlah: ${totalHHMM}</span>
+            <div class="bg-white/90 border border-slate-200/90 rounded-xl px-2.5 py-1.5 space-y-1.5">
+              <div class="flex flex-wrap items-center justify-between gap-1 text-[10px] sm:text-[11px] font-bold text-slate-700 leading-snug">
+                <span class="break-words">${activityText}</span>
+                <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 flex-shrink-0 ml-auto">⏱️ ${totalHHMM}</span>
+              </div>
+              ${(() => {
+                const pid = (p.accountId || p.key || '').replace(/'/g, '');
+                if (!pid) return '';
+                const rData = scoreboardReactionsMap[pid] || { like: [], love: [], fire: [] };
+                const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+                const likeArr = Array.isArray(rData.like) ? rData.like : [];
+                const loveArr = Array.isArray(rData.love) ? rData.love : [];
+                const fireArr = Array.isArray(rData.fire) ? rData.fire : [];
+
+                const hasLike = myId && likeArr.includes(myId);
+                const hasLove = myId && loveArr.includes(myId);
+                const hasFire = myId && fireArr.includes(myId);
+
+                return `
+                  <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1 border-t border-slate-100">
+                    <div class="flex items-center gap-1">
+                      <button type="button" onclick="toggleScoreboardReaction('${pid}', 'like')" title="Like"
+                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border transition active:scale-90 ${hasLike ? 'bg-sky-100 text-sky-900 border-sky-400 shadow-2xs' : 'bg-slate-100/90 text-slate-600 border-slate-200 hover:bg-sky-50'}">
+                        <span>👍</span><span>${likeArr.length}</span>
+                      </button>
+                      <button type="button" onclick="toggleScoreboardReaction('${pid}', 'love')" title="Love"
+                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border transition active:scale-90 ${hasLove ? 'bg-rose-100 text-rose-900 border-rose-400 shadow-2xs' : 'bg-slate-100/90 text-slate-600 border-slate-200 hover:bg-rose-50'}">
+                        <span>❤️</span><span>${loveArr.length}</span>
+                      </button>
+                      <button type="button" onclick="toggleScoreboardReaction('${pid}', 'fire')" title="Terbakar / Padu!"
+                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border transition active:scale-90 ${hasFire ? 'bg-amber-100 text-amber-950 border-amber-500 shadow-2xs' : 'bg-slate-100/90 text-slate-600 border-slate-200 hover:bg-amber-50'}">
+                        <span>🔥</span><span>${fireArr.length}</span>
+                      </button>
+                    </div>
+                    ${(!isMe && currentPlayer && !currentPlayer.isAdmin) ? `
+                      <button type="button" onclick="openQuickChatSendModal('${pid}')" class="bubbly-btn bg-sky-500 hover:bg-sky-600 text-white border border-sky-800 px-2.5 py-0.5 text-[10px] font-black">
+                        💬 Mesej
+                      </button>
+                    ` : ''}
+                  </div>
+                `;
+              })()}
             </div>
           </div>
         `;
@@ -5971,6 +6191,31 @@
           scoreboardUnsubscribe();
           scoreboardUnsubscribe = null;
         }
+        if (scoreboardReactionsUnsubscribe) {
+          scoreboardReactionsUnsubscribe();
+          scoreboardReactionsUnsubscribe = null;
+        }
+
+        const reactionsCol = collection(db, 'artifacts', appId, 'public', 'data', 'scoreboard_reactions');
+        scoreboardReactionsUnsubscribe = onSnapshot(reactionsCol, (rSnap) => {
+          const freshMap = { ...loadLocalScoreboardReactions() };
+          rSnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            if (d) {
+              const tid = d.targetId || docSnap.id;
+              freshMap[tid] = {
+                like: Array.isArray(d.like) ? d.like : [],
+                love: Array.isArray(d.love) ? d.love : [],
+                fire: Array.isArray(d.fire) ? d.fire : []
+              };
+            }
+          });
+          scoreboardReactionsMap = freshMap;
+          saveLocalScoreboardReactions(scoreboardReactionsMap);
+          if (lastScoreboardPlayers.length > 0) {
+            renderScoreboardList(lastScoreboardPlayers);
+          }
+        });
 
         const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
         scoreboardUnsubscribe = onSnapshot(
@@ -6453,30 +6698,42 @@
 
     window.switchAdminPanelTab = function(tabName) {
       playClick();
-      activeAdminTab = tabName === 'tickets' ? 'tickets' : 'students';
+      activeAdminTab = ['students', 'tickets', 'presets'].includes(tabName) ? tabName : 'students';
       const stBtn = document.getElementById('tab-admin-students');
       const tkBtn = document.getElementById('tab-admin-tickets');
+      const prBtn = document.getElementById('tab-admin-presets');
       const stCtrl = document.getElementById('admin-students-controls');
       const stList = document.getElementById('admin-students-list');
       const tkList = document.getElementById('admin-tickets-list');
+      const prPanel = document.getElementById('admin-presets-panel');
 
       if (stBtn) {
         stBtn.className = activeAdminTab === 'students'
-          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-1.5 text-[11px] sm:text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-1.5 text-[11px] sm:text-xs font-black';
       }
       if (tkBtn) {
         tkBtn.className = activeAdminTab === 'tickets'
-          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5';
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-1.5 text-[11px] sm:text-xs font-black inline-flex items-center justify-center gap-1'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-1.5 text-[11px] sm:text-xs font-black inline-flex items-center justify-center gap-1';
+      }
+      if (prBtn) {
+        prBtn.className = activeAdminTab === 'presets'
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-1.5 text-[11px] sm:text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-1.5 text-[11px] sm:text-xs font-black';
       }
       if (stCtrl) stCtrl.classList.toggle('hidden', activeAdminTab !== 'students');
       if (stList) stList.classList.toggle('hidden', activeAdminTab !== 'students');
       if (tkList) tkList.classList.toggle('hidden', activeAdminTab !== 'tickets');
+      if (prPanel) prPanel.classList.toggle('hidden', activeAdminTab !== 'presets');
+
+      if (activeAdminTab === 'presets') {
+        renderAdminQuickChatPresetsList();
+      }
     };
 
     window.refreshAdminAllData = async function() {
-      await Promise.all([loadAdminStudentList(), loadAdminSupportTickets()]);
+      await Promise.all([loadAdminStudentList(), loadAdminSupportTickets(), loadQuickChatPresetsCloud()]);
     };
 
     function sortAdminTicketsPriority(list) {
@@ -6897,6 +7154,609 @@
         }
       }
     };
+
+    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN (PILIHAN A - SAFE QUICK-CHAT) */
+    const PLAYER_MSGS_STORAGE_KEY = 'kirapantas_player_quick_msgs_v1';
+    let playerMessagesUnsubscribe = null;
+    let cachedPlayerInbox = [];
+    let quickChatRecipient = null;
+    let lastQuickChatSentAt = 0;
+
+    const QUICK_CHAT_PRESETS_STORAGE_KEY = 'kirapantas_quick_chat_presets_v1';
+    const DEFAULT_QUICK_CHAT_PRESETS = [
+      { id: 'qc_1', text: '👏 Hebatnya skor awak hari ini! Tahniah!' },
+      { id: 'qc_2', text: '🔥 Jom lumba kumpul markah di Papan Skor!' },
+      { id: 'qc_3', text: '💪 Teruskan usaha, awak pasti boleh jadi Juara!' },
+      { id: 'qc_4', text: '⚡ Lajunya awak kira! Jom cuba Cabaran Kilat!' },
+      { id: 'qc_5', text: '🧠 Jom berlatih Flash Anzan sama-sama!' },
+      { id: 'qc_6', text: '🌟 Terima kasih! Semoga berjaya juga untuk awak!' }
+    ];
+
+    function loadLocalQuickChatPresets() {
+      try {
+        const raw = localStorage.getItem(QUICK_CHAT_PRESETS_STORAGE_KEY);
+        if (!raw) return [...DEFAULT_QUICK_CHAT_PRESETS];
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr) && arr.length > 0) return arr;
+      } catch (e) {}
+      return [...DEFAULT_QUICK_CHAT_PRESETS];
+    }
+
+    function saveLocalQuickChatPresets(list) {
+      try {
+        localStorage.setItem(QUICK_CHAT_PRESETS_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    let SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
+
+    async function loadQuickChatPresetsCloud() {
+      SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
+      if (!db) return SAFE_QUICK_CHAT_PRESETS;
+      try {
+        await authReadyPromise;
+        if (!fbUser) return SAFE_QUICK_CHAT_PRESETS;
+        const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'app_settings', 'quick_chat_presets'));
+        if (snap.exists()) {
+          const data = snap.data();
+          if (Array.isArray(data.items) && data.items.length > 0) {
+            SAFE_QUICK_CHAT_PRESETS = data.items;
+            saveLocalQuickChatPresets(SAFE_QUICK_CHAT_PRESETS);
+          }
+        }
+      } catch (e) {}
+      renderAdminQuickChatPresetsList();
+      return SAFE_QUICK_CHAT_PRESETS;
+    }
+
+    async function saveQuickChatPresetsCloud(newList) {
+      SAFE_QUICK_CHAT_PRESETS = newList;
+      saveLocalQuickChatPresets(newList);
+      renderAdminQuickChatPresetsList();
+      if (!db) return;
+      try {
+        await authReadyPromise;
+        if (!fbUser) return;
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'app_settings', 'quick_chat_presets'), {
+          items: newList,
+          updatedAt: Date.now()
+        });
+      } catch (e) {}
+    }
+
+    function renderAdminQuickChatPresetsList() {
+      const listEl = document.getElementById('admin-presets-list');
+      if (!listEl) return;
+      if (!SAFE_QUICK_CHAT_PRESETS || SAFE_QUICK_CHAT_PRESETS.length === 0) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-5">Tiada ayat ucapan. Sila tambah ayat baharu di atas.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = SAFE_QUICK_CHAT_PRESETS.map((item, idx) => {
+        const safeText = (item.text || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return `
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-2.5 space-y-2">
+            <div class="flex items-center gap-1.5">
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-900 text-[10px] font-black flex items-center justify-center flex-shrink-0">${idx + 1}</span>
+              <input id="admin-preset-edit-${item.id}" type="text" maxlength="90" value="${safeText}" class="flex-1 px-2.5 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:border-sky-500 focus:outline-none" />
+            </div>
+            <div class="flex items-center justify-end gap-1.5">
+              <button type="button" onclick="adminSaveEditedQuickChatPreset('${item.id}')" class="bubbly-btn bg-emerald-500 hover:bg-emerald-600 text-white border border-emerald-800 px-3 py-1 text-[10px] font-black">
+                💾 Simpan Ubah
+              </button>
+              <button type="button" onclick="adminDeleteQuickChatPreset('${item.id}')" class="bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 px-3 py-1 text-[10px] font-black">
+                🗑️ Padam
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.adminAddQuickChatPreset = async function(e) {
+      e.preventDefault();
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const inp = document.getElementById('admin-new-preset-input');
+      const fb = document.getElementById('admin-action-feedback');
+      const rawText = (inp?.value || '').trim();
+      if (rawText.length < 2) {
+        playWrong();
+        return;
+      }
+
+      const newItem = {
+        id: `qc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
+        text: rawText
+      };
+      const updated = [...SAFE_QUICK_CHAT_PRESETS, newItem];
+      await saveQuickChatPresetsCloud(updated);
+      if (inp) inp.value = '';
+      playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerText = `✅ Ayat ucapan baharu berjaya ditambah!`;
+        fb.classList.remove('hidden');
+      }
+    };
+
+    window.adminSaveEditedQuickChatPreset = async function(presetId) {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const inp = document.getElementById(`admin-preset-edit-${presetId}`);
+      const fb = document.getElementById('admin-action-feedback');
+      const newText = (inp?.value || '').trim();
+      if (newText.length < 2) {
+        playWrong();
+        showAppToast('Ayat ucapan mestilah sekurang-kurangnya 2 aksara.');
+        return;
+      }
+
+      const updated = SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it);
+      await saveQuickChatPresetsCloud(updated);
+      playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerText = `💾 Perubahan ayat ucapan telah disimpan!`;
+        fb.classList.remove('hidden');
+      }
+    };
+
+    window.adminDeleteQuickChatPreset = async function(presetId) {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const fb = document.getElementById('admin-action-feedback');
+      if (SAFE_QUICK_CHAT_PRESETS.length <= 1) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `⚠️ Sekurang-kurangnya 1 ayat ucapan mesti dikekalkan untuk pemain.`;
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const updated = SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId);
+      await saveQuickChatPresetsCloud(updated);
+      playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
+        fb.innerText = `🗑️ Ayat ucapan telah dipadam daripada senarai.`;
+        fb.classList.remove('hidden');
+      }
+    };
+
+    window.adminResetQuickChatPresetsDefault = async function() {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const fb = document.getElementById('admin-action-feedback');
+      await saveQuickChatPresetsCloud([...DEFAULT_QUICK_CHAT_PRESETS]);
+      playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
+        fb.innerText = `🔄 Senarai ayat ucapan telah dikembalikan kepada 6 ayat lalai.`;
+        fb.classList.remove('hidden');
+      }
+    };
+
+    let cachedPlayerSent = [];
+    let allKnownPlayersForChat = [];
+    let activePlayerMsgTab = 'inbox';
+
+    function loadLocalQuickMessages() {
+      try {
+        const raw = localStorage.getItem(PLAYER_MSGS_STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLocalQuickMessages(list) {
+      try {
+        localStorage.setItem(PLAYER_MSGS_STORAGE_KEY, JSON.stringify(list.slice(0, 200)));
+      } catch (e) {}
+    }
+
+    function updateQuickChatBadges() {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const unread = cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead).length;
+
+      ['header-inbox-badge', 'home-inbox-badge', 'sb-inbox-badge', 'modal-inbox-tab-badge'].forEach(elId => {
+        const el = document.getElementById(elId);
+        if (!el) return;
+        el.innerText = String(unread);
+        el.classList.toggle('hidden', unread <= 0);
+      });
+    }
+
+    async function refreshKnownPlayersForChat() {
+      const merged = new Map();
+      const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+      const addPlayer = (p) => {
+        if (!p || isAdminAccountRecord(p)) return;
+        const pid = p.accountId || p.key;
+        if (!pid || pid === myId) return;
+        merged.set(pid, {
+          id: pid,
+          name: p.name || 'Pelajar',
+          avatarConfig: p.avatarConfig || getDefaultAvatarConfig('boy'),
+          isOnline: Boolean(p.isOnline)
+        });
+      };
+
+      loadLocalAccountsFromStorage();
+      inMemoryAccounts.forEach(addPlayer);
+      lastScoreboardPlayers.forEach(addPlayer);
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            snap.forEach(docSnap => {
+              const d = docSnap.data();
+              if (d) {
+                d.accountId = d.accountId || d.key || docSnap.id;
+                addPlayer(d);
+              }
+            });
+          }
+        } catch (e) {}
+      }
+
+      allKnownPlayersForChat = Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
+      return allKnownPlayersForChat;
+    }
+
+    window.subscribePlayerQuickMessages = async function() {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+
+      const applyFilteredLists = (allArr) => {
+        cachedPlayerInbox = allArr
+          .filter(m => m && m.toId === myId)
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        cachedPlayerSent = allArr
+          .filter(m => m && m.fromId === myId)
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        updateQuickChatBadges();
+      };
+
+      applyFilteredLists(loadLocalQuickMessages());
+      if (!db) return;
+
+      try {
+        await authReadyPromise;
+        if (!fbUser) return;
+        if (playerMessagesUnsubscribe) {
+          playerMessagesUnsubscribe();
+          playerMessagesUnsubscribe = null;
+        }
+        const msgCol = collection(db, 'artifacts', appId, 'public', 'data', 'player_messages');
+        playerMessagesUnsubscribe = onSnapshot(msgCol, (snap) => {
+          const merged = new Map();
+          loadLocalQuickMessages().forEach(m => { if (m && m.id) merged.set(m.id, m); });
+          snap.forEach(docSnap => {
+            const d = docSnap.data();
+            if (d) {
+              d.id = d.id || docSnap.id;
+              merged.set(d.id, d);
+            }
+          });
+          const allArr = Array.from(merged.values());
+          saveLocalQuickMessages(allArr);
+          applyFilteredLists(allArr);
+          const inboxModal = document.getElementById('player-inbox-modal');
+          if (inboxModal && !inboxModal.classList.contains('hidden')) {
+            if (activePlayerMsgTab === 'inbox') renderPlayerInboxList();
+            else if (activePlayerMsgTab === 'sent') renderPlayerSentList();
+          }
+        });
+      } catch (e) {}
+    };
+
+    window.switchPlayerMsgTab = async function(tabName) {
+      playClick();
+      activePlayerMsgTab = ['inbox', 'send', 'sent'].includes(tabName) ? tabName : 'inbox';
+
+      const tabStyles = {
+        inbox: { active: 'bg-emerald-600 text-white border-emerald-900', inactive: 'bg-white text-slate-700 border-slate-300' },
+        send:  { active: 'bg-sky-600 text-white border-sky-900',         inactive: 'bg-white text-slate-700 border-slate-300' },
+        sent:  { active: 'bg-indigo-600 text-white border-indigo-900',   inactive: 'bg-white text-slate-700 border-slate-300' }
+      };
+
+      ['inbox', 'send', 'sent'].forEach(t => {
+        const btn = document.getElementById(`tab-pmsg-${t}`);
+        const panel = document.getElementById(`pmsg-panel-${t}`);
+        const isAct = t === activePlayerMsgTab;
+        if (btn) {
+          const extra = t === 'inbox' ? ' inline-flex items-center justify-center gap-1' : '';
+          btn.className = `bubbly-btn border-2 py-2 px-1.5 text-[11px] font-black${extra} ${isAct ? tabStyles[t].active : tabStyles[t].inactive}`;
+        }
+        if (panel) panel.classList.toggle('hidden', !isAct);
+      });
+
+      if (activePlayerMsgTab === 'inbox') {
+        renderPlayerInboxList();
+        await markMyInboxAsRead();
+      } else if (activePlayerMsgTab === 'send') {
+        await Promise.all([loadQuickChatPresetsCloud(), refreshKnownPlayersForChat()]);
+        if (!quickChatRecipient && allKnownPlayersForChat.length > 0) {
+          quickChatRecipient = allKnownPlayersForChat[0];
+        }
+        renderQuickChatRecipientSelector();
+        renderQuickChatSendPresets();
+      } else if (activePlayerMsgTab === 'sent') {
+        renderPlayerSentList();
+      }
+    };
+
+    window.selectQuickChatRecipient = function(targetId) {
+      playClick();
+      const found = allKnownPlayersForChat.find(p => p.id === targetId);
+      if (found) {
+        quickChatRecipient = found;
+        renderQuickChatRecipientSelector();
+      }
+    };
+
+    window.renderQuickChatRecipientSelector = function() {
+      const chipsBox = document.getElementById('qc-recipient-chips');
+      const searchVal = (document.getElementById('qc-recipient-search')?.value || '').trim().toLowerCase();
+      const avBox = document.getElementById('qc-target-avatar');
+      const nameBox = document.getElementById('qc-target-name');
+
+      const filtered = searchVal
+        ? allKnownPlayersForChat.filter(p => p.name.toLowerCase().includes(searchVal))
+        : allKnownPlayersForChat;
+
+      if (chipsBox) {
+        if (filtered.length === 0) {
+          chipsBox.innerHTML = `<span class="text-[11px] font-bold text-slate-400 py-1">Tiada rakan lain ditemui.</span>`;
+        } else {
+          chipsBox.innerHTML = filtered.map(p => {
+            const isSelected = quickChatRecipient && quickChatRecipient.id === p.id;
+            const safeName = p.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `
+              <button type="button" onclick="selectQuickChatRecipient('${p.id.replace(/'/g, '')}')"
+                class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black border-2 flex-shrink-0 transition ${isSelected ? 'bg-sky-600 text-white border-sky-900 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:border-sky-400'}">
+                <span class="w-4 h-4 rounded-full overflow-hidden inline-block">${renderRealisticAvatarSVG(p.avatarConfig, 'w-full h-full')}</span>
+                <span>${safeName}</span>
+              </button>
+            `;
+          }).join('');
+        }
+      }
+
+      if (quickChatRecipient) {
+        if (avBox) avBox.innerHTML = renderRealisticAvatarSVG(quickChatRecipient.avatarConfig, 'w-full h-full');
+        if (nameBox) nameBox.innerText = quickChatRecipient.name;
+      } else {
+        if (avBox) avBox.innerHTML = '';
+        if (nameBox) nameBox.innerText = 'Tiada rakan dipilih';
+      }
+    };
+
+    function renderQuickChatSendPresets() {
+      const presetsBox = document.getElementById('qc-presets-list');
+      if (!presetsBox) return;
+      presetsBox.innerHTML = SAFE_QUICK_CHAT_PRESETS.map(p => `
+        <button type="button" onclick="sendSafeQuickMessage('${p.id}')"
+          class="w-full text-left bubbly-btn bg-sky-50 hover:bg-sky-100 active:bg-sky-200 border-2 border-sky-300 px-3.5 py-2.5 text-xs font-black text-sky-950 transition">
+          ${p.text}
+        </button>
+      `).join('');
+    }
+
+    async function markMyInboxAsRead() {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const unreadItems = cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead);
+      if (unreadItems.length === 0) return;
+
+      const allLocal = loadLocalQuickMessages();
+      allLocal.forEach(m => {
+        if (m.toId === myId && !m.isRead) m.isRead = true;
+      });
+      saveLocalQuickMessages(allLocal);
+      cachedPlayerInbox.forEach(m => { m.isRead = true; });
+      updateQuickChatBadges();
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await Promise.all(unreadItems.map(item =>
+              setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', item.id), { isRead: true }, { merge: true })
+            ));
+          }
+        } catch (e) {}
+      }
+    }
+
+    window.openQuickChatSendModal = async function(targetAccountId) {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      playClick();
+      await refreshKnownPlayersForChat();
+      const targetPlayer = allKnownPlayersForChat.find(p => p.id === targetAccountId);
+      if (targetPlayer) {
+        quickChatRecipient = targetPlayer;
+      }
+      const modal = document.getElementById('player-inbox-modal');
+      if (modal) modal.classList.remove('hidden');
+      await subscribePlayerQuickMessages();
+      await switchPlayerMsgTab('send');
+    };
+
+    window.closeQuickChatSendModal = function() {
+      closePlayerInboxModal();
+    };
+
+    window.sendSafeQuickMessage = async function(presetId) {
+      if (!currentPlayer) return;
+      if (!quickChatRecipient) {
+        playWrong();
+        showAppToast('⚠️ Sila pilih rakan penerima mesej terlebih dahulu.');
+        return;
+      }
+      const now = Date.now();
+      if (now - lastQuickChatSentAt < 3000) {
+        playWrong();
+        showAppToast('⏳ Tunggu 3 saat sebelum menghantar mesej seterusnya.');
+        return;
+      }
+      const preset = SAFE_QUICK_CHAT_PRESETS.find(p => p.id === presetId);
+      if (!preset) return;
+
+      lastQuickChatSentAt = now;
+      playCheer();
+
+      const recipientName = quickChatRecipient.name;
+      const msgId = `qmsg_${now}_${Math.random().toString(36).slice(2, 6)}`;
+      const msgObj = {
+        id: msgId,
+        fromId: currentPlayer.accountId || currentPlayer.key,
+        fromName: currentPlayer.name,
+        fromAvatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+        toId: quickChatRecipient.id,
+        toName: recipientName,
+        toAvatar: quickChatRecipient.avatarConfig || getDefaultAvatarConfig('boy'),
+        text: preset.text,
+        isRead: false,
+        createdAt: now
+      };
+
+      const allLocal = loadLocalQuickMessages();
+      allLocal.unshift(msgObj);
+      saveLocalQuickMessages(allLocal);
+      cachedPlayerSent.unshift(msgObj);
+
+      showAppToast(`📨 Ucapan dihantar kepada ${recipientName}!`);
+      await switchPlayerMsgTab('sent');
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), msgObj);
+          }
+        } catch (e) {}
+      }
+    };
+
+    window.openPlayerInboxModal = async function(defaultTab = 'inbox') {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      playClick();
+      const modal = document.getElementById('player-inbox-modal');
+      if (modal) modal.classList.remove('hidden');
+      await subscribePlayerQuickMessages();
+      await switchPlayerMsgTab(defaultTab);
+    };
+
+    window.closePlayerInboxModal = function() {
+      playClick();
+      const modal = document.getElementById('player-inbox-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    function renderPlayerInboxList() {
+      const listEl = document.getElementById('player-inbox-list');
+      if (!listEl) return;
+
+      if (cachedPlayerInbox.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center text-xs font-bold text-slate-400 py-8 space-y-2">
+            <div>Belum ada mesej masuk daripada rakan.</div>
+            <button type="button" onclick="switchPlayerMsgTab('send')" class="bubbly-btn bg-sky-500 text-white border border-sky-800 px-3.5 py-2 text-xs font-black">
+              📤 Hantar Mesej Pertama Sekarang
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = cachedPlayerInbox.slice(0, 40).map(m => {
+        const safeFrom = (m.fromName || 'Rakan').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeText = (m.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const avSvg = renderRealisticAvatarSVG(m.fromAvatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
+        const timeStr = m.createdAt ? formatLastActiveText(m.createdAt, false) : 'Baru sebentar tadi';
+
+        return `
+          <div class="p-2.5 rounded-2xl border-2 ${!m.isRead ? 'bg-amber-50 border-amber-400' : 'bg-slate-50 border-slate-200'} space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-full flex-shrink-0">${avSvg}</div>
+                <div class="min-w-0">
+                  <div class="text-xs font-black text-slate-900 truncate">Daripada: ${safeFrom}</div>
+                  <div class="text-[9px] font-bold text-slate-400">🕒 ${timeStr}</div>
+                </div>
+              </div>
+              <button type="button" onclick="openQuickChatSendModal('${(m.fromId || '').replace(/'/g, '')}')"
+                class="bubbly-btn bg-emerald-500 text-white border border-emerald-800 px-2.5 py-1 text-[10px] font-black flex-shrink-0">
+                ↩️ Balas
+              </button>
+            </div>
+            <div class="text-xs font-extrabold text-indigo-950 bg-white rounded-xl px-3 py-2 border border-slate-200">
+              ${safeText}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderPlayerSentList() {
+      const listEl = document.getElementById('player-sent-list');
+      if (!listEl) return;
+
+      if (cachedPlayerSent.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center text-xs font-bold text-slate-400 py-8 space-y-2">
+            <div>Anda belum menghantar sebarang ucapan kepada rakan.</div>
+            <button type="button" onclick="switchPlayerMsgTab('send')" class="bubbly-btn bg-sky-500 text-white border border-sky-800 px-3.5 py-2 text-xs font-black">
+              📤 Hantar Mesej kepada Rakan
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = cachedPlayerSent.slice(0, 40).map(m => {
+        const safeTo = (m.toName || 'Rakan').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeText = (m.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const avSvg = renderRealisticAvatarSVG(m.toAvatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
+        const timeStr = m.createdAt ? formatLastActiveText(m.createdAt, false) : 'Baru dihantar';
+        const readStatus = m.isRead
+          ? `<span class="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded-full">✓✓ Dibaca</span>`
+          : `<span class="text-[9px] font-bold text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded-full">✓ Terhantar</span>`;
+
+        return `
+          <div class="p-2.5 rounded-2xl border-2 bg-sky-50/70 border-sky-200 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-full flex-shrink-0">${avSvg}</div>
+                <div class="min-w-0">
+                  <div class="text-xs font-black text-slate-900 truncate">Kepada: ${safeTo}</div>
+                  <div class="text-[9px] font-bold text-slate-400">🕒 ${timeStr}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                ${readStatus}
+                <button type="button" onclick="openQuickChatSendModal('${(m.toId || '').replace(/'/g, '')}')"
+                  class="bubbly-btn bg-sky-500 text-white border border-sky-800 px-2 py-1 text-[10px] font-black">
+                  ➕ Hantar Lagi
+                </button>
+              </div>
+            </div>
+            <div class="text-xs font-extrabold text-sky-950 bg-white rounded-xl px-3 py-2 border border-sky-200">
+              ${safeText}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     let flashAnzanBasePoints = 12;
     let flashAnswerStartTime = 0;

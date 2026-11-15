@@ -175,7 +175,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.18
+            Versi 1.9.19
           </span>
         </div>
 
@@ -4062,6 +4062,13 @@
       }
 
       if (activeModId === 3) {
+        const subNames = {
+          kecil: 'Tahap 3 (Kawan Kecil 5)',
+          besar: 'Tahap 3 (Kawan Besar 10)',
+          gabung: 'Tahap 3 (Formula Gabungan)',
+          random: 'Tahap 3 (Formula Rahsia 5 & 10)'
+        };
+        setPlayerCurrentActivity(subNames[activeMod3QuizCategory] || 'Tahap 3 (Formula Rahsia 5 & 10)');
         activeModQuestions = buildProcedural50QuestionsForModule(3, activeMod3QuizCategory);
         activeModIndex = 0;
         activeModSessionCorrect = 0;
@@ -4119,10 +4126,12 @@
         }
       }
 
+      setPlayerCurrentActivity(`Tahap ${modId} (${meta.shortTitle})`);
       renderCurrentModuleQuestion();
     }
 
     window.closeModuleView = function() {
+      setPlayerCurrentActivity('Senarai Modul Belajar');
       playClick();
       document.getElementById('module-detail-view').classList.add('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
@@ -5023,6 +5032,17 @@
       }
     }
 
+    function setPlayerCurrentActivity(activityText, syncImmediately = true) {
+      if (!currentPlayer || isAdminAccountRecord(currentPlayer)) return;
+      const cleanLabel = String(activityText || '').trim();
+      if (!cleanLabel) return;
+      const changed = currentPlayer.currentActivityLabel !== cleanLabel;
+      currentPlayer.currentActivityLabel = cleanLabel;
+      if (syncImmediately && changed) {
+        savePlayerCloud();
+      }
+    }
+
     async function savePlayerCloud() {
       if (!currentPlayer) return;
       const docId = currentPlayer.accountId || currentPlayer.key;
@@ -5058,6 +5078,7 @@
       currentPlayer.isOnline = true;
       currentPlayer.lastActiveAt = Date.now();
       currentPlayer.updatedAt = Date.now();
+      currentPlayer.currentActivityLabel = currentPlayer.currentActivityLabel || 'Menu Utama';
 
       inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
       persistLocalAccountsToStorage();
@@ -5085,6 +5106,7 @@
           todaySeconds: currentPlayer.todaySeconds || 0,
           isOnline: true,
           lastActiveAt: currentPlayer.lastActiveAt,
+          currentActivityLabel: currentPlayer.currentActivityLabel,
           unlockedModules: currentPlayer.unlockedModules || [1, 2],
           modScores: currentPlayer.modScores || {},
           avatarConfig: currentPlayer.avatarConfig,
@@ -5375,6 +5397,7 @@
             todaySeconds: savedTodaySec,
             isOnline: true,
             lastActiveAt: Date.now(),
+            currentActivityLabel: existingAccount.currentActivityLabel || 'Menu Utama',
             unlockedModules: isAdminUser
               ? [1, 2, 3, 4, 5, 6]
               : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
@@ -5714,14 +5737,17 @@
         const isMe = currentPlayer && !currentPlayer.isAdmin && (p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
         const safeName = (p.name || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const miniAvatar = renderRealisticAvatarSVG(p.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full');
-        const maxMod = Array.isArray(p.unlockedModules) && p.unlockedModules.length ? Math.max(...p.unlockedModules) : 2;
-
         const lastPing = Number(p.lastActiveAt || p.updatedAt || 0);
         const isOnlineNow = isMe || (p.isOnline !== false && lastPing > 0 && (nowMs - lastPing) <= 45000);
         const lastActiveLabel = formatLastActiveText(lastPing, isOnlineNow);
         const todaySec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
         const todayHHMM = formatDurationHHMM(todaySec);
         const totalHHMM = formatDurationHHMM(p.playSeconds || 0);
+
+        const rawAct = (p.currentActivityLabel || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
+        const activityText = rawAct
+          ? (isOnlineNow ? `🎮 Sedang main: <b class="text-emerald-800">${rawAct}</b>` : `🕹️ Terakhir main: <b class="text-slate-700">${rawAct}</b>`)
+          : `✨ Baru mendaftar`;
 
         const shownPoints = isTodayTab ? getTodayPts(p) : (Number(p.totalPoints) || 0);
         const shownStars = isTodayTab ? getTodayStars(p) : (Number(p.stars) || 0);
@@ -5746,7 +5772,7 @@
                   <span class="text-[9px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full" title="Masa terakhir aktif">📅 ${lastActiveLabel}</span>
                   <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini (Jam:Min)">🕒 ${todayHHMM}</span>
                 </div>
-                <div class="text-[10px] font-bold text-slate-500 mt-0.5">Tahap Pencapaian: Tahap ${maxMod} • Jumlah Masa Bermain: ${totalHHMM}</div>
+                <div class="text-[10px] font-bold text-slate-600 mt-0.5 truncate">${activityText} • ⏱️ Masa: ${totalHHMM}</div>
               </div>
             </div>
             <div class="text-right flex-shrink-0">
@@ -5849,20 +5875,27 @@
       const target = document.getElementById(`screen-${screenName}`);
       if (target) target.classList.remove('hidden');
 
-      if (screenName === 'modules') {
+      if (screenName === 'home') {
+        setPlayerCurrentActivity('Menu Utama');
+      } else if (screenName === 'modules') {
+        setPlayerCurrentActivity('Senarai Modul Belajar');
         document.getElementById('module-detail-view').classList.add('hidden');
         const pCard = document.getElementById('parent-daily-guide-card');
         if (pCard) pCard.classList.remove('hidden');
         document.getElementById('modules-menu-grid').classList.remove('hidden');
         renderModulesMenu();
       } else if (screenName === 'simulator') {
+        setPlayerCurrentActivity('Simulator Jari (0–99)');
         renderFingerSimulator();
       } else if (screenName === 'abacus') {
+        setPlayerCurrentActivity('Abakus 4-Tiang');
         renderInteractiveAbacus();
       } else if (screenName === 'quiz') {
+        setPlayerCurrentActivity('Cabaran Kilat');
         hideHelperAbacusDefault('blitz');
         generateNextBlitzQuestion();
       } else if (screenName === 'rewards') {
+        setPlayerCurrentActivity('Kedai & Studio Avatar');
         renderAvatarStudio();
       } else if (screenName === 'scoreboard') {
         loadScoreboard();
@@ -6216,6 +6249,12 @@
             : 'anzan-tab bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
         }
       });
+      const anzanLabels = {
+        flash: 'Akademi Flash Anzan',
+        drill: 'Pecut Bentuk Jari/Manik',
+        dictation: 'Dikte Kiraan Suara'
+      };
+      setPlayerCurrentActivity(anzanLabels[tabName] || 'Akademi Master Anzan');
       updateAnzanRewardPreviews();
       if (tabName === 'drill') startNewSpeedDrill();
     };

@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.39
+            Versi 1.9.45
           </span>
         </div>
 
@@ -320,14 +320,6 @@
             <button type="button" id="btn-setup-girl" onclick="updateNewStudentAvatar('gender', 'girl')" class="px-3.5 py-1.5 rounded-xl text-xs font-black border-2 bg-white text-slate-600 border-slate-300">👧 Perempuan</button>
           </div>
 
-          <!-- Pilihan Warna Kulit -->
-          <div class="flex flex-wrap items-center justify-center gap-2">
-            <span class="text-[11px] font-black text-slate-600">Warna Kulit:</span>
-            <button type="button" onclick="updateNewStudentAvatar('skin', '#FFE5D0')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#FFE5D0" title="Cerah"></button>
-            <button type="button" onclick="updateNewStudentAvatar('skin', '#F7C8A0')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#F7C8A0" title="Sawo Matang Cerah"></button>
-            <button type="button" onclick="updateNewStudentAvatar('skin', '#DDA175')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#DDA175" title="Sawo Matang"></button>
-            <button type="button" onclick="updateNewStudentAvatar('skin', '#A66A43')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#A66A43" title="Gelap Manis"></button>
-          </div>
 
           <!-- Pilihan Warna Rambut -->
           <div class="flex flex-wrap items-center justify-center gap-2">
@@ -808,17 +800,10 @@
         <div id="avatar-studio-preview" class="w-28 h-28 mx-auto rounded-3xl relative"></div>
         <div id="avatar-studio-caption" class="text-xs font-black text-slate-700">Profil Pelajar</div>
 
-        <!-- Pilihan Jantina & Warna Kulit -->
+        <!-- Pilihan Jantina -->
         <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
           <button id="btn-gender-boy" onclick="setAvatarGender('boy')" class="px-3 py-1 rounded-xl text-[11px] font-black border-2">👦 Lelaki</button>
           <button id="btn-gender-girl" onclick="setAvatarGender('girl')" class="px-3 py-1 rounded-xl text-[11px] font-black border-2">👧 Perempuan</button>
-          <div class="flex items-center gap-1.5 ml-1">
-            <span class="text-[10px] font-black text-slate-500">Kulit:</span>
-            <button onclick="setAvatarSkin('#FFE5D0')" class="w-5 h-5 rounded-full border-2 border-slate-400" style="background:#FFE5D0" title="Cerah"></button>
-            <button onclick="setAvatarSkin('#F7C8A0')" class="w-5 h-5 rounded-full border-2 border-slate-400" style="background:#F7C8A0" title="Sawo Matang Cerah"></button>
-            <button onclick="setAvatarSkin('#DDA175')" class="w-5 h-5 rounded-full border-2 border-slate-400" style="background:#DDA175" title="Sawo Matang"></button>
-            <button onclick="setAvatarSkin('#A66A43')" class="w-5 h-5 rounded-full border-2 border-slate-400" style="background:#A66A43" title="Gelap Manis"></button>
-          </div>
         </div>
 
         <!-- Pilihan Warna Rambut 3D -->
@@ -834,11 +819,11 @@
         <!-- Tab Kategori Kedai -->
         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 pt-1">
           <button onclick="switchStudioTab('face')" id="tab-studio-face" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-amber-950 flex-shrink-0">🧑 Watak 3D</button>
-          <button onclick="switchStudioTab('frame')" id="tab-studio-frame" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🖼️ Bingkai Profil</button>
+          <button onclick="switchStudioTab('outfit')" id="tab-studio-outfit" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">👕 Baju & Kostum</button>
           <button onclick="switchStudioTab('hair')" id="tab-studio-hair" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">💇 Rambut</button>
-          <button onclick="switchStudioTab('headwear')" id="tab-studio-headwear" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🧢 Tudung/Topi</button>
+          <button onclick="switchStudioTab('headwear')" id="tab-studio-headwear" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🧕 Tudung/Topi</button>
           <button onclick="switchStudioTab('accessory')" id="tab-studio-accessory" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">👓 Aksesori (Stack)</button>
-          <button onclick="switchStudioTab('bg')" id="tab-studio-bg" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🌈 Latar 3D</button>
+          <button onclick="switchStudioTab('frame')" id="tab-studio-frame" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🖼️ Bingkai Profil</button>
           <button onclick="switchStudioTab('modules')" id="tab-studio-modules" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🔓 Buka Modul</button>
         </div>
 
@@ -2143,106 +2128,114 @@
 
     const AVATAR_STUDIO_CATALOG = {
       face: [
-        // Watak Lelaki (Asas -> Epik -> Legenda)
-        { id: 'boy_leo',    name: 'Leo Pintar',      tier: 'Biasa',    gender: 'boy', cost: 0,  defaultHair: 'hair_quiff', defaultColor: 'brown' },
-        { id: 'boy_adam',   name: 'Adam Bijak',      tier: 'Biasa',    gender: 'boy', cost: 15, defaultHair: 'hair_neat',  defaultColor: 'black' },
-        { id: 'boy_zack',   name: 'Zack Cergas',     tier: 'Comel',    gender: 'boy', cost: 25, defaultHair: 'hair_messy', defaultColor: 'honey' },
-        { id: 'boy_danish', name: 'Danish Tangkas',  tier: 'Comel',    gender: 'boy', cost: 35, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
-        { id: 'boy_amir',   name: 'Amir Juara',      tier: 'Istimewa', gender: 'boy', cost: 50, defaultHair: 'hair_curly', defaultColor: 'black' },
-        { id: 'boy_rayyan', name: 'Rayyan Master',   tier: 'Istimewa', gender: 'boy', cost: 65, defaultHair: 'hair_neat',  defaultColor: 'brown' },
-        { id: 'boy_harith', name: 'Harith Putera',   tier: 'Gah',      gender: 'boy', cost: 85, defaultHair: 'hair_quiff', defaultColor: 'honey' },
-        { id: 'boy_kai',    name: 'Kai Cyber',       tier: 'Epik',     gender: 'boy', cost: 110, defaultHair: 'hair_messy', defaultColor: 'black' },
-        { id: 'boy_ryu',    name: 'Ryu Naga Emas',   tier: 'Legenda',  gender: 'boy', cost: 140, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
-        // Watak Perempuan (Asas -> Epik -> Legenda)
-        { id: 'girl_hana',  name: 'Hana Comel',      tier: 'Biasa',    gender: 'girl', cost: 0,  defaultHair: 'hair_wavy_girl', defaultColor: 'brown' },
-        { id: 'girl_sofia', name: 'Sofia Ceria',     tier: 'Biasa',    gender: 'girl', cost: 15, defaultHair: 'hair_buns',      defaultColor: 'black' },
-        { id: 'girl_maya',  name: 'Maya Pintar',     tier: 'Comel',    gender: 'girl', cost: 25, defaultHair: 'hair_ponytail',  defaultColor: 'honey' },
-        { id: 'girl_aina',  name: 'Aina Cekap',      tier: 'Comel',    gender: 'girl', cost: 35, defaultHair: 'hair_long_girl', defaultColor: 'auburn' },
-        { id: 'girl_bella', name: 'Bella Anggun',    tier: 'Istimewa', gender: 'girl', cost: 50, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
-        { id: 'girl_nadia', name: 'Nadia Juara',     tier: 'Istimewa', gender: 'girl', cost: 65, defaultHair: 'hair_buns',      defaultColor: 'brown' },
-        { id: 'girl_alya',  name: 'Alya Puteri',     tier: 'Gah',      gender: 'girl', cost: 85, defaultHair: 'hair_long_girl', defaultColor: 'honey' },
-        { id: 'girl_luna',  name: 'Luna Bintang',    tier: 'Epik',     gender: 'girl', cost: 110, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
-        { id: 'girl_aurora',name: 'Aurora Kristal',  tier: 'Legenda',  gender: 'girl', cost: 140, defaultHair: 'hair_ponytail',  defaultColor: 'auburn' }
+        // Watak Lelaki (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
+        { id: 'boy_leo',    name: 'Aiman (Melayu Ceria)',     gender: 'boy',  cost: 0 },
+        { id: 'boy_adam',   name: 'Wei Ming (Cina Pintar)',   gender: 'boy',  cost: 0 },
+        { id: 'boy_zack',   name: 'Liam (Orang Putih)',       gender: 'boy',  cost: 0 },
+        { id: 'boy_danish', name: 'Malik (Afrika Tangkas)',   gender: 'boy',  cost: 0 },
+        { id: 'boy_amir',   name: 'Arjun (India Juara)',      gender: 'boy',  cost: 0 },
+        { id: 'boy_rayyan', name: 'Tariq (Arab Bangsawan)',   gender: 'boy',  cost: 0 },
+        { id: 'boy_harith', name: 'Kenji (Jepun Fokus)',      gender: 'boy',  cost: 0 },
+        { id: 'boy_kai',    name: 'Kai (Cyber Kaca Mata)',    gender: 'boy',  cost: 0 },
+        { id: 'boy_ryu',    name: 'Ryu (Legenda Naga)',       gender: 'boy',  cost: 0 },
+        // Watak Perempuan (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
+        { id: 'girl_hana',  name: 'Hana (Melayu Manis)',      gender: 'girl', cost: 0 },
+        { id: 'girl_sofia', name: 'Mei Ling (Cina Comel)',    gender: 'girl', cost: 0 },
+        { id: 'girl_maya',  name: 'Chloe (Orang Putih)',      gender: 'girl', cost: 0 },
+        { id: 'girl_aina',  name: 'Zara (Afrika Jelita)',     gender: 'girl', cost: 0 },
+        { id: 'girl_bella', name: 'Priya (India Anggun)',     gender: 'girl', cost: 0 },
+        { id: 'girl_nadia', name: 'Layla (Arab Menawan)',     gender: 'girl', cost: 0 },
+        { id: 'girl_alya',  name: 'Sakura (Jepun Ayu)',       gender: 'girl', cost: 0 },
+        { id: 'girl_luna',  name: 'Luna (Puteri Bintang)',    gender: 'girl', cost: 0 },
+        { id: 'girl_aurora',name: 'Aurora (Ratu Kristal)',    gender: 'girl', cost: 0 }
+      ],
+      outfit: [
+        // Kategori Baju & Kostum (Dengan Padanan Set Rasmi!)
+        { id: 'out_hoodie_amber',  name: 'Hoodie Kuning Ceria',   tier: 'Biasa',    gender: 'unisex', cost: 0 },
+        { id: 'out_crew_charcoal', name: 'Baju T-Shirt Kolar',    tier: 'Biasa',    gender: 'unisex', cost: 0 },
+        { id: 'out_polo_teal',     name: 'Baju Polo Hijau',       tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'out_sweater_navy',  name: 'Sweater Biru Laut',     tier: 'Biasa',    gender: 'unisex', cost: 18 },
+        { id: 'out_school_uniform',name: 'Uniform Sekolah Pintar',tier: 'Comel',    gender: 'unisex', cost: 25, setTag: '🎒 Set Sekolah', setApply: { outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
+        { id: 'out_jacket_orange', name: 'Jaket Sukan Oren',      tier: 'Comel',    gender: 'unisex', cost: 30, setTag: '🎧 Set Gaya Muzik', setApply: { outfit: 'out_jacket_orange', addAcc: ['acc_headphones', 'acc_shades'] } },
+        { id: 'out_baju_melayu',   name: 'Baju Melayu Cekak',     tier: 'Comel',    gender: 'boy',    cost: 35, setTag: '👑 Set Diraja', setApply: { outfit: 'out_baju_melayu', headwear: 'hw_crown' } },
+        { id: 'out_baju_kurung',   name: 'Baju Kurung Songket',   tier: 'Comel',    gender: 'girl',   cost: 35, setTag: '✨ Set Emas Raya', setApply: { outfit: 'out_baju_kurung', headwear: 'hw_tudung_gold' } },
+        { id: 'out_knit_bow',      name: 'Blouse Reben Comel',    tier: 'Istimewa', gender: 'girl',   cost: 45, setTag: '🌸 Set Sakura', setApply: { outfit: 'out_knit_bow', frame: 'fr_sakura' } },
+        { id: 'out_blazer_slate',  name: 'Blazer Pengawas',       tier: 'Istimewa', gender: 'unisex', cost: 50, setTag: '🎓 Set Graduan', setApply: { outfit: 'out_blazer_slate', headwear: 'hw_grad', addAcc: ['acc_glasses'] } },
+        { id: 'out_lab_coat',      name: 'Kot Saintis Muda',      tier: 'Istimewa', gender: 'unisex', cost: 58, setTag: '🔬 Set Saintis', setApply: { outfit: 'out_lab_coat', addAcc: ['acc_glasses'] } },
+        { id: 'out_astronaut',     name: 'Sut Angkasawan',        tier: 'Gah',      gender: 'unisex', cost: 75, setTag: '🌌 Set Galaksi', setApply: { outfit: 'out_astronaut', frame: 'fr_galaxy' } },
+        { id: 'out_prince_royal',  name: 'Sut Putera Diraja',     tier: 'Gah',      gender: 'boy',    cost: 85, setTag: '👑 Set Putera', setApply: { outfit: 'out_prince_royal', headwear: 'hw_crown', frame: 'fr_crown_gold' } },
+        { id: 'out_princess_gown', name: 'Gaun Puteri Emas',      tier: 'Gah',      gender: 'girl',   cost: 85, setTag: '🦄 Set Unicorn Suci', setApply: { outfit: 'out_princess_gown', headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } },
+        { id: 'out_cyber_armor',   name: 'Perisai Cyber Neon',    tier: 'Epik',     gender: 'unisex', cost: 115, setTag: '⚡ Set Cyber Neon', setApply: { outfit: 'out_cyber_armor', frame: 'fr_neon', addAcc: ['acc_shades'] } },
+        { id: 'out_dragon_emperor',name: 'Jubah Naga Maharaja',   tier: 'Legenda',  gender: 'unisex', cost: 150, setTag: '🐉 Set Maharaja Naga', setApply: { outfit: 'out_dragon_emperor', frame: 'fr_dragon', addAcc: ['acc_wings_dragon'] } }
       ],
       hair: [
         { id: 'hair_quiff',     name: 'Jambul Gaya',      tier: 'Biasa',    gender: 'boy',  cost: 0 },
         { id: 'hair_neat',      name: 'Sikat Kemas',      tier: 'Biasa',    gender: 'boy',  cost: 12 },
-        { id: 'hair_messy',     name: 'Pacat Ceria',      tier: 'Comel',    gender: 'boy',  cost: 18 },
-        { id: 'hair_curly',     name: 'Keriting Comel',   tier: 'Comel',    gender: 'boy',  cost: 24 },
-        { id: 'hair_spiky',     name: 'Pacat Kilat Hero', tier: 'Istimewa', gender: 'boy',  cost: 35 },
-        { id: 'hair_samurai',   name: 'Sanggul Samurai',  tier: 'Gah',      gender: 'boy',  cost: 50 },
+        { id: 'hair_messy',     name: 'Pacat Ceria',      tier: 'Comel',    gender: 'boy',  cost: 20 },
+        { id: 'hair_curly',     name: 'Keriting Afro',    tier: 'Comel',    gender: 'boy',  cost: 28 },
+        { id: 'hair_spiky',     name: 'Pacat Kilat Hero', tier: 'Istimewa', gender: 'boy',  cost: 40 },
+        { id: 'hair_samurai',   name: 'Sanggul Samurai',  tier: 'Gah',      gender: 'boy',  cost: 55 },
         { id: 'hair_wavy_girl', name: 'Beralun Lembut',   tier: 'Biasa',    gender: 'girl', cost: 0 },
         { id: 'hair_buns',      name: 'Sanggul Kembar',   tier: 'Biasa',    gender: 'girl', cost: 12 },
-        { id: 'hair_ponytail',  name: 'Ekor Kuda',        tier: 'Comel',    gender: 'girl', cost: 18 },
-        { id: 'hair_long_girl', name: 'Lurus Panjang',    tier: 'Comel',    gender: 'girl', cost: 24 },
-        { id: 'hair_twin_tails',name: 'Tocang Riben',     tier: 'Istimewa', gender: 'girl', cost: 35 },
-        { id: 'hair_princess',  name: 'Ikatan Puteri',    tier: 'Gah',      gender: 'girl', cost: 50 }
+        { id: 'hair_ponytail',  name: 'Ekor Kuda Tinggi', tier: 'Comel',    gender: 'girl', cost: 20 },
+        { id: 'hair_long_girl', name: 'Lurus Panjang',    tier: 'Comel',    gender: 'girl', cost: 28 },
+        { id: 'hair_twin_tails',name: 'Tocang Riben',     tier: 'Istimewa', gender: 'girl', cost: 40 },
+        { id: 'hair_princess',  name: 'Ikatan Puteri',    tier: 'Gah',      gender: 'girl', cost: 55 }
       ],
       headwear: [
-        { id: 'hw_none',           name: 'Tiada Penutup',      tier: 'Biasa',    gender: 'unisex', cost: 0 },
-        { id: 'hw_tudung_pink',    name: 'Tudung Pink',        tier: 'Biasa',    gender: 'girl',   cost: 12 },
-        { id: 'hw_tudung_blue',    name: 'Tudung Biru',        tier: 'Biasa',    gender: 'girl',   cost: 12 },
-        { id: 'hw_tudung_emerald', name: 'Tudung Hijau',       tier: 'Biasa',    gender: 'girl',   cost: 12 },
-        { id: 'hw_tudung_lavender',name: 'Tudung Lavender',    tier: 'Comel',    gender: 'girl',   cost: 22 },
-        { id: 'hw_tudung_gold',    name: 'Tudung Sulam Emas',  tier: 'Istimewa', gender: 'girl',   cost: 40 },
-        { id: 'hw_cap_red',        name: 'Topi Merah',         tier: 'Biasa',    gender: 'unisex', cost: 15 },
-        { id: 'hw_cap_blue',       name: 'Topi Biru',          tier: 'Biasa',    gender: 'unisex', cost: 15 },
-        { id: 'hw_beanie',         name: 'Beanie Oren',        tier: 'Comel',    gender: 'unisex', cost: 22 },
-        { id: 'hw_cat_ears',       name: 'Cekak Kucing',       tier: 'Comel',    gender: 'unisex', cost: 28 },
-        { id: 'hw_bunny_ears',     name: 'Cekak Arnab Comel',  tier: 'Comel',    gender: 'unisex', cost: 32 },
-        { id: 'hw_wizard',         name: 'Topi Ahli Sihir',    tier: 'Istimewa', gender: 'unisex', cost: 45 },
-        { id: 'hw_ninja',          name: 'Ikatan Ninja Kilat', tier: 'Istimewa', gender: 'unisex', cost: 50 },
-        { id: 'hw_grad',           name: 'Topi Graduasi',      tier: 'Gah',      gender: 'unisex', cost: 65 },
-        { id: 'hw_tiara',          name: 'Tiara Kristal',      tier: 'Gah',      gender: 'girl',   cost: 75 },
-        { id: 'hw_crown',          name: 'Mahkota Juara',      tier: 'Epik',     gender: 'unisex', cost: 95 },
-        { id: 'hw_halo',           name: 'Halo Cahaya Suci',   tier: 'Legenda',  gender: 'unisex', cost: 130 }
+        { id: 'hw_none',           name: 'Tiada Penutup',        tier: 'Biasa',    gender: 'unisex', cost: 0 },
+        { id: 'hw_tudung_pink',    name: 'Tudung Bawal Pink',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_blue',    name: 'Tudung Bawal Biru',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_emerald', name: 'Tudung Bawal Hijau',   tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_lavender',name: 'Shawl Lavender',       tier: 'Comel',    gender: 'girl',   cost: 24 },
+        { id: 'hw_tudung_gold',    name: 'Tudung Sulam Emas',    tier: 'Istimewa', gender: 'girl',   cost: 42, setTag: '✨ Padan Baju Kurung', setApply: { headwear: 'hw_tudung_gold', outfit: 'out_baju_kurung' } },
+        { id: 'hw_cap_red',        name: 'Topi Merah',           tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'hw_cap_blue',       name: 'Topi Biru',            tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'hw_beanie',         name: 'Beanie Oren',          tier: 'Comel',    gender: 'unisex', cost: 24 },
+        { id: 'hw_cat_ears',       name: 'Cekak Kucing',         tier: 'Comel',    gender: 'unisex', cost: 30 },
+        { id: 'hw_bunny_ears',     name: 'Cekak Arnab Comel',    tier: 'Comel',    gender: 'unisex', cost: 35, setTag: '🐰 Padan Bingkai Arnab', setApply: { headwear: 'hw_bunny_ears', frame: 'fr_bunny' } },
+        { id: 'hw_wizard',         name: 'Topi Ahli Sihir',      tier: 'Istimewa', gender: 'unisex', cost: 48, setTag: '🌌 Padan Galaksi', setApply: { headwear: 'hw_wizard', frame: 'fr_galaxy' } },
+        { id: 'hw_ninja',          name: 'Ikatan Ninja Kilat',   tier: 'Istimewa', gender: 'unisex', cost: 55, setTag: '🧣 Padan Skaf Hero', setApply: { headwear: 'hw_ninja', addAcc: ['acc_scarf_red'] } },
+        { id: 'hw_grad',           name: 'Topi Graduasi',        tier: 'Gah',      gender: 'unisex', cost: 70, setTag: '🎓 Padan Blazer', setApply: { headwear: 'hw_grad', outfit: 'out_blazer_slate' } },
+        { id: 'hw_tiara',          name: 'Tiara Kristal',        tier: 'Gah',      gender: 'girl',   cost: 80, setTag: '💎 Padan Rantai Berlian', setApply: { headwear: 'hw_tiara', frame: 'fr_diamond_chain' } },
+        { id: 'hw_crown',          name: 'Mahkota Juara',        tier: 'Epik',     gender: 'unisex', cost: 105, setTag: '👑 Padan Bingkai Mahkota', setApply: { headwear: 'hw_crown', frame: 'fr_crown_gold' } },
+        { id: 'hw_halo',           name: 'Halo Cahaya Suci',     tier: 'Legenda',  gender: 'unisex', cost: 140, setTag: '🦄 Padan Sayap Unicorn', setApply: { headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } }
       ],
       accessory: [
-        { id: 'acc_glasses',       name: 'Cermin Mata',        tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 12 },
-        { id: 'acc_bowtie',        name: 'Tali Leher Kupu',    tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 15 },
-        { id: 'acc_ribbon',        name: 'Reben Merah Jambu',  tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 15 },
-        { id: 'acc_shades',        name: 'Kaca Hitam',         tier: 'Comel',    gender: 'unisex', slot: 'eyewear', cost: 20 },
-        { id: 'acc_earring_pearl', name: 'Subang Mutiara',     tier: 'Comel',    gender: 'girl',   slot: 'ear',     cost: 20 },
-        { id: 'acc_pin_star',      name: 'Pin Bintang Emas',   tier: 'Comel',    gender: 'unisex', slot: 'pin',     cost: 22 },
-        { id: 'acc_headphones',    name: 'Fon Kepala',         tier: 'Comel',    gender: 'unisex', slot: 'head',    cost: 25 },
-        { id: 'acc_earring_star',  name: 'Subang Bintang',     tier: 'Istimewa', gender: 'girl',   slot: 'ear',     cost: 28 },
-        { id: 'acc_backpack',      name: 'Beg Galas Sekolah',  tier: 'Istimewa', gender: 'unisex', slot: 'back',    cost: 30 },
-        { id: 'acc_star_glasses',  name: 'Cermin Mata Bintang',tier: 'Istimewa', gender: 'unisex', slot: 'eyewear', cost: 35 },
-        { id: 'acc_scarf_red',     name: 'Skaf Hero Merah',    tier: 'Istimewa', gender: 'unisex', slot: 'neck',    cost: 38 },
-        { id: 'acc_medal_gold',    name: 'Pingat Juara Emas',  tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 48 },
-        { id: 'acc_wings_angel',   name: 'Sayap Bidadari',     tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 75 },
-        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',     tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 110 }
-      ],
-      bg: [
-        { id: 'bg_sky',     name: 'Langit Cerah',      tier: 'Biasa',    gender: 'unisex', cost: 0,  c1: '#E0F2FE', c2: '#7DD3FC' },
-        { id: 'bg_mint',    name: 'Pudina Segar',      tier: 'Biasa',    gender: 'unisex', cost: 15, c1: '#D1FAE5', c2: '#6EE7B7' },
-        { id: 'bg_sunset',  name: 'Senja Emas',        tier: 'Comel',    gender: 'unisex', cost: 22, c1: '#FEF3C7', c2: '#FDBA74' },
-        { id: 'bg_sakura',  name: 'Bunga Sakura',      tier: 'Comel',    gender: 'unisex', cost: 28, c1: '#FCE7F3', c2: '#F9A8D4' },
-        { id: 'bg_ocean',   name: 'Lautan Dalam',      tier: 'Istimewa', gender: 'unisex', cost: 38, c1: '#CFFAFE', c2: '#06B6D4' },
-        { id: 'bg_galaxy',  name: 'Galaksi Ungu',      tier: 'Istimewa', gender: 'unisex', cost: 45, c1: '#EDE9FE', c2: '#A78BFA' },
-        { id: 'bg_aurora',  name: 'Aurora Borealis',   tier: 'Gah',      gender: 'unisex', cost: 60, c1: '#A7F3D0', c2: '#6366F1' },
-        { id: 'bg_rainbow', name: 'Awan Pelangi',      tier: 'Gah',      gender: 'unisex', cost: 70, c1: '#FEF08A', c2: '#F472B6' },
-        { id: 'bg_lava',    name: 'Gunung Berapi',     tier: 'Epik',     gender: 'unisex', cost: 85, c1: '#FED7AA', c2: '#DC2626' },
-        { id: 'bg_royal',   name: 'Istana Diraja',     tier: 'Legenda',  gender: 'unisex', cost: 115,c1: '#FEF9C3', c2: '#D97706' }
+        { id: 'acc_glasses',       name: 'Cermin Mata',          tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 12 },
+        { id: 'acc_bowtie',        name: 'Tali Leher Kupu',      tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 15 },
+        { id: 'acc_ribbon',        name: 'Reben Merah Jambu',    tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 15 },
+        { id: 'acc_shades',        name: 'Kaca Hitam',           tier: 'Comel',    gender: 'unisex', slot: 'eyewear', cost: 22 },
+        { id: 'acc_earring_pearl', name: 'Subang Mutiara',       tier: 'Comel',    gender: 'girl',   slot: 'ear',     cost: 22 },
+        { id: 'acc_pin_star',      name: 'Pin Bintang Emas',     tier: 'Comel',    gender: 'unisex', slot: 'pin',     cost: 25, setTag: '🎒 Padan Uniform', setApply: { addAcc: ['acc_pin_star', 'acc_backpack'], outfit: 'out_school_uniform' } },
+        { id: 'acc_headphones',    name: 'Fon Kepala',           tier: 'Comel',    gender: 'unisex', slot: 'head',    cost: 28 },
+        { id: 'acc_earring_star',  name: 'Subang Bintang',       tier: 'Istimewa', gender: 'girl',   slot: 'ear',     cost: 32 },
+        { id: 'acc_backpack',      name: 'Beg Galas Sekolah',    tier: 'Istimewa', gender: 'unisex', slot: 'back',    cost: 35, setTag: '🎒 Padan Uniform', setApply: { addAcc: ['acc_backpack', 'acc_pin_star'], outfit: 'out_school_uniform' } },
+        { id: 'acc_star_glasses',  name: 'Cermin Mata Bintang',  tier: 'Istimewa', gender: 'unisex', slot: 'eyewear', cost: 40 },
+        { id: 'acc_scarf_red',     name: 'Skaf Hero Merah',      tier: 'Istimewa', gender: 'unisex', slot: 'neck',    cost: 42 },
+        { id: 'acc_medal_gold',    name: 'Pingat Juara Emas',    tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 55 },
+        { id: 'acc_wings_angel',   name: 'Sayap Unicorn',        tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 95, setTag: '😇 Padan Halo Suci', setApply: { addAcc: ['acc_wings_angel'], headwear: 'hw_halo' } },
+        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 130, setTag: '🐉 Padan Jubah Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', frame: 'fr_dragon' } }
       ],
       frame: [
+        // Susunan Harga Mengikut Keunikan & Elemen 3D Terkeluar Dari Bulatan
         { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
-        { id: 'fr_candy',         name: 'Lilitan Candy',         tier: 'Comel',    cost: 20 },
-        { id: 'fr_bunny',         name: 'Telinga Arnab Comel',   tier: 'Comel',    cost: 35 },
-        { id: 'fr_flower',        name: 'Lilitan Bunga',         tier: 'Comel',    cost: 45 },
-        { id: 'fr_sakura',        name: 'Bunga Sakura',          tier: 'Comel',    cost: 60 },
-        { id: 'fr_rainbow',       name: 'Pelangi Ceria',         tier: 'Istimewa', cost: 80 },
-        { id: 'fr_roman',         name: 'Laurel Zaman Rom',      tier: 'Istimewa', cost: 100 },
-        { id: 'fr_thorns',        name: 'Lilitan Akar Duri',     tier: 'Istimewa', cost: 120 },
-        { id: 'fr_starlight',     name: 'Bintang Berkilau',      tier: 'Istimewa', cost: 140 },
-        { id: 'fr_ice',           name: 'Kristal Ais Keliling',  tier: 'Gah',      cost: 165 },
-        { id: 'fr_neon',          name: 'Neon Kilat Biru',       tier: 'Gah',      cost: 190 },
-        { id: 'fr_fire',          name: 'Api Keliling Juara',    tier: 'Gah',      cost: 220 },
-        { id: 'fr_crown_gold',    name: 'Mahkota Emas Raja',     tier: 'Gah',      cost: 250 },
-        { id: 'fr_gold_chain',    name: 'Rantai Emas Raja',      tier: 'Epik',     cost: 290 },
-        { id: 'fr_dragon',        name: 'Naga Api Juara',        tier: 'Epik',     cost: 340 },
-        { id: 'fr_diamond_chain', name: 'Rantai Berlian',        tier: 'Legenda',  cost: 400 },
-        { id: 'fr_galaxy',        name: 'Galaksi Berlian',       tier: 'Legenda',  cost: 450 }
+        { id: 'fr_rainbow',       name: 'Bulatan Pelangi',       tier: 'Biasa',    cost: 18 },
+        { id: 'fr_neon',          name: 'Neon Kilat Biru',       tier: 'Comel',    cost: 30 },
+        { id: 'fr_starlight',     name: 'Bintang Berkilau',      tier: 'Comel',    cost: 45 },
+        { id: 'fr_sakura',        name: 'Kelopak Sakura',        tier: 'Comel',    cost: 60 },
+        { id: 'fr_bunny',         name: 'Telinga Arnab 3D',      tier: 'Istimewa', cost: 80 },
+        { id: 'fr_flower',        name: 'Kalungan Bunga 3D',     tier: 'Istimewa', cost: 100 },
+        { id: 'fr_candy',         name: 'Lilitan Candy 3D',      tier: 'Istimewa', cost: 125 },
+        { id: 'fr_roman',         name: 'Laurel Emas Rom',       tier: 'Gah',      cost: 155 },
+        { id: 'fr_thorns',        name: 'Akar Duri Rimba',       tier: 'Gah',      cost: 185 },
+        { id: 'fr_ice',           name: 'Kristal Ais Tajam',     tier: 'Gah',      cost: 215 },
+        { id: 'fr_fire',          name: 'Lingkaran Api Marak',   tier: 'Gah',      cost: 245 },
+        { id: 'fr_crown_gold',    name: 'Mahkota Emas 3D',       tier: 'Epik',     cost: 285 },
+        { id: 'fr_gold_chain',    name: 'Rantai Emas Diraja',    tier: 'Epik',     cost: 325 },
+        { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Epik',     cost: 365 },
+        { id: 'fr_diamond_chain', name: 'Rantai Berlian Mewah',  tier: 'Legenda',  cost: 410 },
+        { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 450 }
       ]
     };
 
@@ -2495,10 +2488,10 @@
         skin: '#F7C8A0',
         hairColor: 'brown',
         face: gender === 'girl' ? 'girl_hana' : 'boy_leo',
+        outfit: gender === 'girl' ? 'out_crew_charcoal' : 'out_hoodie_amber',
         hair: gender === 'girl' ? 'hair_wavy_girl' : 'hair_quiff',
         headwear: 'hw_none',
         accessories: [],
-        bg: 'bg_sky',
         frame: 'fr_none'
       };
     }
@@ -2515,6 +2508,13 @@
       );
       if (!validFace) {
         cfg.face = g === 'girl' ? 'girl_hana' : 'boy_leo';
+      }
+
+      const validOutfit = AVATAR_STUDIO_CATALOG.outfit.find(
+        o => o.id === cfg.outfit && (o.gender === g || o.gender === 'unisex')
+      );
+      if (!validOutfit) {
+        cfg.outfit = g === 'girl' ? 'out_crew_charcoal' : 'out_hoodie_amber';
       }
 
       const validHair = AVATAR_STUDIO_CATALOG.hair.find(
@@ -2549,7 +2549,7 @@
     function ensurePlayerAvatarConfig(player) {
       if (!player) return getDefaultAvatarConfig('boy');
       if (!player.avatarConfig) player.avatarConfig = getDefaultAvatarConfig('boy');
-      const freeDefaults = ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky', 'fr_none'];
+      const freeDefaults = ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none'];
       if (!Array.isArray(player.ownedAvatarItems)) {
         player.ownedAvatarItems = [...freeDefaults];
       } else {
@@ -2564,267 +2564,284 @@
       if (!frameId || frameId === 'fr_none') {
         return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
       }
-      if (frameId === 'fr_candy') {
-        const candies = [];
-        for (let i = 0; i < 16; i++) {
-          const ang = (i * 22.5) * Math.PI / 180;
-          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
-          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
-          const cols = ['#EC4899', '#38BDF8', '#FACC15', '#34D399'];
-          candies.push(`<circle cx="${cx}" cy="${cy}" r="5.2" fill="${cols[i % 4]}" stroke="#FFFFFF" stroke-width="1.5"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#F472B6" stroke-width="5"/>
-          ${candies.join('')}
-          <g transform="translate(50, 6)">
-            <polygon points="-7,-4 0,0 -7,4" fill="#EC4899" stroke="#FFFFFF" stroke-width="1"/>
-            <polygon points="7,-4 0,0 7,4" fill="#EC4899" stroke="#FFFFFF" stroke-width="1"/>
-            <circle cx="0" cy="0" r="3" fill="#FACC15"/>
-          </g>
-        `;
-      }
-      if (frameId === 'fr_flower') {
-        const petals = [];
-        for (let i = 0; i < 12; i++) {
-          const ang = (i * 30) * Math.PI / 180;
-          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
-          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
-          const c = i % 2 === 0 ? '#FB7185' : '#F472B6';
-          petals.push(`
-            <g transform="translate(${cx},${cy})">
-              <circle cx="0" cy="-3.2" r="2.8" fill="${c}"/>
-              <circle cx="3.2" cy="0" r="2.8" fill="${c}"/>
-              <circle cx="0" cy="3.2" r="2.8" fill="${c}"/>
-              <circle cx="-3.2" cy="0" r="2.8" fill="${c}"/>
-              <circle cx="0" cy="0" r="2.1" fill="#FDE047"/>
-            </g>
-          `);
-        }
-        return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#16A34A" stroke-width="4.5"/>
-          ${petals.join('')}
-        `;
-      }
-      if (frameId === 'fr_roman') {
-        const leaves = [];
-        for (let i = -4; i <= 4; i++) {
-          const angL = (180 + i * 16) * Math.PI / 180;
-          const lx = (50 + 43.5 * Math.cos(angL)).toFixed(1);
-          const ly = (50 + 43.5 * Math.sin(angL)).toFixed(1);
-          const rotL = (i * 16 - 35).toFixed(0);
-          leaves.push(`<ellipse cx="${lx}" cy="${ly}" rx="6.2" ry="2.8" transform="rotate(${rotL} ${lx} ${ly})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>`);
-
-          const angR = (i * 16) * Math.PI / 180;
-          const rx = (50 + 43.5 * Math.cos(angR)).toFixed(1);
-          const ry = (50 + 43.5 * Math.sin(angR)).toFixed(1);
-          const rotR = (i * 16 + 35).toFixed(0);
-          leaves.push(`<ellipse cx="${rx}" cy="${ry}" rx="6.2" ry="2.8" transform="rotate(${rotR} ${rx} ${ry})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#B45309" stroke-width="3.5"/>
-          ${leaves.join('')}
-          <polygon points="42,92 50,86 58,92 55,97 45,97" fill="#DC2626" stroke="#FACC15" stroke-width="1.2"/>
-        `;
-      }
-      if (frameId === 'fr_thorns') {
-        const spikes = [];
-        for (let i = 0; i < 16; i++) {
-          const ang = (i * 22.5) * Math.PI / 180;
-          const x1 = (50 + 41 * Math.cos(ang - 0.12)).toFixed(1);
-          const y1 = (50 + 41 * Math.sin(ang - 0.12)).toFixed(1);
-          const x2 = (50 + 49 * Math.cos(ang)).toFixed(1);
-          const y2 = (50 + 49 * Math.sin(ang)).toFixed(1);
-          const x3 = (50 + 41 * Math.cos(ang + 0.12)).toFixed(1);
-          const y3 = (50 + 41 * Math.sin(ang + 0.12)).toFixed(1);
-          spikes.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#365314" stroke="#1A2E05" stroke-width="0.8"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#3F6212" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#84CC16" stroke-width="2" stroke-dasharray="6 5"/>
-          ${spikes.join('')}
-          <circle cx="20" cy="20" r="4" fill="#BE123C"/><circle cx="80" cy="80" r="4" fill="#BE123C"/>
-        `;
-      }
-      if (frameId === 'fr_ice') {
-        const shards = [];
-        for (let i = 0; i < 12; i++) {
-          const ang = (i * 30) * Math.PI / 180;
-          const x1 = (50 + 40.5 * Math.cos(ang - 0.14)).toFixed(1);
-          const y1 = (50 + 40.5 * Math.sin(ang - 0.14)).toFixed(1);
-          const x2 = (50 + 49.5 * Math.cos(ang)).toFixed(1);
-          const y2 = (50 + 49.5 * Math.sin(ang)).toFixed(1);
-          const x3 = (50 + 40.5 * Math.cos(ang + 0.14)).toFixed(1);
-          const y3 = (50 + 40.5 * Math.sin(ang + 0.14)).toFixed(1);
-          shards.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#BAE6FD" stroke="#0284C7" stroke-width="1"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#38BDF8" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="5 4"/>
-          ${shards.join('')}
-        `;
-      }
-      if (frameId === 'fr_fire') {
-        const flames = [];
-        for (let i = 0; i < 14; i++) {
-          const ang = (i * (360 / 14)) * Math.PI / 180;
-          const x1 = (50 + 40 * Math.cos(ang - 0.18)).toFixed(1);
-          const y1 = (50 + 40 * Math.sin(ang - 0.18)).toFixed(1);
-          const x2 = (50 + 49.5 * Math.cos(ang + 0.08)).toFixed(1);
-          const y2 = (50 + 49.5 * Math.sin(ang + 0.08)).toFixed(1);
-          const x3 = (50 + 40 * Math.cos(ang + 0.18)).toFixed(1);
-          const y3 = (50 + 40 * Math.sin(ang + 0.18)).toFixed(1);
-          flames.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${i % 2 === 0 ? '#F97316' : '#EF4444'}"/>`);
-        }
-        return `
-          ${flames.join('')}
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#EA580C" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#FDE047" stroke-width="2.2" stroke-dasharray="8 4"/>
-        `;
-      }
-      if (frameId === 'fr_gold_chain') {
-        const links = [];
-        for (let i = 0; i < 18; i++) {
-          const ang = (i * 20) * Math.PI / 180;
-          const cx = (50 + 43 * Math.cos(ang)).toFixed(1);
-          const cy = (50 + 43 * Math.sin(ang)).toFixed(1);
-          const deg = (i * 20 + 90).toFixed(0);
-          links.push(`<rect x="${cx - 4.5}" y="${cy - 2.6}" width="9" height="5.2" rx="2.6" transform="rotate(${deg} ${cx} ${cy})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#92400E" stroke-width="5"/>
-          ${links.join('')}
-          <polygon points="36,10 41,2 46,8 50,1 54,8 59,2 64,10" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1"/>
-        `;
-      }
-      if (frameId === 'fr_diamond_chain') {
-        const gems = [];
-        for (let i = 0; i < 16; i++) {
-          const ang = (i * 22.5) * Math.PI / 180;
-          const cx = (50 + 43.5 * Math.cos(ang));
-          const cy = (50 + 43.5 * Math.sin(ang));
-          gems.push(`<polygon points="${cx.toFixed(1)},${(cy - 4.8).toFixed(1)} ${(cx + 4.8).toFixed(1)},${cy.toFixed(1)} ${cx.toFixed(1)},${(cy + 4.8).toFixed(1)} ${(cx - 4.8).toFixed(1)},${cy.toFixed(1)}" fill="${i % 2 === 0 ? '#E0F2FE' : '#38BDF8'}" stroke="#1E3A8A" stroke-width="1.1"/>`);
-        }
-        return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#1D4ED8" stroke-width="5.5"/>
-          ${gems.join('')}
-          <polygon points="50,1 56,7 50,14 44,7" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.4"/>
-        `;
-      }
-      if (frameId === 'fr_bunny') {
-        return `
-          <ellipse cx="32" cy="10" rx="5.5" ry="13" transform="rotate(-14 32 10)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2.2"/>
-          <ellipse cx="32" cy="10" rx="2.6" ry="8" transform="rotate(-14 32 10)" fill="#FBCFE8"/>
-          <ellipse cx="68" cy="10" rx="5.5" ry="13" transform="rotate(14 68 10)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2.2"/>
-          <ellipse cx="68" cy="10" rx="2.6" ry="8" transform="rotate(14 68 10)" fill="#FBCFE8"/>
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#F472B6" stroke-width="4.5"/>
-        `;
-      }
-      if (frameId === 'fr_sakura') {
-        return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#EC4899" stroke-width="4.5"/>
-          <g transform="translate(20,20)"><circle r="5" fill="#F9A8D4"/><circle r="2" fill="#FDE047"/></g>
-          <g transform="translate(80,20)"><circle r="5" fill="#F472B6"/><circle r="2" fill="#FDE047"/></g>
-          <g transform="translate(20,80)"><circle r="5" fill="#F472B6"/><circle r="2" fill="#FDE047"/></g>
-          <g transform="translate(80,80)"><circle r="5" fill="#F9A8D4"/><circle r="2" fill="#FDE047"/></g>
-          <g transform="translate(50,7)"><circle r="5.5" fill="#EC4899"/><circle r="2.2" fill="#FEF08A"/></g>
-        `;
-      }
       if (frameId === 'fr_rainbow') {
         return `
-          <circle cx="50" cy="50" r="43.5" fill="none" stroke="#EF4444" stroke-width="2.5"/>
-          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#FACC15" stroke-width="2.5"/>
-          <circle cx="50" cy="50" r="39.5" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
-          <circle cx="19" cy="79" r="5" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
-          <circle cx="81" cy="79" r="5" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.2"/>
+          <circle cx="50" cy="50" r="43.5" fill="none" stroke="#EF4444" stroke-width="2.4"/>
+          <circle cx="50" cy="50" r="41.5" fill="none" stroke="#FACC15" stroke-width="2.4"/>
+          <circle cx="50" cy="50" r="39.5" fill="none" stroke="#38BDF8" stroke-width="2.4"/>
+        `;
+      }
+      if (frameId === 'fr_neon') {
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#06B6D4" stroke-width="5"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-dasharray="10 5"/>
+          <polygon points="22,12 16,24 22,24 18,34 29,21 23,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+          <polygon points="78,12 84,24 78,24 82,34 71,21 77,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
         `;
       }
       if (frameId === 'fr_starlight') {
         return `
           <circle cx="50" cy="50" r="42" fill="none" stroke="#6366F1" stroke-width="4.5"/>
           <circle cx="50" cy="50" r="42" fill="none" stroke="#FDE047" stroke-width="2" stroke-dasharray="6 6"/>
-          <polygon points="50,1 52.5,6.5 58.5,7.2 54,11.2 55.2,17 50,14 44.8,17 46,11.2 41.5,7.2 47.5,6.5" fill="#FACC15" stroke="#B45309" stroke-width="0.9"/>
-          <polygon points="16,50 18,54 22.5,54.5 19.2,57.5 20,62 16,59.8 12,62 12.8,57.5 9.5,54.5 14,54" fill="#FDE047"/>
-          <polygon points="84,50 86,54 90.5,54.5 87.2,57.5 88,62 84,59.8 80,62 80.8,57.5 77.5,54.5 82,54" fill="#FDE047"/>
+          <polygon points="50,0 53,6.5 59.5,7.2 54.5,11.5 55.8,18 50,14.5 44.2,18 45.5,11.5 40.5,7.2 47,6.5" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+          <polygon points="12,50 14.5,55 20,55.5 16,59 17,64.5 12,61.8 7,64.5 8,59 4,55.5 9.5,55" fill="#FDE047" stroke="#B45309" stroke-width="0.8"/>
+          <polygon points="88,50 90.5,55 96,55.5 92,59 93,64.5 88,61.8 83,64.5 84,59 80,55.5 85.5,55" fill="#FDE047" stroke="#B45309" stroke-width="0.8"/>
         `;
       }
-      if (frameId === 'fr_neon') {
+      if (frameId === 'fr_sakura') {
+        const blos = [
+          [50, 6, 6.2], [20, 19, 5.4], [80, 19, 5.4], [9, 50, 5.2], [91, 50, 5.2], [21, 81, 5.4], [79, 81, 5.4]
+        ].map(([bx, by, br]) => `
+          <g transform="translate(${bx},${by})">
+            <circle cx="0" cy="${-br*0.55}" r="${br*0.52}" fill="#F9A8D4"/>
+            <circle cx="${br*0.52}" cy="${-br*0.18}" r="${br*0.52}" fill="#F472B6"/>
+            <circle cx="${br*0.32}" cy="${br*0.45}" r="${br*0.52}" fill="#F9A8D4"/>
+            <circle cx="${-br*0.32}" cy="${br*0.45}" r="${br*0.52}" fill="#F472B6"/>
+            <circle cx="${-br*0.52}" cy="${-br*0.18}" r="${br*0.52}" fill="#F9A8D4"/>
+            <circle r="${br*0.35}" fill="#FDE047"/>
+          </g>
+        `);
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#06B6D4" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-dasharray="10 5"/>
-          <polygon points="24,13 18,24 23,24 19,33 29,21 24,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
-          <polygon points="76,13 82,24 77,24 81,33 71,21 76,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#EC4899" stroke-width="4.5"/>
+          ${blos.join('')}
+        `;
+      }
+      if (frameId === 'fr_bunny') {
+        return `
+          <ellipse cx="31" cy="8" rx="6" ry="15" transform="rotate(-14 31 8)" fill="#FFFFFF" stroke="#EC4899" stroke-width="2.2"/>
+          <ellipse cx="31" cy="8" rx="2.8" ry="9.5" transform="rotate(-14 31 8)" fill="#FBCFE8"/>
+          <ellipse cx="69" cy="8" rx="6" ry="15" transform="rotate(14 69 8)" fill="#FFFFFF" stroke="#EC4899" stroke-width="2.2"/>
+          <ellipse cx="69" cy="8" rx="2.8" ry="9.5" transform="rotate(14 69 8)" fill="#FBCFE8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F472B6" stroke-width="5"/>
+          <polygon points="50,12 43,7 43,17" fill="#EC4899"/><polygon points="50,12 57,7 57,17" fill="#EC4899"/><circle cx="50" cy="12" r="2.8" fill="#FACC15"/>
+        `;
+      }
+      if (frameId === 'fr_flower') {
+        const petals = [];
+        for (let i = 0; i < 14; i++) {
+          const ang = (i * (360 / 14)) * Math.PI / 180;
+          const cx = (50 + 44.5 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 44.5 * Math.sin(ang)).toFixed(1);
+          const c = i % 2 === 0 ? '#FB7185' : '#F472B6';
+          petals.push(`
+            <g transform="translate(${cx},${cy})">
+              <circle cx="0" cy="-3.6" r="3.1" fill="${c}"/>
+              <circle cx="3.6" cy="0" r="3.1" fill="${c}"/>
+              <circle cx="0" cy="3.6" r="3.1" fill="${c}"/>
+              <circle cx="-3.6" cy="0" r="3.1" fill="${c}"/>
+              <circle cx="0" cy="0" r="2.3" fill="#FDE047"/>
+            </g>
+          `);
+        }
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#16A34A" stroke-width="5"/>
+          ${petals.join('')}
+        `;
+      }
+      if (frameId === 'fr_candy') {
+        const candies = [];
+        for (let i = 0; i < 16; i++) {
+          const ang = (i * 22.5) * Math.PI / 180;
+          const cx = (50 + 44.5 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 44.5 * Math.sin(ang)).toFixed(1);
+          const cols = ['#EC4899', '#38BDF8', '#FACC15', '#34D399'];
+          candies.push(`<circle cx="${cx}" cy="${cy}" r="5.6" fill="${cols[i % 4]}" stroke="#FFFFFF" stroke-width="1.6"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F472B6" stroke-width="5.5"/>
+          ${candies.join('')}
+          <g transform="translate(50, 5)">
+            <polygon points="-8,-4.5 0,0 -8,4.5" fill="#EC4899" stroke="#FFFFFF" stroke-width="1.2"/>
+            <polygon points="8,-4.5 0,0 8,4.5" fill="#EC4899" stroke="#FFFFFF" stroke-width="1.2"/>
+            <circle cx="0" cy="0" r="3.4" fill="#FACC15"/>
+          </g>
+        `;
+      }
+      if (frameId === 'fr_roman') {
+        const leaves = [];
+        for (let i = -5; i <= 5; i++) {
+          const angL = (180 + i * 15) * Math.PI / 180;
+          const lx = (50 + 44.5 * Math.cos(angL)).toFixed(1);
+          const ly = (50 + 44.5 * Math.sin(angL)).toFixed(1);
+          const rotL = (i * 15 - 35).toFixed(0);
+          leaves.push(`<ellipse cx="${lx}" cy="${ly}" rx="7" ry="3.2" transform="rotate(${rotL} ${lx} ${ly})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>`);
+
+          const angR = (i * 15) * Math.PI / 180;
+          const rx = (50 + 44.5 * Math.cos(angR)).toFixed(1);
+          const ry = (50 + 44.5 * Math.sin(angR)).toFixed(1);
+          const rotR = (i * 15 + 35).toFixed(0);
+          leaves.push(`<ellipse cx="${rx}" cy="${ry}" rx="7" ry="3.2" transform="rotate(${rotR} ${rx} ${ry})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#B45309" stroke-width="4"/>
+          ${leaves.join('')}
+          <polygon points="40,93 50,86 60,93 56,99 44,99" fill="#DC2626" stroke="#FACC15" stroke-width="1.3"/>
+        `;
+      }
+      if (frameId === 'fr_thorns') {
+        const spikes = [];
+        for (let i = 0; i < 18; i++) {
+          const ang = (i * 20) * Math.PI / 180;
+          const x1 = (50 + 41 * Math.cos(ang - 0.12)).toFixed(1);
+          const y1 = (50 + 41 * Math.sin(ang - 0.12)).toFixed(1);
+          const x2 = (50 + 50.5 * Math.cos(ang)).toFixed(1);
+          const y2 = (50 + 50.5 * Math.sin(ang)).toFixed(1);
+          const x3 = (50 + 41 * Math.cos(ang + 0.12)).toFixed(1);
+          const y3 = (50 + 41 * Math.sin(ang + 0.12)).toFixed(1);
+          spikes.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#365314" stroke="#1A2E05" stroke-width="0.9"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#3F6212" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#84CC16" stroke-width="2" stroke-dasharray="6 5"/>
+          ${spikes.join('')}
+          <circle cx="19" cy="19" r="4.8" fill="#E11D48" stroke="#FFFFFF" stroke-width="1"/>
+          <circle cx="81" cy="19" r="4.8" fill="#E11D48" stroke="#FFFFFF" stroke-width="1"/>
+          <circle cx="19" cy="81" r="4.8" fill="#E11D48" stroke="#FFFFFF" stroke-width="1"/>
+          <circle cx="81" cy="81" r="4.8" fill="#E11D48" stroke="#FFFFFF" stroke-width="1"/>
+        `;
+      }
+      if (frameId === 'fr_ice') {
+        const shards = [];
+        for (let i = 0; i < 14; i++) {
+          const ang = (i * (360 / 14)) * Math.PI / 180;
+          const x1 = (50 + 40.5 * Math.cos(ang - 0.14)).toFixed(1);
+          const y1 = (50 + 40.5 * Math.sin(ang - 0.14)).toFixed(1);
+          const x2 = (50 + 51 * Math.cos(ang)).toFixed(1);
+          const y2 = (50 + 51 * Math.sin(ang)).toFixed(1);
+          const x3 = (50 + 40.5 * Math.cos(ang + 0.14)).toFixed(1);
+          const y3 = (50 + 40.5 * Math.sin(ang + 0.14)).toFixed(1);
+          shards.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#BAE6FD" stroke="#0284C7" stroke-width="1.1"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#38BDF8" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-dasharray="5 4"/>
+          ${shards.join('')}
+        `;
+      }
+      if (frameId === 'fr_fire') {
+        const flames = [];
+        for (let i = 0; i < 16; i++) {
+          const ang = (i * 22.5) * Math.PI / 180;
+          const x1 = (50 + 40 * Math.cos(ang - 0.18)).toFixed(1);
+          const y1 = (50 + 40 * Math.sin(ang - 0.18)).toFixed(1);
+          const x2 = (50 + 51 * Math.cos(ang + 0.08)).toFixed(1);
+          const y2 = (50 + 51 * Math.sin(ang + 0.08)).toFixed(1);
+          const x3 = (50 + 40 * Math.cos(ang + 0.18)).toFixed(1);
+          const y3 = (50 + 40 * Math.sin(ang + 0.18)).toFixed(1);
+          flames.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${i % 2 === 0 ? '#F97316' : '#EF4444'}"/>`);
+        }
+        return `
+          ${flames.join('')}
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#EA580C" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#FDE047" stroke-width="2.4" stroke-dasharray="8 4"/>
         `;
       }
       if (frameId === 'fr_crown_gold') {
         return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="url(#${uid}_gold)" stroke-width="5.5"/>
-          <polygon points="31,11 36,1 43,8 50,0 57,8 64,1 69,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
-          <circle cx="50" cy="7" r="2.2" fill="#E11D48"/>
-          <circle cx="39" cy="8.5" r="1.6" fill="#0284C7"/>
-          <circle cx="61" cy="8.5" r="1.6" fill="#0284C7"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="6"/>
+          <polygon points="28,11 34,-1 42,8 50,-2 58,8 66,-1 72,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
+          <circle cx="50" cy="6.5" r="2.6" fill="#E11D48"/>
+          <circle cx="38" cy="8" r="2" fill="#0284C7"/>
+          <circle cx="62" cy="8" r="2" fill="#0284C7"/>
+          <polygon points="5,50 11,45 11,55" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+          <polygon points="95,50 89,45 89,55" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+        `;
+      }
+      if (frameId === 'fr_gold_chain') {
+        const links = [];
+        for (let i = 0; i < 18; i++) {
+          const ang = (i * 20) * Math.PI / 180;
+          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
+          const deg = (i * 20 + 90).toFixed(0);
+          links.push(`<rect x="${cx - 4.8}" y="${cy - 2.8}" width="9.6" height="5.6" rx="2.8" transform="rotate(${deg} ${cx} ${cy})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#92400E" stroke-width="5.5"/>
+          ${links.join('')}
+          <polygon points="33,10 39,0 45,7 50,-1 55,7 61,0 67,10" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
         `;
       }
       if (frameId === 'fr_dragon') {
         return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#DC2626" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#F59E0B" stroke-width="2.2" stroke-dasharray="9 4"/>
-          <polygon points="10,42 2,32 14,35 7,24 20,31 18,45" fill="#F97316" stroke="#7F1D1D" stroke-width="1"/>
-          <polygon points="90,42 98,32 86,35 93,24 80,31 82,45" fill="#F97316" stroke="#7F1D1D" stroke-width="1"/>
-          <polygon points="43,10 50,1 57,10" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#DC2626" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="2.4" stroke-dasharray="9 4"/>
+          <polygon points="9,44 -2,28 13,33 5,18 20,29 17,47" fill="#F97316" stroke="#7F1D1D" stroke-width="1.2"/>
+          <polygon points="91,44 102,28 87,33 95,18 80,29 83,47" fill="#F97316" stroke="#7F1D1D" stroke-width="1.2"/>
+          <polygon points="41,10 50,-2 59,10" fill="#FACC15" stroke="#B45309" stroke-width="1.2"/>
+        `;
+      }
+      if (frameId === 'fr_diamond_chain') {
+        const gems = [];
+        for (let i = 0; i < 16; i++) {
+          const ang = (i * 22.5) * Math.PI / 180;
+          const cx = (50 + 44 * Math.cos(ang));
+          const cy = (50 + 44 * Math.sin(ang));
+          gems.push(`<polygon points="${cx.toFixed(1)},${(cy - 5.2).toFixed(1)} ${(cx + 5.2).toFixed(1)},${cy.toFixed(1)} ${cx.toFixed(1)},${(cy + 5.2).toFixed(1)} ${(cx - 5.2).toFixed(1)},${cy.toFixed(1)}" fill="${i % 2 === 0 ? '#E0F2FE' : '#38BDF8'}" stroke="#1E3A8A" stroke-width="1.2"/>`);
+        }
+        return `
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1D4ED8" stroke-width="6"/>
+          ${gems.join('')}
+          <polygon points="50,-2 58,6 50,15 42,6" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.5"/>
         `;
       }
       if (frameId === 'fr_galaxy') {
         const stars = [];
-        for (let i = 0; i < 12; i++) {
-          const ang = (i * 30) * Math.PI / 180;
-          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
-          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
-          stars.push(`<circle cx="${cx}" cy="${cy}" r="${i % 2 === 0 ? '3.4' : '2.2'}" fill="${i % 2 === 0 ? '#E879F9' : '#38BDF8'}" stroke="#FFFFFF" stroke-width="0.9"/>`);
+        for (let i = 0; i < 14; i++) {
+          const ang = (i * (360 / 14)) * Math.PI / 180;
+          const cx = (50 + 44.5 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 44.5 * Math.sin(ang)).toFixed(1);
+          stars.push(`<circle cx="${cx}" cy="${cy}" r="${i % 2 === 0 ? '4' : '2.6'}" fill="${i % 2 === 0 ? '#E879F9' : '#38BDF8'}" stroke="#FFFFFF" stroke-width="1.1"/>`);
         }
         return `
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#6D28D9" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#C084FC" stroke-width="2" stroke-dasharray="7 5"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#6D28D9" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#C084FC" stroke-width="2.2" stroke-dasharray="7 5"/>
           ${stars.join('')}
-          <polygon points="50,0 55,6 50,13 45,6" fill="#F0ABFC" stroke="#FFFFFF" stroke-width="1.2"/>
+          <circle cx="11" cy="24" r="5" fill="#F472B6" stroke="#FFFFFF" stroke-width="1.1"/>
+          <ellipse cx="11" cy="24" rx="8.5" ry="2.2" transform="rotate(-22 11 24)" fill="none" stroke="#FDE047" stroke-width="1.4"/>
+          <polygon points="50,-2 57,5.5 50,14 43,5.5" fill="#F0ABFC" stroke="#FFFFFF" stroke-width="1.3"/>
         `;
       }
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
     }
 
-    /* Penjana 12 Watak 3D Pixar Tulen */
+    /* Penjana Watak 3D Pixar Pelbagai Bangsa, Sayap Luar Frame, Topi Kemas & Tudung Realistik */
     function renderRealisticAvatarSVG(cfgInput, sizeClass = "w-full h-full") {
       const cfg = sanitizeAvatarForGender({ ...(cfgInput || getDefaultAvatarConfig('boy')) });
-      const bgObj = AVATAR_STUDIO_CATALOG.bg.find(b => b.id === cfg.bg) || AVATAR_STUDIO_CATALOG.bg[0];
       const hairPal = HAIR_COLOR_PALETTES[cfg.hairColor] || HAIR_COLOR_PALETTES.brown;
-      const skin = cfg.skin || '#F7C8A0';
       const isGirl = cfg.gender === 'girl';
       const hasTudung = cfg.headwear && cfg.headwear.startsWith('hw_tudung');
+      const hasFullCap = ['hw_cap_red', 'hw_cap_blue', 'hw_beanie', 'hw_wizard', 'hw_grad', 'hw_ninja'].includes(cfg.headwear);
       const accList = cfg.accessories || [];
       const charId = cfg.face || (isGirl ? 'girl_hana' : 'boy_leo');
+      const outfitId = cfg.outfit || (isGirl ? 'out_crew_charcoal' : 'out_hoodie_amber');
 
       const uid = 'px3d_' + Math.random().toString(36).slice(2, 8);
 
+      // 18 Watak Pelbagai Bangsa & Struktur Anatomi Wajah Unik (Melayu, Cina, Orang Putih, Afrika/Negro, India, Arab, Jepun, Cyber & Naga)
       const charSpecs = {
-        boy_leo:     { head: 'round',      iris: '#334155', iris2: '#090D16', nose: 'button', brow: 'thick',      outfit: 'hoodie_amber',    mouth: 'smile',      eyeStyle: 'round' },
-        boy_adam:    { head: 'oval',       iris: '#1D4ED8', iris2: '#172554', nose: 'slim',   brow: 'arched',     outfit: 'blazer_slate',    mouth: 'gentle',     eyeStyle: 'confident' },
-        boy_zack:    { head: 'square',     iris: '#047857', iris2: '#022C22', nose: 'broad',  brow: 'bold',       outfit: 'jacket_orange',   mouth: 'grin',       eyeStyle: 'wide' },
-        boy_danish:  { head: 'heart',      iris: '#0369A1', iris2: '#082F49', nose: 'button', brow: 'soft',       outfit: 'polo_teal',       mouth: 'smirk',      eyeStyle: 'confident' },
-        boy_amir:    { head: 'oval',       iris: '#78350F', iris2: '#271306', nose: 'broad',  brow: 'thick',      outfit: 'hoodie_red',      mouth: 'grin',       eyeStyle: 'round' },
-        boy_rayyan:  { head: 'round',      iris: '#6D28D9', iris2: '#2E1065', nose: 'slim',   brow: 'gentle',     outfit: 'sweater_navy',    mouth: 'smile',      eyeStyle: 'happy_arc' },
-        boy_harith:  { head: 'oval',       iris: '#B45309', iris2: '#451A03', nose: 'slim',   brow: 'arched',     outfit: 'prince_royal',    mouth: 'gentle',     eyeStyle: 'confident' },
-        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'button', brow: 'bold',       outfit: 'cyber_neon',      mouth: 'smirk',      eyeStyle: 'wide' },
-        boy_ryu:     { head: 'square',     iris: '#DC2626', iris2: '#7F1D1D', nose: 'broad',  brow: 'bold',       outfit: 'dragon_gold',     mouth: 'grin',       eyeStyle: 'confident' },
-        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',   brow: 'pixar_soft', outfit: 'charcoal_crew',   mouth: 'pixar_cute', eyeStyle: 'doll' },
-        girl_sofia:  { head: 'round_girl', iris: '#1E293B', iris2: '#020617', nose: 'cute',   brow: 'pixar_soft', outfit: 'jacket_orange',   mouth: 'pixar_sweet',eyeStyle: 'doll' },
-        girl_maya:   { head: 'soft_oval',  iris: '#78350F', iris2: '#271306', nose: 'petite', brow: 'gentle',     outfit: 'sweater_mustard', mouth: 'open_smile', eyeStyle: 'round' },
-        girl_aina:   { head: 'slender',    iris: '#047857', iris2: '#022C22', nose: 'slim_g', brow: 'arched',     outfit: 'cardigan_teal',   mouth: 'freckles',   eyeStyle: 'almond' },
-        girl_bella:  { head: 'pixar_doll', iris: '#1D4ED8', iris2: '#172554', nose: 'cute',   brow: 'arched',     outfit: 'knit_collar_bow', mouth: 'poised',     eyeStyle: 'almond' },
-        girl_nadia:  { head: 'round_girl', iris: '#9D174D', iris2: '#500724', nose: 'petite', brow: 'pixar_soft', outfit: 'blouse_sky',      mouth: 'pixar_sweet',eyeStyle: 'happy_arc' },
-        girl_alya:   { head: 'pixar_doll', iris: '#B45309', iris2: '#451A03', nose: 'cute',   brow: 'arched',     outfit: 'princess_gown',   mouth: 'pixar_sweet',eyeStyle: 'doll' },
-        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite', brow: 'pixar_soft', outfit: 'starlight_dress', mouth: 'pixar_cute', eyeStyle: 'almond' },
-        girl_aurora: { head: 'pixar_doll', iris: '#0284C7', iris2: '#0C4A6E', nose: 'cute',   brow: 'arched',     outfit: 'crystal_dress',   mouth: 'open_smile', eyeStyle: 'doll' }
+        boy_leo:     { head: 'round',      iris: '#451A03', iris2: '#090D16', nose: 'button',  brow: 'thick',      mouth: 'smile',       eyeStyle: 'round',      blush: 0.24, defaultSkin: '#DDA175' }, // Melayu
+        boy_adam:    { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'slim',    brow: 'gentle',     mouth: 'gentle',      eyeStyle: 'monolid',    blush: 0.22, defaultSkin: '#FFE5D0' }, // Cina
+        boy_zack:    { head: 'square',     iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles_b',  eyeStyle: 'wide',       blush: 0.30, defaultSkin: '#FFE8D6' }, // Orang Putih
+        boy_danish:  { head: 'broad_jaw',  iris: '#3B0764', iris2: '#090D16', nose: 'afro_b',  brow: 'bold',       mouth: 'full_grin',   eyeStyle: 'confident',  blush: 0.18, defaultSkin: '#7C472A' }, // Afrika / Negro
+        boy_amir:    { head: 'oval',       iris: '#047857', iris2: '#022C22', nose: 'prominent',brow: 'thick',     mouth: 'grin',        eyeStyle: 'almond',     blush: 0.24, defaultSkin: '#B8784E' }, // India
+        boy_rayyan:  { head: 'heart',      iris: '#B45309', iris2: '#451A03', nose: 'prominent',brow: 'arab_bold', mouth: 'smirk',       eyeStyle: 'almond',     blush: 0.20, defaultSkin: '#E3B087' }, // Arab
+        boy_harith:  { head: 'slender',    iris: '#4F46E5', iris2: '#1E1B4B', nose: 'petite',  brow: 'soft',       mouth: 'poised',      eyeStyle: 'monolid',    blush: 0.26, defaultSkin: '#FDE4CF' }, // Jepun
+        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'slim',    brow: 'bold',       mouth: 'smirk',       eyeStyle: 'wide',       blush: 0.20, defaultSkin: '#F7C8A0' }, // Cyber
+        boy_ryu:     { head: 'square',     iris: '#EF4444', iris2: '#7F1D1D', nose: 'broad',   brow: 'bold',       mouth: 'grin',        eyeStyle: 'confident',  blush: 0.25, defaultSkin: '#DDA175' }, // Naga
+
+        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',    brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'doll',       blush: 0.44, defaultSkin: '#DDA175' }, // Melayu
+        girl_sofia:  { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'petite',  brow: 'gentle',     mouth: 'pixar_sweet', eyeStyle: 'monolid',    blush: 0.46, defaultSkin: '#FFE5D0' }, // Cina
+        girl_maya:   { head: 'heart',      iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles',    eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE8D6' }, // Orang Putih
+        girl_aina:   { head: 'broad_jaw',  iris: '#581C87', iris2: '#090D16', nose: 'afro_g',  brow: 'arched',     mouth: 'full_sweet',  eyeStyle: 'almond',     blush: 0.34, defaultSkin: '#7C472A' }, // Afrika / Negro
+        girl_bella:  { head: 'pixar_doll', iris: '#047857', iris2: '#022C22', nose: 'slim_g',  brow: 'arched',     mouth: 'india_bindi', eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#B8784E' }, // India
+        girl_nadia:  { head: 'slender',    iris: '#B45309', iris2: '#451A03', nose: 'slim_g',  brow: 'arab_arch',  mouth: 'pixar_sweet', eyeStyle: 'almond',     blush: 0.44, defaultSkin: '#E3B087' }, // Arab
+        girl_alya:   { head: 'round_girl', iris: '#DB2777', iris2: '#500724', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'monolid',    blush: 0.50, defaultSkin: '#FDE4CF' }, // Jepun
+        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#F7C8A0' }, // Luna
+        girl_aurora: { head: 'pixar_doll', iris: '#06B6D4', iris2: '#0C4A6E', nose: 'cute',    brow: 'arched',     mouth: 'open_smile',  eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE5D0' }  // Aurora
       };
       const spec = charSpecs[charId] || (isGirl ? charSpecs.girl_hana : charSpecs.boy_leo);
+      const skin = spec.defaultSkin || '#DDA175';
 
       let tudungTop = '#F9A8D4', tudungMid = '#EC4899', tudungDark = '#9D174D', tudungTrim = '';
       if (cfg.headwear === 'hw_tudung_blue')     { tudungTop = '#7DD3FC'; tudungMid = '#0284C7'; tudungDark = '#075985'; }
@@ -2833,44 +2850,41 @@
       if (cfg.headwear === 'hw_tudung_gold')     { tudungTop = '#FEF08A'; tudungMid = '#D97706'; tudungDark = '#78350F'; tudungTrim = '#FACC15'; }
 
       const outfitPalettes = {
-        hoodie_amber:    ['#FDE047', '#F59E0B', '#B45309', '#FFFFFF'],
-        sweater_navy:    ['#60A5FA', '#2563EB', '#1E3A8A', '#E0F2FE'],
-        jacket_orange:   ['#FB923C', '#EA580C', '#7C2D12', '#1E293B'],
-        polo_teal:       ['#2DD4BF', '#0D9488', '#115E59', '#CCFBF1'],
-        blazer_slate:    ['#64748B', '#334155', '#0F172A', '#F8FAFC'],
-        hoodie_red:      ['#F87171', '#DC2626', '#7F1D1D', '#FEF2F2'],
-        prince_royal:    ['#3B82F6', '#1D4ED8', '#1E3A8A', '#FACC15'],
-        cyber_neon:      ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
-        dragon_gold:     ['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A'],
-        charcoal_crew:   ['#4B5563', '#27272A', '#09090B', '#F8FAFC'],
-        knit_collar_bow: ['#93C5FD', '#3B82F6', '#1D4ED8', '#FFFFFF'],
-        knit_pink:       ['#F472B6', '#DB2777', '#831843', '#FFFFFF'],
-        turtleneck_cream:['#FEF3C7', '#FDE68A', '#D97706', '#FFFBEB'],
-        cardigan_teal:   ['#34D399', '#059669', '#064E3B', '#ECFDF5'],
-        sweater_mustard: ['#FBBF24', '#D97706', '#78350F', '#FEF3C7'],
-        blouse_sky:      ['#7DD3FC', '#0284C7', '#075985', '#F0F9FF'],
-        princess_gown:   ['#F9A8D4', '#EC4899', '#9D174D', '#FEF08A'],
-        starlight_dress: ['#C4B5FD', '#7C3AED', '#4C1D95', '#FDE047'],
-        crystal_dress:   ['#BAE6FD', '#0284C7', '#075985', '#FFFFFF']
+        out_hoodie_amber:  ['#FDE047', '#F59E0B', '#B45309', '#FFFFFF'],
+        out_crew_charcoal: ['#4B5563', '#27272A', '#09090B', '#F8FAFC'],
+        out_polo_teal:     ['#2DD4BF', '#0D9488', '#115E59', '#CCFBF1'],
+        out_sweater_navy:  ['#60A5FA', '#2563EB', '#1E3A8A', '#E0F2FE'],
+        out_school_uniform:['#FFFFFF', '#E2E8F0', '#94A3B8', '#1E3A8A'],
+        out_jacket_orange: ['#FB923C', '#EA580C', '#7C2D12', '#1E293B'],
+        out_baju_melayu:   ['#34D399', '#059669', '#064E3B', '#FACC15'],
+        out_baju_kurung:   ['#F472B6', '#DB2777', '#831843', '#FEF08A'],
+        out_knit_bow:      ['#93C5FD', '#3B82F6', '#1D4ED8', '#FFFFFF'],
+        out_blazer_slate:  ['#64748B', '#334155', '#0F172A', '#F8FAFC'],
+        out_lab_coat:      ['#FFFFFF', '#F1F5F9', '#CBD5E1', '#0284C7'],
+        out_astronaut:     ['#F8FAFC', '#E2E8F0', '#94A3B8', '#F97316'],
+        out_prince_royal:  ['#3B82F6', '#1D4ED8', '#1E3A8A', '#FACC15'],
+        out_princess_gown: ['#F9A8D4', '#EC4899', '#9D174D', '#FEF08A'],
+        out_cyber_armor:   ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
+        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A']
       };
-      const op = outfitPalettes[spec.outfit] || outfitPalettes.hoodie_amber;
+      const op = outfitPalettes[outfitId] || outfitPalettes.out_hoodie_amber;
 
       const defs3D = `
         <defs>
           <radialGradient id="${uid}_bg" cx="40%" cy="28%" r="76%">
-            <stop offset="0%" stop-color="${bgObj.c1 || '#F8FAFC'}"/>
-            <stop offset="100%" stop-color="${bgObj.c2 || '#CBD5E1'}"/>
+            <stop offset="0%" stop-color="#E0F2FE"/>
+            <stop offset="100%" stop-color="#93C5FD"/>
           </radialGradient>
           <radialGradient id="${uid}_skin" cx="42%" cy="30%" r="70%">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.45"/>
             <stop offset="35%" stop-color="${skin}" stop-opacity="1"/>
             <stop offset="82%" stop-color="${skin}" stop-opacity="1"/>
-            <stop offset="100%" stop-color="#9C5A34" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#4A2511" stop-opacity="0.72"/>
           </radialGradient>
           <radialGradient id="${uid}_nose" cx="38%" cy="30%" r="68%">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65"/>
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
             <stop offset="45%" stop-color="${skin}" stop-opacity="1"/>
-            <stop offset="100%" stop-color="#A6613A" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#5C2E14" stop-opacity="0.8"/>
           </radialGradient>
           <linearGradient id="${uid}_hair" x1="15%" y1="0%" x2="85%" y2="100%">
             <stop offset="0%" stop-color="${hairPal.light}"/>
@@ -2903,58 +2917,67 @@
           <filter id="${uid}_soft" x="-15%" y="-15%" width="130%" height="130%">
             <feDropShadow dx="0" dy="1.4" stdDeviation="1.1" flood-color="#451A03" flood-opacity="0.24"/>
           </filter>
+          <filter id="${uid}_glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="0" stdDeviation="2.6" flood-color="#FACC15" flood-opacity="0.95"/>
+          </filter>
         </defs>
       `;
 
-      // Dekorasi Latar Belakang Istimewa (Bintang, Awan, Istana, Lava, Aurora)
-      let bgDecorLayer = '';
-      if (cfg.bg === 'bg_galaxy' || cfg.bg === 'bg_aurora') {
-        bgDecorLayer = `
-          <circle cx="22" cy="24" r="1.4" fill="#FFFFFF" opacity="0.9"/>
-          <circle cx="76" cy="22" r="1.8" fill="#FEF08A" opacity="0.9"/>
-          <circle cx="18" cy="64" r="1.2" fill="#FFFFFF" opacity="0.75"/>
-          <circle cx="82" cy="60" r="1.5" fill="#FFFFFF" opacity="0.85"/>
-          <polygon points="73,31 74.5,34 78,34.5 75.5,37 76,40.5 73,38.8 70,40.5 70.5,37 68,34.5 71.5,34" fill="#FDE047" opacity="0.85"/>
+      // SAYAP LUAR FRAME 3D BERLAPIS (Sayap Unicorn Bulu Pelepah Lebat & Sayap Naga Api)
+      let outerBackWingsLayer = '';
+      if (accList.includes('acc_wings_angel')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_shadow)">
+            <!-- SAYAP UNICORN KIRI (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
+            <path d="M 18 52 C 12 30, -2 12, -16 8 C -19 14, -14 21, -7 25 C -16 23, -21 28, -18 34 C -10 35, -4 36, 2 37 C -14 37, -18 43, -14 48 C -7 48, -1 47, 5 47 C -10 49, -13 55, -8 59 C -1 58, 5 56, 10 55 C -2 59, -4 65, 2 67 C 9 65, 14 61, 18 58 Z"
+              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Perak -->
+            <path d="M 17 51 C 12 35, 1 22, -9 18 C -10 23, -5 28, 2 31 C -6 31, -9 35, -6 39 C 1 39, 6 40, 11 41 C -2 42, -5 46, -1 49 C 5 49, 11 49, 16 50 Z"
+              fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
+            <path d="M 17 50 C 14 39, 7 31, 0 29 C 0 34, 4 38, 9 40 C 3 41, 2 44, 5 47 C 9 47, 13 48, 17 50 Z"
+              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
+
+            <!-- SAYAP UNICORN KANAN (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
+            <path d="M 82 52 C 88 30, 102 12, 116 8 C 119 14, 114 21, 107 25 C 116 23, 121 28, 118 34 C 110 35, 104 36, 98 37 C 114 37, 118 43, 114 48 C 107 48, 101 47, 95 47 C 110 49, 113 55, 108 59 C 101 58, 95 56, 90 55 C 102 59, 104 65, 98 67 C 91 65, 86 61, 82 58 Z"
+              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Perak -->
+            <path d="M 83 51 C 88 35, 99 22, 109 18 C 110 23, 105 28, 98 31 C 106 31, 109 35, 106 39 C 99 39, 94 40, 89 41 C 102 42, 105 46, 101 49 C 95 49, 89 49, 84 50 Z"
+              fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
+            <path d="M 83 50 C 86 39, 93 31, 100 29 C 100 34, 96 38, 91 40 C 97 41, 98 44, 95 47 C 91 47, 87 48, 83 50 Z"
+              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
+          </g>
         `;
-      } else if (cfg.bg === 'bg_sakura') {
-        bgDecorLayer = `
-          <circle cx="22" cy="25" r="3" fill="#F472B6" opacity="0.65"/>
-          <circle cx="78" cy="28" r="2.6" fill="#EC4899" opacity="0.6"/>
-          <circle cx="20" cy="68" r="2.4" fill="#F472B6" opacity="0.6"/>
-          <circle cx="80" cy="66" r="3.2" fill="#EC4899" opacity="0.55"/>
-        `;
-      } else if (cfg.bg === 'bg_rainbow') {
-        bgDecorLayer = `
-          <path d="M 12 65 A 38 38 0 0 1 88 65" fill="none" stroke="#EF4444" stroke-width="3" opacity="0.45"/>
-          <path d="M 15 65 A 35 35 0 0 1 85 65" fill="none" stroke="#FACC15" stroke-width="3" opacity="0.55"/>
-          <path d="M 18 65 A 32 32 0 0 1 82 65" fill="none" stroke="#38BDF8" stroke-width="3" opacity="0.55"/>
-        `;
-      } else if (cfg.bg === 'bg_ocean') {
-        bgDecorLayer = `
-          <circle cx="22" cy="30" r="2.8" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65"/>
-          <circle cx="77" cy="26" r="3.5" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65"/>
-          <circle cx="75" cy="40" r="1.8" fill="#FFFFFF" opacity="0.6"/>
-        `;
-      } else if (cfg.bg === 'bg_lava') {
-        bgDecorLayer = `
-          <polygon points="10,92 28,48 46,92" fill="#7F1D1D" opacity="0.45"/>
-          <polygon points="56,92 76,44 92,92" fill="#991B1B" opacity="0.45"/>
-          <circle cx="26" cy="32" r="2" fill="#FACC15" opacity="0.8"/>
-          <circle cx="74" cy="28" r="2.2" fill="#FB923C" opacity="0.85"/>
-        `;
-      } else if (cfg.bg === 'bg_royal') {
-        bgDecorLayer = `
-          <rect x="14" y="42" width="10" height="45" fill="#F59E0B" opacity="0.32"/>
-          <polygon points="12,42 19,28 26,42" fill="#B45309" opacity="0.4"/>
-          <rect x="76" y="42" width="10" height="45" fill="#F59E0B" opacity="0.32"/>
-          <polygon points="74,42 81,28 88,42" fill="#B45309" opacity="0.4"/>
-          <polygon points="50,12 52,17 57,17.5 53,21 54,26 50,23.5 46,26 47,21 43,17.5 48,17" fill="#F59E0B" opacity="0.6"/>
+      }
+      if (accList.includes('acc_wings_dragon')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_shadow)">
+            <!-- Sayap Naga Kiri (Membran Berapi + Tulang & Cakar Emas) -->
+            <path d="M 18 66 Q 6 61 -4 68 Q -4 56 -14 57 Q -10 43 -18 35 Q -8 24 -12 12 Q 2 18 11 26 L 19 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M 16 61 Q 7 58 -1 62 Q 0 53 -9 53 Q -5 43 -12 36 Q -4 27 -7 19 Q 3 23 10 30 L 17 44 Z" fill="#EA580C"/>
+            <path d="M 15 56 Q 8 54 3 57 Q 4 50 -3 49 Q 0 42 -5 37 Q 1 31 0 26 L 14 45 Z" fill="#FACC15" opacity="0.72"/>
+            <!-- Tulang Sayap & Cakar Naga Kiri -->
+            <path d="M 18 45 Q 3 27 -12 12 M 17 49 Q 0 41 -18 35 M 17 54 Q 1 54 -14 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="-12,12 -16,7 -9,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
+
+            <!-- Sayap Naga Kanan (Membran Berapi + Tulang & Cakar Emas) -->
+            <path d="M 82 66 Q 94 61 104 68 Q 104 56 114 57 Q 110 43 118 35 Q 108 24 112 12 Q 98 18 89 26 L 81 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M 84 61 Q 93 58 101 62 Q 100 53 109 53 Q 105 43 112 36 Q 104 27 107 19 Q 97 23 90 30 L 83 44 Z" fill="#EA580C"/>
+            <path d="M 85 56 Q 92 54 97 57 Q 96 50 103 49 Q 100 42 105 37 Q 99 31 100 26 L 86 45 Z" fill="#FACC15" opacity="0.72"/>
+            <!-- Tulang Sayap & Cakar Naga Kanan -->
+            <path d="M 82 45 Q 97 27 112 12 M 83 49 Q 100 41 118 35 M 83 54 Q 99 54 114 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="112,12 116,7 109,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
+          </g>
         `;
       }
 
+      // Lapisan Rambut Belakang / Tudung Luar
       let backHairLayer = '';
       if (hasTudung) {
-        backHairLayer = `<path d="M 15 56 C 15 16, 85 16, 85 56 L 91 100 L 9 100 Z" fill="url(#${uid}_tudung)" filter="url(#${uid}_shadow)"/>`;
+        backHairLayer = `
+          <path d="M 18 46 C 18 14, 82 14, 82 46 L 88 100 L 12 100 Z" fill="url(#${uid}_tudung)" filter="url(#${uid}_shadow)"/>
+        `;
       } else if (isGirl) {
         if (cfg.hair === 'hair_wavy_girl') {
           backHairLayer = `
@@ -2964,74 +2987,106 @@
           `;
         } else if (cfg.hair === 'hair_long_girl') {
           backHairLayer = `<path d="M 17 35 C 10 66, 12 92, 18 100 L 82 100 C 88 92, 90 66, 83 35 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>`;
-        } else if (cfg.hair === 'hair_buns') {
+        } else if (cfg.hair === 'hair_buns' && !hasFullCap) {
           backHairLayer = `
             <circle cx="22" cy="24" r="12" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
             <circle cx="78" cy="24" r="12" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <ellipse cx="19.5" cy="19.5" rx="5.2" ry="2.4" transform="rotate(-25 19.5 19.5)" fill="${hairPal.shine}" opacity="0.5"/>
-            <ellipse cx="75.5" cy="19.5" rx="5.2" ry="2.4" transform="rotate(-25 75.5 19.5)" fill="${hairPal.shine}" opacity="0.5"/>
           `;
-        } else if (cfg.hair === 'hair_ponytail') {
+        } else if (cfg.hair === 'hair_ponytail' && !hasFullCap) {
           backHairLayer = `
             <circle cx="50" cy="13" r="12.5" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <ellipse cx="47" cy="9.5" rx="5.5" ry="2.5" fill="${hairPal.shine}" opacity="0.5"/>
           `;
         } else if (cfg.hair === 'hair_twin_tails') {
           backHairLayer = `
-            <path d="M 22 30 C 10 38, 8 64, 14 82 C 18 85, 24 80, 24 68 L 26 35 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 78 30 C 90 38, 92 64, 86 82 C 82 85, 76 80, 76 68 L 74 35 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <circle cx="21" cy="31" r="3.5" fill="#F43F5E"/>
-            <circle cx="79" cy="31" r="3.5" fill="#F43F5E"/>
+            <path d="M 22 36 C 10 42, 8 66, 14 82 C 18 85, 24 80, 24 68 L 26 38 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <path d="M 78 36 C 90 42, 92 66, 86 82 C 82 85, 76 80, 76 68 L 74 38 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            ${!hasFullCap ? `<circle cx="21" cy="34" r="3.5" fill="#F43F5E"/><circle cx="79" cy="34" r="3.5" fill="#F43F5E"/>` : ''}
           `;
         } else if (cfg.hair === 'hair_princess') {
           backHairLayer = `
-            <path d="M 16 32 C 10 60, 12 92, 18 100 L 82 100 C 88 92, 90 60, 84 32 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <circle cx="50" cy="14" r="10" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-            <path d="M 41 18 Q 50 22 59 18" fill="none" stroke="url(#${uid}_gold)" stroke-width="2.5"/>
+            <path d="M 16 34 C 10 60, 12 92, 18 100 L 82 100 C 88 92, 90 60, 84 34 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            ${!hasFullCap ? `<circle cx="50" cy="14" r="10" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>` : ''}
           `;
         }
       }
 
-      // Aksesori Belakang (Beg Galas / Sayap Bidadari / Sayap Naga)
+      // Beg Galas Sekolah 3D (Kelihatan jelas di kiri & kanan bahu di belakang badan!)
       let backAccLayer = '';
       if (accList.includes('acc_backpack')) {
-        backAccLayer += `<rect x="18" y="75" width="64" height="25" rx="10" fill="#334155" filter="url(#${uid}_shadow)"/>`;
-      }
-      if (accList.includes('acc_wings_angel')) {
         backAccLayer += `
-          <path d="M 26 78 C 8 62, 6 42, 22 48 C 14 55, 16 68, 28 74 Z" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="1.5" filter="url(#${uid}_soft)"/>
-          <path d="M 74 78 C 92 62, 94 42, 78 48 C 86 55, 84 68, 72 74 Z" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="1.5" filter="url(#${uid}_soft)"/>
-        `;
-      }
-      if (accList.includes('acc_wings_dragon')) {
-        backAccLayer += `
-          <polygon points="28,78 6,54 14,44 22,54 24,42 32,62" fill="#DC2626" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_soft)"/>
-          <polygon points="72,78 94,54 86,44 78,54 76,42 68,62" fill="#DC2626" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_soft)"/>
+          <g filter="url(#${uid}_shadow)">
+            <rect x="13" y="67" width="74" height="31" rx="12" fill="#1D4ED8" stroke="#1E3A8A" stroke-width="1.6"/>
+            <rect x="14" y="73" width="11" height="19" rx="4.5" fill="#F59E0B" stroke="#92400E" stroke-width="1.2"/>
+            <rect x="75" y="73" width="11" height="19" rx="4.5" fill="#F59E0B" stroke="#92400E" stroke-width="1.2"/>
+          </g>
         `;
       }
 
+      // 16 Jenis Pakaian
       let outfitDetail = '';
-      if (spec.outfit === 'charcoal_crew') {
+      if (outfitId === 'out_crew_charcoal') {
         outfitDetail = `
-          <path d="M 24 100 C 26 82, 36 76, 50 76 C 64 76, 74 82, 76 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 23 100 C 25 81, 36 75.5, 50 75.5 C 64 75.5, 75 81, 77 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 41 75.5 Q 50 84.5 59 75.5 L 56.5 74 Q 50 81 43.5 74 Z" fill="#F8FAFC" filter="url(#${uid}_soft)"/>
           <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
-          <path d="M 44.5 66 Q 50 73 55.5 66 L 55.5 70 Q 50 76 44.5 70 Z" fill="#8C4A27" opacity="0.38"/>
         `;
-      } else if (spec.outfit === 'knit_collar_bow') {
+      } else if (outfitId === 'out_knit_bow') {
         outfitDetail = `
-          <path d="M 23 100 C 25 81, 35 75.5, 50 75.5 C 65 75.5, 75 81, 77 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
-          <path d="M 32 82 Q 50 87 68 82" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="2.5,2.5" opacity="0.45"/>
-          <path d="M 30 90 Q 50 95 70 90" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="2.5,2.5" opacity="0.4"/>
+          <path d="M 22 100 C 24 81, 35 75.5, 50 75.5 C 65 75.5, 76 81, 78 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 36 75.5 C 35 82.5, 44 84, 50 78.5 C 46 74.5, 39 73.5, 36 75.5 Z" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
           <path d="M 64 75.5 C 65 82.5, 56 84, 50 78.5 C 54 74.5, 61 73.5, 64 75.5 Z" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
-          <polygon points="50,80.5 43.5,77.5 43.5,84" fill="#F43F5E" filter="url(#${uid}_soft)"/>
-          <polygon points="50,80.5 56.5,77.5 56.5,84" fill="#F43F5E" filter="url(#${uid}_soft)"/>
+          <polygon points="50,80.5 43.5,77.5 43.5,84" fill="#F43F5E"/>
+          <polygon points="50,80.5 56.5,77.5 56.5,84" fill="#F43F5E"/>
           <circle cx="50" cy="80.5" r="2.2" fill="#FDA4AF"/>
           <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
-          <path d="M 44.5 66 Q 50 73 55.5 66 L 55.5 70 Q 50 76 44.5 70 Z" fill="#8C4A27" opacity="0.38"/>
         `;
-      } else if (spec.outfit === 'prince_royal' || spec.outfit === 'dragon_gold' || spec.outfit === 'cyber_neon') {
+      } else if (outfitId === 'out_school_uniform') {
+        outfitDetail = `
+          <path d="M 20 100 C 22 81, 34 75, 50 75 C 66 75, 78 81, 80 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <polygon points="41,75 50,83 45,86" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.8"/>
+          <polygon points="59,75 50,83 55,86" fill="#FFFFFF" stroke="#94A3B8" stroke-width="0.8"/>
+          <polygon points="48,81 52,81 53,96 50,99 47,96" fill="#1D4ED8"/>
+          <rect x="44" y="64" width="12" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_baju_melayu') {
+        outfitDetail = `
+          <path d="M 20 100 C 22 81, 34 75, 50 75 C 66 75, 78 81, 80 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <rect x="43" y="72" width="14" height="5" rx="2.5" fill="url(#${uid}_outfit)" stroke="#064E3B" stroke-width="0.8"/>
+          <line x1="50" y1="77" x2="50" y2="93" stroke="#064E3B" stroke-width="1.5"/>
+          <circle cx="50" cy="80" r="1.4" fill="#FACC15"/>
+          <circle cx="50" cy="85" r="1.4" fill="#FACC15"/>
+          <circle cx="50" cy="90" r="1.4" fill="#FACC15"/>
+          <rect x="26" y="92" width="48" height="8" fill="#FACC15" opacity="0.85"/>
+          <rect x="44" y="64" width="12" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_baju_kurung') {
+        outfitDetail = `
+          <path d="M 21 100 C 23 81, 35 75, 50 75 C 65 75, 77 81, 79 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 44 75 Q 50 83 56 75" fill="none" stroke="#FEF08A" stroke-width="2"/>
+          <circle cx="50" cy="81" r="2.2" fill="url(#${uid}_gold)"/>
+          <circle cx="50" cy="87" r="1.8" fill="url(#${uid}_gold)"/>
+          <path d="M 28 93 Q 50 88 72 93" fill="none" stroke="#FEF08A" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_lab_coat') {
+        outfitDetail = `
+          <path d="M 19 100 C 21 81, 34 75, 50 75 C 66 75, 79 81, 81 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 42 75 L 50 100 L 58 75 Z" fill="#0284C7"/>
+          <polygon points="35,75 45,89 39,93" fill="#E2E8F0"/>
+          <polygon points="65,75 55,89 61,93" fill="#E2E8F0"/>
+          <rect x="59" y="88" width="9" height="9" rx="1.5" fill="#F8FAFC" stroke="#94A3B8" stroke-width="0.9"/>
+          <rect x="44" y="64" width="12" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_astronaut') {
+        outfitDetail = `
+          <path d="M 18 100 C 20 80, 33 74, 50 74 C 67 74, 80 80, 82 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <ellipse cx="50" cy="75" rx="16" ry="4" fill="#94A3B8" stroke="#475569" stroke-width="1.2"/>
+          <rect x="42" y="83" width="16" height="11" rx="2.5" fill="#1E293B" stroke="#F97316" stroke-width="1.2"/>
+          <circle cx="46" cy="88.5" r="2" fill="#EF4444"/>
+          <circle cx="54" cy="88.5" r="2" fill="#38BDF8"/>
+          <rect x="44" y="64" width="12" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_prince_royal' || outfitId === 'out_dragon_emperor' || outfitId === 'out_cyber_armor') {
         outfitDetail = `
           <path d="M 19 100 C 21 81, 34 75, 50 75 C 66 75, 79 81, 81 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 42 75 L 50 98 L 58 75 Z" fill="${op[3]}" opacity="0.9"/>
@@ -3040,27 +3095,20 @@
           <ellipse cx="73" cy="82" rx="6" ry="3" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
           <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
         `;
-      } else if (spec.outfit === 'princess_gown' || spec.outfit === 'starlight_dress' || spec.outfit === 'crystal_dress') {
+      } else if (outfitId === 'out_princess_gown') {
         outfitDetail = `
           <path d="M 21 100 C 23 81, 35 75, 50 75 C 65 75, 77 81, 79 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 33 76 Q 50 86 67 76" fill="none" stroke="${op[3]}" stroke-width="2.6" stroke-linecap="round"/>
           <polygon points="50,82 52,86 56,86.5 53,89.5 53.8,93.5 50,91.5 46.2,93.5 47,89.5 44,86.5 48,86" fill="${op[3]}" filter="url(#${uid}_soft)"/>
           <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
         `;
-      } else if (spec.outfit === 'jacket_orange' || spec.outfit === 'blazer_slate') {
+      } else if (outfitId === 'out_jacket_orange' || outfitId === 'out_blazer_slate') {
         outfitDetail = `
           <path d="M 19 100 C 21 81, 34 75, 50 75 C 66 75, 79 81, 81 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 41 75 L 50 100 L 59 75 Z" fill="${op[3]}"/>
           <polygon points="34,75 44,88 38,93" fill="${op[0]}" filter="url(#${uid}_soft)"/>
           <polygon points="66,75 56,88 62,93" fill="${op[0]}" filter="url(#${uid}_soft)"/>
           <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
-        `;
-      } else if (isGirl) {
-        outfitDetail = `
-          <path d="M 22 100 C 24 81, 35 75, 50 75 C 65 75, 76 81, 78 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
-          <path d="M 35 75 Q 41 85 50 79 Q 59 85 65 75 L 59 73 Q 50 77 41 73 Z" fill="${op[3]}" filter="url(#${uid}_soft)"/>
-          <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
-          <path d="M 44.5 66 Q 50 73 55.5 66 L 55.5 70 Q 50 76 44.5 70 Z" fill="#8C4A27" opacity="0.35"/>
         `;
       } else {
         outfitDetail = `
@@ -3069,22 +3117,25 @@
           <path d="M 33 76 Q 38 87 47 89 L 43 75 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_soft)"/>
           <path d="M 67 76 Q 62 87 53 89 L 57 75 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_soft)"/>
           <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
-          <path d="M 43.5 67 Q 50 75 56.5 67 L 56.5 72 Q 50 78 43.5 72 Z" fill="#8C4A27" opacity="0.4"/>
         `;
       }
 
       const backpackStraps = accList.includes('acc_backpack') ? `
-        <path d="M 27 80 C 29 88, 29 94, 28 100 L 34 100 C 35 94, 35 87, 33 78 Z" fill="#334155" filter="url(#${uid}_soft)"/>
-        <path d="M 73 80 C 71 88, 71 94, 72 100 L 66 100 C 65 94, 65 87, 67 78 Z" fill="#334155" filter="url(#${uid}_soft)"/>
+        <g filter="url(#${uid}_soft)">
+          <path d="M 27 78 C 30 86, 30 93, 29 100 L 36 100 C 37 93, 37 86, 34 76 Z" fill="#1E3A8A" stroke="#FACC15" stroke-width="1"/>
+          <rect x="29.5" y="87" width="6" height="3.2" rx="1" fill="#FACC15"/>
+          <path d="M 73 78 C 70 86, 70 93, 71 100 L 64 100 C 63 93, 63 86, 66 76 Z" fill="#1E3A8A" stroke="#FACC15" stroke-width="1"/>
+          <rect x="64.5" y="87" width="6" height="3.2" rx="1" fill="#FACC15"/>
+        </g>
       ` : '';
 
       const earXLeft = isGirl ? 25.5 : 23.5;
       const earXRight = isGirl ? 74.5 : 76.5;
       const earsLayer = !hasTudung ? `
         <ellipse cx="${earXLeft}" cy="51" rx="5.2" ry="7.2" fill="url(#${uid}_skin)" filter="url(#${uid}_soft)"/>
-        <ellipse cx="${earXLeft + 1.2}" cy="51" rx="2.2" ry="3.8" fill="#9C5A34" opacity="0.35"/>
+        <ellipse cx="${earXLeft + 1.2}" cy="51" rx="2.2" ry="3.8" fill="#4A2511" opacity="0.35"/>
         <ellipse cx="${earXRight}" cy="51" rx="5.2" ry="7.2" fill="url(#${uid}_skin)" filter="url(#${uid}_soft)"/>
-        <ellipse cx="${earXRight - 1.2}" cy="51" rx="2.2" ry="3.8" fill="#9C5A34" opacity="0.35"/>
+        <ellipse cx="${earXRight - 1.2}" cy="51" rx="2.2" ry="3.8" fill="#4A2511" opacity="0.35"/>
       ` : '';
 
       let earringLayer = '';
@@ -3101,10 +3152,12 @@
         `;
       }
 
+      // Bentuk Kepala Berbeza (Termasuk Rahang Kuat / Broad Jaw, Tirus / Slender, Bulat / Round, dll.)
       const headShapes = {
         round:      'M 24 45 C 24 20, 76 20, 76 45 C 76 64, 63 72, 50 72 C 37 72, 24 64, 24 45 Z',
         oval:       'M 25.5 44 C 25.5 19, 74.5 19, 74.5 44 C 74.5 64, 61.5 73.5, 50 73.5 C 38.5 73.5, 25.5 64, 25.5 44 Z',
         square:     'M 23.5 44 C 23.5 21, 76.5 21, 76.5 44 C 76.5 61, 68 71.5, 50 71.5 C 32 71.5, 23.5 61, 23.5 44 Z',
+        broad_jaw:  'M 22.5 44 C 22.5 20, 77.5 20, 77.5 44 C 77.5 63, 66 72.5, 50 72.5 C 34 72.5, 22.5 63, 22.5 44 Z',
         heart:      'M 24.5 42 C 24.5 20, 75.5 20, 75.5 42 C 75.5 58, 60 72, 50 72 C 40 72, 24.5 58, 24.5 42 Z',
         pixar_doll: 'M 25.5 44 C 25.5 20.5, 74.5 20.5, 74.5 44 C 74.5 60.5, 61 69.5, 50 69.5 C 39 69.5, 25.5 60.5, 25.5 44 Z',
         soft_oval:  'M 26.5 44.5 C 26.5 21.5, 73.5 21.5, 73.5 44.5 C 73.5 61.5, 61 70.5, 50 70.5 C 39 70.5, 26.5 61.5, 26.5 44.5 Z',
@@ -3113,52 +3166,84 @@
       };
       const headPath = headShapes[spec.head] || headShapes.round;
 
-      const noseDims = {
-        button: [3.6, 2.6],
-        slim:   [2.8, 2.7],
-        broad:  [4.3, 2.8],
-        cute:   [2.6, 1.9],
-        petite: [2.2, 1.7],
-        slim_g: [2.4, 2.1]
-      };
-      const [nrx, nry] = noseDims[spec.nose] || [3.2, 2.4];
+      // Hidung Berbeza Mengikut Rupa Bangsa (Mancung/Pointed, Lebar Afrika/Afro, Kecil Cina/Petite, Butang Melayu/Button)
+      let noseSvg = '';
+      if (spec.nose === 'afro_b' || spec.nose === 'afro_g') {
+        const w = spec.nose === 'afro_b' ? 5.2 : 4.4;
+        noseSvg = `
+          <ellipse cx="50" cy="53.8" rx="${w}" ry="2.7" fill="#3B1A08" opacity="0.34"/>
+          <ellipse cx="50" cy="52.6" rx="${w * 0.92}" ry="2.5" fill="url(#${uid}_nose)"/>
+          <circle cx="${50 - w*0.52}" cy="53.6" r="1.1" fill="#2A1205" opacity="0.45"/>
+          <circle cx="${50 + w*0.52}" cy="53.6" r="1.1" fill="#2A1205" opacity="0.45"/>
+          <ellipse cx="49" cy="51.6" rx="1.8" ry="0.8" fill="#FFFFFF" opacity="0.55"/>
+        `;
+      } else if (spec.nose === 'pointed' || spec.nose === 'prominent') {
+        noseSvg = `
+          <path d="M 50 45 L 48.2 53.5 Q 50 55 51.8 53.5 Z" fill="#5C2E14" opacity="0.25"/>
+          <ellipse cx="50" cy="53" rx="2.7" ry="2.4" fill="url(#${uid}_nose)"/>
+          <line x1="49.5" y1="46.5" x2="49.2" y2="52" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+        `;
+      } else {
+        const noseDims = {
+          button: [3.6, 2.6],
+          slim:   [2.6, 2.4],
+          broad:  [4.3, 2.8],
+          cute:   [2.6, 1.9],
+          petite: [2.1, 1.6],
+          slim_g: [2.3, 2.0]
+        };
+        const [nrx, nry] = noseDims[spec.nose] || [3.2, 2.4];
+        noseSvg = `
+          <ellipse cx="50" cy="53.6" rx="${nrx}" ry="${nry}" fill="#5C2E14" opacity="0.28"/>
+          <ellipse cx="50" cy="52.5" rx="${nrx}" ry="${nry}" fill="url(#${uid}_nose)"/>
+          <ellipse cx="49.2" cy="51.6" rx="${nrx * 0.42}" ry="${nry * 0.35}" fill="#FFFFFF" opacity="0.7"/>
+        `;
+      }
 
       const headLayer = `
         <path d="${headPath}" fill="url(#${uid}_skin)" filter="url(#${uid}_shadow)"/>
-        <ellipse cx="33" cy="55" rx="5.5" ry="3.2" fill="#FB7185" opacity="${isGirl ? '0.44' : '0.26'}"/>
-        <ellipse cx="67" cy="55" rx="5.5" ry="3.2" fill="#FB7185" opacity="${isGirl ? '0.44' : '0.26'}"/>
-        <ellipse cx="50" cy="53.6" rx="${nrx}" ry="${nry}" fill="#8C4A27" opacity="0.28"/>
-        <ellipse cx="50" cy="52.5" rx="${nrx}" ry="${nry}" fill="url(#${uid}_nose)"/>
-        <ellipse cx="49.2" cy="51.6" rx="${nrx * 0.42}" ry="${nry * 0.35}" fill="#FFFFFF" opacity="0.75"/>
+        <ellipse cx="33" cy="55" rx="5.5" ry="3.2" fill="#FB7185" opacity="${spec.blush || 0.35}"/>
+        <ellipse cx="67" cy="55" rx="5.5" ry="3.2" fill="#FB7185" opacity="${spec.blush || 0.35}"/>
+        ${noseSvg}
       `;
 
-      const eyeRx = spec.eyeStyle === 'almond' ? 6.8 : (isGirl ? 6.4 : 5.8);
-      const eyeRy = spec.eyeStyle === 'almond' ? 5.4 : (spec.eyeStyle === 'confident' ? 4.9 : (isGirl ? 6.7 : 5.8));
-      const irisR = spec.eyeStyle === 'almond' ? 4.1 : (isGirl ? 4.6 : 4.2);
-
+      // Bentuk Mata Pelbagai Bangsa (Sepet/Monolid Cina & Jepun, Bundar/Doll, Badam/Almond India & Arab, Luas/Wide Orang Putih)
       let pixarEyes = '';
-      if (spec.eyeStyle === 'happy_arc') {
+      if (spec.eyeStyle === 'monolid') {
+        // Mata Sepet / Almond Asia Timur (Cina & Jepun) yang comel & jelas
         pixarEyes = `
-          <path d="M 32 48 Q 38 40 44 48" fill="none" stroke="#18181B" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M 56 48 Q 62 40 68 48" fill="none" stroke="#18181B" stroke-width="3.2" stroke-linecap="round"/>
+          <ellipse cx="37.5" cy="47.5" rx="6.6" ry="4.4" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
+          <circle cx="37.8" cy="47.7" r="3.9" fill="url(#${uid}_iris)"/>
+          <circle cx="37.8" cy="47.7" r="1.9" fill="#020617"/>
+          <circle cx="36.1" cy="46.1" r="1.6" fill="#FFFFFF"/>
+          <path d="M 30.8 46.8 Q 37.5 42.2 44.2 47.4" fill="none" stroke="#18181B" stroke-width="2.4" stroke-linecap="round"/>
+
+          <ellipse cx="62.5" cy="47.5" rx="6.6" ry="4.4" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
+          <circle cx="62.2" cy="47.7" r="3.9" fill="url(#${uid}_iris)"/>
+          <circle cx="62.2" cy="47.7" r="1.9" fill="#020617"/>
+          <circle cx="60.5" cy="46.1" r="1.6" fill="#FFFFFF"/>
+          <path d="M 55.8 47.4 Q 62.5 42.2 69.2 46.8" fill="none" stroke="#18181B" stroke-width="2.4" stroke-linecap="round"/>
         `;
       } else {
+        const eyeRx = spec.eyeStyle === 'almond' ? 6.8 : (isGirl ? 6.4 : 5.9);
+        const eyeRy = spec.eyeStyle === 'almond' ? 5.3 : (spec.eyeStyle === 'confident' ? 5.0 : (isGirl ? 6.6 : 5.9));
+        const irisR = spec.eyeStyle === 'almond' ? 4.2 : (isGirl ? 4.6 : 4.3);
         pixarEyes = `
           <ellipse cx="38" cy="47.2" rx="${eyeRx}" ry="${eyeRy}" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
           <circle cx="38.3" cy="47.5" r="${irisR}" fill="url(#${uid}_iris)"/>
-          <circle cx="38.3" cy="47.5" r="2.2" fill="#020617"/>
+          <circle cx="38.3" cy="47.5" r="2.1" fill="#020617"/>
           <circle cx="36.3" cy="45.3" r="1.9" fill="#FFFFFF"/>
           <circle cx="40.2" cy="49.4" r="0.9" fill="#FFFFFF" opacity="0.88"/>
 
           <ellipse cx="62" cy="47.2" rx="${eyeRx}" ry="${eyeRy}" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
           <circle cx="61.7" cy="47.5" r="${irisR}" fill="url(#${uid}_iris)"/>
-          <circle cx="61.7" cy="47.5" r="2.2" fill="#020617"/>
+          <circle cx="61.7" cy="47.5" r="2.1" fill="#020617"/>
           <circle cx="59.7" cy="45.3" r="1.9" fill="#FFFFFF"/>
           <circle cx="63.6" cy="49.4" r="0.9" fill="#FFFFFF" opacity="0.88"/>
         `;
       }
 
-      const girlLashes = (isGirl && spec.eyeStyle !== 'happy_arc') ? `
+      const girlLashes = (isGirl && spec.eyeStyle !== 'monolid') ? `
         <path d="M 31.8 44.3 Q 38 39.8 44.2 44.3" fill="none" stroke="#18181B" stroke-width="2.4" stroke-linecap="round"/>
         <path d="M 31.8 44.3 L 29.0 41.8 M 34.2 42.1 L 32.3 39.8" stroke="#18181B" stroke-width="1.7" stroke-linecap="round"/>
         <path d="M 55.8 44.3 Q 62 39.8 68.2 44.3" fill="none" stroke="#18181B" stroke-width="2.4" stroke-linecap="round"/>
@@ -3166,10 +3251,15 @@
       ` : '';
 
       let browSvg = '';
-      if (spec.brow === 'bold') {
+      if (spec.brow === 'bold' || spec.brow === 'arab_bold') {
         browSvg = `
-          <path d="M 31.5 39.2 Q 38 35.8 43.8 39.0" fill="none" stroke="${hairPal.dark}" stroke-width="3.8" stroke-linecap="round"/>
-          <path d="M 56.2 39.0 Q 62 35.8 68.5 39.2" fill="none" stroke="${hairPal.dark}" stroke-width="3.8" stroke-linecap="round"/>
+          <path d="M 30.8 39.5 Q 37.5 35.0 44.2 39.2" fill="none" stroke="${hairPal.dark}" stroke-width="4.2" stroke-linecap="round"/>
+          <path d="M 55.8 39.2 Q 62.5 35.0 69.2 39.5" fill="none" stroke="${hairPal.dark}" stroke-width="4.2" stroke-linecap="round"/>
+        `;
+      } else if (spec.brow === 'arab_arch') {
+        browSvg = `
+          <path d="M 31.2 39.5 Q 37.5 34.2 44.0 38.6" fill="none" stroke="${hairPal.dark}" stroke-width="2.9" stroke-linecap="round"/>
+          <path d="M 56.0 38.6 Q 62.5 34.2 68.8 39.5" fill="none" stroke="${hairPal.dark}" stroke-width="2.9" stroke-linecap="round"/>
         `;
       } else if (spec.brow === 'pixar_soft') {
         browSvg = `
@@ -3193,8 +3283,35 @@
         `;
       }
 
+      // Bentuk Bibir & Ciri Khas (Bibir Penuh Afrika, Bintik Pipi Orang Putih, Bindi India, Senyuman Manis)
       let mouthSvg = '';
-      if (spec.mouth === 'grin' || spec.mouth === 'open_smile') {
+      if (spec.mouth === 'full_grin') {
+        mouthSvg = `
+          <path d="M 41.5 58.2 Q 50 68.5 58.5 58.2 Q 50 61.5 41.5 58.2 Z" fill="#FFFFFF" stroke="#5C2E14" stroke-width="1.4"/>
+          <path d="M 42.5 62.5 Q 50 67.5 57.5 62.5" fill="none" stroke="#9F1239" stroke-width="2.2" stroke-linecap="round"/>
+        `;
+      } else if (spec.mouth === 'full_sweet') {
+        mouthSvg = `
+          <path d="M 42.5 59.5 Q 47 57.2 50 59.0 Q 53 57.2 57.5 59.5 Q 50 66.2 42.5 59.5 Z" fill="#BE185D"/>
+          <path d="M 42.5 59.5 Q 50 61.5 57.5 59.5" fill="none" stroke="#831843" stroke-width="1.2"/>
+          <ellipse cx="48.5" cy="62.2" rx="2.4" ry="0.8" fill="#FBCFE8" opacity="0.85"/>
+        `;
+      } else if (spec.mouth === 'india_bindi') {
+        mouthSvg = `
+          <circle cx="50" cy="37.2" r="1.5" fill="#DC2626" stroke="#FACC15" stroke-width="0.5"/>
+          <path d="M 44.2 59.5 Q 47.5 58.2 50 59.4 Q 52.5 58.2 55.8 59.5 Q 50 64.8 44.2 59.5 Z" fill="#E11D48"/>
+          <ellipse cx="48.5" cy="60.8" rx="1.8" ry="0.6" fill="#FECDD3" opacity="0.85"/>
+        `;
+      } else if (spec.mouth === 'freckles_b') {
+        mouthSvg = `
+          <circle cx="35" cy="53.5" r="0.9" fill="#9A3412" opacity="0.65"/>
+          <circle cx="38" cy="54.5" r="0.9" fill="#9A3412" opacity="0.65"/>
+          <circle cx="65" cy="53.5" r="0.9" fill="#9A3412" opacity="0.65"/>
+          <circle cx="62" cy="54.5" r="0.9" fill="#9A3412" opacity="0.65"/>
+          <path d="M 42.5 58.5 Q 50 67.5 57.5 58.5 Z" fill="#9F1239"/>
+          <path d="M 44 59.2 Q 50 61.5 56 59.2 Z" fill="#FFFFFF"/>
+        `;
+      } else if (spec.mouth === 'grin' || spec.mouth === 'open_smile') {
         mouthSvg = `
           <path d="M 42.5 58.5 Q 50 67.5 57.5 58.5 Z" fill="${isGirl ? '#E11D48' : '#9F1239'}"/>
           <path d="M 44 59.2 Q 50 61.5 56 59.2 Z" fill="#FFFFFF"/>
@@ -3212,7 +3329,7 @@
         `;
       } else if (spec.mouth === 'smirk') {
         mouthSvg = `<path d="M 44 60.8 Q 50.5 64.2 57 58.5" fill="none" stroke="#9F1239" stroke-width="2.4" stroke-linecap="round"/>`;
-      } else if (spec.mouth === 'gentle') {
+      } else if (spec.mouth === 'gentle' || spec.mouth === 'poised') {
         mouthSvg = `<path d="M 44.5 60.5 Q 50 63.8 55.5 60.5" fill="none" stroke="#9F1239" stroke-width="2.2" stroke-linecap="round"/>`;
       } else if (spec.mouth === 'freckles') {
         mouthSvg = `
@@ -3238,70 +3355,81 @@
 
       const expressionLayer = `${browSvg}${pixarEyes}${girlLashes}${mouthSvg}`;
 
+      // Rambut Depan (Disesuaikan secara automatik apabila memakai topi supaya tiada rambut terkeluar di atas topi!)
       let frontHairLayer = '';
-      if (hasTudung) {
-        frontHairLayer = `
-          <path d="M 22.5 45 C 22.5 20, 77.5 20, 77.5 45 C 77.5 31, 63 27, 50 27 C 37 27, 22.5 31, 22.5 45 Z" fill="url(#${uid}_tudung)"/>
-          <path d="M 33 24 Q 50 20 67 24" fill="none" stroke="${tudungTrim || '#FFFFFF'}" stroke-width="2" stroke-linecap="round" opacity="${tudungTrim ? '0.9' : '0.45'}"/>
-        `;
-      } else if (!isGirl) {
-        if (cfg.hair === 'hair_quiff') {
+      if (!hasTudung) {
+        if (hasFullCap) {
+          // Hanya tunjukkan anak rambut (bangs) kemas di bawah garis topi supaya mengikut bentuk kepala
           frontHairLayer = `
-            <path d="M 23 43 C 21 24, 34 15, 42 13 L 39 19 C 54 14, 76 19, 77 35 C 78 40, 76 44, 75 44 C 72 34, 60 31, 45 32 C 33 33, 26 36, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 26 32 C 38 22, 64 22, 74 32" fill="none" stroke="${hairPal.dark}" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
-            <path d="M 37 19 Q 52 16 64 21" fill="none" stroke="${hairPal.shine}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+            <path d="M 24.5 41 C 27 32, 73 32, 75.5 41 C 66 34, 54 34, 50 37.5 C 46 34, 34 34, 24.5 41 Z" fill="url(#${uid}_hair)"/>
           `;
-        } else if (cfg.hair === 'hair_neat') {
-          frontHairLayer = `
-            <path d="M 23 43 C 22 20, 78 20, 77 43 C 73 32, 60 30, 44 33 C 33 35, 27 37, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 36 22 L 42 32" stroke="${hairPal.dark}" stroke-width="2" stroke-linecap="round"/>
-            <path d="M 46 23 Q 60 22 69 28" fill="none" stroke="${hairPal.shine}" stroke-width="2.2" stroke-linecap="round" opacity="0.5"/>
-          `;
-        } else if (cfg.hair === 'hair_messy') {
-          frontHairLayer = `
-            <path d="M 22 43 L 24 23 L 34 28 L 41 14 L 49 25 L 58 14 L 65 26 L 75 21 L 78 43 C 68 32, 32 32, 22 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 34 25 Q 50 21 66 25" fill="none" stroke="${hairPal.shine}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-          `;
-        } else if (cfg.hair === 'hair_spiky') {
-          frontHairLayer = `
-            <polygon points="22,42 21,18 33,26 42,10 50,24 59,10 67,26 79,18 78,42 66,31 50,33 34,31" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <polygon points="42,10 46,23 50,24" fill="${hairPal.shine}" opacity="0.45"/>
-          `;
-        } else if (cfg.hair === 'hair_samurai') {
-          frontHairLayer = `
-            <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
-            <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-          `;
+        } else if (!isGirl) {
+          if (cfg.hair === 'hair_quiff') {
+            frontHairLayer = `
+              <path d="M 23 43 C 21 24, 34 15, 42 13 L 39 19 C 54 14, 76 19, 77 35 C 78 40, 76 44, 75 44 C 72 34, 60 31, 45 32 C 33 33, 26 36, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 26 32 C 38 22, 64 22, 74 32" fill="none" stroke="${hairPal.dark}" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
+              <path d="M 37 19 Q 52 16 64 21" fill="none" stroke="${hairPal.shine}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+            `;
+          } else if (cfg.hair === 'hair_neat') {
+            frontHairLayer = `
+              <path d="M 23 43 C 22 20, 78 20, 77 43 C 73 32, 60 30, 44 33 C 33 35, 27 37, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 36 22 L 42 32" stroke="${hairPal.dark}" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 46 23 Q 60 22 69 28" fill="none" stroke="${hairPal.shine}" stroke-width="2.2" stroke-linecap="round" opacity="0.5"/>
+            `;
+          } else if (cfg.hair === 'hair_messy') {
+            frontHairLayer = `
+              <path d="M 22 43 L 24 23 L 34 28 L 41 14 L 49 25 L 58 14 L 65 26 L 75 21 L 78 43 C 68 32, 32 32, 22 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 34 25 Q 50 21 66 25" fill="none" stroke="${hairPal.shine}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            `;
+          } else if (cfg.hair === 'hair_spiky') {
+            frontHairLayer = `
+              <polygon points="22,42 21,18 33,26 42,10 50,24 59,10 67,26 79,18 78,42 66,31 50,33 34,31" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <polygon points="42,10 46,23 50,24" fill="${hairPal.shine}" opacity="0.45"/>
+            `;
+          } else if (cfg.hair === 'hair_samurai') {
+            frontHairLayer = `
+              <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
+              <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            `;
+          } else {
+            frontHairLayer = `
+              <circle cx="27" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+              <circle cx="38" cy="24" r="9.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+              <circle cx="50" cy="21" r="10" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+              <circle cx="62" cy="24" r="9.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+              <circle cx="73" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+            `;
+          }
         } else {
-          frontHairLayer = `
-            <circle cx="27" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-            <circle cx="38" cy="24" r="9.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-            <circle cx="50" cy="21" r="10" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-            <circle cx="62" cy="24" r="9.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-            <circle cx="73" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
-          `;
-        }
-      } else {
-        if (cfg.hair === 'hair_wavy_girl') {
-          frontHairLayer = `
-            <path d="M 19 60 C 14 34, 24 14, 47 14 C 50 14, 52 15, 53 17 C 42 23, 30 34, 25 56 C 23 62, 20 62, 19 60 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 48 15 C 68 14, 84 28, 82 58 C 81 62, 77 61, 75 55 C 70 37, 58 27, 46 21 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 27 28 C 33 21, 41 18, 47 17" fill="none" stroke="${hairPal.shine}" stroke-width="2.6" stroke-linecap="round" opacity="0.6"/>
-            <path d="M 55 19 C 65 21, 73 28, 76 38" fill="none" stroke="${hairPal.shine}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
-          `;
-        } else {
-          frontHairLayer = `
-            <path d="M 22.5 45 C 22.5 20, 77.5 20, 77.5 45 C 68 32, 55 32, 50 37 C 45 32, 32 32, 22.5 45 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            <path d="M 32 27 Q 50 23 68 27" fill="none" stroke="${hairPal.shine}" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
-          `;
+          if (cfg.hair === 'hair_wavy_girl') {
+            frontHairLayer = `
+              <path d="M 19 60 C 14 34, 24 14, 47 14 C 50 14, 52 15, 53 17 C 42 23, 30 34, 25 56 C 23 62, 20 62, 19 60 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 48 15 C 68 14, 84 28, 82 58 C 81 62, 77 61, 75 55 C 70 37, 58 27, 46 21 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 27 28 C 33 21, 41 18, 47 17" fill="none" stroke="${hairPal.shine}" stroke-width="2.6" stroke-linecap="round" opacity="0.6"/>
+              <path d="M 55 19 C 65 21, 73 28, 76 38" fill="none" stroke="${hairPal.shine}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+            `;
+          } else {
+            frontHairLayer = `
+              <path d="M 22.5 45 C 22.5 20, 77.5 20, 77.5 45 C 68 32, 55 32, 50 37 C 45 32, 32 32, 22.5 45 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 32 27 Q 50 23 68 27" fill="none" stroke="${hairPal.shine}" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
+            `;
+          }
         }
       }
 
+      // Lapisan Tudung Lengkap & Kemas
       const tudungFrontLayer = hasTudung ? `
-        <path d="M 20 55 C 20 80, 34 95, 50 97 C 66 95, 80 80, 80 55 C 74 68, 63 74, 50 74 C 37 74, 26 68, 20 55 Z" fill="url(#${uid}_tudung)" filter="url(#${uid}_shadow)"/>
-        ${tudungTrim ? `<path d="M 23 58 C 26 78, 37 91, 50 93 C 63 91, 74 78, 77 58" fill="none" stroke="${tudungTrim}" stroke-width="1.8" stroke-dasharray="3 2"/>` : ''}
-        <circle cx="50" cy="78" r="3.4" fill="url(#${uid}_gold)"/>
+        <path d="M 24 38 C 25 22, 75 22, 76 38 C 68 31, 32 31, 24 38 Z" fill="${tudungDark}"/>
+        <path d="M 18 46 C 18 13, 82 13, 82 46 C 82 70, 72 88, 50 96 C 28 88, 18 70, 18 46 Z
+                 M 26.5 44 C 26.5 61, 37 69.5, 50 69.5 C 63 69.5, 73.5 61, 73.5 44 C 73.5 31, 63 27.5, 50 27.5 C 37 27.5, 26.5 31, 26.5 44 Z"
+              fill="url(#${uid}_tudung)" fill-rule="evenodd" filter="url(#${uid}_shadow)"/>
+        <path d="M 22 62 C 25 83, 37 95, 50 98 C 63 95, 75 83, 78 62 C 72 72, 62 76, 50 76 C 38 76, 28 72, 22 62 Z" fill="url(#${uid}_tudung)"/>
+        <path d="M 30 74 Q 50 85 70 74" fill="none" stroke="${tudungDark}" stroke-width="1.3" opacity="0.35"/>
+        <path d="M 34 83 Q 50 92 66 83" fill="none" stroke="${tudungDark}" stroke-width="1.2" opacity="0.3"/>
+        <path d="M 32 21 Q 50 16 68 21" fill="none" stroke="${tudungTrim || '#FFFFFF'}" stroke-width="2" stroke-linecap="round" opacity="${tudungTrim ? '0.95' : '0.5'}"/>
+        ${tudungTrim ? `<path d="M 24 65 C 28 83, 38 93, 50 96 C 62 93, 72 83, 76 65" fill="none" stroke="${tudungTrim}" stroke-width="1.8" stroke-dasharray="3 2"/>` : ''}
+        <circle cx="50" cy="74" r="3.2" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.8"/>
       ` : '';
 
       let accLayer = '';
@@ -3361,7 +3489,12 @@
       }
       if (accList.includes('acc_pin_star')) {
         accLayer += `
-          <polygon points="63,84 64.6,87.4 68.3,87.9 65.6,90.5 66.3,94.2 63,92.4 59.7,94.2 60.4,90.5 57.7,87.9 61.4,87.4" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <g filter="url(#${uid}_soft)">
+            <circle cx="64" cy="84" r="7.5" fill="#DC2626" stroke="#FFFFFF" stroke-width="1.2"/>
+            <polygon points="64,76.5 66.2,81.2 71.4,81.9 67.6,85.5 68.6,90.6 64,88.1 59.4,90.6 60.4,85.5 56.6,81.9 61.8,81.2"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1"/>
+            <circle cx="62.2" cy="82.2" r="1.3" fill="#FFFFFF" opacity="0.9"/>
+          </g>
         `;
       }
       if (accList.includes('acc_medal_gold')) {
@@ -3373,75 +3506,91 @@
         `;
       }
 
+      // Lapisan Topi & Hiasan Kepala (Direka mengikut bentuk kepala asal tanpa rambut terkeluar)
       let hatLayer = '';
       if (cfg.headwear === 'hw_cap_red') {
         hatLayer = `
-          <path d="M 23.5 31 C 23.5 12, 76.5 12, 76.5 31 Z" fill="#EF4444" filter="url(#${uid}_shadow)"/>
-          <path d="M 33 19 Q 50 14 67 19" fill="none" stroke="#FCA5A5" stroke-width="2" stroke-linecap="round"/>
-          <path d="M 21 30 Q 50 37 83 30 Q 66 24 21 30 Z" fill="#B91C1C"/>
+          <path d="M 22 36 C 22 14, 78 14, 78 36 Z" fill="#EF4444" filter="url(#${uid}_shadow)"/>
+          <path d="M 32 21 Q 50 15 68 21" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="50" cy="15.5" r="2.2" fill="#B91C1C"/>
+          <path d="M 20 35 Q 50 42 84 35 Q 66 28 20 35 Z" fill="#B91C1C"/>
         `;
       } else if (cfg.headwear === 'hw_cap_blue') {
         hatLayer = `
-          <path d="M 23.5 31 C 23.5 12, 76.5 12, 76.5 31 Z" fill="#2563EB" filter="url(#${uid}_shadow)"/>
-          <path d="M 33 19 Q 50 14 67 19" fill="none" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
-          <path d="M 21 30 Q 50 37 83 30 Q 66 24 21 30 Z" fill="#1D4ED8"/>
+          <path d="M 22 36 C 22 14, 78 14, 78 36 Z" fill="#2563EB" filter="url(#${uid}_shadow)"/>
+          <path d="M 32 21 Q 50 15 68 21" fill="none" stroke="#93C5FD" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="50" cy="15.5" r="2.2" fill="#1D4ED8"/>
+          <path d="M 20 35 Q 50 42 84 35 Q 66 28 20 35 Z" fill="#1D4ED8"/>
         `;
       } else if (cfg.headwear === 'hw_beanie') {
         hatLayer = `
-          <circle cx="50" cy="11" r="6" fill="#D97706" filter="url(#${uid}_soft)"/>
-          <path d="M 22 33 C 22 13, 78 13, 78 33 Z" fill="#F59E0B" filter="url(#${uid}_shadow)"/>
-          <rect x="21" y="27" width="58" height="7" rx="3.5" fill="#D97706"/>
+          <circle cx="50" cy="12" r="6.2" fill="#D97706" filter="url(#${uid}_soft)"/>
+          <path d="M 21 37 C 21 14, 79 14, 79 37 Z" fill="#F59E0B" filter="url(#${uid}_shadow)"/>
+          <rect x="20" y="30" width="60" height="8" rx="4" fill="#D97706"/>
+          <line x1="32" y1="30" x2="32" y2="38" stroke="#B45309" stroke-width="1.3"/>
+          <line x1="44" y1="30" x2="44" y2="38" stroke="#B45309" stroke-width="1.3"/>
+          <line x1="56" y1="30" x2="56" y2="38" stroke="#B45309" stroke-width="1.3"/>
+          <line x1="68" y1="30" x2="68" y2="38" stroke="#B45309" stroke-width="1.3"/>
         `;
       } else if (cfg.headwear === 'hw_cat_ears') {
         hatLayer = `
-          <polygon points="26,31 30.5,13 43.5,25" fill="#1E293B" filter="url(#${uid}_shadow)"/>
-          <polygon points="29.5,28 32.2,17.5 40.5,25" fill="#FB7185"/>
-          <polygon points="74,31 69.5,13 56.5,25" fill="#1E293B" filter="url(#${uid}_shadow)"/>
-          <polygon points="70.5,28 67.8,17.5 59.5,25" fill="#FB7185"/>
+          <polygon points="25,33 30,13 43.5,26" fill="#1E293B" filter="url(#${uid}_shadow)"/>
+          <polygon points="28.5,30 31.8,18 40.5,26" fill="#FB7185"/>
+          <polygon points="75,33 70,13 56.5,26" fill="#1E293B" filter="url(#${uid}_shadow)"/>
+          <polygon points="71.5,30 68.2,18 59.5,26" fill="#FB7185"/>
         `;
       } else if (cfg.headwear === 'hw_bunny_ears') {
         hatLayer = `
-          <ellipse cx="34" cy="17" rx="5" ry="13" transform="rotate(-12 34 17)" fill="#FFFFFF" stroke="#F472B6" stroke-width="1.8" filter="url(#${uid}_soft)"/>
-          <ellipse cx="34" cy="17" rx="2.4" ry="8" transform="rotate(-12 34 17)" fill="#FBCFE8"/>
-          <ellipse cx="66" cy="17" rx="5" ry="13" transform="rotate(12 66 17)" fill="#FFFFFF" stroke="#F472B6" stroke-width="1.8" filter="url(#${uid}_soft)"/>
-          <ellipse cx="66" cy="17" rx="2.4" ry="8" transform="rotate(12 66 17)" fill="#FBCFE8"/>
+          <ellipse cx="34" cy="15" rx="5.2" ry="14" transform="rotate(-12 34 15)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2" filter="url(#${uid}_soft)"/>
+          <ellipse cx="34" cy="15" rx="2.5" ry="9" transform="rotate(-12 34 15)" fill="#FBCFE8"/>
+          <ellipse cx="66" cy="15" rx="5.2" ry="14" transform="rotate(12 66 15)" fill="#FFFFFF" stroke="#F472B6" stroke-width="2" filter="url(#${uid}_soft)"/>
+          <ellipse cx="66" cy="15" rx="2.5" ry="9" transform="rotate(12 66 15)" fill="#FBCFE8"/>
         `;
       } else if (cfg.headwear === 'hw_wizard') {
         hatLayer = `
-          <ellipse cx="50" cy="30" rx="32" ry="6" fill="#4C1D95" filter="url(#${uid}_shadow)"/>
-          <polygon points="26,30 50,6 74,30" fill="#6D28D9" filter="url(#${uid}_shadow)"/>
-          <polygon points="50,15 51.6,18.5 55.4,19 52.6,21.6 53.3,25.4 50,23.6 46.7,25.4 47.4,21.6 44.6,19 48.4,18.5" fill="#FACC15"/>
+          <ellipse cx="50" cy="34" rx="34" ry="6.5" fill="#4C1D95" filter="url(#${uid}_shadow)"/>
+          <polygon points="24,34 50,5 76,34" fill="#6D28D9" filter="url(#${uid}_shadow)"/>
+          <polygon points="50,17 51.8,20.8 56,21.4 53,24.2 53.7,28.4 50,26.4 46.3,28.4 47,24.2 44,21.4 48.2,20.8" fill="#FACC15"/>
         `;
       } else if (cfg.headwear === 'hw_ninja') {
         hatLayer = `
-          <rect x="22" y="27" width="56" height="7" rx="3" fill="#1E293B" filter="url(#${uid}_soft)"/>
-          <rect x="38" y="26.5" width="24" height="8" rx="2" fill="#94A3B8" stroke="#334155" stroke-width="1"/>
-          <circle cx="50" cy="30.5" r="2.2" fill="#EF4444"/>
+          <path d="M 22 36 C 22 15, 78 15, 78 36 Z" fill="#0F172A"/>
+          <rect x="21" y="29" width="58" height="8" rx="3.5" fill="#1E293B" filter="url(#${uid}_soft)"/>
+          <rect x="37" y="28.5" width="26" height="9" rx="2.5" fill="#CBD5E1" stroke="#334155" stroke-width="1.2"/>
+          <circle cx="50" cy="33" r="2.5" fill="#EF4444"/>
         `;
       } else if (cfg.headwear === 'hw_grad') {
         hatLayer = `
-          <polygon points="50,9 16,22 50,34 84,22" fill="#1E293B" filter="url(#${uid}_shadow)"/>
-          <rect x="33" y="24" width="34" height="8" fill="#0F172A"/>
-          <line x1="76" y1="23" x2="79" y2="39" stroke="url(#${uid}_gold)" stroke-width="2.6" stroke-linecap="round"/>
+          <rect x="30" y="24" width="40" height="12" rx="3" fill="#0F172A" filter="url(#${uid}_shadow)"/>
+          <polygon points="50,9 14,23 50,35 86,23" fill="#1E293B" filter="url(#${uid}_shadow)"/>
+          <circle cx="50" cy="22" r="2.5" fill="url(#${uid}_gold)"/>
+          <line x1="78" y1="24" x2="81" y2="41" stroke="url(#${uid}_gold)" stroke-width="2.8" stroke-linecap="round"/>
         `;
       } else if (cfg.headwear === 'hw_tiara') {
         hatLayer = `
-          <path d="M 30 28 Q 50 15 70 28 L 65 29 Q 50 22 35 29 Z" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
-          <polygon points="50,14 53,21 50,25 47,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.8"/>
-          <circle cx="40" cy="23" r="1.8" fill="#F43F5E"/>
-          <circle cx="60" cy="23" r="1.8" fill="#F43F5E"/>
+          <path d="M 29 30 Q 50 15 71 30 L 66 31 Q 50 23 34 31 Z" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <polygon points="50,14 53.5,21.5 50,26 46.5,21.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+          <circle cx="39" cy="24" r="2" fill="#F43F5E"/>
+          <circle cx="61" cy="24" r="2" fill="#F43F5E"/>
         `;
       } else if (cfg.headwear === 'hw_crown') {
         hatLayer = `
-          <polygon points="28.5,28.5 32.5,11 42,20.5 50,8 58,20.5 67.5,11 71.5,28.5" fill="url(#${uid}_gold)" filter="url(#${uid}_shadow)"/>
-          <circle cx="50" cy="21" r="2.6" fill="#E11D48"/>
-          <circle cx="38" cy="23" r="1.9" fill="#38BDF8"/>
-          <circle cx="62" cy="23" r="1.9" fill="#38BDF8"/>
+          <polygon points="27,30 31.5,11 41.5,21 50,7 58.5,21 68.5,11 73,30" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1" filter="url(#${uid}_shadow)"/>
+          <circle cx="50" cy="21.5" r="2.8" fill="#E11D48"/>
+          <circle cx="37.5" cy="23.5" r="2" fill="#38BDF8"/>
+          <circle cx="62.5" cy="23.5" r="2" fill="#38BDF8"/>
         `;
       } else if (cfg.headwear === 'hw_halo') {
+        // Halo Cahaya Suci Legenda: Lingkaran cahaya emas bersinar terapung jelas di atas kepala + kilauan bintang!
         hatLayer = `
-          <ellipse cx="50" cy="13" rx="18" ry="4.5" fill="none" stroke="#FEF08A" stroke-width="3.5" filter="url(#${uid}_soft)"/>
-          <ellipse cx="50" cy="13" rx="18" ry="4.5" fill="none" stroke="#F59E0B" stroke-width="1.2"/>
+          <g filter="url(#${uid}_glow)">
+            <ellipse cx="50" cy="11" rx="22" ry="6.2" fill="none" stroke="#FEF9C3" stroke-width="5.5" opacity="0.9"/>
+            <ellipse cx="50" cy="11" rx="22" ry="6.2" fill="none" stroke="url(#${uid}_gold)" stroke-width="3.2"/>
+            <ellipse cx="50" cy="10.2" rx="18" ry="4.2" fill="none" stroke="#FFFFFF" stroke-width="1.3" opacity="0.95"/>
+            <polygon points="24,10 25.5,13 28.5,13.5 26.2,15.5 26.8,18.5 24,17 21.2,18.5 21.8,15.5 19.5,13.5 22.5,13" fill="#FEF08A"/>
+            <polygon points="76,10 77.5,13 80.5,13.5 78.2,15.5 78.8,18.5 76,17 73.2,18.5 73.8,15.5 71.5,13.5 74.5,13" fill="#FEF08A"/>
+            <circle cx="50" cy="3" r="1.8" fill="#FFFFFF"/>
+          </g>
         `;
       }
 
@@ -3451,9 +3600,9 @@
           <clipPath id="${uid}_clip">
             <circle cx="50" cy="50" r="41"/>
           </clipPath>
+          ${outerBackWingsLayer}
           <g clip-path="url(#${uid}_clip)">
             <rect x="8" y="8" width="84" height="84" fill="url(#${uid}_bg)"/>
-            ${bgDecorLayer}
             ${backHairLayer}
             ${backAccLayer}
             ${outfitDetail}
@@ -3465,9 +3614,9 @@
             ${frontHairLayer}
             ${tudungFrontLayer}
             ${accLayer}
-            ${hatLayer}
           </g>
           ${renderAvatarFrameOverlaySVG(cfg.frame, uid)}
+          ${hatLayer}
         </svg>
       `;
     }
@@ -5539,10 +5688,10 @@
 
       const allCatalogIds = [
         ...AVATAR_STUDIO_CATALOG.face,
+        ...AVATAR_STUDIO_CATALOG.outfit,
         ...AVATAR_STUDIO_CATALOG.hair,
         ...AVATAR_STUDIO_CATALOG.headwear,
         ...AVATAR_STUDIO_CATALOG.accessory,
-        ...AVATAR_STUDIO_CATALOG.bg,
         ...AVATAR_STUDIO_CATALOG.frame
       ].filter(it => it.cost > 0);
       const ownedPaidCount = allCatalogIds.filter(it => currentPlayer.ownedAvatarItems.includes(it.id)).length;
@@ -5620,8 +5769,11 @@
         if (!isAccTab) {
           previewCfg[activeStudioTab] = item.id;
           if (activeStudioTab === 'face') {
-            if (item.defaultHair) previewCfg.hair = item.defaultHair;
-            if (item.defaultColor) previewCfg.hairColor = item.defaultColor;
+            delete previewCfg.skin;
+          }
+          // Jika pratonton di tab Rambut semasa bertudung, tunjukkan gaya rambut itu tanpa tudung pada kad pratonton
+          if (activeStudioTab === 'hair' && previewCfg.headwear && previewCfg.headwear.startsWith('hw_tudung')) {
+            previewCfg.headwear = 'hw_none';
           }
         }
 
@@ -5637,7 +5789,7 @@
         card.className = `flex flex-col items-center justify-between rounded-2xl p-2 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : (tierCardStyles[item.tier] || 'bg-white border-slate-200')}`;
 
         const thumb = document.createElement('div');
-        thumb.className = 'w-16 h-16 rounded-2xl mb-1 relative flex items-center justify-center';
+        thumb.className = 'w-16 h-16 rounded-2xl mb-1 relative flex items-center justify-center overflow-visible';
         thumb.innerHTML = renderRealisticAvatarSVG(previewCfg, 'w-full h-full');
         card.appendChild(thumb);
 
@@ -5657,9 +5809,19 @@
         }
 
         const titleEl = document.createElement('div');
-        titleEl.className = 'text-[10px] font-black text-slate-800 text-center leading-tight mb-1.5';
+        titleEl.className = 'text-[10px] font-black text-slate-800 text-center leading-tight mb-1';
         titleEl.innerText = item.name;
         card.appendChild(titleEl);
+
+        if (item.setTag) {
+          const setBadge = document.createElement('button');
+          setBadge.type = 'button';
+          setBadge.className = 'mb-1.5 px-2 py-0.5 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-900 border border-indigo-300 text-[8.5px] font-black transition';
+          setBadge.innerText = item.setTag;
+          setBadge.title = 'Klik untuk cuba / pakai padanan set ini';
+          setBadge.onclick = () => window.applyAvatarComboSet(item.id, activeStudioTab);
+          card.appendChild(setBadge);
+        }
 
         const btn = document.createElement('button');
         if (isAccTab) {
@@ -5765,18 +5927,17 @@
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
       cfg[category] = itemId;
       if (category === 'face') {
-        const charObj = AVATAR_STUDIO_CATALOG.face.find(f => f.id === itemId);
-        if (charObj) {
-          if (charObj.defaultHair) {
-            cfg.hair = charObj.defaultHair;
-            if (!currentPlayer.ownedAvatarItems.includes(charObj.defaultHair)) {
-              currentPlayer.ownedAvatarItems.push(charObj.defaultHair);
-            }
-          }
-          if (charObj.defaultColor) {
-            cfg.hairColor = charObj.defaultColor;
-          }
-        }
+        const faceDefaultSkins = {
+          boy_leo: '#DDA175', boy_adam: '#FFE5D0', boy_zack: '#FFE8D6', boy_danish: '#7C472A',
+          boy_amir: '#B8784E', boy_rayyan: '#E3B087', boy_harith: '#FDE4CF', boy_kai: '#F7C8A0', boy_ryu: '#DDA175',
+          girl_hana: '#DDA175', girl_sofia: '#FFE5D0', girl_maya: '#FFE8D6', girl_aina: '#7C472A',
+          girl_bella: '#B8784E', girl_nadia: '#E3B087', girl_alya: '#FDE4CF', girl_luna: '#F7C8A0', girl_aurora: '#FFE5D0'
+        };
+        if (faceDefaultSkins[itemId]) cfg.skin = faceDefaultSkins[itemId];
+      }
+      // Jika pemain memilih gaya rambut semasa bertudung, tanggalkan tudung secara automatik supaya gaya rambut kelihatan!
+      if (category === 'hair' && cfg.headwear && cfg.headwear.startsWith('hw_tudung')) {
+        cfg.headwear = 'hw_none';
       }
       syncPlayerUI();
       renderAvatarStudio();
@@ -5803,6 +5964,66 @@
         window.toggleAvatarAccessory(itemId);
       } else {
         window.equipAvatarPart(category, itemId);
+      }
+    };
+
+    window.applyAvatarComboSet = function(itemId, categoryHint) {
+      if (!currentPlayer) return;
+      playClick();
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      const isAdm = Boolean(currentPlayer.isAdmin);
+      const list = AVATAR_STUDIO_CATALOG[categoryHint] || [];
+      const item = list.find(it => it.id === itemId);
+      if (!item || !item.setApply) return;
+
+      const plan = item.setApply;
+      const missingNames = [];
+      let appliedCount = 0;
+
+      const trySetSlot = (cat, targetId) => {
+        if (!targetId) return;
+        const obj = (AVATAR_STUDIO_CATALOG[cat] || []).find(x => x.id === targetId);
+        if (!obj) return;
+        if (isAdm || obj.cost === 0 || currentPlayer.ownedAvatarItems.includes(targetId)) {
+          cfg[cat] = targetId;
+          appliedCount++;
+        } else {
+          missingNames.push(`${obj.name} (${obj.cost} Coin)`);
+        }
+      };
+
+      if (plan.outfit) trySetSlot('outfit', plan.outfit);
+      if (plan.headwear) trySetSlot('headwear', plan.headwear);
+      if (plan.frame) trySetSlot('frame', plan.frame);
+      if (Array.isArray(plan.addAcc)) {
+        plan.addAcc.forEach(accId => {
+          const accObj = AVATAR_STUDIO_CATALOG.accessory.find(a => a.id === accId);
+          if (!accObj) return;
+          if (isAdm || accObj.cost === 0 || currentPlayer.ownedAvatarItems.includes(accId)) {
+            if (accObj.slot) {
+              cfg.accessories = cfg.accessories.filter(eid => {
+                const eo = AVATAR_STUDIO_CATALOG.accessory.find(a => a.id === eid);
+                return !eo || eo.slot !== accObj.slot;
+              });
+            }
+            if (!cfg.accessories.includes(accId)) cfg.accessories.push(accId);
+            appliedCount++;
+          } else {
+            missingNames.push(`${accObj.name} (${accObj.cost} Coin)`);
+          }
+        });
+      }
+
+      sanitizeAvatarForGender(cfg);
+      syncPlayerUI();
+      renderAvatarStudio();
+      savePlayerCloud();
+
+      if (missingNames.length === 0) {
+        playCheer();
+        showAppToast(`✨ Lengkap! ${item.setTag} telah dipakaikan serentak!`);
+      } else {
+        showAppToast(`💡 ${item.setTag}: ${appliedCount > 0 ? 'Item dimiliki telah dipakai. ' : ''}Item padanan belum dimiliki: ${missingNames.join(', ')}`);
       }
     };
 
@@ -6334,6 +6555,20 @@
 
       const hairBox = document.getElementById('setup-hair-options');
       if (hairBox) {
+        const faceList = AVATAR_STUDIO_CATALOG.face.filter(f => f.gender === cfg.gender);
+        const faceButtonsHtml = `
+          <div class="w-full pt-1">
+            <div class="text-[10px] font-black text-slate-500 mb-1">Pilih Rupa Watak Anda:</div>
+            <div class="flex flex-wrap items-center justify-center gap-1">
+              ${faceList.map(f => {
+                const isSel = cfg.face === f.id;
+                const shortLbl = f.name.split(' (')[0];
+                return `<button type="button" onclick="updateNewStudentAvatar('face', '${f.id}')" class="px-2 py-1 rounded-xl text-[10px] font-black border-2 ${isSel ? 'bg-sky-400 text-sky-950 border-sky-700' : 'bg-white text-slate-700 border-slate-200'}">${shortLbl}</button>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
         const starterOptions = cfg.gender === 'girl'
           ? [
               { label: '💇 Beralun', hair: 'hair_wavy_girl', hw: 'hw_none' },
@@ -6347,10 +6582,15 @@
               { label: '🧢 Topi Biru', hair: 'hair_quiff', hw: 'hw_cap_blue' }
             ];
 
-        hairBox.innerHTML = starterOptions.map(opt => {
-          const isSelected = cfg.hair === opt.hair && cfg.headwear === opt.hw;
-          return `<button type="button" onclick="selectStarterStyle('${opt.hair}', '${opt.hw}')" class="px-2.5 py-1 rounded-xl text-[11px] font-black border-2 ${isSelected ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white text-slate-700 border-slate-200'}">${opt.label}</button>`;
-        }).join('');
+        const styleButtonsHtml = `
+          <div class="w-full pt-1 flex flex-wrap items-center justify-center gap-1.5">
+            ${starterOptions.map(opt => {
+              const isSelected = cfg.hair === opt.hair && cfg.headwear === opt.hw;
+              return `<button type="button" onclick="selectStarterStyle('${opt.hair}', '${opt.hw}')" class="px-2.5 py-1 rounded-xl text-[11px] font-black border-2 ${isSelected ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white text-slate-700 border-slate-200'}">${opt.label}</button>`;
+            }).join('')}
+          </div>
+        `;
+        hairBox.innerHTML = faceButtonsHtml + styleButtonsHtml;
       }
     }
 

@@ -2,20 +2,39 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#FDE047" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Jari & Abakus Pintar - Belajar Kira Pantas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    html {
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+    }
     body {
       font-family: 'Nunito', sans-serif;
       background: linear-gradient(180deg, #FEF9C3 0%, #E0F2FE 55%, #FCE7F3 100%);
       min-height: 100vh;
+      min-height: 100dvh;
+      padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+    }
+    button, select, input, textarea {
+      touch-action: manipulation;
+    }
+    input, select, textarea {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    .scroll-smooth-touch {
+      -webkit-overflow-scrolling: touch;
     }
     h1, h2, h3, .font-display {
       font-family: 'Fredoka', sans-serif;
@@ -80,30 +99,30 @@
   <div id="quiz-instant-popup" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none"></div>
 
   <!-- Bar Atas Pemain (Disembunyikan sebelum Log Masuk) -->
-  <header id="app-header" class="hidden sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b-4 border-amber-300 px-3 py-2 shadow-sm">
-    <div class="max-w-xl mx-auto flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 min-w-0">
-        <div id="header-avatar-box" onclick="navTo('rewards')" class="w-11 h-11 rounded-full flex-shrink-0 cursor-pointer relative"></div>
+  <header id="app-header" class="hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 px-2 sm:px-3 py-1.5 sm:py-2 shadow-sm">
+    <div class="max-w-xl mx-auto flex items-center justify-between gap-1.5 sm:gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <div id="header-avatar-box" onclick="navTo('rewards')" class="w-9 h-9 sm:w-11 sm:h-11 rounded-full flex-shrink-0 cursor-pointer relative"></div>
         <div class="min-w-0">
-          <div id="header-player-name" class="text-xs font-black text-slate-800 truncate">Pelajar</div>
-          <div class="flex flex-wrap items-center gap-1 text-[11px] font-extrabold">
-            <span class="text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
-            <span class="text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full inline-flex items-center gap-1" title="Jumlah Coin"><span class="gold-coin-icon">$</span> <span id="header-star-count">0</span></span>
-            <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
+          <div id="header-player-name" class="text-[11px] sm:text-xs font-black text-slate-800 truncate">Pelajar</div>
+          <div class="flex flex-wrap items-center gap-1 text-[10px] sm:text-[11px] font-extrabold">
+            <span class="text-indigo-700 bg-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
+            <span class="text-amber-700 bg-amber-100 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-0.5 sm:gap-1" title="Jumlah Coin"><span class="gold-coin-icon">$</span> <span id="header-star-count">0</span></span>
+            <span class="hidden xs:inline-flex sm:inline-flex text-sky-700 bg-sky-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️ Admin</button>
-        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ Akaun</button>
-        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-xs font-black px-2.5 py-2 border-2 border-indigo-700">🏆 Skor</button>
-        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-xs font-black px-2.5 py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
+      <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+        <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️</button>
+        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
+        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
+        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
             <line x1="21" y1="12" x2="9" y2="12"/>
           </svg>
-          <span id="lbl-header-logout">Keluar</span>
+          <span id="lbl-header-logout" class="hidden sm:inline">Keluar</span>
         </button>
       </div>
     </div>
@@ -181,7 +200,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.20
+            Versi 1.9.22
           </span>
         </div>
 
@@ -212,38 +231,63 @@
           </form>
         </div>
 
-        <!-- Panel Borang Bantuan Akaun / Hubungi Admin (Sebelum Log Masuk) -->
+        <!-- Panel Borang Bantuan Akaun & Semakan Status Balasan Admin (Sebelum Log Masuk) -->
         <div id="support-help-panel" class="hidden mt-4 text-left bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-black text-rose-950">🆘 Borang Bantuan Akaun & Hubungi Admin</h3>
+            <h3 class="text-sm font-black text-rose-950">🆘 Bantuan Akaun & Status Laporan</h3>
             <button type="button" onclick="toggleSupportHelpPanel(false)" class="text-xs font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
           </div>
-          <p class="text-[11px] font-bold text-rose-900">Hantar laporan terus kepada Admin tanpa perlu log masuk. Admin akan menyemak dan membantu akaun anda.</p>
-          <form onsubmit="submitSupportTicket(event, 'login')" class="space-y-2.5">
-            <div>
-              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Nama Akaun Pelajar</label>
-              <input id="support-login-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama akaun anda (cth: Aiman)" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Jenis Masalah Akaun</label>
-              <select id="support-login-issue" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white">
-                <option value="🔑 Lupa Kata Laluan & Lupa PIN 4-Digit">🔑 Lupa Kata Laluan & Lupa PIN 4-Digit</option>
-                <option value="🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui">🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui</option>
-                <option value="✏️ Tersalah Daftar Nama / Ingin Tukar Nama">✏️ Tersalah Daftar Nama / Ingin Tukar Nama</option>
-                <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
-                <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
-                <option value="💬 Lain-lain Pertanyaan">💬 Lain-lain Pertanyaan</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Catatan Tambahan (Pilihan)</label>
-              <textarea id="support-login-msg" rows="2" maxlength="250" placeholder="Terangkan masalah anda secara ringkas..." class="w-full px-3.5 py-2 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white"></textarea>
-            </div>
-            <div id="support-login-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-            <button id="btn-support-login-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-2.5 border-2 border-rose-900">
-              📨 Hantar Laporan kepada Admin
+
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="switchLoginSupportTab('send')" id="tab-login-sup-send" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2 px-2 text-[11px] font-black">
+              📨 Hantar Laporan
             </button>
-          </form>
+            <button type="button" onclick="switchLoginSupportTab('check')" id="tab-login-sup-check" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-2 text-[11px] font-black">
+              🔍 Semak Status & Balasan
+            </button>
+          </div>
+
+          <!-- Sub-Tab A: Hantar Laporan Baharu -->
+          <div id="login-sup-panel-send" class="space-y-2.5">
+            <p class="text-[11px] font-bold text-rose-900">Hantar laporan terus kepada Admin tanpa perlu log masuk. Admin akan membalas terus di sini.</p>
+            <form onsubmit="submitSupportTicket(event, 'login')" class="space-y-2.5">
+              <div>
+                <label class="block text-[11px] font-black text-slate-700 mb-0.5">Nama Akaun Pelajar</label>
+                <input id="support-login-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama akaun anda (cth: Aiman)" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-black text-slate-700 mb-0.5">Jenis Masalah Akaun</label>
+                <select id="support-login-issue" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white">
+                  <option value="🔑 Lupa Kata Laluan & Lupa PIN 4-Digit">🔑 Lupa Kata Laluan & Lupa PIN 4-Digit</option>
+                  <option value="🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui">🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui</option>
+                  <option value="✏️ Tersalah Daftar Nama / Ingin Tukar Nama">✏️ Tersalah Daftar Nama / Ingin Tukar Nama</option>
+                  <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
+                  <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
+                  <option value="💬 Lain-lain Pertanyaan">💬 Lain-lain Pertanyaan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-black text-slate-700 mb-0.5">Catatan Tambahan (Pilihan)</label>
+                <textarea id="support-login-msg" rows="2" maxlength="250" placeholder="Terangkan masalah anda secara ringkas..." class="w-full px-3.5 py-2 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white"></textarea>
+              </div>
+              <div id="support-login-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+              <button id="btn-support-login-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-2.5 border-2 border-rose-900">
+                📨 Hantar Laporan kepada Admin
+              </button>
+            </form>
+          </div>
+
+          <!-- Sub-Tab B: Semak Status & Balasan Admin -->
+          <div id="login-sup-panel-check" class="hidden space-y-2.5">
+            <p class="text-[11px] font-bold text-indigo-900">Masukkan nama akaun anda untuk menyemak status laporan dan membaca balasan daripada Admin:</p>
+            <div class="flex gap-1.5">
+              <input id="support-check-name" type="text" minlength="2" maxlength="25" placeholder="Nama akaun anda..." class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-bold text-xs bg-white" />
+              <button type="button" onclick="checkStudentSupportReplies('login')" class="bubbly-btn bg-indigo-600 text-white font-black text-xs px-3.5 py-2 border-2 border-indigo-900">
+                🔍 Semak
+              </button>
+            </div>
+            <div id="support-login-history-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-0.5"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -778,7 +822,7 @@
           </button>
         </div>
 
-        <div id="scoreboard-list" class="space-y-2 max-h-[420px] overflow-y-auto pr-1"></div>
+        <div id="scoreboard-list" class="space-y-2.5 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
       </div>
     </section>
 
@@ -1082,6 +1126,15 @@
             📨 Hantar Mesej kepada Admin
           </button>
         </form>
+
+        <!-- Senarai Sejarah Laporan & Balasan Admin untuk Pelajar Ini -->
+        <div class="pt-3 border-t border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-indigo-950">📬 Sejarah Laporan & Balasan Admin</span>
+            <button type="button" onclick="checkStudentSupportReplies('account')" class="text-[11px] font-black text-indigo-700 hover:text-indigo-900 underline">🔄 Muat Semula</button>
+          </div>
+          <div id="support-acc-history-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-0.5"></div>
+        </div>
       </div>
     </section>
 
@@ -1129,10 +1182,10 @@
         <div id="admin-action-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5 text-center"></div>
 
         <!-- Senarai Akaun Pelajar -->
-        <div id="admin-students-list" class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1"></div>
+        <div id="admin-students-list" class="space-y-2.5 max-h-[60vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
 
         <!-- Peti Masuk Aduan & Bantuan Pemain -->
-        <div id="admin-tickets-list" class="hidden space-y-2.5 max-h-[450px] overflow-y-auto pr-1"></div>
+        <div id="admin-tickets-list" class="hidden space-y-2.5 max-h-[60vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
       </div>
     </section>
 
@@ -1524,8 +1577,10 @@
       setTxt('btn-forgot-pass', t.btnForgot);
       setTxt('login-footer-note', t.footerNote);
 
-      setTxt('btn-header-account', t.headerAcc);
-      setTxt('btn-header-score', t.headerScore);
+      const accBtnEl = document.getElementById('btn-header-account');
+      if (accBtnEl) accBtnEl.innerHTML = `⚙️ <span class="hidden sm:inline">${t.headerAcc.replace(/^⚙️\s*/, '')}</span>`;
+      const scrBtnEl = document.getElementById('btn-header-score');
+      if (scrBtnEl) scrBtnEl.innerHTML = `🏆 <span class="hidden sm:inline">${t.headerScore.replace(/^🏆\s*/, '')}</span>`;
       setTxt('lbl-header-logout', t.headerLogout);
       setTxt('home-welcome-tag', t.welcomeTag);
       setTxt('btn-home-avatar', t.btnAvatar);
@@ -4389,12 +4444,12 @@
           <div class="h-10 flex items-start justify-center z-10">
             <button type="button" onclick="toggleHelperTop('${ctxKey}', ${rIdx})"
               style="clip-path: polygon(16% 0%, 84% 0%, 100% 50%, 84% 100%, 16% 100%, 0% 50%);"
-              class="bead-transition flex-shrink-0 w-10 h-[18px] shadow-md ${rod.top ? 'bg-gradient-to-b from-rose-400 via-rose-500 to-rose-700 translate-y-4' : 'bg-gradient-to-b from-rose-200 via-rose-300 to-rose-400 translate-y-0'}">
+              class="bead-transition flex-shrink-0 w-9 sm:w-10 h-[18px] shadow-md ${rod.top ? 'bg-gradient-to-b from-rose-400 via-rose-500 to-rose-700 translate-y-4' : 'bg-gradient-to-b from-rose-200 via-rose-300 to-rose-400 translate-y-0'}">
             </button>
           </div>
         `;
 
-        html += `<div class="w-11 h-1.5 bg-amber-950 rounded-full z-20"></div>`;
+        html += `<div class="w-10 sm:w-11 h-1.5 bg-amber-950 rounded-full z-20"></div>`;
 
         html += `<div class="flex flex-col gap-0.5 z-10 pb-0.5 pt-1">`;
         for (let b = 1; b <= 4; b++) {
@@ -4402,7 +4457,7 @@
           html += `
             <button type="button" onclick="setHelperBot('${ctxKey}', ${rIdx}, ${b})"
               style="clip-path: polygon(16% 0%, 84% 0%, 100% 50%, 84% 100%, 16% 100%, 0% 50%);"
-              class="bead-transition flex-shrink-0 w-10 h-[14px] shadow-sm ${active ? 'bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 -translate-y-1.5' : 'bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 translate-y-0'}">
+              class="bead-transition flex-shrink-0 w-9 sm:w-10 h-[14px] shadow-sm ${active ? 'bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 -translate-y-1.5' : 'bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 translate-y-0'}">
             </button>
           `;
         }
@@ -4462,8 +4517,8 @@
       const box = document.getElementById('sim-hands-container');
       if (!box) return;
       box.innerHTML = `
-        ${renderRealisticHandSVG('left', simLeftState, true, 'w-36 h-40')}
-        ${renderRealisticHandSVG('right', simRightState, true, 'w-36 h-40')}
+        ${renderRealisticHandSVG('left', simLeftState, true, 'w-full max-w-[144px] h-auto')}
+        ${renderRealisticHandSVG('right', simRightState, true, 'w-full max-w-[144px] h-auto')}
       `;
       const calcHand = (arr, mult) => {
         let s = arr[0] ? 5 * mult : 0;
@@ -4512,12 +4567,12 @@
           <div class="h-12 flex items-start justify-center z-10">
             <button onclick="toggleAbacusTop(${rIdx})"
               style="clip-path: polygon(16% 0%, 84% 0%, 100% 50%, 84% 100%, 16% 100%, 0% 50%);"
-              class="bead-transition flex-shrink-0 w-12 h-[20px] shadow-md ${rod.top ? 'bg-gradient-to-b from-rose-400 via-rose-500 to-rose-700 translate-y-5' : 'bg-gradient-to-b from-rose-200 via-rose-300 to-rose-400 translate-y-0'}">
+              class="bead-transition flex-shrink-0 w-10 sm:w-12 h-[20px] shadow-md ${rod.top ? 'bg-gradient-to-b from-rose-400 via-rose-500 to-rose-700 translate-y-5' : 'bg-gradient-to-b from-rose-200 via-rose-300 to-rose-400 translate-y-0'}">
             </button>
           </div>
         `;
 
-        html += `<div class="w-14 h-2 bg-amber-950 rounded-full z-20"></div>`;
+        html += `<div class="w-12 sm:w-14 h-2 bg-amber-950 rounded-full z-20"></div>`;
 
         html += `<div class="flex flex-col gap-1 z-10 pb-1 pt-1.5">`;
         for (let b = 1; b <= 4; b++) {
@@ -4525,7 +4580,7 @@
           html += `
             <button onclick="setAbacusBot(${rIdx}, ${b})"
               style="clip-path: polygon(16% 0%, 84% 0%, 100% 50%, 84% 100%, 16% 100%, 0% 50%);"
-              class="bead-transition flex-shrink-0 w-12 h-[16px] shadow-sm ${active ? 'bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 -translate-y-2' : 'bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 translate-y-0'}">
+              class="bead-transition flex-shrink-0 w-10 sm:w-12 h-[16px] shadow-sm ${active ? 'bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 -translate-y-2' : 'bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 translate-y-0'}">
             </button>
           `;
         }
@@ -5840,24 +5895,32 @@
           : `<span class="inline-flex items-center gap-1 text-[9px] font-black bg-slate-200 text-slate-600 border border-slate-300 px-1.5 py-0.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Offline</span>`;
 
         return `
-          <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl border-2 ${isMe ? 'bg-amber-50 border-amber-400 shadow-sm' : 'bg-slate-50 border-slate-200'}">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-7 text-center font-black text-sm text-indigo-900 flex-shrink-0">${medal}</div>
-              <div class="w-11 h-11 rounded-full flex-shrink-0 relative">${miniAvatar}</div>
-              <div class="min-w-0">
-                <div class="flex flex-wrap items-center gap-1">
-                  <span class="text-xs font-black text-slate-800 truncate">${safeName}</span>
-                  ${isMe ? '<span class="text-[9px] font-black bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full">Anda</span>' : ''}
-                  ${statusBadge}
-                  <span class="text-[9px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full" title="Masa terakhir aktif">📅 ${lastActiveLabel}</span>
-                  <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini (Jam:Min)">🕒 ${todayHHMM}</span>
+          <div class="p-2.5 sm:p-3 rounded-2xl border-2 space-y-2 ${isMe ? 'bg-amber-50 border-amber-400 shadow-sm' : 'bg-slate-50 border-slate-200'}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <div class="w-6 sm:w-7 text-center font-black text-xs sm:text-sm text-indigo-900 flex-shrink-0">${medal}</div>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex-shrink-0 relative">${miniAvatar}</div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-1">
+                    <span class="text-xs sm:text-sm font-black text-slate-800 break-words leading-tight">${safeName}</span>
+                    ${isMe ? '<span class="text-[9px] font-black bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full">Anda</span>' : ''}
+                    ${statusBadge}
+                  </div>
+                  <div class="flex flex-wrap items-center gap-1 mt-1">
+                    <span class="text-[9px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full" title="Masa terakhir aktif">📅 ${lastActiveLabel}</span>
+                    <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini (Jam:Min)">🕒 Hari ini: ${todayHHMM}</span>
+                  </div>
                 </div>
-                <div class="text-[10px] font-bold text-slate-600 mt-0.5 truncate">${activityText} • ⏱️ Masa: ${totalHHMM}</div>
+              </div>
+              <div class="text-right flex-shrink-0">
+                <div class="text-xs sm:text-sm font-black ${isTodayTab ? 'text-amber-700' : 'text-indigo-800'}">${shownPoints.toLocaleString()} <span class="text-[10px]">Markah</span></div>
+                <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} ${shownStars}</div>
+                <div class="text-[9px] text-slate-500 font-bold leading-tight">${subScoreInfo}</div>
               </div>
             </div>
-            <div class="text-right flex-shrink-0">
-              <div class="text-xs font-black ${isTodayTab ? 'text-amber-700' : 'text-indigo-800'}">${shownPoints.toLocaleString()} Markah</div>
-              <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} ${shownStars} <span class="text-[9px] text-slate-400 font-bold">(${subScoreInfo})</span></div>
+            <div class="flex flex-wrap items-center justify-between gap-1.5 bg-white/90 border border-slate-200/90 rounded-xl px-2.5 py-1.5 text-[10px] sm:text-[11px] font-bold text-slate-700 leading-snug">
+              <span class="break-words">${activityText}</span>
+              <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 flex-shrink-0">⏱️ Jumlah: ${totalHHMM}</span>
             </div>
           </div>
         `;
@@ -5995,6 +6058,7 @@
         const pFb = document.getElementById('acc-pass-feedback');
         if (nFb) nFb.classList.add('hidden');
         if (pFb) pFb.classList.add('hidden');
+        checkStudentSupportReplies('account');
       }
     };
 
@@ -6324,6 +6388,7 @@
         }
         const msgField = document.getElementById(isLoginCtx ? 'support-login-msg' : 'support-acc-msg');
         if (msgField) msgField.value = '';
+        if (!isLoginCtx) checkStudentSupportReplies('account');
       } catch (err) {
         playWrong();
         if (fb) {
@@ -6401,6 +6466,120 @@
       renderAdminTicketsList();
     };
 
+    window.switchLoginSupportTab = function(subTab) {
+      playClick();
+      const isCheck = subTab === 'check';
+      const sendBtn = document.getElementById('tab-login-sup-send');
+      const checkBtn = document.getElementById('tab-login-sup-check');
+      const sendPanel = document.getElementById('login-sup-panel-send');
+      const checkPanel = document.getElementById('login-sup-panel-check');
+
+      if (sendBtn) {
+        sendBtn.className = !isCheck
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2 px-2 text-[11px] font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-2 text-[11px] font-black';
+      }
+      if (checkBtn) {
+        checkBtn.className = isCheck
+          ? 'bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 py-2 px-2 text-[11px] font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-2 text-[11px] font-black';
+      }
+      if (sendPanel) sendPanel.classList.toggle('hidden', isCheck);
+      if (checkPanel) checkPanel.classList.toggle('hidden', !isCheck);
+
+      if (isCheck) {
+        const typedName = (document.getElementById('support-login-name')?.value || document.getElementById('input-player-name')?.value || '').trim();
+        const chkInp = document.getElementById('support-check-name');
+        if (chkInp && typedName && !chkInp.value) chkInp.value = typedName;
+        if (chkInp && chkInp.value.trim().length >= 2) {
+          checkStudentSupportReplies('login');
+        }
+      }
+    };
+
+    window.checkStudentSupportReplies = async function(ctx) {
+      const isLoginCtx = ctx === 'login';
+      const listEl = document.getElementById(isLoginCtx ? 'support-login-history-list' : 'support-acc-history-list');
+      if (!listEl) return;
+
+      const queryName = isLoginCtx
+        ? (document.getElementById('support-check-name')?.value || '').trim()
+        : (currentPlayer?.name || '').trim();
+      const queryAccId = isLoginCtx ? '' : (currentPlayer?.accountId || currentPlayer?.key || '');
+
+      if (queryName.length < 2) {
+        listEl.innerHTML = `<div class="text-center text-[11px] font-bold text-rose-700 py-3">⚠️ Sila taip nama akaun anda terlebih dahulu.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = `<div class="text-center text-[11px] font-bold text-slate-400 py-3">⏳ Menyemak status laporan & balasan Admin...</div>`;
+
+      const merged = new Map();
+      loadLocalSupportTickets().forEach(t => { if (t && t.id) merged.set(t.id, t); });
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'));
+            snap.forEach(docSnap => {
+              const d = docSnap.data();
+              if (d) {
+                d.id = d.id || docSnap.id;
+                merged.set(d.id, d);
+              }
+            });
+            saveLocalSupportTickets(Array.from(merged.values()));
+          }
+        } catch (err) {}
+      }
+
+      const mine = Array.from(merged.values())
+        .filter(t =>
+          (queryAccId && t.accountId === queryAccId) ||
+          (t.playerName || '').trim().toLowerCase() === queryName.toLowerCase()
+        )
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      if (mine.length === 0) {
+        listEl.innerHTML = `<div class="text-center text-[11px] font-bold text-slate-500 bg-white rounded-xl p-3 border border-slate-200">Tiada rekod laporan ditemui bagi nama <b>"${queryName.replace(/</g, '&lt;')}"</b>.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = mine.map(t => {
+        const safeIssue = (t.issueType || 'Masalah Akaun').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeMsg = (t.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeReply = (t.adminReply || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
+        const isResolved = t.status === 'resolved' || Boolean(safeReply);
+        const timeStr = t.createdAt ? formatLastActiveText(t.createdAt, false) : 'Baru dihantar';
+        const replyTimeStr = t.repliedAt ? formatLastActiveText(t.repliedAt, false) : '';
+
+        return `
+          <div class="bg-white rounded-xl p-3 border-2 ${isResolved ? 'border-emerald-300' : 'border-amber-300'} space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${isResolved ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">
+                ${isResolved ? '✅ Sudah Dibalas / Selesai' : '⏳ Menunggu Semakan Admin'}
+              </span>
+              <span class="text-[9px] font-bold text-slate-400">${timeStr}</span>
+            </div>
+            <div class="text-[11px] font-black text-slate-800">${safeIssue}</div>
+            <div class="text-[11px] font-bold text-slate-600 bg-slate-50 rounded-lg p-2 border border-slate-200">Laporan anda: "${safeMsg}"</div>
+            ${safeReply ? `
+              <div class="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-2.5 space-y-0.5">
+                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900">
+                  <span>🛡️ Balasan Admin:</span>
+                  <span class="text-[9px] font-bold text-emerald-700">${replyTimeStr}</span>
+                </div>
+                <div class="text-xs font-extrabold text-emerald-950">${safeReply}</div>
+              </div>
+            ` : `
+              <div class="text-[10px] font-bold text-amber-800 italic">💡 Sila semak semula sebentar lagi untuk melihat balasan daripada Admin.</div>
+            `}
+          </div>
+        `;
+      }).join('');
+    };
+
     function renderAdminTicketsList() {
       const listEl = document.getElementById('admin-tickets-list');
       if (!listEl) return;
@@ -6414,22 +6593,38 @@
         const safeName = (t.playerName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeIssue = (t.issueType || 'Masalah Akaun').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeMsg = (t.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeReply = (t.adminReply || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
         const isOpen = t.status === 'open';
         const timeStr = t.createdAt ? formatLastActiveText(t.createdAt, false) : 'Baru dihantar';
 
         return `
-          <div class="rounded-2xl p-3 border-2 space-y-2 ${isOpen ? 'bg-amber-50/90 border-amber-400' : 'bg-slate-50 border-slate-200 opacity-80'}">
+          <div class="rounded-2xl p-3 border-2 space-y-2 ${isOpen ? 'bg-amber-50/90 border-amber-400' : 'bg-slate-50 border-slate-200'}">
             <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0">
+              <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-1.5">
                   <span class="text-xs font-black text-slate-900">${safeName}</span>
                   <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${isOpen ? 'bg-rose-600 text-white' : 'bg-emerald-100 text-emerald-800'}">${isOpen ? 'BARU' : 'SELESAI'}</span>
                   <span class="text-[9px] font-bold text-slate-500">• ${timeStr} (${t.source || 'Aplikasi'})</span>
                 </div>
                 <div class="text-[11px] font-black text-indigo-900 mt-1">${safeIssue}</div>
-                <p class="text-[11px] font-bold text-slate-700 bg-white/80 rounded-xl p-2 mt-1 border border-slate-200">${safeMsg}</p>
+                <p class="text-[11px] font-bold text-slate-700 bg-white/90 rounded-xl p-2 mt-1 border border-slate-200">${safeMsg}</p>
               </div>
             </div>
+
+            ${safeReply ? `
+              <div class="bg-emerald-100/80 border border-emerald-300 rounded-xl p-2 text-[11px] font-bold text-emerald-950">
+                <b>🛡️ Balasan Anda:</b> ${safeReply}
+              </div>
+            ` : ''}
+
+            <!-- Borang Reply Terus Kepada Murid -->
+            <div class="flex gap-1.5 pt-1">
+              <input id="admin-reply-input-${t.id}" type="text" maxlength="250" value="${safeReply.replace(/"/g, '&quot;')}" placeholder="Tulis balasan untuk ${safeName}..." class="flex-1 px-3 py-1.5 rounded-xl border border-indigo-300 text-[11px] font-bold bg-white focus:outline-none" />
+              <button type="button" onclick="adminSendTicketReply('${t.id}')" class="bubbly-btn bg-indigo-600 text-white border border-indigo-900 px-3 py-1.5 text-[10px] font-black flex-shrink-0">
+                💬 Balas
+              </button>
+            </div>
+
             <div class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-200/80">
               <button type="button" onclick="adminQuickResetFromTicket('${t.id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-1.5 px-2 text-[10px] font-black">
                 🔑 Reset Password Pelajar
@@ -6447,6 +6642,47 @@
         `;
       }).join('');
     }
+
+    window.adminSendTicketReply = async function(ticketId) {
+      playClick();
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      const inp = document.getElementById(`admin-reply-input-${ticketId}`);
+      if (!target || !inp) return;
+
+      const replyText = inp.value.trim();
+      if (!replyText) {
+        playWrong();
+        showAppToast('Sila taip mesej balasan terlebih dahulu.');
+        return;
+      }
+
+      target.adminReply = replyText;
+      target.repliedAt = Date.now();
+      target.status = 'resolved';
+      target.resolvedAt = Date.now();
+      saveLocalSupportTickets(adminCachedTickets);
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), target);
+          }
+        } catch (e) {}
+      }
+
+      playCheer();
+      const fb = document.getElementById('admin-action-feedback');
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerText = `💬 Balasan kepada "${target.playerName}" telah disimpan & ditandakan selesai!`;
+        fb.classList.remove('hidden');
+      }
+      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
+      const badge = document.getElementById('admin-open-tickets-badge');
+      if (badge) badge.innerText = `${openCount} Baru`;
+      renderAdminTicketsList();
+    };
 
     window.adminQuickResetFromTicket = async function(ticketId) {
       const ticket = adminCachedTickets.find(t => t.id === ticketId);
@@ -6780,7 +7016,7 @@
       }).join('');
 
       return `
-        <svg viewBox="0 0 110 115" class="w-36 h-40">
+        <svg viewBox="0 0 110 115" class="w-full max-w-[144px] h-auto">
           ${fingers}
           <rect x="20" y="56" width="66" height="44" rx="20" fill="#FDE68A" stroke="#B45309" stroke-width="2.4"/>
           <path d="M 32 72 Q 53 67 74 72" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>

@@ -130,7 +130,7 @@
       <div class="text-center pt-1">
         <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
         <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-          Versi 1.9.9
+          Versi 2.0.0
         </span>
       </div>
 
@@ -183,6 +183,20 @@
           </button>
           <button type="button" onclick="openScoreboardView()" class="bubbly-btn bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 sm:px-3 py-2 text-xs font-black flex items-center gap-1">
             <span>🏆</span><span id="nav-btn-scores">Skor</span>
+          </button>
+          <button type="button" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white px-2.5 sm:px-3 py-2 text-xs font-black flex items-center gap-1" title="Log Keluar">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+            </svg>
+            <span id="nav-btn-logout">Keluar</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Kandungan Utama -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 space-y-6">
+
       <!-- ==================== 0. PERSEDIAAN AVATAR & PIN PEMULIHAN PELAJAR BAHARU ==================== -->
       <section id="view-onboarding-avatar" class="hidden max-w-lg mx-auto">
         <div class="bubbly-card bg-white border-4 border-pink-300 p-6 sm:p-7 space-y-5 text-center">
@@ -752,6 +766,16 @@
       </div>
 
       <!-- Pilihan Bahasa Aplikasi -->
+      <div class="space-y-2">
+        <label class="block text-xs font-black text-slate-600 uppercase">🌐 Bahasa Antaramuka & Suara</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="acc-lang-ms" onclick="setAppLanguage('ms')" class="py-2 px-3 rounded-xl text-xs font-black border-2 border-amber-400 bg-amber-100 text-amber-900">🇲🇾 Bahasa Melayu</button>
+          <button type="button" id="acc-lang-en" onclick="setAppLanguage('en')" class="py-2 px-3 rounded-xl text-xs font-black border-2 border-slate-200 bg-white text-slate-700">🇬🇧 English</button>
+          <button type="button" id="acc-lang-zh" onclick="setAppLanguage('zh')" class="py-2 px-3 rounded-xl text-xs font-black border-2 border-slate-200 bg-white text-slate-700">🇨🇳 Mandarin (中文)</button>
+          <button type="button" id="acc-lang-ar" onclick="setAppLanguage('ar')" class="py-2 px-3 rounded-xl text-xs font-black border-2 border-slate-200 bg-white text-slate-700">🇸🇦 Arab (العربية)</button>
+        </div>
+      </div>
+
       <!-- Tukar Kata Laluan & PIN Pemulihan -->
       <div class="space-y-2 pt-2 border-t border-slate-100">
         <label class="block text-xs font-black text-slate-600 uppercase">🔑 Tukar Kata Laluan Akaun</label>
@@ -790,6 +814,8 @@
     };
 
     let fbContext = null;
+    let cloudInitPromise = null;
+
     async function initCloudDatabase() {
       const statusEl = document.getElementById('cloud-status-text');
       try {
@@ -814,6 +840,7 @@
         fbContext = { db, auth, appId };
         window.__fbContext = fbContext;
         if (statusEl) statusEl.innerText = 'Pangkalan Data Awan Aktif ✓';
+        await window.fetchAllCloudPlayers();
         startLiveScoreboardListener();
       } catch (e) {
         if (statusEl) statusEl.innerText = 'Mod Simpanan Peranti Aktif';
@@ -825,12 +852,24 @@
       return collection(fbContext.db, 'artifacts', fbContext.appId, 'public', 'data', 'players');
     }
 
+    function getLegacyPlayersCollectionRefs() {
+      if (!fbContext) return [];
+      const refs = [collection(fbContext.db, 'players')];
+      if (fbContext.appId !== 'kirapantas-app') {
+        refs.push(collection(fbContext.db, 'artifacts', 'kirapantas-app', 'public', 'data', 'players'));
+      }
+      if (fbContext.appId !== 'default-app-id') {
+        refs.push(collection(fbContext.db, 'artifacts', 'default-app-id', 'public', 'data', 'players'));
+      }
+      return refs;
+    }
+
     function startLiveScoreboardListener() {
       const colRef = getPlayersCollectionRef();
       if (!colRef) return;
       onSnapshot(colRef, (snap) => {
         const list = [];
-        snap.forEach((d) => list.push(d.data()));
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
         window.__cloudPlayersCache = list;
         if (!document.getElementById('view-scoreboard').classList.contains('hidden')) {
           renderScoreboardList(list);
@@ -845,6 +884,7 @@
       if (!player || player.isAdmin || player.id === 'acc_admin_master' || (player.name || '').toLowerCase() === 'admin') {
         return;
       }
+      if (cloudInitPromise) await cloudInitPromise;
       const colRef = getPlayersCollectionRef();
       if (!colRef) return;
       try {
@@ -853,6 +893,7 @@
     };
 
     window.deletePlayerFromCloud = async function(playerId) {
+      if (cloudInitPromise) await cloudInitPromise;
       const colRef = getPlayersCollectionRef();
       if (!colRef) return;
       try {
@@ -861,12 +902,38 @@
     };
 
     window.fetchAllCloudPlayers = async function() {
+      if (cloudInitPromise && !fbContext) {
+        await cloudInitPromise;
+      }
       const colRef = getPlayersCollectionRef();
       if (!colRef) return window.__cloudPlayersCache || [];
       try {
-        const snap = await getDocs(colRef);
-        const arr = [];
-        snap.forEach((d) => arr.push(d.data()));
+        const byId = {};
+        const primarySnap = await getDocs(colRef);
+        primarySnap.forEach((d) => {
+          const data = { id: d.id, ...d.data() };
+          byId[data.id] = data;
+        });
+
+        /* Semak juga koleksi lama di awan supaya rekod pelajar lama tidak hilang */
+        const legacyRefs = getLegacyPlayersCollectionRefs();
+        for (const lRef of legacyRefs) {
+          try {
+            const lSnap = await getDocs(lRef);
+            lSnap.forEach((d) => {
+              const data = { id: d.id, ...d.data() };
+              if (!data.name) return;
+              const existing = byId[data.id] || Object.values(byId).find(p => (p.name || '').toLowerCase() === (data.name || '').toLowerCase());
+              if (!existing) {
+                byId[data.id] = data;
+              } else if ((data.totalPoints || data.points || 0) > (existing.totalPoints || existing.points || 0)) {
+                byId[existing.id] = { ...data, id: existing.id };
+              }
+            });
+          } catch (e) {}
+        }
+
+        const arr = Object.values(byId);
         window.__cloudPlayersCache = arr;
         return arr;
       } catch (e) {
@@ -874,26 +941,30 @@
       }
     };
 
-    initCloudDatabase();
+    cloudInitPromise = initCloudDatabase();
   </script>
 
   <script>
-    /* ==================== AUDIO EFEK (WEB AUDIO API) ==================== */
-    let audioCtx = null;
-    function playTone(freq = 520, duration = 0.09, type = 'sine') {
+    /* ==================== KESAN BUNYI WEB AUDIO ==================== */
+    let sharedAudioCtx = null;
+    function playTone(freq = 520, duration = 0.08, type = 'sine') {
       try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        if (!sharedAudioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) sharedAudioCtx = new Ctx();
+        }
+        if (!sharedAudioCtx) return;
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+        const osc = sharedAudioCtx.createOscillator();
+        const gain = sharedAudioCtx.createGain();
         osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.frequency.setValueAtTime(freq, sharedAudioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, sharedAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, sharedAudioCtx.currentTime + duration);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(sharedAudioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + duration);
+        osc.stop(sharedAudioCtx.currentTime + duration);
       } catch (e) {}
     }
     function playClick() { playTone(560, 0.06, 'triangle'); }
@@ -928,10 +999,16 @@
       return `${d.getDate()}/${d.getMonth() + 1} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     }
 
-    /* ==================== PENYIMPANAN AKAUN TEMPATAN ==================== */
+    /* ==================== PENYIMPANAN AKAUN TEMPATAN & MIGRASI PELAJAR LAMA ==================== */
     const STORAGE_KEY_ACCOUNTS = 'kirapantas_accounts_v2';
     const STORAGE_KEY_CURRENT = 'kirapantas_current_id_v2';
     const STORAGE_KEY_LANG = 'kirapantas_app_lang_v2';
+    const LEGACY_ACCOUNT_STORAGE_KEYS = [
+      'kirapantas_accounts_v1',
+      'kirapantas_accounts',
+      'abacus_players_v1',
+      'abacus_accounts'
+    ];
 
     let currentPlayer = null;
     let currentAppLang = localStorage.getItem(STORAGE_KEY_LANG) || 'ms';
@@ -939,12 +1016,75 @@
     let currentScoreboardTab = 'today';
     let isNewStudentOnboarding = false;
 
+    function migrateLegacyPlayerRecord(raw, fallbackKey) {
+      if (!raw || typeof raw !== 'object') return null;
+      const name = (raw.name || raw.playerName || '').trim();
+      if (!name) return null;
+      const id = raw.id || fallbackKey || ('plr_' + name.toLowerCase().replace(/\s+/g, '_'));
+      const totalPoints = Number(raw.totalPoints ?? raw.points ?? raw.score ?? 0) || 0;
+      const stars = Number(raw.stars ?? raw.star ?? 0) || 0;
+      const playSeconds = Number(raw.playSeconds ?? raw.totalPlaySeconds ?? 0) || 0;
+      return {
+        ...raw,
+        id,
+        name,
+        totalPoints,
+        stars,
+        playSeconds,
+        hasCompletedOnboarding: true
+      };
+    }
+
     function getLocalAccounts() {
+      let currentMap = {};
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY_ACCOUNTS) || '{}');
+        currentMap = JSON.parse(localStorage.getItem(STORAGE_KEY_ACCOUNTS) || '{}');
       } catch (e) {
-        return {};
+        currentMap = {};
       }
+
+      /* Pulihkan sebarang akaun pelajar lama daripada kunci localStorage versi terdahulu */
+      let migratedAny = false;
+      LEGACY_ACCOUNT_STORAGE_KEYS.forEach((legacyKey) => {
+        try {
+          const rawStr = localStorage.getItem(legacyKey);
+          if (!rawStr) return;
+          const parsed = JSON.parse(rawStr);
+          const entries = Array.isArray(parsed)
+            ? parsed.map((item, idx) => [item?.id || `leg_${idx}`, item])
+            : Object.entries(parsed || {});
+
+          entries.forEach(([k, val]) => {
+            const norm = migrateLegacyPlayerRecord(val, k);
+            if (!norm || norm.isAdmin || norm.name.toLowerCase() === 'admin') return;
+            const existing = currentMap[norm.id] || Object.values(currentMap).find(p => (p.name || '').toLowerCase() === norm.name.toLowerCase());
+            if (!existing) {
+              currentMap[norm.id] = norm;
+              migratedAny = true;
+            } else {
+              const bestPts = Math.max(existing.totalPoints || 0, norm.totalPoints || 0);
+              const bestStars = Math.max(existing.stars || 0, norm.stars || 0);
+              const bestSecs = Math.max(existing.playSeconds || 0, norm.playSeconds || 0);
+              if (bestPts > (existing.totalPoints || 0) || bestStars > (existing.stars || 0)) {
+                currentMap[existing.id] = {
+                  ...norm,
+                  ...existing,
+                  totalPoints: bestPts,
+                  stars: bestStars,
+                  playSeconds: bestSecs,
+                  hasCompletedOnboarding: true
+                };
+                migratedAny = true;
+              }
+            }
+          });
+        } catch (e) {}
+      });
+
+      if (migratedAny) {
+        saveLocalAccounts(currentMap);
+      }
+      return currentMap;
     }
 
     function saveLocalAccounts(map) {
@@ -954,6 +1094,12 @@
     function normalizeDailyCounters(player) {
       if (!player) return player;
       const today = getTodayDateKey();
+      if (typeof player.totalPoints !== 'number') {
+        player.totalPoints = Number(player.points ?? player.score ?? 0) || 0;
+      }
+      if (typeof player.stars !== 'number') {
+        player.stars = Number(player.star ?? 0) || 0;
+      }
       if (player.todayDate !== today) {
         player.todayDate = today;
         player.todayPoints = 0;
@@ -967,6 +1113,17 @@
       if (!Array.isArray(player.avatar.ownedAccessories)) player.avatar.ownedAccessories = ['none'];
       if (!player.modScores) player.modScores = {};
       return player;
+    }
+
+    function isExistingReturningStudent(player) {
+      if (!player) return false;
+      if (player.isAdmin || player.hasCompletedOnboarding) return true;
+      if ((player.totalPoints || 0) > 0 || (player.points || 0) > 0) return true;
+      if ((player.stars || 0) > 0) return true;
+      if ((player.playSeconds || 0) > 0) return true;
+      if (player.recoveryPin) return true;
+      if (player.modScores && Object.values(player.modScores).some(v => (v || 0) > 0)) return true;
+      return false;
     }
 
     function persistCurrentPlayer() {
@@ -1682,6 +1839,7 @@
       if (errEl) errEl.classList.add('hidden');
       if (currentPlayer) {
         currentPlayer.recoveryPin = pinVal;
+        currentPlayer.hasCompletedOnboarding = true;
       }
       playCorrectSound();
       isNewStudentOnboarding = false;
@@ -1746,45 +1904,84 @@
       const errEl = document.getElementById('login-error-msg');
       errEl.classList.add('hidden');
 
-      if (!rawName || !rawPass) return;
+      if (!rawName || !rawPass) {
+        errEl.classList.remove('hidden');
+        errEl.innerText = 'Sila isi nama dan kata laluan.';
+        return;
+      }
 
-      /* Semak Akaun Admin Khas */
+      /* Semak Akaun Master Admin */
       if (rawName.toLowerCase() === 'admin') {
-        const storedAdminPass = localStorage.getItem('kirapantas_admin_pass') || 'admin123';
-        if (rawPass !== storedAdminPass) {
+        const savedAdminPass = localStorage.getItem('kirapantas_admin_pass') || 'admin123';
+        if (rawPass !== savedAdminPass) {
           errEl.classList.remove('hidden');
-          errEl.innerText = '❌ Kata laluan Admin tidak tepat!';
+          errEl.innerText = 'Kata laluan Admin tidak tepat!';
           return;
         }
         currentPlayer = normalizeDailyCounters({
           id: 'acc_admin_master',
           name: 'Admin',
           isAdmin: true,
+          hasCompletedOnboarding: true,
           stars: 9999,
           totalPoints: 0,
           playSeconds: 0,
           lang: currentAppLang,
-          avatar: { gender: 'boy', skin: '#FDE2C4', frame: 'royal_crown', accessory: 'king_crown', ownedFrames: AVATAR_FRAMES_CATALOG.map(f => f.id), ownedAccessories: AVATAR_ACCESSORIES_CATALOG.map(a => a.id) },
+          avatar: {
+            gender: 'boy',
+            skin: '#FDE2C4',
+            frame: 'royal_crown',
+            accessory: 'king_crown',
+            ownedFrames: AVATAR_FRAMES_CATALOG.map(f => f.id),
+            ownedAccessories: AVATAR_ACCESSORIES_CATALOG.map(a => a.id)
+          },
           modScores: { 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50 }
         });
         enterAppWithPlayer(currentPlayer, false);
         return;
       }
 
-      /* Semak Akaun Pelajar (Tempatan & Awan) */
-      const localMap = getLocalAccounts();
-      const cloudList = await window.fetchAllCloudPlayers();
-      const merged = { ...localMap };
-      cloudList.forEach(p => {
-        if (p && p.id && !p.isAdmin) {
-          const loc = merged[p.id];
-          if (!loc || (p.totalPoints || 0) >= (loc.totalPoints || 0)) {
-            merged[p.id] = p;
-          }
-        }
-      });
+      /* Semak Akaun Pelajar (Tempatan & Awan) — tunggu pengesahan awan supaya pelajar lama tidak dianggap baru */
+      const submitBtn = document.getElementById('btn-login-submit');
+      const prevBtnText = submitBtn ? submitBtn.innerText : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = '⏳ Menyemak Akaun...';
+      }
 
-      const existing = Object.values(merged).find(p => (p.name || '').toLowerCase() === rawName.toLowerCase());
+      let existing = null;
+      try {
+        const localMap = getLocalAccounts();
+        const cloudList = await window.fetchAllCloudPlayers();
+        const merged = { ...localMap };
+        cloudList.forEach(rawP => {
+          const p = migrateLegacyPlayerRecord(rawP, rawP?.id);
+          if (p && p.id && !p.isAdmin) {
+            const loc = merged[p.id] || Object.values(merged).find(x => (x.name || '').toLowerCase() === p.name.toLowerCase());
+            if (!loc) {
+              merged[p.id] = p;
+            } else {
+              merged[loc.id] = {
+                ...p,
+                ...loc,
+                id: loc.id,
+                totalPoints: Math.max(loc.totalPoints || 0, p.totalPoints || 0),
+                stars: Math.max(loc.stars || 0, p.stars || 0),
+                playSeconds: Math.max(loc.playSeconds || 0, p.playSeconds || 0),
+                hasCompletedOnboarding: true
+              };
+            }
+          }
+        });
+
+        existing = Object.values(merged).find(p => (p.name || '').toLowerCase() === rawName.toLowerCase());
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = prevBtnText || '🚀 Masuk / Daftar Sekarang';
+        }
+      }
+
       if (existing) {
         if (existing.password && existing.password !== rawPass) {
           errEl.classList.remove('hidden');
@@ -1792,11 +1989,13 @@
           return;
         }
         existing.password = rawPass;
+        existing.hasCompletedOnboarding = true;
         currentPlayer = normalizeDailyCounters(existing);
         if (currentPlayer.lang) {
           currentAppLang = currentPlayer.lang;
           localStorage.setItem(STORAGE_KEY_LANG, currentAppLang);
         }
+        /* Pelajar lama sentiasa terus ke Menu Utama */
         enterAppWithPlayer(currentPlayer, false);
       } else {
         const newId = 'plr_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
@@ -1805,6 +2004,7 @@
           name: rawName,
           password: rawPass,
           isAdmin: false,
+          hasCompletedOnboarding: false,
           stars: 0,
           totalPoints: 0,
           todayPoints: 0,
@@ -1828,7 +2028,8 @@
     };
 
     function enterAppWithPlayer(player, isNewUser = false) {
-      isNewStudentOnboarding = !!isNewUser;
+      const actuallyNew = !!isNewUser && !isExistingReturningStudent(player);
+      isNewStudentOnboarding = actuallyNew;
       localStorage.setItem(STORAGE_KEY_CURRENT, player.id);
       persistCurrentPlayer();
       applyAppLanguageUI(currentAppLang);

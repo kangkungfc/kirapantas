@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.35
+            Versi 1.9.36
           </span>
         </div>
 
@@ -8363,6 +8363,12 @@
     let arenaLobbyUnsubscribe = null;
     let arenaQIndex = 0;
     let arenaQShownAt = 0;
+    let arenaCorrectCount = 0;
+    let arenaAnsweredCount = 0;
+    let arenaTotalAnswerSec = 0;
+    let arenaSpeedBonusEarned = 0;
+    let arenaStreakBonusEarned = 0;
+    let arenaLiveQTimerInterval = null;
     let arenaStreak = 0;
     let arenaRaceTimerInterval = null;
     let arenaRaceTimeLeft = 75;
@@ -8908,6 +8914,15 @@
       arenaQIndex = 0;
       arenaStreak = 0;
       arenaAnzanRound = 1;
+      arenaCorrectCount = 0;
+      arenaAnsweredCount = 0;
+      arenaTotalAnswerSec = 0;
+      arenaSpeedBonusEarned = 0;
+      arenaStreakBonusEarned = 0;
+      if (arenaLiveQTimerInterval) {
+        clearInterval(arenaLiveQTimerInterval);
+        arenaLiveQTimerInterval = null;
+      }
 
       showArenaMatchView();
       document.getElementById('arena-room-mode-title').innerText = ARENA_MODE_LABELS[initialData.mode] || '🎓 Kuiz Kilat Serentak';
@@ -9101,15 +9116,20 @@
 
       const mode = activeArenaRoomData.mode;
       const counterEl = document.getElementById('arena-q-counter');
-      if (counterEl) {
+      if (arenaLiveQTimerInterval) clearInterval(arenaLiveQTimerInterval);
+      const updateCounterLabel = () => {
+        if (!counterEl) return;
+        const secStr = ((performance.now() - arenaQShownAt) / 1000).toFixed(1);
         if (mode === 'kuiz_kilat') {
-          counterEl.innerText = `Soalan ${arenaQIndex + 1} / 10`;
+          counterEl.innerText = `Soalan ${arenaQIndex + 1} / 10 • ⏱️ ${secStr}s`;
         } else if (mode === 'marathon_gp') {
-          counterEl.innerText = `Maraton Grand Prix • Langkah ${me ? me.progress : 0} / 20`;
+          counterEl.innerText = `Maraton • Langkah ${me ? me.progress : 0}/20 • ⏱️ ${secStr}s`;
         } else {
-          counterEl.innerText = `Pertarungan Pasukan • Soalan #${arenaQIndex + 1}`;
+          counterEl.innerText = `Pasukan • Soalan #${arenaQIndex + 1} • ⏱️ ${secStr}s`;
         }
-      }
+      };
+      updateCounterLabel();
+      arenaLiveQTimerInterval = setInterval(updateCounterLabel, 100);
       document.getElementById('arena-q-prompt').innerText = q.prompt;
       document.getElementById('arena-q-visual').innerHTML = q.visualHtml || '';
 
@@ -9124,26 +9144,61 @@
       });
     }
 
+    function calculateArenaQuestionReward(elapsedSec, streakNum, isMarathonTurbo) {
+      let basePts = 10;
+      let speedBonus = 0;
+      let speedLabel = '✅ MARKAH PENUH';
+      if (elapsedSec < 2.0) {
+        speedBonus = 10;
+        speedLabel = '⚡ KILAT (<2s) +10 Bonus';
+      } else if (elapsedSec < 5.0) {
+        speedBonus = 5;
+        speedLabel = '🚀 PANTAS (<5s) +5 Bonus';
+      } else if (elapsedSec >= 9.0) {
+        basePts = 5;
+        speedLabel = '🐢 PERLAHAN (5 Markah)';
+      }
+      const turboBonus = isMarathonTurbo ? 5 : 0;
+      const streakBonus = (streakNum > 0 && streakNum % 5 === 0) ? 10 : 0;
+      return {
+        total: basePts + speedBonus + turboBonus + streakBonus,
+        basePts,
+        speedBonus: speedBonus + turboBonus,
+        streakBonus,
+        speedLabel
+      };
+    }
+
     async function handleArenaOptionChoice(chosen, correctAns, btnEl) {
+      if (arenaLiveQTimerInterval) {
+        clearInterval(arenaLiveQTimerInterval);
+        arenaLiveQTimerInterval = null;
+      }
       const allBtns = document.querySelectorAll('#arena-options-grid button');
       allBtns.forEach(b => b.disabled = true);
       const fb = document.getElementById('arena-turn-feedback');
       const mode = activeArenaRoomData?.mode || 'kuiz_kilat';
       const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
+      arenaAnsweredCount++;
+      arenaTotalAnswerSec += elapsedSec;
 
       if (chosen === correctAns) {
         playCheer();
         arenaStreak++;
+        arenaCorrectCount++;
         const hasTurbo = mode === 'marathon_gp' && arenaStreak >= 5;
-        const speedBonus = mode === 'kuiz_kilat' ? Math.max(0, Math.round(10 - elapsedSec)) : 0;
-        const ptsGain = (hasTurbo ? 15 : 10) + speedBonus;
+        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, hasTurbo);
+        arenaSpeedBonusEarned += rw.speedBonus;
+        arenaStreakBonusEarned += rw.streakBonus;
+        const ptsGain = rw.total;
 
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
+          const streakNote = rw.streakBonus > 0 ? ` • 🔥 ${arenaStreak} Berturut (+${rw.streakBonus})` : '';
           fb.innerText = hasTurbo
-            ? `🔥 TURBO API AKTIF! Lompat 2 Langkah (+${ptsGain} Markah)!`
-            : `⚡ Tepat (${elapsedSec.toFixed(1)}s)! +${ptsGain} Markah!`;
+            ? `🔥 TURBO API! Lompat 2 Langkah (+${ptsGain} Markah • ${elapsedSec.toFixed(1)}s)${streakNote}`
+            : `${rw.speedLabel} (${elapsedSec.toFixed(1)}s) → +${ptsGain} Markah${streakNote}`;
           fb.classList.remove('hidden');
         }
         arenaQIndex++;
@@ -9157,7 +9212,7 @@
         await syncMyArenaProgress(ptsGain, stepVal, hasTurbo, isDone, false);
 
         if (isDone) {
-          if (fb) fb.innerText = '🏁 Tahniah, anda sudah tamat! Menunggu keputusan akhir...';
+          if (fb) fb.innerText = '🏁 Tahniah, anda sudah tamat! Mengira markah & coin akhir...';
           return;
         }
         setTimeout(() => {
@@ -9171,7 +9226,7 @@
 
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-rose-100 text-rose-900';
-          fb.innerText = `❌ Kurang tepat! Jawapan sebenar: ${correctAns}`;
+          fb.innerText = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar: ${correctAns} (+0 Markah)`;
           fb.classList.remove('hidden');
         }
         arenaQIndex++;
@@ -9218,6 +9273,7 @@
         if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
         if (idx >= seq.length) {
           arenaAnzanFlashing = false;
+          arenaQShownAt = performance.now();
           promptEl.innerText = '❓ Berapakah jumlah kelipan tadi?';
           form.classList.remove('hidden');
           document.getElementById('arena-anzan-input').focus();
@@ -9236,22 +9292,32 @@
       e.preventDefault();
       if (arenaAnzanFlashing) return;
       const val = parseInt(document.getElementById('arena-anzan-input').value, 10);
+      const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
       const form = document.getElementById('arena-anzan-form');
       const fb = document.getElementById('arena-turn-feedback');
       form.classList.add('hidden');
+      arenaAnsweredCount++;
+      arenaTotalAnswerSec += elapsedSec;
 
       if (val === arenaAnzanAnswer) {
         playCheer();
+        arenaCorrectCount++;
+        arenaStreak++;
+        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, arenaAnzanRound >= 3);
+        arenaSpeedBonusEarned += rw.speedBonus;
+        arenaStreakBonusEarned += rw.streakBonus;
+        const ptsGain = rw.total + 5;
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
-          fb.innerText = `⚡ Tepat (${arenaAnzanAnswer})! Mara ke pusingan seterusnya!`;
+          fb.innerText = `⚡ Tepat (${arenaAnzanAnswer}) dalam ${elapsedSec.toFixed(1)}s! +${ptsGain} Markah!`;
           fb.classList.remove('hidden');
         }
-        await syncMyArenaProgress(15, Math.min(10, arenaAnzanRound), arenaAnzanRound >= 3, false, false);
+        await syncMyArenaProgress(ptsGain, Math.min(10, arenaAnzanRound), arenaAnzanRound >= 3, false, false);
         arenaAnzanRound++;
         setTimeout(() => startArenaAnzanSuddenDeathRound(), 850);
       } else {
         playWrong();
+        arenaStreak = 0;
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-rose-100 text-rose-900';
           fb.innerText = `💥 Tersingkir! Jawapan sebenar ialah ${arenaAnzanAnswer}.`;
@@ -9376,36 +9442,84 @@
       }
 
       const myRankIdx = plist.findIndex(p => p.id === myId);
+      const myPlayerObj = plist.find(p => p.id === myId) || { score: 0 };
       const sumEl = document.getElementById('arena-result-summary');
 
-      if (isTeamMode) {
+      const avgSec = arenaCorrectCount > 0 ? (arenaTotalAnswerSec / arenaCorrectCount) : 0;
+      const inMatchScore = myPlayerObj.score || 0;
+
+      // Pengiraan Coin berdasarkan bilangan soalan betul + kelajuan purata + bonus rentetan
+      let questionCoins = arenaCorrectCount; // 1 Coin bagi setiap jawapan betul
+      let speedCoinBonus = 0;
+      if (arenaCorrectCount >= 3) {
+        if (avgSec > 0 && avgSec < 2.5) speedCoinBonus = 3;
+        else if (avgSec > 0 && avgSec < 5.0) speedCoinBonus = 2;
+        else if (avgSec > 0 && avgSec < 8.0) speedCoinBonus = 1;
+      }
+      const streakCoinBonus = Math.floor(arenaStreakBonusEarned / 10);
+
+      let rankPtsBonus = 0;
+      let rankCoinBonus = 0;
+      let rankHeadline = '';
+
+      if (arenaCorrectCount === 0) {
+        rankPtsBonus = 0;
+        rankCoinBonus = 0;
+        rankHeadline = 'Tiada soalan dijawab betul kali ini. Cuba lagi!';
+      } else if (isTeamMode) {
         const redPts = plist.filter(p => p.team === 'red').reduce((s, p) => s + (p.score || 0), 0);
         const bluePts = plist.filter(p => p.team === 'blue').reduce((s, p) => s + (p.score || 0), 0);
         const myTeam = activeArenaRoomData.participants?.[myId]?.team || 'red';
         const teamWon = (myTeam === 'red' && redPts > bluePts) || (myTeam === 'blue' && bluePts > redPts);
         if (teamWon) {
-          playCheer();
           triggerConfetti();
-          if (sumEl) sumEl.innerHTML = `🏆 Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang (${redPts} vs ${bluePts})!<br><span class="text-emerald-300">+30 Bonus Markah & +3 Coin ${COIN_ICON_HTML}</span>`;
-          if (currentPlayer) addPlayerReward(3, 30);
+          rankPtsBonus = 20;
+          rankCoinBonus = 2;
+          rankHeadline = `🏆 Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang (${redPts} vs ${bluePts})!`;
         } else {
-          playCheer();
-          if (sumEl) sumEl.innerHTML = `🤝 Skor Pasukan: Merah ${redPts} vs Biru ${bluePts}<br><span class="text-sky-300">+15 Markah Penyertaan & +1 Coin ${COIN_ICON_HTML}</span>`;
-          if (currentPlayer) addPlayerReward(1, 15);
+          rankPtsBonus = 5;
+          rankCoinBonus = 0;
+          rankHeadline = `🤝 Skor Pasukan: Merah ${redPts} vs Biru ${bluePts}`;
         }
       } else if (myRankIdx === 0) {
-        playCheer();
         triggerConfetti();
-        if (sumEl) sumEl.innerHTML = `Ganjaran Juara #1: <span class="text-emerald-300">+35 Bonus Markah & +3 Coin ${COIN_ICON_HTML}!</span>`;
-        if (currentPlayer) addPlayerReward(3, 35);
+        rankPtsBonus = 25;
+        rankCoinBonus = 3;
+        rankHeadline = '🥇 Juara #1 Pentas Podium!';
       } else if (myRankIdx === 1) {
-        playCheer();
-        if (sumEl) sumEl.innerHTML = `Ganjaran Tempat Ke-2: <span class="text-sky-300">+20 Bonus Markah & +2 Coin ${COIN_ICON_HTML}!</span>`;
-        if (currentPlayer) addPlayerReward(2, 20);
+        rankPtsBonus = 15;
+        rankCoinBonus = 2;
+        rankHeadline = '🥈 Naib Juara #2 Pentas Podium!';
+      } else if (myRankIdx === 2) {
+        rankPtsBonus = 8;
+        rankCoinBonus = 1;
+        rankHeadline = '🥉 Tempat Ke-3 Pentas Podium!';
       } else {
-        playCheer();
-        if (sumEl) sumEl.innerHTML = `Kedudukan Anda (#${Math.max(1, myRankIdx + 1)}): <span class="text-amber-300">+12 Markah & +1 Coin ${COIN_ICON_HTML}</span>`;
-        if (currentPlayer) addPlayerReward(1, 12);
+        rankPtsBonus = 0;
+        rankCoinBonus = 0;
+        rankHeadline = `Kedudukan #${Math.max(1, myRankIdx + 1)}`;
+      }
+
+      const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus);
+      const finalTotalCoins = arenaCorrectCount === 0 ? 0 : (questionCoins + speedCoinBonus + streakCoinBonus + rankCoinBonus);
+
+      playCheer();
+      if (sumEl) {
+        const avgLabel = arenaCorrectCount > 0 ? `${avgSec.toFixed(1)}s/soalan` : '-';
+        sumEl.innerHTML = `
+          <div class="text-xs sm:text-sm font-black text-amber-300 mb-1">${rankHeadline}</div>
+          <div class="text-[11px] font-bold text-white/90 space-y-0.5">
+            <div>✅ Jawapan Betul: <b>${arenaCorrectCount}/${Math.max(arenaAnsweredCount, arenaCorrectCount)}</b> • ⚡ Purata Masa: <b>${avgLabel}</b></div>
+            <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> (Bonus Laju: +${arenaSpeedBonusEarned}, Bonus Berturut: +${arenaStreakBonusEarned}) + Bonus Podium: <b>+${rankPtsBonus}</b></div>
+            <div class="pt-1 text-xs font-black text-emerald-300">
+              Jumlah Diterima: +${finalTotalPoints} Markah & +${finalTotalCoins} Coin ${COIN_ICON_HTML}
+              <span class="block text-[10px] font-bold text-amber-200/90">(${questionCoins} Coin Soalan + ${speedCoinBonus} Coin Laju + ${streakCoinBonus} Coin Berturut + ${rankCoinBonus} Coin Podium)</span>
+            </div>
+          </div>
+        `;
+      }
+      if (currentPlayer && (finalTotalPoints > 0 || finalTotalCoins > 0)) {
+        addPlayerReward(finalTotalCoins, finalTotalPoints);
       }
 
       if (db && fbUser && activeArenaRoomId) {

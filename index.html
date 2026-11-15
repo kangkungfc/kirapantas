@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.28
+            Versi 1.9.31
           </span>
         </div>
 
@@ -491,6 +491,22 @@
             </div>
           </button>
         </div>
+
+        <!-- Langkah 4: Arena Perlawanan Online Real-Time (3 Mod Submenu) -->
+        <button onclick="navTo('arena')" class="w-full bubbly-card bg-gradient-to-r from-violet-600 via-fuchsia-600 to-rose-600 border-4 border-purple-950 p-4 text-left text-white flex items-center justify-between gap-3 relative">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center text-3xl shadow-inner flex-shrink-0">⚔️</div>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">MULTIPLAYER LIVE</span>
+                <span class="bg-emerald-300 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full">🟢 1v1 & RAMAI-RAMAI</span>
+              </div>
+              <div class="text-base sm:text-lg font-bold leading-tight">Arena Perlawanan Online</div>
+              <div class="text-[11px] font-bold text-fuchsia-100 mt-0.5">Duel 1v1 • Kuiz Kelas Kahoot • Battle Royale • Maraton • Pasukan</div>
+            </div>
+          </div>
+          <span class="text-xl font-black flex-shrink-0">▶️</span>
+        </button>
       </div>
 
       <!-- Bar Pintasan Bawah -->
@@ -1227,6 +1243,277 @@
           </div>
 
           <div id="admin-presets-list" class="space-y-2 max-h-[50vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SKRIN 11: ARENA PERLAWANAN ONLINE REAL-TIME (1v1 & BERKUMPULAN)
+         ======================================================== -->
+    <section id="screen-arena" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <button onclick="leaveArenaScreen()" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <h2 class="text-lg font-bold text-purple-950">⚔️ Arena Perlawanan Online</h2>
+      </div>
+
+      <!-- PAPARAN A: 7 SUBMENU MOD PERLAWANAN (1v1 & RAMAI-RAMAI) + LOBI BILIK -->
+      <div id="arena-lobby-view" class="space-y-3.5">
+        <div class="bubbly-card bg-white border-4 border-purple-400 p-4 space-y-3">
+          <div class="text-center">
+            <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 px-3 py-0.5 rounded-full border border-purple-300 mb-1">🌐 Pertandingan Masa Nyata (2 – 30 Pemain)</span>
+            <h3 class="text-base sm:text-lg font-bold text-slate-800">Pilih Mod Perlawanan</h3>
+            <p class="text-[11px] font-bold text-slate-500">Cipta bilik kod 4-digit untuk rakan atau satu kelas masuk serentak!</p>
+          </div>
+
+          <!-- Penapis Submenu Kategori: 1 vs 1 vs Ramai-ramai -->
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="switchArenaCategoryFilter('1v1')" id="arena-cat-1v1" class="bubbly-btn bg-violet-600 text-white border-2 border-violet-950 py-2.5 px-2 text-xs font-black">
+              ⚔️ 1 vs 1 (3 Mod)
+            </button>
+            <button type="button" onclick="switchArenaCategoryFilter('group')" id="arena-cat-group" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black">
+              👨‍👩‍👧‍👦 Ramai-ramai (4 Mod)
+            </button>
+          </div>
+
+          <!-- Senarai Submenu Perlawanan -->
+          <div class="space-y-2">
+            <!-- KATEGORI BERKUMPULAN (3 - 30 PEMAIN) -->
+            <div id="arena-group-modes-wrap" class="hidden space-y-2">
+              <div class="text-[10px] font-black text-fuchsia-800 uppercase tracking-wider px-1">👨‍👩‍👧‍👦 Mod Perlawanan Ramai-Ramai (3 – 30 Pemain):</div>
+
+              <!-- Submenu 4: Kuiz Kelas Langsung (Kahoot!-Style) -->
+              <button type="button" onclick="selectArenaSubmenu('kahoot_live')" id="arena-sub-kahoot_live"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-fuchsia-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-fuchsia-600 text-white flex items-center justify-center text-xl flex-shrink-0">🎓</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-fuchsia-950">Kuiz Kelas Langsung (ala Kahoot!)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Soalan serentak dengan pemasa 10s, papan podium Top 3 & juara kelas!</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-kahoot_live" class="hidden text-[10px] font-black bg-fuchsia-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+
+              <!-- Submenu 5: Battle Royale: Last Man Standing -->
+              <button type="button" onclick="selectArenaSubmenu('battle_royale')" id="arena-sub-battle_royale"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-500 text-amber-950 flex items-center justify-center text-xl flex-shrink-0">👑</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-amber-950">Battle Royale: Last Man Standing</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Bertarung ramai-ramai! Salah jawab atau terlalu lambat tersingkir hingga tinggal 1 juara.</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-battle_royale" class="hidden text-[10px] font-black bg-amber-500 text-amber-950 px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+
+              <!-- Submenu 6: Perlumbaan Maraton Kumpulan (Grand Prix) -->
+              <button type="button" onclick="selectArenaSubmenu('marathon_gp')" id="arena-sub-marathon_gp"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl flex-shrink-0">🏎️</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-emerald-950">Perlumbaan Maraton Grand Prix (20 Langkah)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Lumba hingga 10 avatar 3D serentak! Siapa paling awal capai 20 jawapan betul menang.</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-marathon_gp" class="hidden text-[10px] font-black bg-emerald-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+
+              <!-- Submenu 7: Pertarungan Pasukan (Merah vs Biru) -->
+              <button type="button" onclick="selectArenaSubmenu('team_tug')" id="arena-sub-team_tug"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-r from-rose-500 to-sky-600 text-white flex items-center justify-center text-xl flex-shrink-0">🚩</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-indigo-950">Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Pilih pasukan & tarik bar kuasa beramai-ramai dalam 75 saat!</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-team_tug" class="hidden text-[10px] font-black bg-indigo-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- KATEGORI 1v1 (2 PEMAIN) -->
+            <div id="arena-1v1-modes-wrap" class="space-y-2">
+              <div class="text-[10px] font-black text-violet-800 uppercase tracking-wider px-1">⚔️ Mod Perlawanan 1v1 (2 Pemain):</div>
+
+              <!-- Submenu 1: Duel 10 Soalan -->
+              <button type="button" onclick="selectArenaSubmenu('duel10')" id="arena-sub-duel10"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-3 border-violet-600 bg-violet-50 shadow-xs transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-violet-600 text-white flex items-center justify-center text-xl flex-shrink-0">⚔️</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-violet-950">Arena Duel 1v1 (10 Soalan)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">10 soalan sama untuk 2 pemain. Siapa paling tepat & pantas menang!</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-duel10" class="text-[10px] font-black bg-violet-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+
+              <!-- Submenu 2: Lumba Kilat 60 Saat -->
+              <button type="button" onclick="selectArenaSubmenu('race60')" id="arena-sub-race60"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-teal-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-teal-500 text-white flex items-center justify-center text-xl flex-shrink-0">🏁</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-teal-950">Perlumbaan Kilat 60 Saat (1v1)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Pecut 60 saat! 5 jawapan betul berturut aktifkan Turbo Api 🔥!</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-race60" class="hidden text-[10px] font-black bg-teal-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+
+              <!-- Submenu 3: Flash Anzan Sudden Death -->
+              <button type="button" onclick="selectArenaSubmenu('anzan_sd')" id="arena-sub-anzan_sd"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-rose-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-xl flex-shrink-0">🧠</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-rose-950">Flash Anzan Serentak (Sudden Death)</div>
+                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Kelipan nombor semakin laju setiap pusingan. Salah kira terus tersingkir!</div>
+                    </div>
+                  </div>
+                  <span id="arena-check-anzan_sd" class="hidden text-[10px] font-black bg-rose-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tetapan Tahap Kesukaran & Butang Cipta / Sertai Bilik -->
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <label class="text-xs font-black text-slate-700">🎯 Tahap Soalan Bilik:</label>
+              <select id="arena-difficulty-select" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-950">
+                <option value="lvl1">Tahap 1: Asas 10 Jari (0 – 99)</option>
+                <option value="lvl23" selected>Tahap 2 & 3: Sempoa & Kawan 5/10</option>
+                <option value="lvl45">Tahap 4 & 5: Darab/Bahagi & Rantaian</option>
+              </select>
+            </div>
+
+            <button type="button" onclick="createArenaDuelRoom()" class="w-full bubbly-btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-sm py-3 border-2 border-purple-950">
+              ➕ Cipta Bilik Perlawanan Baharu
+            </button>
+
+            <div class="pt-2 border-t border-slate-200 flex gap-1.5">
+              <input id="arena-join-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="Kod Bilik 4-Digit (cth: 4829)" class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+              <button type="button" onclick="joinArenaRoomByCode()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-4 py-2 text-xs font-black">
+                🚪 Sertai
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Senarai Bilik Terbuka (Menunggu Pemain Secara Langsung) -->
+        <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-black text-emerald-950">🟢 Bilik Menunggu Pemain (Klik untuk Masuk)</h4>
+            <button type="button" onclick="subscribeOpenArenaRooms()" class="text-[11px] font-black text-emerald-700 underline">🔄 Segar</button>
+          </div>
+          <div id="arena-open-rooms-list" class="space-y-2 max-h-[240px] overflow-y-auto scroll-smooth-touch"></div>
+        </div>
+      </div>
+
+      <!-- PAPARAN B: BILIK MENUNGGU / GELANGGANG PERLAWANAN LIVE (1v1 & BERKUMPULAN) -->
+      <div id="arena-match-view" class="hidden bubbly-card bg-white border-4 border-fuchsia-500 p-4 space-y-3">
+        <!-- Bar Status Bilik & Butang Keluar -->
+        <div class="flex items-center justify-between gap-2 bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5">
+          <div class="min-w-0">
+            <div id="arena-room-mode-title" class="text-xs font-black text-purple-950 truncate">⚔️ Arena Perlawanan</div>
+            <div class="text-[10px] font-bold text-slate-600">
+              Kod Bilik: <span id="arena-room-code-badge" class="font-mono font-black text-sm bg-amber-300 text-amber-950 px-2 py-0.5 rounded-lg">0000</span>
+              • <span id="arena-players-count-badge" class="font-black text-indigo-700">1 Pemain</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <span id="arena-match-timer-badge" class="hidden text-xs font-black bg-rose-600 text-white px-2.5 py-1 rounded-xl">⏱️ 60s</span>
+            <button type="button" onclick="exitCurrentArenaRoom()" class="bubbly-btn bg-rose-100 text-rose-800 border border-rose-300 px-2.5 py-1.5 text-[11px] font-black">✖️ Keluar</button>
+          </div>
+        </div>
+
+        <!-- Bar Tarik Tali Pasukan (Khusus Mod Pertarungan Pasukan Merah vs Biru) -->
+        <div id="arena-team-tug-bar-wrap" class="hidden bg-slate-900 text-white rounded-2xl p-3 space-y-2 border-2 border-indigo-500">
+          <div class="flex items-center justify-between text-xs font-black">
+            <span class="text-rose-400">🔴 Pasukan Merah: <span id="arena-red-score">0</span></span>
+            <span class="text-sky-400">🔵 Pasukan Biru: <span id="arena-blue-score">0</span></span>
+          </div>
+          <div class="w-full h-4 bg-sky-600 rounded-full overflow-hidden flex border border-white/30">
+            <div id="arena-red-tug-fill" class="h-full bg-rose-600 transition-all duration-300" style="width: 50%"></div>
+          </div>
+        </div>
+
+        <!-- Papan Trek / Kedudukan Langsung Semua Pemain Dalam Bilik (Menyokong 2 hingga 30 Pemain!) -->
+        <div id="arena-live-standings-board" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white rounded-2xl p-3 space-y-2 border-2 border-indigo-500 max-h-[210px] overflow-y-auto scroll-smooth-touch"></div>
+
+        <!-- Zon Lobi Menunggu Pemain & Mula Perlawanan -->
+        <div id="arena-waiting-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center space-y-2.5">
+          <div class="text-3xl animate-bounce">⏳</div>
+          <div id="arena-waiting-text" class="text-xs sm:text-sm font-black text-amber-950">Kongsikan Kod Bilik kepada rakan-rakan anda untuk masuk!</div>
+
+          <!-- Pemilih Pasukan (Hanya untuk Mod Pertarungan Pasukan Merah vs Biru) -->
+          <div id="arena-team-picker-box" class="hidden grid grid-cols-2 gap-2 pt-1">
+            <button type="button" onclick="switchMyArenaTeam('red')" id="btn-pick-team-red" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-950 py-2 text-xs font-black">
+              🔴 Sertai Pasukan Merah
+            </button>
+            <button type="button" onclick="switchMyArenaTeam('blue')" id="btn-pick-team-blue" class="bubbly-btn bg-white text-sky-900 border-2 border-sky-400 py-2 text-xs font-black">
+              🔵 Sertai Pasukan Biru
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <button id="btn-arena-host-start" type="button" onclick="hostStartArenaMatchNow()" class="hidden bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border-2 border-emerald-950 px-4 py-2.5 text-xs font-black">
+              🚀 Mula Perlawanan Sekarang!
+            </button>
+            <button id="btn-arena-bot-sparring" type="button" onclick="addArenaBotPlayers()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-3.5 py-2 text-xs font-black">
+              🤖 Tambah Rakan Bot (Uji / Latihan)
+            </button>
+          </div>
+        </div>
+
+        <!-- Zon Soalan Perlawanan Live -->
+        <div id="arena-gameplay-box" class="hidden space-y-3">
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 text-center space-y-2">
+            <div id="arena-q-counter" class="inline-block text-[10px] font-black uppercase bg-purple-100 text-purple-900 px-2.5 py-0.5 rounded-full">Soalan 1 / 10</div>
+            <div id="arena-q-prompt" class="text-xl sm:text-2xl font-black text-slate-900">12 + 15 = ?</div>
+            <div id="arena-q-visual" class="flex justify-center"></div>
+          </div>
+
+          <!-- Pilihan Jawapan Objektif -->
+          <div id="arena-options-grid" class="grid grid-cols-2 gap-2.5"></div>
+
+          <!-- Input Jawapan Flash Anzan Sudden Death -->
+          <form id="arena-anzan-form" onsubmit="submitArenaAnzanAnswer(event)" class="hidden space-y-2">
+            <div class="flex gap-2">
+              <input id="arena-anzan-input" type="number" required placeholder="Taip jumlah kelipan..." class="flex-1 px-4 py-3 rounded-2xl border-2 border-rose-400 font-black text-lg text-center bg-rose-50 focus:outline-none" />
+              <button type="submit" class="bubbly-btn bg-emerald-500 text-white font-black px-5 py-3 border-2 border-emerald-700 text-sm">Hantar ⚡</button>
+            </div>
+          </form>
+
+          <div id="arena-turn-feedback" class="hidden rounded-2xl p-2.5 text-center text-xs font-black"></div>
+        </div>
+
+        <!-- Zon Keputusan & Pentas Podium Juara (🥇 🥈 🥉) -->
+        <div id="arena-result-box" class="hidden bg-gradient-to-b from-amber-50 to-emerald-50 border-3 border-amber-400 rounded-2xl p-4 text-center space-y-3">
+          <div id="arena-result-trophy" class="text-5xl">🏆</div>
+          <h4 id="arena-result-title" class="text-lg font-black text-slate-900">Pentas Juara Perlawanan!</h4>
+          <div id="arena-podium-list" class="space-y-1.5 text-left"></div>
+          <p id="arena-result-summary" class="text-xs font-bold text-slate-700"></p>
+          <button type="button" onclick="exitCurrentArenaRoom()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs py-3 border-2 border-emerald-800">
+            🔄 Kembali ke Lobi Arena
+          </button>
         </div>
       </div>
     </section>
@@ -6017,7 +6304,7 @@
       }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
-      ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
+      ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -6145,9 +6432,14 @@
                       </button>
                     </div>
                     ${(!isMe && currentPlayer && !currentPlayer.isAdmin) ? `
-                      <button type="button" onclick="openQuickChatSendModal('${pid}')" class="bubbly-btn bg-sky-500 hover:bg-sky-600 text-white border border-sky-800 px-2.5 py-0.5 text-[10px] font-black">
-                        💬 Mesej
-                      </button>
+                      <div class="flex items-center gap-1">
+                        <button type="button" onclick="challengePlayerFromScoreboard('${pid}', '${safeName.replace(/'/g, '')}')" class="bubbly-btn bg-fuchsia-600 hover:bg-fuchsia-700 text-white border border-fuchsia-950 px-2 py-0.5 text-[10px] font-black">
+                          ⚔️ Lawan
+                        </button>
+                        <button type="button" onclick="openQuickChatSendModal('${pid}')" class="bubbly-btn bg-sky-500 hover:bg-sky-600 text-white border border-sky-800 px-2 py-0.5 text-[10px] font-black">
+                          💬 Mesej
+                        </button>
+                      </div>
                     ` : ''}
                   </div>
                 `;
@@ -6267,7 +6559,7 @@
 
     window.navTo = function(screenName) {
       playClick();
-      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
+      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -6300,6 +6592,10 @@
         loadScoreboard();
       } else if (screenName === 'anzan') {
         switchAnzanTab('flash');
+      } else if (screenName === 'arena') {
+        setPlayerCurrentActivity('Arena Perlawanan Online');
+        showArenaLobbyView();
+        subscribeOpenArenaRooms();
       } else if (screenName === 'admin') {
         if (!currentPlayer || !currentPlayer.isAdmin) {
           navTo('home');
@@ -7757,6 +8053,1054 @@
         `;
       }).join('');
     }
+
+    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (7 MOD: 1v1 & BERKUMPULAN 2–30 PEMAIN) */
+    const ARENA_LOCAL_ROOMS_KEY = 'kirapantas_arena_rooms_v2';
+    let selectedArenaMode = 'duel10';
+    let activeArenaRoomId = null;
+    let activeArenaRoomData = null;
+    let arenaRoomUnsubscribe = null;
+    let arenaLobbyUnsubscribe = null;
+    let arenaQIndex = 0;
+    let arenaQShownAt = 0;
+    let arenaStreak = 0;
+    let arenaRaceTimerInterval = null;
+    let arenaRaceTimeLeft = 60;
+    let arenaAnzanRound = 1;
+    let arenaAnzanAnswer = 0;
+    let arenaAnzanFlashing = false;
+    let arenaBotInterval = null;
+    let arenaMatchStartedLocally = false;
+    let arenaRewardGranted = false;
+
+    const GROUP_ARENA_MODES = ['kahoot_live', 'battle_royale', 'marathon_gp', 'team_tug'];
+
+    const ARENA_MODE_LABELS = {
+      kahoot_live:   '🎓 Kuiz Kelas Langsung (ala Kahoot!)',
+      battle_royale: '👑 Battle Royale: Last Man Standing',
+      marathon_gp:   '🏎️ Perlumbaan Maraton Grand Prix (20 Langkah)',
+      team_tug:      '🚩 Pertarungan Pasukan (Merah vs Biru)',
+      duel10:        '⚔️ Arena Duel 1v1 (10 Soalan)',
+      race60:        '🏁 Perlumbaan Kilat 60 Saat (1v1)',
+      anzan_sd:      '🧠 Flash Anzan Sudden Death'
+    };
+
+    function loadLocalArenaRooms() {
+      try {
+        const raw = localStorage.getItem(ARENA_LOCAL_ROOMS_KEY);
+        const obj = raw ? JSON.parse(raw) : {};
+        return (obj && typeof obj === 'object') ? obj : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveLocalArenaRooms(obj) {
+      try {
+        localStorage.setItem(ARENA_LOCAL_ROOMS_KEY, JSON.stringify(obj));
+      } catch (e) {}
+    }
+
+    window.switchArenaCategoryFilter = function(catKey) {
+      playClick();
+      const oneBtn = document.getElementById('arena-cat-1v1');
+      const grpBtn = document.getElementById('arena-cat-group');
+      const grpWrap = document.getElementById('arena-group-modes-wrap');
+      const oneWrap = document.getElementById('arena-1v1-modes-wrap');
+      const isGroup = catKey === 'group';
+
+      if (oneBtn) {
+        oneBtn.className = !isGroup
+          ? 'bubbly-btn bg-violet-600 text-white border-2 border-violet-950 py-2.5 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+      }
+      if (grpBtn) {
+        grpBtn.className = isGroup
+          ? 'bubbly-btn bg-fuchsia-600 text-white border-2 border-fuchsia-950 py-2.5 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+      }
+      if (oneWrap) oneWrap.classList.toggle('hidden', isGroup);
+      if (grpWrap) grpWrap.classList.toggle('hidden', !isGroup);
+
+      if (isGroup && !GROUP_ARENA_MODES.includes(selectedArenaMode)) {
+        selectArenaSubmenu('kahoot_live');
+      } else if (!isGroup && GROUP_ARENA_MODES.includes(selectedArenaMode)) {
+        selectArenaSubmenu('duel10');
+      }
+    };
+
+    window.selectArenaSubmenu = function(modeKey) {
+      playClick();
+      selectedArenaMode = ARENA_MODE_LABELS[modeKey] ? modeKey : 'kahoot_live';
+      const activeCardStyles = {
+        kahoot_live:   'border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs',
+        battle_royale: 'border-3 border-amber-500 bg-amber-50 shadow-xs',
+        marathon_gp:   'border-3 border-emerald-600 bg-emerald-50 shadow-xs',
+        team_tug:      'border-3 border-indigo-600 bg-indigo-50 shadow-xs',
+        duel10:        'border-3 border-violet-600 bg-violet-50 shadow-xs',
+        race60:        'border-3 border-teal-600 bg-teal-50 shadow-xs',
+        anzan_sd:      'border-3 border-rose-600 bg-rose-50 shadow-xs'
+      };
+      Object.keys(ARENA_MODE_LABELS).forEach(k => {
+        const card = document.getElementById(`arena-sub-${k}`);
+        const chk = document.getElementById(`arena-check-${k}`);
+        const isAct = k === selectedArenaMode;
+        if (card) {
+          card.className = `arena-sub-card w-full text-left p-3 rounded-2xl transition ${isAct ? activeCardStyles[k] : 'border-2 border-slate-200 bg-white'}`;
+        }
+        if (chk) chk.classList.toggle('hidden', !isAct);
+      });
+    };
+
+    function generateArenaQuestionBank(diffKey, count = 35) {
+      const list = [];
+      for (let i = 0; i < count; i++) {
+        if (diffKey === 'lvl1') {
+          const target = Math.floor(Math.random() * 88) + 11;
+          const st = numberToFingerStates(target);
+          list.push({
+            prompt: 'Berapakah nilai jari ini?',
+            visualHtml: `<div class="flex gap-2 justify-center">${renderRealisticHandSVG('left', st.left, false, 'w-20 h-24')}${renderRealisticHandSVG('right', st.right, false, 'w-20 h-24')}</div>`,
+            options: makeNumericOptions(target, 1, 99),
+            answer: target
+          });
+        } else if (diffKey === 'lvl45') {
+          const isMul = i % 2 === 0;
+          if (isMul) {
+            const a = Math.floor(Math.random() * 45) + 12;
+            const b = Math.floor(Math.random() * 8) + 2;
+            const ans = a * b;
+            list.push({
+              prompt: `${a} × ${b} = ?`,
+              visualHtml: '',
+              options: makeNumericOptions(ans, 20, 999),
+              answer: ans
+            });
+          } else {
+            const n1 = Math.floor(Math.random() * 35) + 12;
+            const n2 = Math.floor(Math.random() * 30) + 11;
+            const n3 = Math.floor(Math.random() * 15) + 4;
+            const ans = n1 + n2 - n3;
+            list.push({
+              prompt: `${n1} + ${n2} - ${n3} = ?`,
+              visualHtml: '',
+              options: makeNumericOptions(ans, 5, 150),
+              answer: ans
+            });
+          }
+        } else {
+          if (i % 3 === 0) {
+            const target = Math.floor(Math.random() * 88) + 11;
+            list.push({
+              prompt: 'Baca nilai sempoa ini:',
+              visualHtml: renderAbacusQuestionSVG(target, 2),
+              options: makeNumericOptions(target, 1, 99),
+              answer: target
+            });
+          } else {
+            const a = Math.floor(Math.random() * 48) + 7;
+            const b = Math.floor(Math.random() * 9) + 2;
+            const isAdd = i % 2 === 1;
+            const ans = isAdd ? (a + b) : (a + 10 - b);
+            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + 10} - ${b} = ?`;
+            list.push({
+              prompt,
+              visualHtml: '',
+              options: makeNumericOptions(ans, 1, 99),
+              answer: ans
+            });
+          }
+        }
+      }
+      return list;
+    }
+
+    function showArenaLobbyView() {
+      document.getElementById('arena-lobby-view')?.classList.remove('hidden');
+      document.getElementById('arena-match-view')?.classList.add('hidden');
+    }
+
+    function showArenaMatchView() {
+      document.getElementById('arena-lobby-view')?.classList.add('hidden');
+      document.getElementById('arena-match-view')?.classList.remove('hidden');
+    }
+
+    function getRoomParticipantsArray(room) {
+      if (!room || !room.participants || typeof room.participants !== 'object') return [];
+      return Object.values(room.participants).filter(p => p && p.id);
+    }
+
+    window.subscribeOpenArenaRooms = async function() {
+      const listEl = document.getElementById('arena-open-rooms-list');
+      if (!listEl) return;
+
+      const renderRooms = (roomsArr) => {
+        const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+        const openOnes = roomsArr.filter(r => r && r.status === 'waiting' && r.hostId !== myId && (Date.now() - (r.createdAt || 0)) < 900000);
+        if (openOnes.length === 0) {
+          listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-4">Tiada bilik terbuka buat masa ini. Cipta bilik baharu di atas!</div>`;
+          return;
+        }
+        listEl.innerHTML = openOnes.map(r => {
+          const safeHost = (r.hostName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const modeLabel = ARENA_MODE_LABELS[r.mode] || '⚔️ Arena Perlawanan';
+          const pCount = getRoomParticipantsArray(r).length;
+          return `
+            <div class="flex items-center justify-between gap-2 bg-emerald-50/80 border-2 border-emerald-200 rounded-2xl p-2.5">
+              <div class="min-w-0">
+                <div class="text-xs font-black text-slate-900 truncate">${safeHost} • Kod: <span class="font-mono text-indigo-700">${r.code}</span> <span class="text-[10px] text-emerald-700">(${pCount} Pemain)</span></div>
+                <div class="text-[10px] font-bold text-emerald-800 truncate">${modeLabel}</div>
+              </div>
+              <button type="button" onclick="joinArenaRoomDirect('${r.code}')" class="bubbly-btn bg-emerald-600 text-white border border-emerald-900 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
+                ⚔️ Masuk!
+              </button>
+            </div>
+          `;
+        }).join('');
+      };
+
+      renderRooms(Object.values(loadLocalArenaRooms()));
+      if (!db) return;
+
+      try {
+        await authReadyPromise;
+        if (!fbUser) return;
+        if (arenaLobbyUnsubscribe) {
+          arenaLobbyUnsubscribe();
+          arenaLobbyUnsubscribe = null;
+        }
+        const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'duel_rooms');
+        arenaLobbyUnsubscribe = onSnapshot(colRef, (snap) => {
+          const arr = [];
+          snap.forEach(d => arr.push(d.data()));
+          renderRooms(arr);
+        });
+      } catch (e) {}
+    };
+
+    window.createArenaDuelRoom = async function(invitedOpponent = null) {
+      if (!currentPlayer) return;
+      playClick();
+      const diffKey = document.getElementById('arena-difficulty-select')?.value || 'lvl23';
+      const roomCode = String(Math.floor(1000 + Math.random() * 9000));
+      const questions = generateArenaQuestionBank(diffKey, 35);
+      const myId = currentPlayer.accountId || currentPlayer.key;
+
+      const roomObj = {
+        code: roomCode,
+        mode: selectedArenaMode,
+        difficulty: diffKey,
+        status: 'waiting',
+        createdAt: Date.now(),
+        hostId: myId,
+        hostName: currentPlayer.name,
+        questions: questions,
+        participants: {
+          [myId]: {
+            id: myId,
+            name: currentPlayer.name,
+            avatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+            team: 'red',
+            score: 0,
+            progress: 0,
+            turbo: false,
+            done: false,
+            eliminated: false,
+            isBot: false,
+            joinedAt: Date.now()
+          }
+        }
+      };
+
+      const localRooms = loadLocalArenaRooms();
+      localRooms[roomCode] = roomObj;
+      saveLocalArenaRooms(localRooms);
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), roomObj);
+          }
+        } catch (e) {}
+      }
+
+      if (invitedOpponent && invitedOpponent.id) {
+        const msgId = `qmsg_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+        const inviteMsg = {
+          id: msgId,
+          fromId: myId,
+          fromName: currentPlayer.name,
+          fromAvatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+          toId: invitedOpponent.id,
+          toName: invitedOpponent.name,
+          text: `⚔️ Cabaran ${ARENA_MODE_LABELS[selectedArenaMode]}! Masuk Arena guna Kod Bilik: ${roomCode}`,
+          isRead: false,
+          createdAt: Date.now()
+        };
+        const allLocal = loadLocalQuickMessages();
+        allLocal.unshift(inviteMsg);
+        saveLocalQuickMessages(allLocal);
+        if (db && fbUser) {
+          try {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), inviteMsg);
+          } catch (e) {}
+        }
+        showAppToast(`⚔️ Bilik ${roomCode} dicipta & jemputan dihantar kepada ${invitedOpponent.name}!`);
+      }
+
+      enterArenaRoomSession(roomCode, roomObj);
+    };
+
+    window.challengePlayerFromScoreboard = async function(targetId, targetName) {
+      if (!currentPlayer || currentPlayer.isAdmin) return;
+      navTo('arena');
+      selectArenaSubmenu('duel10');
+      await createArenaDuelRoom({ id: targetId, name: targetName });
+    };
+
+    window.joinArenaRoomByCode = async function() {
+      const code = (document.getElementById('arena-join-code-input')?.value || '').trim();
+      if (!/^\d{4}$/.test(code)) {
+        playWrong();
+        showAppToast('⚠️ Sila masukkan kod bilik 4-digit yang sah.');
+        return;
+      }
+      await joinArenaRoomDirect(code);
+    };
+
+    window.joinArenaRoomDirect = async function(roomCode) {
+      if (!currentPlayer) return;
+      playClick();
+      let roomData = loadLocalArenaRooms()[roomCode] || null;
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode));
+            if (snap.exists()) roomData = snap.data();
+          }
+        } catch (e) {}
+      }
+
+      if (!roomData) {
+        playWrong();
+        showAppToast(`❌ Bilik kod ${roomCode} tidak ditemui atau telah tamat.`);
+        return;
+      }
+
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const existingList = getRoomParticipantsArray(roomData);
+      const isGroupMode = GROUP_ARENA_MODES.includes(roomData.mode);
+      const maxCap = isGroupMode ? 30 : 2;
+
+      if (roomData.status !== 'waiting' && !(roomData.participants && roomData.participants[myId])) {
+        playWrong();
+        showAppToast('⚠️ Perlawanan dalam bilik ini sudah bermula.');
+        return;
+      }
+      if (existingList.length >= maxCap && !(roomData.participants && roomData.participants[myId])) {
+        playWrong();
+        showAppToast(`⚠️ Bilik ini sudah mencapai had maksimum (${maxCap} pemain).`);
+        return;
+      }
+
+      // Bahagikan pasukan secara automatik untuk mod Pasukan Merah vs Biru
+      const redCount = existingList.filter(p => p.team === 'red').length;
+      const blueCount = existingList.filter(p => p.team === 'blue').length;
+      const assignedTeam = redCount <= blueCount ? 'red' : 'blue';
+
+      if (!roomData.participants) roomData.participants = {};
+      roomData.participants[myId] = {
+        id: myId,
+        name: currentPlayer.name,
+        avatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+        team: assignedTeam,
+        score: 0,
+        progress: 0,
+        turbo: false,
+        done: false,
+        eliminated: false,
+        isBot: false,
+        joinedAt: Date.now()
+      };
+
+      // Untuk mod 1v1 klasik, terus mula apabila pemain ke-2 masuk; untuk mod berkumpulan, tunggu tuan rumah tekan "Mula Perlawanan"
+      if (!isGroupMode && getRoomParticipantsArray(roomData).length >= 2) {
+        roomData.status = 'playing';
+        roomData.startedAt = Date.now();
+      }
+
+      const localRooms = loadLocalArenaRooms();
+      localRooms[roomCode] = roomData;
+      saveLocalArenaRooms(localRooms);
+
+      if (db && fbUser) {
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), roomData);
+        } catch (e) {}
+      }
+
+      enterArenaRoomSession(roomCode, roomData);
+    };
+
+    window.switchMyArenaTeam = async function(teamColor) {
+      if (!activeArenaRoomData || !activeArenaRoomId || !currentPlayer) return;
+      playClick();
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      if (activeArenaRoomData.participants && activeArenaRoomData.participants[myId]) {
+        activeArenaRoomData.participants[myId].team = teamColor === 'blue' ? 'blue' : 'red';
+        onArenaRoomUpdated(activeArenaRoomData);
+        if (db && fbUser) {
+          try {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
+              participants: { [myId]: activeArenaRoomData.participants[myId] }
+            }, { merge: true });
+          } catch (e) {}
+        }
+      }
+    };
+
+    window.addArenaBotPlayers = async function() {
+      if (!activeArenaRoomData || !activeArenaRoomId) return;
+      playClick();
+      const isGroup = GROUP_ARENA_MODES.includes(activeArenaRoomData.mode);
+      const botProfiles = [
+        { id: 'bot_soroban_1', name: '🤖 Aiman Bot', gender: 'boy' },
+        { id: 'bot_soroban_2', name: '🤖 Sofia Bot', gender: 'girl' },
+        { id: 'bot_soroban_3', name: '🤖 Rayyan Bot', gender: 'boy' }
+      ];
+
+      if (!activeArenaRoomData.participants) activeArenaRoomData.participants = {};
+      const botsToAdd = isGroup ? botProfiles : [botProfiles[0]];
+
+      botsToAdd.forEach((bp, idx) => {
+        if (!activeArenaRoomData.participants[bp.id]) {
+          activeArenaRoomData.participants[bp.id] = {
+            id: bp.id,
+            name: bp.name,
+            avatar: getDefaultAvatarConfig(bp.gender),
+            team: idx % 2 === 0 ? 'blue' : 'red',
+            score: 0,
+            progress: 0,
+            turbo: false,
+            done: false,
+            eliminated: false,
+            isBot: true,
+            joinedAt: Date.now() + idx
+          };
+        }
+      });
+
+      if (!isGroup) {
+        activeArenaRoomData.status = 'playing';
+        activeArenaRoomData.startedAt = Date.now();
+      }
+
+      const localRooms = loadLocalArenaRooms();
+      localRooms[activeArenaRoomId] = activeArenaRoomData;
+      saveLocalArenaRooms(localRooms);
+
+      if (db && fbUser) {
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), activeArenaRoomData);
+        } catch (e) {}
+      }
+
+      showAppToast(isGroup ? '🤖 3 Rakan Bot ditambah! Tekan "Mula Perlawanan Sekarang!" bila bersedia.' : '🤖 Perlawanan menentang Bot bermula!');
+      onArenaRoomUpdated(activeArenaRoomData);
+      if (!isGroup) startArenaBotsSimulation();
+    };
+
+    window.hostStartArenaMatchNow = async function() {
+      if (!activeArenaRoomData || !activeArenaRoomId) return;
+      const plist = getRoomParticipantsArray(activeArenaRoomData);
+      if (plist.length < 2) {
+        playWrong();
+        showAppToast('⚠️ Perlukan sekurang-kurangnya 2 pemain (atau tambah Rakan Bot) untuk bermula.');
+        return;
+      }
+      playCheer();
+      activeArenaRoomData.status = 'playing';
+      activeArenaRoomData.startedAt = Date.now();
+
+      const localRooms = loadLocalArenaRooms();
+      localRooms[activeArenaRoomId] = activeArenaRoomData;
+      saveLocalArenaRooms(localRooms);
+
+      if (db && fbUser) {
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
+            status: 'playing',
+            startedAt: activeArenaRoomData.startedAt
+          }, { merge: true });
+        } catch (e) {}
+      }
+
+      onArenaRoomUpdated(activeArenaRoomData);
+      if (plist.some(p => p.isBot)) {
+        startArenaBotsSimulation();
+      }
+    };
+
+    function startArenaBotsSimulation() {
+      if (arenaBotInterval) clearInterval(arenaBotInterval);
+      arenaBotInterval = setInterval(() => {
+        if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') {
+          clearInterval(arenaBotInterval);
+          arenaBotInterval = null;
+          return;
+        }
+        const plist = getRoomParticipantsArray(activeArenaRoomData);
+        const bots = plist.filter(p => p.isBot && !p.done && !p.eliminated);
+        if (bots.length === 0) {
+          clearInterval(arenaBotInterval);
+          arenaBotInterval = null;
+          return;
+        }
+        const mode = activeArenaRoomData.mode;
+        bots.forEach(bot => {
+          if (Math.random() < 0.72) {
+            if (mode === 'battle_royale' || mode === 'anzan_sd') {
+              if (Math.random() < 0.16 && (bot.progress || 0) >= 2) {
+                bot.eliminated = true;
+                bot.done = true;
+              } else {
+                bot.score = (bot.score || 0) + 15;
+                bot.progress = Math.min(12, (bot.progress || 0) + 1);
+              }
+            } else if (mode === 'marathon_gp') {
+              bot.score = (bot.score || 0) + 10;
+              bot.progress = Math.min(20, (bot.progress || 0) + 1);
+              if (bot.progress >= 20) bot.done = true;
+            } else if (mode === 'duel10' || mode === 'kahoot_live') {
+              bot.score = (bot.score || 0) + (Math.floor(Math.random() * 6) + 10);
+              bot.progress = Math.min(10, (bot.progress || 0) + 1);
+              if (bot.progress >= 10) bot.done = true;
+            } else {
+              bot.score = (bot.score || 0) + 10;
+              bot.progress = Math.min(20, (bot.progress || 0) + 1);
+            }
+          }
+        });
+        onArenaRoomUpdated(activeArenaRoomData);
+      }, 3200);
+    }
+
+    function enterArenaRoomSession(roomCode, initialData) {
+      activeArenaRoomId = roomCode;
+      activeArenaRoomData = initialData;
+      arenaMatchStartedLocally = false;
+      arenaRewardGranted = false;
+      arenaQIndex = 0;
+      arenaStreak = 0;
+      arenaAnzanRound = 1;
+
+      showArenaMatchView();
+      document.getElementById('arena-room-mode-title').innerText = ARENA_MODE_LABELS[initialData.mode] || '⚔️ Arena Perlawanan';
+      document.getElementById('arena-room-code-badge').innerText = roomCode;
+      document.getElementById('arena-result-box').classList.add('hidden');
+      document.getElementById('arena-gameplay-box').classList.add('hidden');
+      document.getElementById('arena-waiting-box').classList.remove('hidden');
+
+      onArenaRoomUpdated(initialData);
+
+      if (db && fbUser) {
+        if (arenaRoomUnsubscribe) {
+          arenaRoomUnsubscribe();
+          arenaRoomUnsubscribe = null;
+        }
+        arenaRoomUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), (snap) => {
+          if (snap.exists()) {
+            activeArenaRoomData = snap.data();
+            onArenaRoomUpdated(activeArenaRoomData);
+          }
+        });
+      }
+    }
+
+    function onArenaRoomUpdated(room) {
+      if (!room) return;
+      const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+      const isHost = room.hostId === myId;
+      const isTeamMode = room.mode === 'team_tug';
+      const plist = getRoomParticipantsArray(room).sort((a, b) => (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0));
+
+      const countBadge = document.getElementById('arena-players-count-badge');
+      if (countBadge) countBadge.innerText = `${plist.length} Pemain`;
+
+      // Papar kawalan lobi khusus (Butang Mula Tuan Rumah & Pemilih Pasukan Merah/Biru)
+      const hostStartBtn = document.getElementById('btn-arena-host-start');
+      if (hostStartBtn) hostStartBtn.classList.toggle('hidden', !isHost);
+
+      const teamPicker = document.getElementById('arena-team-picker-box');
+      if (teamPicker) teamPicker.classList.toggle('hidden', !isTeamMode);
+      if (isTeamMode && room.participants && room.participants[myId]) {
+        const myTeam = room.participants[myId].team;
+        const rBtn = document.getElementById('btn-pick-team-red');
+        const bBtn = document.getElementById('btn-pick-team-blue');
+        if (rBtn) rBtn.className = `bubbly-btn py-2 text-xs font-black border-2 ${myTeam === 'red' ? 'bg-rose-600 text-white border-rose-950' : 'bg-white text-rose-800 border-rose-300'}`;
+        if (bBtn) bBtn.className = `bubbly-btn py-2 text-xs font-black border-2 ${myTeam === 'blue' ? 'bg-sky-600 text-white border-sky-950' : 'bg-white text-sky-800 border-sky-300'}`;
+      }
+
+      // Bar Tarik Tali Pasukan Merah vs Biru
+      const tugWrap = document.getElementById('arena-team-tug-bar-wrap');
+      if (tugWrap) {
+        tugWrap.classList.toggle('hidden', !isTeamMode);
+        if (isTeamMode) {
+          const redPts = plist.filter(p => p.team === 'red').reduce((s, p) => s + (p.score || 0), 0);
+          const bluePts = plist.filter(p => p.team === 'blue').reduce((s, p) => s + (p.score || 0), 0);
+          const totalTeamPts = redPts + bluePts;
+          const redPct = totalTeamPts === 0 ? 50 : Math.min(92, Math.max(8, Math.round((redPts / totalTeamPts) * 100)));
+          document.getElementById('arena-red-score').innerText = redPts;
+          document.getElementById('arena-blue-score').innerText = bluePts;
+          document.getElementById('arena-red-tug-fill').style.width = `${redPct}%`;
+        }
+      }
+
+      // Papan Trek / Kedudukan Langsung Semua Pemain (Menyokong 2 hingga 30 Pemain!)
+      const boardEl = document.getElementById('arena-live-standings-board');
+      if (boardEl) {
+        const maxSteps = room.mode === 'marathon_gp' || room.mode === 'race60' ? 20 : 10;
+        boardEl.innerHTML = plist.map((p, idx) => {
+          const isMe = p.id === myId;
+          const safeName = (p.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const avSvg = renderRealisticAvatarSVG(p.avatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
+          const pct = Math.min(100, Math.max(5, Math.round(((p.progress || 0) / maxSteps) * 100)));
+          const rankTag = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+          const teamDot = isTeamMode ? (p.team === 'blue' ? '🔵 ' : '🔴 ') : '';
+          const elimBadge = p.eliminated ? '<span class="text-[9px] bg-rose-600 text-white px-1.5 py-0.2 rounded-full">💀 Tersingkir</span>' : '';
+          const turboBadge = p.turbo ? '<span class="text-[9px] bg-orange-500 text-white px-1.5 py-0.2 rounded-full animate-pulse">🔥 TURBO</span>' : '';
+          const barGradient = isTeamMode
+            ? (p.team === 'blue' ? 'from-sky-400 to-blue-500' : 'from-rose-400 to-red-500')
+            : (isMe ? 'from-amber-400 to-emerald-400' : 'from-sky-400 to-fuchsia-400');
+
+          return `
+            <div class="space-y-1 ${p.eliminated ? 'opacity-55' : ''}">
+              <div class="flex items-center justify-between text-[11px] font-black">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-5 text-center flex-shrink-0">${rankTag}</span>
+                  <div class="w-6 h-6 rounded-full flex-shrink-0">${avSvg}</div>
+                  <span class="truncate ${isMe ? 'text-amber-300' : 'text-white'}">${teamDot}${safeName}${isMe ? ' (Anda)' : ''}</span>
+                  ${turboBadge}
+                  ${elimBadge}
+                </div>
+                <span class="text-emerald-300 flex-shrink-0">${p.score || 0} pts</span>
+              </div>
+              <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden p-0.5">
+                <div class="h-full bg-gradient-to-r ${barGradient} rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (room.status === 'playing' && !arenaMatchStartedLocally) {
+        arenaMatchStartedLocally = true;
+        playCheer();
+        document.getElementById('arena-waiting-box').classList.add('hidden');
+        document.getElementById('arena-gameplay-box').classList.remove('hidden');
+
+        if (room.mode === 'race60') {
+          startArenaTimedCountdown(60);
+        } else if (room.mode === 'team_tug') {
+          startArenaTimedCountdown(75);
+        } else {
+          document.getElementById('arena-match-timer-badge').classList.add('hidden');
+        }
+
+        if (room.mode === 'anzan_sd') {
+          startArenaAnzanSuddenDeathRound();
+        } else {
+          renderNextArenaQuestion();
+        }
+      }
+
+      // Semak syarat tamat perlawanan mengikut mod
+      if (room.status === 'playing' && plist.length >= 2) {
+        const activeAlive = plist.filter(p => !p.eliminated);
+        const allFinished = plist.every(p => p.done || p.eliminated);
+        const someoneWonMarathon = room.mode === 'marathon_gp' && plist.some(p => (p.progress || 0) >= 20);
+        const lastManStanding = (room.mode === 'battle_royale' || room.mode === 'anzan_sd') && activeAlive.length <= 1;
+
+        if (allFinished || someoneWonMarathon || lastManStanding) {
+          finishArenaMatch();
+        }
+      }
+    }
+
+    function startArenaTimedCountdown(secondsTotal) {
+      if (arenaRaceTimerInterval) clearInterval(arenaRaceTimerInterval);
+      arenaRaceTimeLeft = secondsTotal;
+      const badge = document.getElementById('arena-match-timer-badge');
+      if (badge) {
+        badge.innerText = `⏱️ ${secondsTotal}s`;
+        badge.classList.remove('hidden');
+      }
+      arenaRaceTimerInterval = setInterval(() => {
+        arenaRaceTimeLeft--;
+        if (badge) badge.innerText = `⏱️ ${Math.max(0, arenaRaceTimeLeft)}s`;
+        if (arenaRaceTimeLeft <= 0) {
+          clearInterval(arenaRaceTimerInterval);
+          arenaRaceTimerInterval = null;
+          finishArenaMatch();
+        }
+      }, 1000);
+    }
+
+    async function syncMyArenaProgress(scoreDelta, progressStep, isTurbo, isDone, isEliminated = false) {
+      if (!activeArenaRoomData || !activeArenaRoomId || !currentPlayer) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      if (!activeArenaRoomData.participants || !activeArenaRoomData.participants[myId]) return;
+
+      const me = activeArenaRoomData.participants[myId];
+      me.score = (me.score || 0) + scoreDelta;
+      me.progress = progressStep;
+      me.turbo = Boolean(isTurbo);
+      if (isDone) me.done = true;
+      if (isEliminated) me.eliminated = true;
+
+      onArenaRoomUpdated(activeArenaRoomData);
+
+      if (db && fbUser) {
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
+            participants: { [myId]: me }
+          }, { merge: true });
+        } catch (e) {}
+      }
+    }
+
+    function renderNextArenaQuestion() {
+      if (!activeArenaRoomData) return;
+      const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+      const me = activeArenaRoomData.participants ? activeArenaRoomData.participants[myId] : null;
+      if (me && me.eliminated) {
+        document.getElementById('arena-options-grid').classList.add('hidden');
+        document.getElementById('arena-q-counter').innerText = '💀 MOD PENONTON (TERSingkir)';
+        document.getElementById('arena-q-prompt').innerText = 'Anda telah tersingkir. Saksikan baki pemain berentap!';
+        document.getElementById('arena-q-visual').innerHTML = '';
+        return;
+      }
+
+      const qList = activeArenaRoomData.questions || [];
+      const q = qList[arenaQIndex % qList.length];
+      if (!q) return;
+
+      arenaQShownAt = performance.now();
+      document.getElementById('arena-anzan-form').classList.add('hidden');
+      const optGrid = document.getElementById('arena-options-grid');
+      optGrid.classList.remove('hidden');
+
+      const mode = activeArenaRoomData.mode;
+      const counterEl = document.getElementById('arena-q-counter');
+      if (counterEl) {
+        if (mode === 'duel10' || mode === 'kahoot_live') {
+          counterEl.innerText = `Soalan ${arenaQIndex + 1} / 10`;
+        } else if (mode === 'marathon_gp') {
+          counterEl.innerText = `Maraton Grand Prix • Langkah ${me ? me.progress : 0} / 20`;
+        } else if (mode === 'battle_royale') {
+          counterEl.innerText = `Battle Royale • Pusingan #${arenaQIndex + 1}`;
+        } else {
+          counterEl.innerText = `Soalan Pecut #${arenaQIndex + 1}`;
+        }
+      }
+      document.getElementById('arena-q-prompt').innerText = q.prompt;
+      document.getElementById('arena-q-visual').innerHTML = q.visualHtml || '';
+
+      optGrid.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bubbly-btn bg-purple-50 hover:bg-purple-100 border-3 border-purple-300 py-3.5 text-lg font-black text-purple-950';
+        btn.innerText = opt;
+        btn.onclick = () => handleArenaOptionChoice(opt, q.answer, btn);
+        optGrid.appendChild(btn);
+      });
+    }
+
+    async function handleArenaOptionChoice(chosen, correctAns, btnEl) {
+      const allBtns = document.querySelectorAll('#arena-options-grid button');
+      allBtns.forEach(b => b.disabled = true);
+      const fb = document.getElementById('arena-turn-feedback');
+      const mode = activeArenaRoomData?.mode || 'duel10';
+      const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
+
+      if (chosen === correctAns) {
+        playCheer();
+        arenaStreak++;
+        const hasTurbo = (mode === 'race60' || mode === 'marathon_gp') && arenaStreak >= 5;
+        // Mod Kahoot beri markah bonus kelajuan (10 hingga 20 mata)
+        const speedBonus = mode === 'kahoot_live' ? Math.max(0, Math.round(10 - elapsedSec)) : 0;
+        const ptsGain = (hasTurbo ? 15 : 10) + speedBonus;
+
+        btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
+        if (fb) {
+          fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
+          fb.innerText = hasTurbo
+            ? `🔥 TURBO API AKTIF! +${ptsGain} Markah!`
+            : `⚡ Tepat (${elapsedSec.toFixed(1)}s)! +${ptsGain} Markah!`;
+          fb.classList.remove('hidden');
+        }
+        arenaQIndex++;
+        const isTenQMode = mode === 'duel10' || mode === 'kahoot_live';
+        const isMarathon = mode === 'marathon_gp';
+        const stepVal = isMarathon
+          ? Math.min(20, (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0) + (hasTurbo ? 2 : 1))
+          : arenaQIndex;
+        const isDone = (isTenQMode && arenaQIndex >= 10) || (isMarathon && stepVal >= 20);
+
+        await syncMyArenaProgress(ptsGain, stepVal, hasTurbo, isDone, false);
+
+        if (isDone) {
+          if (fb) fb.innerText = '🏁 Anda telah tamat! Menunggu keputusan pentas juara...';
+          return;
+        }
+        setTimeout(() => {
+          if (fb) fb.classList.add('hidden');
+          renderNextArenaQuestion();
+        }, 420);
+      } else {
+        playWrong();
+        arenaStreak = 0;
+        btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
+
+        // Dalam Battle Royale, jawapan salah terus menyingkirkan pemain!
+        if (mode === 'battle_royale') {
+          if (fb) {
+            fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-rose-100 text-rose-900';
+            fb.innerText = `💀 Tersingkir daripada Battle Royale! Jawapan sebenar: ${correctAns}`;
+            fb.classList.remove('hidden');
+          }
+          await syncMyArenaProgress(0, arenaQIndex, false, true, true);
+          return;
+        }
+
+        if (fb) {
+          fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-rose-100 text-rose-900';
+          fb.innerText = `❌ Salah! Jawapan: ${correctAns}`;
+          fb.classList.remove('hidden');
+        }
+        arenaQIndex++;
+        const isTenQMode = mode === 'duel10' || mode === 'kahoot_live';
+        const isDone = isTenQMode && arenaQIndex >= 10;
+        const curStep = mode === 'marathon_gp'
+          ? (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0)
+          : arenaQIndex;
+        await syncMyArenaProgress(0, curStep, false, isDone, false);
+        if (isDone) return;
+        setTimeout(() => {
+          if (fb) fb.classList.add('hidden');
+          renderNextArenaQuestion();
+        }, 680);
+      }
+    }
+
+    function startArenaAnzanSuddenDeathRound() {
+      if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
+      arenaAnzanFlashing = true;
+      document.getElementById('arena-options-grid').classList.add('hidden');
+      const form = document.getElementById('arena-anzan-form');
+      const fb = document.getElementById('arena-turn-feedback');
+      form.classList.add('hidden');
+      if (fb) fb.classList.add('hidden');
+      document.getElementById('arena-anzan-input').value = '';
+
+      const count = Math.min(7, 2 + arenaAnzanRound);
+      const speed = Math.max(350, 950 - arenaAnzanRound * 90);
+      const seq = [];
+      let sum = 0;
+      for (let i = 0; i < count; i++) {
+        const val = Math.floor(Math.random() * 9) + 1;
+        seq.push(val);
+        sum += val;
+      }
+      arenaAnzanAnswer = sum;
+
+      document.getElementById('arena-q-counter').innerText = `Pusingan Sudden Death #${arenaAnzanRound} (${speed}ms)`;
+      const promptEl = document.getElementById('arena-q-prompt');
+      let idx = 0;
+
+      function stepFlash() {
+        if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
+        if (idx >= seq.length) {
+          arenaAnzanFlashing = false;
+          promptEl.innerText = '❓ Berapakah jumlahnya?';
+          form.classList.remove('hidden');
+          document.getElementById('arena-anzan-input').focus();
+          return;
+        }
+        playTick();
+        promptEl.innerText = `+${seq[idx]}`;
+        idx++;
+        setTimeout(stepFlash, speed);
+      }
+      promptEl.innerText = '👀 Fokus...';
+      setTimeout(stepFlash, 600);
+    }
+
+    window.submitArenaAnzanAnswer = async function(e) {
+      e.preventDefault();
+      if (arenaAnzanFlashing) return;
+      const val = parseInt(document.getElementById('arena-anzan-input').value, 10);
+      const form = document.getElementById('arena-anzan-form');
+      const fb = document.getElementById('arena-turn-feedback');
+      form.classList.add('hidden');
+
+      if (val === arenaAnzanAnswer) {
+        playCheer();
+        if (fb) {
+          fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
+          fb.innerText = `⚡ Tepat (${arenaAnzanAnswer})! Mara ke pusingan seterusnya!`;
+          fb.classList.remove('hidden');
+        }
+        await syncMyArenaProgress(15, Math.min(10, arenaAnzanRound), arenaAnzanRound >= 3, false, false);
+        arenaAnzanRound++;
+        setTimeout(() => startArenaAnzanSuddenDeathRound(), 850);
+      } else {
+        playWrong();
+        if (fb) {
+          fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-rose-100 text-rose-900';
+          fb.innerText = `💥 Tersingkir! Jawapan sebenar ialah ${arenaAnzanAnswer}.`;
+          fb.classList.remove('hidden');
+        }
+        await syncMyArenaProgress(0, arenaAnzanRound, false, true, true);
+      }
+    };
+
+    function finishArenaMatch() {
+      if (!activeArenaRoomData || arenaRewardGranted) return;
+      arenaRewardGranted = true;
+      activeArenaRoomData.status = 'finished';
+
+      if (arenaRaceTimerInterval) {
+        clearInterval(arenaRaceTimerInterval);
+        arenaRaceTimerInterval = null;
+      }
+      if (arenaBotInterval) {
+        clearInterval(arenaBotInterval);
+        arenaBotInterval = null;
+      }
+
+      document.getElementById('arena-gameplay-box').classList.add('hidden');
+      document.getElementById('arena-waiting-box').classList.add('hidden');
+      const resBox = document.getElementById('arena-result-box');
+      resBox.classList.remove('hidden');
+
+      const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+      const plist = getRoomParticipantsArray(activeArenaRoomData).sort((a, b) => {
+        if (Boolean(a.eliminated) !== Boolean(b.eliminated)) return a.eliminated ? 1 : -1;
+        return (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0);
+      });
+
+      const podiumEl = document.getElementById('arena-podium-list');
+      if (podiumEl) {
+        podiumEl.innerHTML = plist.slice(0, 5).map((p, idx) => {
+          const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+          const safeN = (p.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const teamTag = activeArenaRoomData.mode === 'team_tug' ? (p.team === 'blue' ? '🔵 ' : '🔴 ') : '';
+          return `
+            <div class="flex items-center justify-between bg-white border ${p.id === myId ? 'border-amber-400 bg-amber-50' : 'border-slate-200'} rounded-xl px-3 py-1.5 text-xs font-black">
+              <span>${medal} ${teamTag}${safeN}</span>
+              <span class="text-indigo-800">${p.score || 0} Markah</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const myRankIdx = plist.findIndex(p => p.id === myId);
+      const trophyEl = document.getElementById('arena-result-trophy');
+      const titleEl = document.getElementById('arena-result-title');
+      const sumEl = document.getElementById('arena-result-summary');
+
+      if (activeArenaRoomData.mode === 'team_tug') {
+        const redPts = plist.filter(p => p.team === 'red').reduce((s, p) => s + (p.score || 0), 0);
+        const bluePts = plist.filter(p => p.team === 'blue').reduce((s, p) => s + (p.score || 0), 0);
+        const myTeam = activeArenaRoomData.participants?.[myId]?.team || 'red';
+        const teamWon = (myTeam === 'red' && redPts > bluePts) || (myTeam === 'blue' && bluePts > redPts);
+        if (teamWon) {
+          playCheer();
+          triggerConfetti();
+          if (trophyEl) trophyEl.innerText = '🏆';
+          if (titleEl) titleEl.innerText = `Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang!`;
+          if (sumEl) sumEl.innerHTML = `Merah: <b>${redPts}</b> vs Biru: <b>${bluePts}</b> • <span class="text-emerald-700">+30 Bonus Markah & +3 Coin ${COIN_ICON_HTML}</span>`;
+          if (currentPlayer) addPlayerReward(3, 30);
+        } else {
+          playCheer();
+          if (trophyEl) trophyEl.innerText = '🤝';
+          if (titleEl) titleEl.innerText = 'Pertarungan Pasukan Tamat!';
+          if (sumEl) sumEl.innerHTML = `Merah: <b>${redPts}</b> vs Biru: <b>${bluePts}</b> • <span class="text-indigo-700">+15 Markah Penyertaan & +1 Coin ${COIN_ICON_HTML}</span>`;
+          if (currentPlayer) addPlayerReward(1, 15);
+        }
+      } else if (myRankIdx === 0) {
+        playCheer();
+        triggerConfetti();
+        if (trophyEl) trophyEl.innerText = '🥇';
+        if (titleEl) titleEl.innerText = 'Tahniah! Anda Juara #1!';
+        if (sumEl) sumEl.innerHTML = `<span class="text-emerald-700 font-black">+35 Bonus Markah & +3 Coin ${COIN_ICON_HTML}!</span>`;
+        if (currentPlayer) addPlayerReward(3, 35);
+      } else if (myRankIdx === 1) {
+        playCheer();
+        if (trophyEl) trophyEl.innerText = '🥈';
+        if (titleEl) titleEl.innerText = 'Hebat! Tempat Ke-2!';
+        if (sumEl) sumEl.innerHTML = `<span class="text-indigo-700 font-black">+20 Bonus Markah & +2 Coin ${COIN_ICON_HTML}!</span>`;
+        if (currentPlayer) addPlayerReward(2, 20);
+      } else {
+        playCheer();
+        if (trophyEl) trophyEl.innerText = '🥉';
+        if (titleEl) titleEl.innerText = `Tamat di Kedudukan #${Math.max(1, myRankIdx + 1)}!`;
+        if (sumEl) sumEl.innerHTML = `<span class="text-slate-700 font-black">+12 Markah & +1 Coin ${COIN_ICON_HTML}</span>`;
+        if (currentPlayer) addPlayerReward(1, 12);
+      }
+
+      if (db && fbUser && activeArenaRoomId) {
+        try {
+          setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), { status: 'finished' }, { merge: true });
+        } catch (e) {}
+      }
+    }
+
+    window.exitCurrentArenaRoom = async function() {
+      playClick();
+      if (arenaRaceTimerInterval) {
+        clearInterval(arenaRaceTimerInterval);
+        arenaRaceTimerInterval = null;
+      }
+      if (arenaBotInterval) {
+        clearInterval(arenaBotInterval);
+        arenaBotInterval = null;
+      }
+      if (arenaRoomUnsubscribe) {
+        arenaRoomUnsubscribe();
+        arenaRoomUnsubscribe = null;
+      }
+      if (activeArenaRoomId) {
+        const localRooms = loadLocalArenaRooms();
+        delete localRooms[activeArenaRoomId];
+        saveLocalArenaRooms(localRooms);
+        if (db && fbUser) {
+          try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId));
+          } catch (e) {}
+        }
+      }
+      activeArenaRoomId = null;
+      activeArenaRoomData = null;
+      showArenaLobbyView();
+      subscribeOpenArenaRooms();
+    };
+
+    window.leaveArenaScreen = async function() {
+      if (activeArenaRoomId) {
+        await exitCurrentArenaRoom();
+      }
+      if (arenaLobbyUnsubscribe) {
+        arenaLobbyUnsubscribe();
+        arenaLobbyUnsubscribe = null;
+      }
+      navTo('home');
+    };
 
     let flashAnzanBasePoints = 12;
     let flashAnswerStartTime = 0;

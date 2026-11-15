@@ -172,7 +172,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.14
+            Versi 1.9.15
           </span>
         </div>
 
@@ -5628,6 +5628,7 @@
               const d = docSnap.data();
               const id = d && (d.accountId || d.key || docSnap.id);
               if (id && !isAdminAccountRecord(d) && docSnap.id !== ADMIN_ACCOUNT_ID) {
+                d._docId = docSnap.id;
                 d.accountId = id;
                 d.key = id;
                 merged.set(id, d);
@@ -5762,30 +5763,65 @@
       const fb = document.getElementById('admin-action-feedback');
 
       try {
-        inMemoryAccounts.delete(studentId);
+        /* 1. Padam semua entri sepadan dalam memori tempatan & localStorage */
+        const targetNameKey = target && target.name ? normalizePlayerKey(target.name) : '';
+        const idsToDelete = new Set([studentId]);
+        if (target) {
+          if (target._docId) idsToDelete.add(target._docId);
+          if (target.accountId) idsToDelete.add(target.accountId);
+          if (target.key) idsToDelete.add(target.key);
+          if (target.nameKey) idsToDelete.add(target.nameKey);
+        }
+        if (targetNameKey) idsToDelete.add(targetNameKey);
+
+        inMemoryAccounts.forEach((v, k) => {
+          if (idsToDelete.has(k) || (v && (idsToDelete.has(v.accountId) || idsToDelete.has(v.key) || (target && v.name === target.name)))) {
+            inMemoryAccounts.delete(k);
+          }
+        });
         persistLocalAccountsToStorage();
 
+        /* 2. Padam semua dokumen sepadan dalam Firebase Firestore */
         if (db) {
           await authReadyPromise;
-          if (fbUser) {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId));
+          if (!fbUser) {
+            throw new Error('Sambungan Firebase belum disahkan (auth-failed).');
           }
+          const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+          const snap = await getDocs(playersCol);
+          const deleteJobs = [];
+          snap.forEach((docSnap) => {
+            const d = docSnap.data() || {};
+            if (
+              idsToDelete.has(docSnap.id) ||
+              idsToDelete.has(d.accountId) ||
+              idsToDelete.has(d.key) ||
+              (target && d.name === target.name)
+            ) {
+              deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)));
+            }
+          });
+          idsToDelete.forEach((docId) => {
+            deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId)));
+          });
+          await Promise.all(deleteJobs);
         }
 
         adminPendingDeleteId = null;
-        adminCachedStudents = adminCachedStudents.filter(s => (s.accountId || s.key) !== studentId);
+        adminCachedStudents = adminCachedStudents.filter(s => (s.accountId || s.key) !== studentId && (!target || s.name !== target.name));
         playCheer();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya daripada sistem.`;
+          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya daripada awan & peranti.`;
           fb.classList.remove('hidden');
         }
         filterAdminStudentList();
       } catch (err) {
+        console.error('Ralat padam akaun Firestore:', err);
         playWrong();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = '❌ Gagal memadam akaun pelajar.';
+          fb.innerText = `❌ Gagal memadam akaun di awan (${err?.code || err?.message || 'permission-denied'}). Semak Firestore Rules agar membenarkan operasi delete.`;
           fb.classList.remove('hidden');
         }
       }

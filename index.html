@@ -170,12 +170,18 @@
         </form>
 
         <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
-          <button id="btn-forgot-pass" type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
-            🔑 Lupa Kata Laluan? Tetapkan Semula
-          </button>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button id="btn-forgot-pass" type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
+              🔑 Lupa Kata Laluan?
+            </button>
+            <span class="text-slate-300 font-bold">•</span>
+            <button id="btn-login-support" type="button" onclick="toggleSupportHelpPanel()" class="text-xs font-black text-rose-700 hover:text-rose-900 underline">
+              🆘 Hubungi Admin / Lapor Masalah
+            </button>
+          </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.19
+            Versi 1.9.20
           </span>
         </div>
 
@@ -202,6 +208,40 @@
             <div id="reset-pass-msg" class="hidden text-xs font-extrabold rounded-xl p-2"></div>
             <button id="btn-reset-pass-submit" type="submit" class="w-full bubbly-btn bg-indigo-600 text-white font-black text-xs py-2.5 border-2 border-indigo-800">
               ✅ Simpan Kata Laluan Baharu
+            </button>
+          </form>
+        </div>
+
+        <!-- Panel Borang Bantuan Akaun / Hubungi Admin (Sebelum Log Masuk) -->
+        <div id="support-help-panel" class="hidden mt-4 text-left bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black text-rose-950">🆘 Borang Bantuan Akaun & Hubungi Admin</h3>
+            <button type="button" onclick="toggleSupportHelpPanel(false)" class="text-xs font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
+          </div>
+          <p class="text-[11px] font-bold text-rose-900">Hantar laporan terus kepada Admin tanpa perlu log masuk. Admin akan menyemak dan membantu akaun anda.</p>
+          <form onsubmit="submitSupportTicket(event, 'login')" class="space-y-2.5">
+            <div>
+              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Nama Akaun Pelajar</label>
+              <input id="support-login-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama akaun anda (cth: Aiman)" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Jenis Masalah Akaun</label>
+              <select id="support-login-issue" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white">
+                <option value="🔑 Lupa Kata Laluan & Lupa PIN 4-Digit">🔑 Lupa Kata Laluan & Lupa PIN 4-Digit</option>
+                <option value="🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui">🚫 Tidak Boleh Log Masuk / Nama Tidak Ditemui</option>
+                <option value="✏️ Tersalah Daftar Nama / Ingin Tukar Nama">✏️ Tersalah Daftar Nama / Ingin Tukar Nama</option>
+                <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
+                <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
+                <option value="💬 Lain-lain Pertanyaan">💬 Lain-lain Pertanyaan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-black text-slate-700 mb-0.5">Catatan Tambahan (Pilihan)</label>
+              <textarea id="support-login-msg" rows="2" maxlength="250" placeholder="Terangkan masalah anda secara ringkas..." class="w-full px-3.5 py-2 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none font-bold text-xs bg-white"></textarea>
+            </div>
+            <div id="support-login-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+            <button id="btn-support-login-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-2.5 border-2 border-rose-900">
+              📨 Hantar Laporan kepada Admin
             </button>
           </form>
         </div>
@@ -1017,6 +1057,32 @@
           </button>
         </form>
       </div>
+
+      <!-- Borang 3: Hubungi Admin / Lapor Masalah Akaun -->
+      <div class="bubbly-card bg-white border-4 border-rose-400 p-4 space-y-3">
+        <h3 class="text-sm font-black text-rose-950">🆘 Hubungi Admin / Lapor Masalah Akaun</h3>
+        <p class="text-[11px] font-bold text-slate-500">Perlukan bantuan daripada Admin? Pilih jenis masalah di bawah dan hantar mesej terus ke Peti Masuk Admin.</p>
+        <form onsubmit="submitSupportTicket(event, 'account')" class="space-y-2.5">
+          <div>
+            <label class="block text-xs font-black text-slate-700 mb-1">Jenis Masalah</label>
+            <select id="support-acc-issue" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50">
+              <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
+              <option value="🎨 Masalah Item Avatar / Kedai">🎨 Masalah Item Avatar / Kedai</option>
+              <option value="✏️ Bantuan Tukar Nama / Akaun">✏️ Bantuan Tukar Nama / Akaun</option>
+              <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
+              <option value="💬 Cadangan / Pertanyaan kepada Admin">💬 Cadangan / Pertanyaan kepada Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-black text-slate-700 mb-1">Mesej kepada Admin</label>
+            <textarea id="support-acc-msg" rows="2" maxlength="250" required placeholder="Tulis mesej atau penerangan masalah anda di sini..." class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50"></textarea>
+          </div>
+          <div id="support-acc-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+          <button id="btn-support-acc-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-3 border-2 border-rose-900">
+            📨 Hantar Mesej kepada Admin
+          </button>
+        </form>
+      </div>
     </section>
 
     <!-- ========================================================
@@ -1025,20 +1091,31 @@
     <section id="screen-admin" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <button onclick="loadAdminStudentList()" class="bubbly-btn bg-rose-100 border-2 border-rose-300 px-3 py-2 text-xs font-black text-rose-800">🔄 Segar Semula</button>
+        <button onclick="refreshAdminAllData()" class="bubbly-btn bg-rose-100 border-2 border-rose-300 px-3 py-2 text-xs font-black text-rose-800">🔄 Segar Semula</button>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-rose-500 p-4 space-y-3">
         <div class="flex items-center justify-between gap-2">
           <div>
             <h2 class="text-lg font-bold text-rose-950">🛡️ Panel Kawalan Admin</h2>
-            <p class="text-[11px] font-bold text-slate-500">Semua 6 Tahap dibuka untuk ujian. Urus akaun pelajar di bawah:</p>
+            <p class="text-[11px] font-bold text-slate-500">Urus akaun pelajar & semak peti masuk aduan pemain:</p>
           </div>
           <span id="admin-total-students-badge" class="text-xs font-black bg-rose-100 text-rose-900 px-3 py-1 rounded-full border border-rose-300">0 Pelajar</span>
         </div>
 
+        <!-- 2 Tab Utama Admin: Akaun Pelajar vs Peti Masuk Aduan -->
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" onclick="switchAdminPanelTab('students')" id="tab-admin-students" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black">
+            👥 Akaun Pelajar
+          </button>
+          <button type="button" onclick="switchAdminPanelTab('tickets')" id="tab-admin-tickets" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5">
+            <span>📩 Aduan Pemain</span>
+            <span id="admin-open-tickets-badge" class="bg-amber-400 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+          </button>
+        </div>
+
         <!-- Tetapan Kata Laluan Lalai Reset & Carian -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-rose-50/80 p-3 rounded-2xl border-2 border-rose-200">
+        <div id="admin-students-controls" class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-rose-50/80 p-3 rounded-2xl border-2 border-rose-200">
           <div>
             <label class="block text-[10px] font-black text-rose-950 mb-1">🔍 Cari Nama Pelajar</label>
             <input id="admin-search-input" type="text" oninput="filterAdminStudentList()" placeholder="Taip nama pelajar..." class="w-full px-3 py-2 rounded-xl border border-rose-300 text-xs font-bold bg-white focus:outline-none" />
@@ -1053,6 +1130,9 @@
 
         <!-- Senarai Akaun Pelajar -->
         <div id="admin-students-list" class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1"></div>
+
+        <!-- Peti Masuk Aduan & Bantuan Pemain -->
+        <div id="admin-tickets-list" class="hidden space-y-2.5 max-h-[450px] overflow-y-auto pr-1"></div>
       </div>
     </section>
 
@@ -5906,7 +5986,7 @@
           navTo('home');
           return;
         }
-        loadAdminStudentList();
+        refreshAdminAllData();
       } else if (screenName === 'account') {
         syncPlayerUI();
         const pinInp = document.getElementById('acc-new-pin');
@@ -6142,6 +6222,291 @@
           fb.classList.remove('hidden');
         }
       }
+    };
+
+    /* 10C. SISTEM BORANG BANTUAN AKAUN & PETI MASUK ADMIN */
+    const SUPPORT_TICKETS_STORAGE_KEY = 'kirapantas_support_tickets_v1';
+    let adminCachedTickets = [];
+    let activeAdminTab = 'students';
+
+    function loadLocalSupportTickets() {
+      try {
+        const raw = localStorage.getItem(SUPPORT_TICKETS_STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLocalSupportTickets(tickets) {
+      try {
+        localStorage.setItem(SUPPORT_TICKETS_STORAGE_KEY, JSON.stringify(tickets));
+      } catch (e) {}
+    }
+
+    window.toggleSupportHelpPanel = function(forceState) {
+      playClick();
+      const panel = document.getElementById('support-help-panel');
+      const resetPanel = document.getElementById('reset-password-panel');
+      if (!panel) return;
+      const shouldShow = typeof forceState === 'boolean' ? forceState : panel.classList.contains('hidden');
+      if (shouldShow && resetPanel) resetPanel.classList.add('hidden');
+      panel.classList.toggle('hidden', !shouldShow);
+      const fb = document.getElementById('support-login-feedback');
+      if (fb) fb.classList.add('hidden');
+      if (shouldShow) {
+        const loginName = document.getElementById('input-player-name')?.value || '';
+        const supNameInp = document.getElementById('support-login-name');
+        if (supNameInp && loginName) supNameInp.value = loginName;
+      }
+    };
+
+    window.submitSupportTicket = async function(e, sourceCtx) {
+      e.preventDefault();
+      playClick();
+
+      const isLoginCtx = sourceCtx === 'login';
+      const playerName = isLoginCtx
+        ? (document.getElementById('support-login-name')?.value || '').trim()
+        : (currentPlayer?.name || 'Pelajar');
+      const playerId = isLoginCtx ? '' : (currentPlayer?.accountId || currentPlayer?.key || '');
+      const issueType = document.getElementById(isLoginCtx ? 'support-login-issue' : 'support-acc-issue')?.value || '💬 Lain-lain Pertanyaan';
+      const messageText = (document.getElementById(isLoginCtx ? 'support-login-msg' : 'support-acc-msg')?.value || '').trim();
+      const fb = document.getElementById(isLoginCtx ? 'support-login-feedback' : 'support-acc-feedback');
+      const btn = document.getElementById(isLoginCtx ? 'btn-support-login-submit' : 'btn-support-acc-submit');
+
+      if (fb) fb.classList.add('hidden');
+      if (playerName.length < 2) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '⚠️ Sila masukkan nama akaun pelajar yang sah.';
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Menghantar Laporan...';
+      }
+
+      const ticketId = `tkt_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const ticketObj = {
+        id: ticketId,
+        playerName: playerName,
+        accountId: playerId,
+        issueType: issueType,
+        message: messageText || '(Tiada catatan tambahan)',
+        source: isLoginCtx ? 'Skrin Log Masuk' : 'Dalam Akaun',
+        status: 'open',
+        createdAt: Date.now()
+      };
+
+      try {
+        const localList = loadLocalSupportTickets();
+        localList.unshift(ticketObj);
+        saveLocalSupportTickets(localList.slice(0, 100));
+
+        if (db) {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), ticketObj);
+          }
+        }
+
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `✅ Laporan berjaya dihantar kepada Admin! Sila maklumkan kepada guru/admin jika perlukan tindakan segera.`;
+          fb.classList.remove('hidden');
+        }
+        const msgField = document.getElementById(isLoginCtx ? 'support-login-msg' : 'support-acc-msg');
+        if (msgField) msgField.value = '';
+      } catch (err) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-amber-100 text-amber-950 border border-amber-300';
+          fb.innerText = '⚠️ Laporan disimpan pada peranti ini (sambungan awan terhad).';
+          fb.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = isLoginCtx ? '📨 Hantar Laporan kepada Admin' : '📨 Hantar Mesej kepada Admin';
+        }
+      }
+    };
+
+    window.switchAdminPanelTab = function(tabName) {
+      playClick();
+      activeAdminTab = tabName === 'tickets' ? 'tickets' : 'students';
+      const stBtn = document.getElementById('tab-admin-students');
+      const tkBtn = document.getElementById('tab-admin-tickets');
+      const stCtrl = document.getElementById('admin-students-controls');
+      const stList = document.getElementById('admin-students-list');
+      const tkList = document.getElementById('admin-tickets-list');
+
+      if (stBtn) {
+        stBtn.className = activeAdminTab === 'students'
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+      }
+      if (tkBtn) {
+        tkBtn.className = activeAdminTab === 'tickets'
+          ? 'bubbly-btn bg-rose-600 text-white border-2 border-rose-900 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black inline-flex items-center justify-center gap-1.5';
+      }
+      if (stCtrl) stCtrl.classList.toggle('hidden', activeAdminTab !== 'students');
+      if (stList) stList.classList.toggle('hidden', activeAdminTab !== 'students');
+      if (tkList) tkList.classList.toggle('hidden', activeAdminTab !== 'tickets');
+    };
+
+    window.refreshAdminAllData = async function() {
+      await Promise.all([loadAdminStudentList(), loadAdminSupportTickets()]);
+    };
+
+    window.loadAdminSupportTickets = async function() {
+      const merged = new Map();
+      loadLocalSupportTickets().forEach(t => { if (t && t.id) merged.set(t.id, t); });
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'));
+            snap.forEach(docSnap => {
+              const d = docSnap.data();
+              if (d) {
+                d.id = d.id || docSnap.id;
+                merged.set(d.id, d);
+              }
+            });
+            saveLocalSupportTickets(Array.from(merged.values()));
+          }
+        } catch (err) {
+          console.warn('Gagal muat tiket aduan awan:', err);
+        }
+      }
+
+      adminCachedTickets = Array.from(merged.values()).sort((a, b) => {
+        if ((a.status === 'open') !== (b.status === 'open')) return a.status === 'open' ? -1 : 1;
+        return (b.createdAt || 0) - (a.createdAt || 0);
+      });
+
+      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
+      const badge = document.getElementById('admin-open-tickets-badge');
+      if (badge) badge.innerText = `${openCount} Baru`;
+      renderAdminTicketsList();
+    };
+
+    function renderAdminTicketsList() {
+      const listEl = document.getElementById('admin-tickets-list');
+      if (!listEl) return;
+
+      if (adminCachedTickets.length === 0) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Tiada aduan atau mesej bantuan daripada pemain buat masa ini.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = adminCachedTickets.map(t => {
+        const safeName = (t.playerName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeIssue = (t.issueType || 'Masalah Akaun').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeMsg = (t.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const isOpen = t.status === 'open';
+        const timeStr = t.createdAt ? formatLastActiveText(t.createdAt, false) : 'Baru dihantar';
+
+        return `
+          <div class="rounded-2xl p-3 border-2 space-y-2 ${isOpen ? 'bg-amber-50/90 border-amber-400' : 'bg-slate-50 border-slate-200 opacity-80'}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="text-xs font-black text-slate-900">${safeName}</span>
+                  <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${isOpen ? 'bg-rose-600 text-white' : 'bg-emerald-100 text-emerald-800'}">${isOpen ? 'BARU' : 'SELESAI'}</span>
+                  <span class="text-[9px] font-bold text-slate-500">• ${timeStr} (${t.source || 'Aplikasi'})</span>
+                </div>
+                <div class="text-[11px] font-black text-indigo-900 mt-1">${safeIssue}</div>
+                <p class="text-[11px] font-bold text-slate-700 bg-white/80 rounded-xl p-2 mt-1 border border-slate-200">${safeMsg}</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-200/80">
+              <button type="button" onclick="adminQuickResetFromTicket('${t.id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-1.5 px-2 text-[10px] font-black">
+                🔑 Reset Password Pelajar
+              </button>
+              ${isOpen ? `
+                <button type="button" onclick="adminResolveSupportTicket('${t.id}')" class="bubbly-btn bg-emerald-500 text-white border border-emerald-700 py-1.5 px-2.5 text-[10px] font-black">
+                  ✅ Selesai
+                </button>
+              ` : ''}
+              <button type="button" onclick="adminDeleteSupportTicket('${t.id}')" class="bubbly-btn bg-rose-100 text-rose-800 border border-rose-300 py-1.5 px-2.5 text-[10px] font-black">
+                🗑️ Padam
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.adminQuickResetFromTicket = async function(ticketId) {
+      const ticket = adminCachedTickets.find(t => t.id === ticketId);
+      if (!ticket) return;
+      const matchedStudent = adminCachedStudents.find(
+        s => (ticket.accountId && (s.accountId === ticket.accountId || s.key === ticket.accountId)) ||
+             (s.name || '').toLowerCase() === (ticket.playerName || '').toLowerCase()
+      );
+      if (!matchedStudent) {
+        playWrong();
+        const fb = document.getElementById('admin-action-feedback');
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `❌ Akaun pelajar "${ticket.playerName}" tidak ditemui dalam senarai pelajar berdaftar.`;
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+      await adminResetStudentPassword(matchedStudent.accountId || matchedStudent.key);
+      await adminResolveSupportTicket(ticketId, true);
+    };
+
+    window.adminResolveSupportTicket = async function(ticketId, silent = false) {
+      if (!silent) playClick();
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      if (!target) return;
+      target.status = 'resolved';
+      target.resolvedAt = Date.now();
+      saveLocalSupportTickets(adminCachedTickets);
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), target);
+          }
+        } catch (e) {}
+      }
+      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
+      const badge = document.getElementById('admin-open-tickets-badge');
+      if (badge) badge.innerText = `${openCount} Baru`;
+      renderAdminTicketsList();
+    };
+
+    window.adminDeleteSupportTicket = async function(ticketId) {
+      playClick();
+      adminCachedTickets = adminCachedTickets.filter(t => t.id !== ticketId);
+      saveLocalSupportTickets(adminCachedTickets);
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
+          }
+        } catch (e) {}
+      }
+      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
+      const badge = document.getElementById('admin-open-tickets-badge');
+      if (badge) badge.innerText = `${openCount} Baru`;
+      renderAdminTicketsList();
     };
 
     let flashAnzanBasePoints = 12;

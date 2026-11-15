@@ -153,7 +153,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.5
+            Versi 1.9.6
           </span>
         </div>
 
@@ -562,6 +562,17 @@
             </div>
           </div>
         </div>
+
+        <!-- 2 Tab Papan Skor: Tertinggi Hari Ini vs Skor Terkumpul -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" onclick="switchScoreboardTab('today')" id="tab-score-today" class="bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2.5 px-2 text-xs font-black">
+            🔥 Tertinggi Hari Ini
+          </button>
+          <button type="button" onclick="switchScoreboardTab('alltime')" id="tab-score-alltime" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black">
+            🏆 Skor Terkumpul
+          </button>
+        </div>
+
         <div id="scoreboard-list" class="space-y-2 max-h-[420px] overflow-y-auto pr-1"></div>
       </div>
     </section>
@@ -3498,10 +3509,7 @@
         fb.classList.remove('hidden');
 
         if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + reward.total;
-          syncPlayerUI();
-          savePlayerCloud();
+          addPlayerReward(1, reward.total);
         }
         if (blitzStreak % 5 === 0) triggerConfetti();
         setTimeout(() => generateNextBlitzQuestion(), 900);
@@ -3670,15 +3678,12 @@
         fb.classList.remove('hidden');
 
         if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + reward.total;
+          addPlayerReward(1, reward.total);
           if (!currentPlayer.modScores) currentPlayer.modScores = {};
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
             currentPlayer.modScores[activeModId] = activeModSessionCorrect;
             document.getElementById('mod-best-score').innerText = activeModSessionCorrect;
           }
-          syncPlayerUI();
-          savePlayerCloud();
         }
         if (activeModSessionCorrect % 10 === 0) triggerConfetti();
       } else {
@@ -4296,6 +4301,44 @@
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
+    function addPlayerReward(starsEarned, pointsEarned) {
+      if (!currentPlayer) return;
+      const todayKey = getTodayDateKey();
+      if (currentPlayer.todayDateKey !== todayKey) {
+        currentPlayer.todayDateKey = todayKey;
+        currentPlayer.todaySeconds = 0;
+        currentPlayer.todayPoints = 0;
+        currentPlayer.todayStars = 0;
+      }
+      currentPlayer.stars = (currentPlayer.stars || 0) + (starsEarned || 0);
+      currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + (pointsEarned || 0);
+      currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + (pointsEarned || 0);
+      currentPlayer.todayStars = (currentPlayer.todayStars || 0) + (starsEarned || 0);
+      syncPlayerUI();
+      savePlayerCloud();
+    }
+
+    let activeScoreboardTab = 'today';
+    let lastScoreboardPlayers = [];
+
+    window.switchScoreboardTab = function(tabName) {
+      playClick();
+      activeScoreboardTab = tabName === 'alltime' ? 'alltime' : 'today';
+      const todayBtn = document.getElementById('tab-score-today');
+      const allBtn = document.getElementById('tab-score-alltime');
+      if (todayBtn) {
+        todayBtn.className = activeScoreboardTab === 'today'
+          ? 'bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2.5 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+      }
+      if (allBtn) {
+        allBtn.className = activeScoreboardTab === 'alltime'
+          ? 'bubbly-btn bg-indigo-600 text-white border-2 border-indigo-800 py-2.5 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
+      }
+      renderScoreboardList(lastScoreboardPlayers);
+    };
+
     function formatLastActiveText(ts, isOnlineNow) {
       if (isOnlineNow) return 'Aktif sekarang';
       const last = Number(ts || 0);
@@ -4466,6 +4509,8 @@
       if (currentPlayer.todayDateKey !== todayKey) {
         currentPlayer.todayDateKey = todayKey;
         currentPlayer.todaySeconds = 0;
+        currentPlayer.todayPoints = 0;
+        currentPlayer.todayStars = 0;
       }
       currentPlayer.isOnline = true;
       currentPlayer.lastActiveAt = Date.now();
@@ -4490,6 +4535,8 @@
           isAdmin: false,
           stars: currentPlayer.stars || 0,
           totalPoints: currentPlayer.totalPoints || 0,
+          todayPoints: currentPlayer.todayPoints || 0,
+          todayStars: currentPlayer.todayStars || 0,
           playSeconds: currentPlayer.playSeconds || 0,
           todayDateKey: currentPlayer.todayDateKey,
           todaySeconds: currentPlayer.todaySeconds || 0,
@@ -4551,6 +4598,8 @@
         if (currentPlayer.todayDateKey !== todayKey) {
           currentPlayer.todayDateKey = todayKey;
           currentPlayer.todaySeconds = 0;
+          currentPlayer.todayPoints = 0;
+          currentPlayer.todayStars = 0;
         }
         currentPlayer.playSeconds = (currentPlayer.playSeconds || 0) + 1;
         currentPlayer.todaySeconds = (currentPlayer.todaySeconds || 0) + 1;
@@ -4631,6 +4680,8 @@
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
           const savedTodaySec = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todaySeconds) || 0) : 0;
+          const savedTodayPts = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todayPoints) || 0) : 0;
+          const savedTodayStars = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todayStars) || 0) : 0;
           const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || existingAccount.preferredLang || currentAppLang || 'ms';
           currentPlayer = {
             accountId: permanentId,
@@ -4643,6 +4694,8 @@
             isAdmin: isAdminUser,
             stars: Number(existingAccount.stars) || 0,
             totalPoints: Number(existingAccount.totalPoints) || 0,
+            todayPoints: savedTodayPts,
+            todayStars: savedTodayStars,
             playSeconds: Number(existingAccount.playSeconds) || 0,
             todayDateKey: todayKey,
             todaySeconds: savedTodaySec,
@@ -4682,6 +4735,8 @@
             preferredLang: keptLang,
             stars: 0,
             totalPoints: 0,
+            todayPoints: 0,
+            todayStars: 0,
             playSeconds: 0,
             todayDateKey: getTodayDateKey(),
             todaySeconds: 0,
@@ -4928,19 +4983,33 @@
     };
 
     function renderScoreboardList(players) {
+      lastScoreboardPlayers = Array.isArray(players) ? players : [];
       const listEl = document.getElementById('scoreboard-list');
       if (!listEl) return;
 
-      const sorted = (players || [])
+      const todayKey = getTodayDateKey();
+      const isTodayTab = activeScoreboardTab === 'today';
+
+      const getTodayPts = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayPoints) || 0) : 0;
+      const getTodayStars = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayStars) || 0) : 0;
+
+      const sorted = lastScoreboardPlayers
         .filter(p => p && !isAdminAccountRecord(p))
-        .sort((a, b) => ((b.totalPoints || 0) - (a.totalPoints || 0)) || ((b.stars || 0) - (a.stars || 0)));
+        .sort((a, b) => {
+          if (isTodayTab) {
+            return (getTodayPts(b) - getTodayPts(a))
+              || (getTodayStars(b) - getTodayStars(a))
+              || ((b.totalPoints || 0) - (a.totalPoints || 0));
+          }
+          return ((b.totalPoints || 0) - (a.totalPoints || 0))
+            || ((b.stars || 0) - (a.stars || 0));
+        });
 
       if (sorted.length === 0) {
         listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Belum ada rekod pelajar di papan skor.</div>`;
         return;
       }
 
-      const todayKey = getTodayDateKey();
       const nowMs = Date.now();
 
       listEl.innerHTML = sorted.map((p, idx) => {
@@ -4957,6 +5026,12 @@
         const todaySec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
         const todayHHMM = formatDurationHHMM(todaySec);
         const totalHHMM = formatDurationHHMM(p.playSeconds || 0);
+
+        const shownPoints = isTodayTab ? getTodayPts(p) : (Number(p.totalPoints) || 0);
+        const shownStars = isTodayTab ? getTodayStars(p) : (Number(p.stars) || 0);
+        const subScoreInfo = isTodayTab
+          ? `Terkumpul: ${(Number(p.totalPoints) || 0).toLocaleString()} Markah`
+          : `Hari ini: +${getTodayPts(p).toLocaleString()} Markah`;
 
         const statusBadge = isOnlineNow
           ? `<span class="inline-flex items-center gap-1 text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Online</span>`
@@ -4979,8 +5054,8 @@
               </div>
             </div>
             <div class="text-right flex-shrink-0">
-              <div class="text-xs font-black text-indigo-800">${(p.totalPoints || 0).toLocaleString()} Markah</div>
-              <div class="text-[11px] font-extrabold text-amber-600">⭐ ${p.stars || 0}</div>
+              <div class="text-xs font-black ${isTodayTab ? 'text-amber-700' : 'text-indigo-800'}">${shownPoints.toLocaleString()} Markah</div>
+              <div class="text-[11px] font-extrabold text-amber-600">⭐ ${shownStars} <span class="text-[9px] text-slate-400 font-bold">(${subScoreInfo})</span></div>
             </div>
           </div>
         `;
@@ -5409,10 +5484,7 @@
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🧠 Hebat Master Anzan! Jawapan <b>${flashAnzanAnswer}</b> tepat!<br><span class="text-[10px] font-bold text-emerald-700">(${seqStr}) • +2 Bintang ⭐ & +20 Markah</span>`;
         if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 2;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 20;
-          syncPlayerUI();
-          savePlayerCloud();
+          addPlayerReward(2, 20);
         }
       } else {
         playWrong();
@@ -5560,10 +5632,7 @@
       }
 
       if (currentPlayer) {
-        currentPlayer.stars = (currentPlayer.stars || 0) + 1;
-        currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 10;
-        syncPlayerUI();
-        savePlayerCloud();
+        addPlayerReward(1, 10);
       }
       if (drillSolvedCount % 5 === 0) triggerConfetti();
 
@@ -5850,10 +5919,7 @@
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🎉 Tepat! Pendengaran & kiraan minda anda sangat tajam (${dictCorrectAnswer})!<br><span class="text-[10px] font-bold text-emerald-700">(${seqText}) • +2 Bintang ⭐ & +20 Markah</span>`;
         if (currentPlayer) {
-          currentPlayer.stars = (currentPlayer.stars || 0) + 2;
-          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + 20;
-          syncPlayerUI();
-          savePlayerCloud();
+          addPlayerReward(2, 20);
         }
       } else {
         playWrong();

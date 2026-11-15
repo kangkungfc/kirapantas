@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.36
+            Versi 1.9.39
           </span>
         </div>
 
@@ -949,7 +949,7 @@
         </div>
 
         <div class="flex items-center justify-between bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-[11px] font-black text-amber-950">
-          <span>🏆 Potensi Markah Asas: <span id="flash-potential-points" class="text-rose-700">12</span> Markah</span>
+          <span>🏆 Potensi: <span id="flash-potential-points" class="text-rose-700">12</span> Pts • Coin: ≥2 Digit & ≥5 No.</span>
           <span class="text-[10px] text-amber-800">⚡ Jawab &lt;2s = +10 Bonus!</span>
         </div>
 
@@ -1055,7 +1055,7 @@
         </div>
 
         <div class="flex items-center justify-between bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-[11px] font-black text-amber-950">
-          <span>🏆 Potensi Markah Asas: <span id="dict-potential-points" class="text-indigo-700">12</span> Markah</span>
+          <span>🏆 Potensi: <span id="dict-potential-points" class="text-indigo-700">12</span> Pts • Coin: ≥2 Digit & ≥5 Sebutan</span>
           <span class="text-[10px] text-amber-800">⚡ Jawab &lt;2s = +10 Bonus!</span>
         </div>
 
@@ -1373,10 +1373,10 @@
             <div class="flex items-center justify-between gap-2">
               <label class="text-xs font-black text-slate-700">🎯 Pilih Tahap Soalan:</label>
               <select id="arena-difficulty-select" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-950">
-                <option value="jari_all" selected>🖐️ Jari Sahaja (0–99: Asas + Kawan 5/10 + Gabungan)</option>
-                <option value="lvl1">🖐️ Jari Asas Terus (0 – 99)</option>
-                <option value="lvl23">🧮 Sempoa & Kawan 5/10</option>
-                <option value="lvl45">🧮 Darab/Bahagi & Rantaian</option>
+                <option value="lvl1">🖐️ Jari Asas Terus 0–99 (0.7x • Maks 2–6 Coin)</option>
+                <option value="jari_all" selected>🖐️ Jari Formula 5/10 & Gabungan (1.0x • Maks 3–8 Coin)</option>
+                <option value="lvl23">🧮 Sempoa & Kawan 5/10 (1.25x • Maks 4–10 Coin)</option>
+                <option value="lvl45">🚀 Darab/Bahagi & Rantaian (1.5x • Maks 5–12 Coin)</option>
               </select>
             </div>
 
@@ -2143,77 +2143,106 @@
 
     const AVATAR_STUDIO_CATALOG = {
       face: [
-        { id: 'boy_leo', name: 'Leo Pintar', gender: 'boy', cost: 0, defaultHair: 'hair_quiff', defaultColor: 'brown' },
-        { id: 'boy_adam', name: 'Adam Bijak', gender: 'boy', cost: 10, defaultHair: 'hair_neat', defaultColor: 'black' },
-        { id: 'boy_zack', name: 'Zack Cergas', gender: 'boy', cost: 15, defaultHair: 'hair_messy', defaultColor: 'honey' },
-        { id: 'boy_danish', name: 'Danish Tangkas', gender: 'boy', cost: 20, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
-        { id: 'boy_amir', name: 'Amir Juara', gender: 'boy', cost: 25, defaultHair: 'hair_curly', defaultColor: 'black' },
-        { id: 'boy_rayyan', name: 'Rayyan Master', gender: 'boy', cost: 30, defaultHair: 'hair_neat', defaultColor: 'brown' },
-        { id: 'girl_hana', name: 'Hana Comel', gender: 'girl', cost: 0, defaultHair: 'hair_wavy_girl', defaultColor: 'brown' },
-        { id: 'girl_sofia', name: 'Sofia Ceria', gender: 'girl', cost: 10, defaultHair: 'hair_buns', defaultColor: 'black' },
-        { id: 'girl_maya', name: 'Maya Pintar', gender: 'girl', cost: 15, defaultHair: 'hair_ponytail', defaultColor: 'honey' },
-        { id: 'girl_aina', name: 'Aina Cekap', gender: 'girl', cost: 20, defaultHair: 'hair_long_girl', defaultColor: 'auburn' },
-        { id: 'girl_bella', name: 'Bella Anggun', gender: 'girl', cost: 25, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
-        { id: 'girl_nadia', name: 'Nadia Juara', gender: 'girl', cost: 30, defaultHair: 'hair_buns', defaultColor: 'brown' }
+        // Watak Lelaki (Asas -> Epik -> Legenda)
+        { id: 'boy_leo',    name: 'Leo Pintar',      tier: 'Biasa',    gender: 'boy', cost: 0,  defaultHair: 'hair_quiff', defaultColor: 'brown' },
+        { id: 'boy_adam',   name: 'Adam Bijak',      tier: 'Biasa',    gender: 'boy', cost: 15, defaultHair: 'hair_neat',  defaultColor: 'black' },
+        { id: 'boy_zack',   name: 'Zack Cergas',     tier: 'Comel',    gender: 'boy', cost: 25, defaultHair: 'hair_messy', defaultColor: 'honey' },
+        { id: 'boy_danish', name: 'Danish Tangkas',  tier: 'Comel',    gender: 'boy', cost: 35, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
+        { id: 'boy_amir',   name: 'Amir Juara',      tier: 'Istimewa', gender: 'boy', cost: 50, defaultHair: 'hair_curly', defaultColor: 'black' },
+        { id: 'boy_rayyan', name: 'Rayyan Master',   tier: 'Istimewa', gender: 'boy', cost: 65, defaultHair: 'hair_neat',  defaultColor: 'brown' },
+        { id: 'boy_harith', name: 'Harith Putera',   tier: 'Gah',      gender: 'boy', cost: 85, defaultHair: 'hair_quiff', defaultColor: 'honey' },
+        { id: 'boy_kai',    name: 'Kai Cyber',       tier: 'Epik',     gender: 'boy', cost: 110, defaultHair: 'hair_messy', defaultColor: 'black' },
+        { id: 'boy_ryu',    name: 'Ryu Naga Emas',   tier: 'Legenda',  gender: 'boy', cost: 140, defaultHair: 'hair_quiff', defaultColor: 'auburn' },
+        // Watak Perempuan (Asas -> Epik -> Legenda)
+        { id: 'girl_hana',  name: 'Hana Comel',      tier: 'Biasa',    gender: 'girl', cost: 0,  defaultHair: 'hair_wavy_girl', defaultColor: 'brown' },
+        { id: 'girl_sofia', name: 'Sofia Ceria',     tier: 'Biasa',    gender: 'girl', cost: 15, defaultHair: 'hair_buns',      defaultColor: 'black' },
+        { id: 'girl_maya',  name: 'Maya Pintar',     tier: 'Comel',    gender: 'girl', cost: 25, defaultHair: 'hair_ponytail',  defaultColor: 'honey' },
+        { id: 'girl_aina',  name: 'Aina Cekap',      tier: 'Comel',    gender: 'girl', cost: 35, defaultHair: 'hair_long_girl', defaultColor: 'auburn' },
+        { id: 'girl_bella', name: 'Bella Anggun',    tier: 'Istimewa', gender: 'girl', cost: 50, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
+        { id: 'girl_nadia', name: 'Nadia Juara',     tier: 'Istimewa', gender: 'girl', cost: 65, defaultHair: 'hair_buns',      defaultColor: 'brown' },
+        { id: 'girl_alya',  name: 'Alya Puteri',     tier: 'Gah',      gender: 'girl', cost: 85, defaultHair: 'hair_long_girl', defaultColor: 'honey' },
+        { id: 'girl_luna',  name: 'Luna Bintang',    tier: 'Epik',     gender: 'girl', cost: 110, defaultHair: 'hair_wavy_girl', defaultColor: 'pink' },
+        { id: 'girl_aurora',name: 'Aurora Kristal',  tier: 'Legenda',  gender: 'girl', cost: 140, defaultHair: 'hair_ponytail',  defaultColor: 'auburn' }
       ],
       hair: [
-        { id: 'hair_quiff', name: 'Jambul Gaya', gender: 'boy', cost: 0 },
-        { id: 'hair_neat', name: 'Sikat Kemas', gender: 'boy', cost: 8 },
-        { id: 'hair_messy', name: 'Pacat Ceria', gender: 'boy', cost: 12 },
-        { id: 'hair_curly', name: 'Keriting Comel', gender: 'boy', cost: 15 },
-        { id: 'hair_wavy_girl', name: 'Beralun Lembut', gender: 'girl', cost: 0 },
-        { id: 'hair_buns', name: 'Sanggul Kembar', gender: 'girl', cost: 8 },
-        { id: 'hair_ponytail', name: 'Ekor Kuda', gender: 'girl', cost: 12 },
-        { id: 'hair_long_girl', name: 'Lurus Panjang', gender: 'girl', cost: 15 }
+        { id: 'hair_quiff',     name: 'Jambul Gaya',      tier: 'Biasa',    gender: 'boy',  cost: 0 },
+        { id: 'hair_neat',      name: 'Sikat Kemas',      tier: 'Biasa',    gender: 'boy',  cost: 12 },
+        { id: 'hair_messy',     name: 'Pacat Ceria',      tier: 'Comel',    gender: 'boy',  cost: 18 },
+        { id: 'hair_curly',     name: 'Keriting Comel',   tier: 'Comel',    gender: 'boy',  cost: 24 },
+        { id: 'hair_spiky',     name: 'Pacat Kilat Hero', tier: 'Istimewa', gender: 'boy',  cost: 35 },
+        { id: 'hair_samurai',   name: 'Sanggul Samurai',  tier: 'Gah',      gender: 'boy',  cost: 50 },
+        { id: 'hair_wavy_girl', name: 'Beralun Lembut',   tier: 'Biasa',    gender: 'girl', cost: 0 },
+        { id: 'hair_buns',      name: 'Sanggul Kembar',   tier: 'Biasa',    gender: 'girl', cost: 12 },
+        { id: 'hair_ponytail',  name: 'Ekor Kuda',        tier: 'Comel',    gender: 'girl', cost: 18 },
+        { id: 'hair_long_girl', name: 'Lurus Panjang',    tier: 'Comel',    gender: 'girl', cost: 24 },
+        { id: 'hair_twin_tails',name: 'Tocang Riben',     tier: 'Istimewa', gender: 'girl', cost: 35 },
+        { id: 'hair_princess',  name: 'Ikatan Puteri',    tier: 'Gah',      gender: 'girl', cost: 50 }
       ],
       headwear: [
-        { id: 'hw_none', name: 'Tiada Penutup', gender: 'unisex', cost: 0 },
-        { id: 'hw_cap_red', name: 'Topi Merah', gender: 'unisex', cost: 10 },
-        { id: 'hw_cap_blue', name: 'Topi Biru', gender: 'unisex', cost: 10 },
-        { id: 'hw_beanie', name: 'Beanie Oren', gender: 'unisex', cost: 14 },
-        { id: 'hw_cat_ears', name: 'Cekak Kucing', gender: 'unisex', cost: 18 },
-        { id: 'hw_tudung_pink', name: 'Tudung Pink', gender: 'girl', cost: 8 },
-        { id: 'hw_tudung_blue', name: 'Tudung Biru', gender: 'girl', cost: 8 },
-        { id: 'hw_tudung_emerald', name: 'Tudung Hijau', gender: 'girl', cost: 8 },
-        { id: 'hw_grad', name: 'Topi Graduasi', gender: 'unisex', cost: 25 },
-        { id: 'hw_crown', name: 'Mahkota Juara', gender: 'unisex', cost: 40 }
+        { id: 'hw_none',           name: 'Tiada Penutup',      tier: 'Biasa',    gender: 'unisex', cost: 0 },
+        { id: 'hw_tudung_pink',    name: 'Tudung Pink',        tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_blue',    name: 'Tudung Biru',        tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_emerald', name: 'Tudung Hijau',       tier: 'Biasa',    gender: 'girl',   cost: 12 },
+        { id: 'hw_tudung_lavender',name: 'Tudung Lavender',    tier: 'Comel',    gender: 'girl',   cost: 22 },
+        { id: 'hw_tudung_gold',    name: 'Tudung Sulam Emas',  tier: 'Istimewa', gender: 'girl',   cost: 40 },
+        { id: 'hw_cap_red',        name: 'Topi Merah',         tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'hw_cap_blue',       name: 'Topi Biru',          tier: 'Biasa',    gender: 'unisex', cost: 15 },
+        { id: 'hw_beanie',         name: 'Beanie Oren',        tier: 'Comel',    gender: 'unisex', cost: 22 },
+        { id: 'hw_cat_ears',       name: 'Cekak Kucing',       tier: 'Comel',    gender: 'unisex', cost: 28 },
+        { id: 'hw_bunny_ears',     name: 'Cekak Arnab Comel',  tier: 'Comel',    gender: 'unisex', cost: 32 },
+        { id: 'hw_wizard',         name: 'Topi Ahli Sihir',    tier: 'Istimewa', gender: 'unisex', cost: 45 },
+        { id: 'hw_ninja',          name: 'Ikatan Ninja Kilat', tier: 'Istimewa', gender: 'unisex', cost: 50 },
+        { id: 'hw_grad',           name: 'Topi Graduasi',      tier: 'Gah',      gender: 'unisex', cost: 65 },
+        { id: 'hw_tiara',          name: 'Tiara Kristal',      tier: 'Gah',      gender: 'girl',   cost: 75 },
+        { id: 'hw_crown',          name: 'Mahkota Juara',      tier: 'Epik',     gender: 'unisex', cost: 95 },
+        { id: 'hw_halo',           name: 'Halo Cahaya Suci',   tier: 'Legenda',  gender: 'unisex', cost: 130 }
       ],
       accessory: [
-        { id: 'acc_glasses', name: 'Cermin Mata', gender: 'unisex', slot: 'eyewear', cost: 8 },
-        { id: 'acc_shades', name: 'Kaca Hitam', gender: 'unisex', slot: 'eyewear', cost: 12 },
-        { id: 'acc_headphones', name: 'Fon Kepala', gender: 'unisex', slot: 'head', cost: 15 },
-        { id: 'acc_bowtie', name: 'Tali Leher Kupu', gender: 'boy', slot: 'neck', cost: 10 },
-        { id: 'acc_ribbon', name: 'Reben Merah Jambu', gender: 'girl', slot: 'neck', cost: 10 },
-        { id: 'acc_earring_pearl', name: 'Subang Mutiara', gender: 'girl', slot: 'ear', cost: 12 },
-        { id: 'acc_earring_star', name: 'Subang Bintang', gender: 'girl', slot: 'ear', cost: 16 },
-        { id: 'acc_pin_star', name: 'Pin Bintang Emas', gender: 'unisex', slot: 'pin', cost: 14 },
-        { id: 'acc_backpack', name: 'Beg Galas Sekolah', gender: 'unisex', slot: 'back', cost: 18 }
+        { id: 'acc_glasses',       name: 'Cermin Mata',        tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 12 },
+        { id: 'acc_bowtie',        name: 'Tali Leher Kupu',    tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 15 },
+        { id: 'acc_ribbon',        name: 'Reben Merah Jambu',  tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 15 },
+        { id: 'acc_shades',        name: 'Kaca Hitam',         tier: 'Comel',    gender: 'unisex', slot: 'eyewear', cost: 20 },
+        { id: 'acc_earring_pearl', name: 'Subang Mutiara',     tier: 'Comel',    gender: 'girl',   slot: 'ear',     cost: 20 },
+        { id: 'acc_pin_star',      name: 'Pin Bintang Emas',   tier: 'Comel',    gender: 'unisex', slot: 'pin',     cost: 22 },
+        { id: 'acc_headphones',    name: 'Fon Kepala',         tier: 'Comel',    gender: 'unisex', slot: 'head',    cost: 25 },
+        { id: 'acc_earring_star',  name: 'Subang Bintang',     tier: 'Istimewa', gender: 'girl',   slot: 'ear',     cost: 28 },
+        { id: 'acc_backpack',      name: 'Beg Galas Sekolah',  tier: 'Istimewa', gender: 'unisex', slot: 'back',    cost: 30 },
+        { id: 'acc_star_glasses',  name: 'Cermin Mata Bintang',tier: 'Istimewa', gender: 'unisex', slot: 'eyewear', cost: 35 },
+        { id: 'acc_scarf_red',     name: 'Skaf Hero Merah',    tier: 'Istimewa', gender: 'unisex', slot: 'neck',    cost: 38 },
+        { id: 'acc_medal_gold',    name: 'Pingat Juara Emas',  tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 48 },
+        { id: 'acc_wings_angel',   name: 'Sayap Bidadari',     tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 75 },
+        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',     tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 110 }
       ],
       bg: [
-        { id: 'bg_sky', name: 'Langit Cerah', gender: 'unisex', cost: 0, c1: '#E0F2FE', c2: '#7DD3FC' },
-        { id: 'bg_mint', name: 'Pudina Segar', gender: 'unisex', cost: 10, c1: '#D1FAE5', c2: '#6EE7B7' },
-        { id: 'bg_sunset', name: 'Senja Emas', gender: 'unisex', cost: 15, c1: '#FEF3C7', c2: '#FDBA74' },
-        { id: 'bg_sakura', name: 'Bunga Sakura', gender: 'unisex', cost: 18, c1: '#FCE7F3', c2: '#F9A8D4' },
-        { id: 'bg_galaxy', name: 'Galaksi Ungu', gender: 'unisex', cost: 25, c1: '#EDE9FE', c2: '#A78BFA' }
+        { id: 'bg_sky',     name: 'Langit Cerah',      tier: 'Biasa',    gender: 'unisex', cost: 0,  c1: '#E0F2FE', c2: '#7DD3FC' },
+        { id: 'bg_mint',    name: 'Pudina Segar',      tier: 'Biasa',    gender: 'unisex', cost: 15, c1: '#D1FAE5', c2: '#6EE7B7' },
+        { id: 'bg_sunset',  name: 'Senja Emas',        tier: 'Comel',    gender: 'unisex', cost: 22, c1: '#FEF3C7', c2: '#FDBA74' },
+        { id: 'bg_sakura',  name: 'Bunga Sakura',      tier: 'Comel',    gender: 'unisex', cost: 28, c1: '#FCE7F3', c2: '#F9A8D4' },
+        { id: 'bg_ocean',   name: 'Lautan Dalam',      tier: 'Istimewa', gender: 'unisex', cost: 38, c1: '#CFFAFE', c2: '#06B6D4' },
+        { id: 'bg_galaxy',  name: 'Galaksi Ungu',      tier: 'Istimewa', gender: 'unisex', cost: 45, c1: '#EDE9FE', c2: '#A78BFA' },
+        { id: 'bg_aurora',  name: 'Aurora Borealis',   tier: 'Gah',      gender: 'unisex', cost: 60, c1: '#A7F3D0', c2: '#6366F1' },
+        { id: 'bg_rainbow', name: 'Awan Pelangi',      tier: 'Gah',      gender: 'unisex', cost: 70, c1: '#FEF08A', c2: '#F472B6' },
+        { id: 'bg_lava',    name: 'Gunung Berapi',     tier: 'Epik',     gender: 'unisex', cost: 85, c1: '#FED7AA', c2: '#DC2626' },
+        { id: 'bg_royal',   name: 'Istana Diraja',     tier: 'Legenda',  gender: 'unisex', cost: 115,c1: '#FEF9C3', c2: '#D97706' }
       ],
       frame: [
-        { id: 'fr_none', name: 'Bingkai Asas', tier: 'Biasa', cost: 0 },
-        { id: 'fr_candy', name: 'Lilitan Candy', tier: 'Comel', cost: 25 },
-        { id: 'fr_bunny', name: 'Telinga Arnab Comel', tier: 'Comel', cost: 45 },
-        { id: 'fr_flower', name: 'Lilitan Bunga', tier: 'Comel', cost: 70 },
-        { id: 'fr_sakura', name: 'Bunga Sakura', tier: 'Comel', cost: 100 },
-        { id: 'fr_rainbow', name: 'Pelangi Ceria', tier: 'Istimewa', cost: 140 },
-        { id: 'fr_roman', name: 'Laurel Zaman Rom', tier: 'Istimewa', cost: 190 },
-        { id: 'fr_thorns', name: 'Lilitan Akar Duri', tier: 'Istimewa', cost: 250 },
-        { id: 'fr_starlight', name: 'Bintang Berkilau', tier: 'Istimewa', cost: 320 },
-        { id: 'fr_ice', name: 'Kristal Ais Keliling', tier: 'Gah', cost: 400 },
-        { id: 'fr_neon', name: 'Neon Kilat Biru', tier: 'Gah', cost: 500 },
-        { id: 'fr_fire', name: 'Api Keliling Juara', tier: 'Gah', cost: 620 },
-        { id: 'fr_crown_gold', name: 'Mahkota Emas Raja', tier: 'Gah', cost: 750 },
-        { id: 'fr_gold_chain', name: 'Rantai Emas Raja', tier: 'Epik', cost: 880 },
-        { id: 'fr_dragon', name: 'Naga Api Juara', tier: 'Epik', cost: 980 },
-        { id: 'fr_diamond_chain', name: 'Rantai Berlian', tier: 'Legenda', cost: 1100 },
-        { id: 'fr_galaxy', name: 'Galaksi Berlian', tier: 'Legenda', cost: 1200 }
+        { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
+        { id: 'fr_candy',         name: 'Lilitan Candy',         tier: 'Comel',    cost: 20 },
+        { id: 'fr_bunny',         name: 'Telinga Arnab Comel',   tier: 'Comel',    cost: 35 },
+        { id: 'fr_flower',        name: 'Lilitan Bunga',         tier: 'Comel',    cost: 45 },
+        { id: 'fr_sakura',        name: 'Bunga Sakura',          tier: 'Comel',    cost: 60 },
+        { id: 'fr_rainbow',       name: 'Pelangi Ceria',         tier: 'Istimewa', cost: 80 },
+        { id: 'fr_roman',         name: 'Laurel Zaman Rom',      tier: 'Istimewa', cost: 100 },
+        { id: 'fr_thorns',        name: 'Lilitan Akar Duri',     tier: 'Istimewa', cost: 120 },
+        { id: 'fr_starlight',     name: 'Bintang Berkilau',      tier: 'Istimewa', cost: 140 },
+        { id: 'fr_ice',           name: 'Kristal Ais Keliling',  tier: 'Gah',      cost: 165 },
+        { id: 'fr_neon',          name: 'Neon Kilat Biru',       tier: 'Gah',      cost: 190 },
+        { id: 'fr_fire',          name: 'Api Keliling Juara',    tier: 'Gah',      cost: 220 },
+        { id: 'fr_crown_gold',    name: 'Mahkota Emas Raja',     tier: 'Gah',      cost: 250 },
+        { id: 'fr_gold_chain',    name: 'Rantai Emas Raja',      tier: 'Epik',     cost: 290 },
+        { id: 'fr_dragon',        name: 'Naga Api Juara',        tier: 'Epik',     cost: 340 },
+        { id: 'fr_diamond_chain', name: 'Rantai Berlian',        tier: 'Legenda',  cost: 400 },
+        { id: 'fr_galaxy',        name: 'Galaksi Berlian',       tier: 'Legenda',  cost: 450 }
       ]
     };
 
@@ -2776,24 +2805,32 @@
       const uid = 'px3d_' + Math.random().toString(36).slice(2, 8);
 
       const charSpecs = {
-        boy_leo:    { head: 'round',      iris: '#334155', iris2: '#090D16', nose: 'button', brow: 'thick',      outfit: 'hoodie_amber',    mouth: 'smile',      eyeStyle: 'round' },
-        boy_adam:   { head: 'oval',       iris: '#1D4ED8', iris2: '#172554', nose: 'slim',   brow: 'arched',     outfit: 'blazer_slate',    mouth: 'gentle',     eyeStyle: 'confident' },
-        boy_zack:   { head: 'square',     iris: '#047857', iris2: '#022C22', nose: 'broad',  brow: 'bold',       outfit: 'jacket_orange',   mouth: 'grin',       eyeStyle: 'wide' },
-        boy_danish: { head: 'heart',      iris: '#0369A1', iris2: '#082F49', nose: 'button', brow: 'soft',       outfit: 'polo_teal',       mouth: 'smirk',      eyeStyle: 'confident' },
-        boy_amir:   { head: 'oval',       iris: '#78350F', iris2: '#271306', nose: 'broad',  brow: 'thick',      outfit: 'hoodie_red',      mouth: 'grin',       eyeStyle: 'round' },
-        boy_rayyan: { head: 'round',      iris: '#6D28D9', iris2: '#2E1065', nose: 'slim',   brow: 'gentle',     outfit: 'sweater_navy',    mouth: 'smile',      eyeStyle: 'happy_arc' },
-        girl_hana:  { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',   brow: 'pixar_soft', outfit: 'charcoal_crew',   mouth: 'pixar_cute', eyeStyle: 'doll' },
-        girl_sofia: { head: 'round_girl', iris: '#1E293B', iris2: '#020617', nose: 'cute',   brow: 'pixar_soft', outfit: 'jacket_orange',   mouth: 'pixar_sweet',eyeStyle: 'doll' },
-        girl_maya:  { head: 'soft_oval',  iris: '#78350F', iris2: '#271306', nose: 'petite', brow: 'gentle',     outfit: 'sweater_mustard', mouth: 'open_smile', eyeStyle: 'round' },
-        girl_aina:  { head: 'slender',    iris: '#047857', iris2: '#022C22', nose: 'slim_g', brow: 'arched',     outfit: 'cardigan_teal',   mouth: 'freckles',   eyeStyle: 'almond' },
-        girl_bella: { head: 'pixar_doll', iris: '#1D4ED8', iris2: '#172554', nose: 'cute',   brow: 'arched',     outfit: 'knit_collar_bow', mouth: 'poised',     eyeStyle: 'almond' },
-        girl_nadia: { head: 'round_girl', iris: '#9D174D', iris2: '#500724', nose: 'petite', brow: 'pixar_soft', outfit: 'blouse_sky',      mouth: 'pixar_sweet',eyeStyle: 'happy_arc' }
+        boy_leo:     { head: 'round',      iris: '#334155', iris2: '#090D16', nose: 'button', brow: 'thick',      outfit: 'hoodie_amber',    mouth: 'smile',      eyeStyle: 'round' },
+        boy_adam:    { head: 'oval',       iris: '#1D4ED8', iris2: '#172554', nose: 'slim',   brow: 'arched',     outfit: 'blazer_slate',    mouth: 'gentle',     eyeStyle: 'confident' },
+        boy_zack:    { head: 'square',     iris: '#047857', iris2: '#022C22', nose: 'broad',  brow: 'bold',       outfit: 'jacket_orange',   mouth: 'grin',       eyeStyle: 'wide' },
+        boy_danish:  { head: 'heart',      iris: '#0369A1', iris2: '#082F49', nose: 'button', brow: 'soft',       outfit: 'polo_teal',       mouth: 'smirk',      eyeStyle: 'confident' },
+        boy_amir:    { head: 'oval',       iris: '#78350F', iris2: '#271306', nose: 'broad',  brow: 'thick',      outfit: 'hoodie_red',      mouth: 'grin',       eyeStyle: 'round' },
+        boy_rayyan:  { head: 'round',      iris: '#6D28D9', iris2: '#2E1065', nose: 'slim',   brow: 'gentle',     outfit: 'sweater_navy',    mouth: 'smile',      eyeStyle: 'happy_arc' },
+        boy_harith:  { head: 'oval',       iris: '#B45309', iris2: '#451A03', nose: 'slim',   brow: 'arched',     outfit: 'prince_royal',    mouth: 'gentle',     eyeStyle: 'confident' },
+        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'button', brow: 'bold',       outfit: 'cyber_neon',      mouth: 'smirk',      eyeStyle: 'wide' },
+        boy_ryu:     { head: 'square',     iris: '#DC2626', iris2: '#7F1D1D', nose: 'broad',  brow: 'bold',       outfit: 'dragon_gold',     mouth: 'grin',       eyeStyle: 'confident' },
+        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',   brow: 'pixar_soft', outfit: 'charcoal_crew',   mouth: 'pixar_cute', eyeStyle: 'doll' },
+        girl_sofia:  { head: 'round_girl', iris: '#1E293B', iris2: '#020617', nose: 'cute',   brow: 'pixar_soft', outfit: 'jacket_orange',   mouth: 'pixar_sweet',eyeStyle: 'doll' },
+        girl_maya:   { head: 'soft_oval',  iris: '#78350F', iris2: '#271306', nose: 'petite', brow: 'gentle',     outfit: 'sweater_mustard', mouth: 'open_smile', eyeStyle: 'round' },
+        girl_aina:   { head: 'slender',    iris: '#047857', iris2: '#022C22', nose: 'slim_g', brow: 'arched',     outfit: 'cardigan_teal',   mouth: 'freckles',   eyeStyle: 'almond' },
+        girl_bella:  { head: 'pixar_doll', iris: '#1D4ED8', iris2: '#172554', nose: 'cute',   brow: 'arched',     outfit: 'knit_collar_bow', mouth: 'poised',     eyeStyle: 'almond' },
+        girl_nadia:  { head: 'round_girl', iris: '#9D174D', iris2: '#500724', nose: 'petite', brow: 'pixar_soft', outfit: 'blouse_sky',      mouth: 'pixar_sweet',eyeStyle: 'happy_arc' },
+        girl_alya:   { head: 'pixar_doll', iris: '#B45309', iris2: '#451A03', nose: 'cute',   brow: 'arched',     outfit: 'princess_gown',   mouth: 'pixar_sweet',eyeStyle: 'doll' },
+        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite', brow: 'pixar_soft', outfit: 'starlight_dress', mouth: 'pixar_cute', eyeStyle: 'almond' },
+        girl_aurora: { head: 'pixar_doll', iris: '#0284C7', iris2: '#0C4A6E', nose: 'cute',   brow: 'arched',     outfit: 'crystal_dress',   mouth: 'open_smile', eyeStyle: 'doll' }
       };
       const spec = charSpecs[charId] || (isGirl ? charSpecs.girl_hana : charSpecs.boy_leo);
 
-      let tudungTop = '#F9A8D4', tudungMid = '#EC4899', tudungDark = '#9D174D';
-      if (cfg.headwear === 'hw_tudung_blue') { tudungTop = '#7DD3FC'; tudungMid = '#0284C7'; tudungDark = '#075985'; }
-      if (cfg.headwear === 'hw_tudung_emerald') { tudungTop = '#6EE7B7'; tudungMid = '#059669'; tudungDark = '#065F46'; }
+      let tudungTop = '#F9A8D4', tudungMid = '#EC4899', tudungDark = '#9D174D', tudungTrim = '';
+      if (cfg.headwear === 'hw_tudung_blue')     { tudungTop = '#7DD3FC'; tudungMid = '#0284C7'; tudungDark = '#075985'; }
+      if (cfg.headwear === 'hw_tudung_emerald')  { tudungTop = '#6EE7B7'; tudungMid = '#059669'; tudungDark = '#065F46'; }
+      if (cfg.headwear === 'hw_tudung_lavender') { tudungTop = '#DDD6FE'; tudungMid = '#8B5CF6'; tudungDark = '#4C1D95'; }
+      if (cfg.headwear === 'hw_tudung_gold')     { tudungTop = '#FEF08A'; tudungMid = '#D97706'; tudungDark = '#78350F'; tudungTrim = '#FACC15'; }
 
       const outfitPalettes = {
         hoodie_amber:    ['#FDE047', '#F59E0B', '#B45309', '#FFFFFF'],
@@ -2802,6 +2839,9 @@
         polo_teal:       ['#2DD4BF', '#0D9488', '#115E59', '#CCFBF1'],
         blazer_slate:    ['#64748B', '#334155', '#0F172A', '#F8FAFC'],
         hoodie_red:      ['#F87171', '#DC2626', '#7F1D1D', '#FEF2F2'],
+        prince_royal:    ['#3B82F6', '#1D4ED8', '#1E3A8A', '#FACC15'],
+        cyber_neon:      ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
+        dragon_gold:     ['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A'],
         charcoal_crew:   ['#4B5563', '#27272A', '#09090B', '#F8FAFC'],
         knit_collar_bow: ['#93C5FD', '#3B82F6', '#1D4ED8', '#FFFFFF'],
         knit_pink:       ['#F472B6', '#DB2777', '#831843', '#FFFFFF'],
@@ -2809,7 +2849,9 @@
         cardigan_teal:   ['#34D399', '#059669', '#064E3B', '#ECFDF5'],
         sweater_mustard: ['#FBBF24', '#D97706', '#78350F', '#FEF3C7'],
         blouse_sky:      ['#7DD3FC', '#0284C7', '#075985', '#F0F9FF'],
-        gown_orange:     ['#FB923C', '#EA580C', '#9A3412', '#FFEDD5']
+        princess_gown:   ['#F9A8D4', '#EC4899', '#9D174D', '#FEF08A'],
+        starlight_dress: ['#C4B5FD', '#7C3AED', '#4C1D95', '#FDE047'],
+        crystal_dress:   ['#BAE6FD', '#0284C7', '#075985', '#FFFFFF']
       };
       const op = outfitPalettes[spec.outfit] || outfitPalettes.hoodie_amber;
 
@@ -2864,6 +2906,52 @@
         </defs>
       `;
 
+      // Dekorasi Latar Belakang Istimewa (Bintang, Awan, Istana, Lava, Aurora)
+      let bgDecorLayer = '';
+      if (cfg.bg === 'bg_galaxy' || cfg.bg === 'bg_aurora') {
+        bgDecorLayer = `
+          <circle cx="22" cy="24" r="1.4" fill="#FFFFFF" opacity="0.9"/>
+          <circle cx="76" cy="22" r="1.8" fill="#FEF08A" opacity="0.9"/>
+          <circle cx="18" cy="64" r="1.2" fill="#FFFFFF" opacity="0.75"/>
+          <circle cx="82" cy="60" r="1.5" fill="#FFFFFF" opacity="0.85"/>
+          <polygon points="73,31 74.5,34 78,34.5 75.5,37 76,40.5 73,38.8 70,40.5 70.5,37 68,34.5 71.5,34" fill="#FDE047" opacity="0.85"/>
+        `;
+      } else if (cfg.bg === 'bg_sakura') {
+        bgDecorLayer = `
+          <circle cx="22" cy="25" r="3" fill="#F472B6" opacity="0.65"/>
+          <circle cx="78" cy="28" r="2.6" fill="#EC4899" opacity="0.6"/>
+          <circle cx="20" cy="68" r="2.4" fill="#F472B6" opacity="0.6"/>
+          <circle cx="80" cy="66" r="3.2" fill="#EC4899" opacity="0.55"/>
+        `;
+      } else if (cfg.bg === 'bg_rainbow') {
+        bgDecorLayer = `
+          <path d="M 12 65 A 38 38 0 0 1 88 65" fill="none" stroke="#EF4444" stroke-width="3" opacity="0.45"/>
+          <path d="M 15 65 A 35 35 0 0 1 85 65" fill="none" stroke="#FACC15" stroke-width="3" opacity="0.55"/>
+          <path d="M 18 65 A 32 32 0 0 1 82 65" fill="none" stroke="#38BDF8" stroke-width="3" opacity="0.55"/>
+        `;
+      } else if (cfg.bg === 'bg_ocean') {
+        bgDecorLayer = `
+          <circle cx="22" cy="30" r="2.8" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65"/>
+          <circle cx="77" cy="26" r="3.5" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65"/>
+          <circle cx="75" cy="40" r="1.8" fill="#FFFFFF" opacity="0.6"/>
+        `;
+      } else if (cfg.bg === 'bg_lava') {
+        bgDecorLayer = `
+          <polygon points="10,92 28,48 46,92" fill="#7F1D1D" opacity="0.45"/>
+          <polygon points="56,92 76,44 92,92" fill="#991B1B" opacity="0.45"/>
+          <circle cx="26" cy="32" r="2" fill="#FACC15" opacity="0.8"/>
+          <circle cx="74" cy="28" r="2.2" fill="#FB923C" opacity="0.85"/>
+        `;
+      } else if (cfg.bg === 'bg_royal') {
+        bgDecorLayer = `
+          <rect x="14" y="42" width="10" height="45" fill="#F59E0B" opacity="0.32"/>
+          <polygon points="12,42 19,28 26,42" fill="#B45309" opacity="0.4"/>
+          <rect x="76" y="42" width="10" height="45" fill="#F59E0B" opacity="0.32"/>
+          <polygon points="74,42 81,28 88,42" fill="#B45309" opacity="0.4"/>
+          <polygon points="50,12 52,17 57,17.5 53,21 54,26 50,23.5 46,26 47,21 43,17.5 48,17" fill="#F59E0B" opacity="0.6"/>
+        `;
+      }
+
       let backHairLayer = '';
       if (hasTudung) {
         backHairLayer = `<path d="M 15 56 C 15 16, 85 16, 85 56 L 91 100 L 9 100 Z" fill="url(#${uid}_tudung)" filter="url(#${uid}_shadow)"/>`;
@@ -2888,10 +2976,40 @@
             <circle cx="50" cy="13" r="12.5" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
             <ellipse cx="47" cy="9.5" rx="5.5" ry="2.5" fill="${hairPal.shine}" opacity="0.5"/>
           `;
+        } else if (cfg.hair === 'hair_twin_tails') {
+          backHairLayer = `
+            <path d="M 22 30 C 10 38, 8 64, 14 82 C 18 85, 24 80, 24 68 L 26 35 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <path d="M 78 30 C 90 38, 92 64, 86 82 C 82 85, 76 80, 76 68 L 74 35 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <circle cx="21" cy="31" r="3.5" fill="#F43F5E"/>
+            <circle cx="79" cy="31" r="3.5" fill="#F43F5E"/>
+          `;
+        } else if (cfg.hair === 'hair_princess') {
+          backHairLayer = `
+            <path d="M 16 32 C 10 60, 12 92, 18 100 L 82 100 C 88 92, 90 60, 84 32 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <circle cx="50" cy="14" r="10" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
+            <path d="M 41 18 Q 50 22 59 18" fill="none" stroke="url(#${uid}_gold)" stroke-width="2.5"/>
+          `;
         }
       }
 
-      const backpackBack = accList.includes('acc_backpack') ? `<rect x="18" y="75" width="64" height="25" rx="10" fill="#334155" filter="url(#${uid}_shadow)"/>` : '';
+      // Aksesori Belakang (Beg Galas / Sayap Bidadari / Sayap Naga)
+      let backAccLayer = '';
+      if (accList.includes('acc_backpack')) {
+        backAccLayer += `<rect x="18" y="75" width="64" height="25" rx="10" fill="#334155" filter="url(#${uid}_shadow)"/>`;
+      }
+      if (accList.includes('acc_wings_angel')) {
+        backAccLayer += `
+          <path d="M 26 78 C 8 62, 6 42, 22 48 C 14 55, 16 68, 28 74 Z" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="1.5" filter="url(#${uid}_soft)"/>
+          <path d="M 74 78 C 92 62, 94 42, 78 48 C 86 55, 84 68, 72 74 Z" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="1.5" filter="url(#${uid}_soft)"/>
+        `;
+      }
+      if (accList.includes('acc_wings_dragon')) {
+        backAccLayer += `
+          <polygon points="28,78 6,54 14,44 22,54 24,42 32,62" fill="#DC2626" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_soft)"/>
+          <polygon points="72,78 94,54 86,44 78,54 76,42 68,62" fill="#DC2626" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_soft)"/>
+        `;
+      }
+
       let outfitDetail = '';
       if (spec.outfit === 'charcoal_crew') {
         outfitDetail = `
@@ -2913,13 +3031,21 @@
           <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
           <path d="M 44.5 66 Q 50 73 55.5 66 L 55.5 70 Q 50 76 44.5 70 Z" fill="#8C4A27" opacity="0.38"/>
         `;
-      } else if (spec.outfit === 'turtleneck_cream') {
+      } else if (spec.outfit === 'prince_royal' || spec.outfit === 'dragon_gold' || spec.outfit === 'cyber_neon') {
         outfitDetail = `
-          <path d="M 22 100 C 24 81, 35 75, 50 75 C 65 75, 76 81, 78 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
-          <rect x="42" y="65" width="16" height="14" rx="6" fill="url(#${uid}_outfit)" filter="url(#${uid}_soft)"/>
-          <line x1="45" y1="67" x2="45" y2="77" stroke="#D97706" stroke-width="1.2" opacity="0.5"/>
-          <line x1="50" y1="67" x2="50" y2="77" stroke="#D97706" stroke-width="1.2" opacity="0.5"/>
-          <line x1="55" y1="67" x2="55" y2="77" stroke="#D97706" stroke-width="1.2" opacity="0.5"/>
+          <path d="M 19 100 C 21 81, 34 75, 50 75 C 66 75, 79 81, 81 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 42 75 L 50 98 L 58 75 Z" fill="${op[3]}" opacity="0.9"/>
+          <rect x="48.5" y="75" width="3" height="24" fill="url(#${uid}_gold)"/>
+          <ellipse cx="27" cy="82" rx="6" ry="3" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <ellipse cx="73" cy="82" rx="6" ry="3" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (spec.outfit === 'princess_gown' || spec.outfit === 'starlight_dress' || spec.outfit === 'crystal_dress') {
+        outfitDetail = `
+          <path d="M 21 100 C 23 81, 35 75, 50 75 C 65 75, 77 81, 79 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 33 76 Q 50 86 67 76" fill="none" stroke="${op[3]}" stroke-width="2.6" stroke-linecap="round"/>
+          <polygon points="50,82 52,86 56,86.5 53,89.5 53.8,93.5 50,91.5 46.2,93.5 47,89.5 44,86.5 48,86" fill="${op[3]}" filter="url(#${uid}_soft)"/>
+          <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
         `;
       } else if (spec.outfit === 'jacket_orange' || spec.outfit === 'blazer_slate') {
         outfitDetail = `
@@ -3116,7 +3242,7 @@
       if (hasTudung) {
         frontHairLayer = `
           <path d="M 22.5 45 C 22.5 20, 77.5 20, 77.5 45 C 77.5 31, 63 27, 50 27 C 37 27, 22.5 31, 22.5 45 Z" fill="url(#${uid}_tudung)"/>
-          <path d="M 33 24 Q 50 20 67 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+          <path d="M 33 24 Q 50 20 67 24" fill="none" stroke="${tudungTrim || '#FFFFFF'}" stroke-width="2" stroke-linecap="round" opacity="${tudungTrim ? '0.9' : '0.45'}"/>
         `;
       } else if (!isGirl) {
         if (cfg.hair === 'hair_quiff') {
@@ -3135,6 +3261,17 @@
           frontHairLayer = `
             <path d="M 22 43 L 24 23 L 34 28 L 41 14 L 49 25 L 58 14 L 65 26 L 75 21 L 78 43 C 68 32, 32 32, 22 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
             <path d="M 34 25 Q 50 21 66 25" fill="none" stroke="${hairPal.shine}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+          `;
+        } else if (cfg.hair === 'hair_spiky') {
+          frontHairLayer = `
+            <polygon points="22,42 21,18 33,26 42,10 50,24 59,10 67,26 79,18 78,42 66,31 50,33 34,31" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <polygon points="42,10 46,23 50,24" fill="${hairPal.shine}" opacity="0.45"/>
+          `;
+        } else if (cfg.hair === 'hair_samurai') {
+          frontHairLayer = `
+            <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
+            <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
           `;
         } else {
           frontHairLayer = `
@@ -3163,6 +3300,7 @@
 
       const tudungFrontLayer = hasTudung ? `
         <path d="M 20 55 C 20 80, 34 95, 50 97 C 66 95, 80 80, 80 55 C 74 68, 63 74, 50 74 C 37 74, 26 68, 20 55 Z" fill="url(#${uid}_tudung)" filter="url(#${uid}_shadow)"/>
+        ${tudungTrim ? `<path d="M 23 58 C 26 78, 37 91, 50 93 C 63 91, 74 78, 77 58" fill="none" stroke="${tudungTrim}" stroke-width="1.8" stroke-dasharray="3 2"/>` : ''}
         <circle cx="50" cy="78" r="3.4" fill="url(#${uid}_gold)"/>
       ` : '';
 
@@ -3187,6 +3325,13 @@
           <line x1="48" y1="45.5" x2="52" y2="45.5" stroke="#0F172A" stroke-width="2.8"/>
         `;
       }
+      if (accList.includes('acc_star_glasses')) {
+        accLayer += `
+          <polygon points="37.5,38 40.2,43.5 46.3,44.3 41.9,48.5 43,54.5 37.5,51.7 32,54.5 33.1,48.5 28.7,44.3 34.8,43.5" fill="#EC4899" stroke="#FACC15" stroke-width="1.4" opacity="0.88"/>
+          <polygon points="62.5,38 65.2,43.5 71.3,44.3 66.9,48.5 68,54.5 62.5,51.7 57,54.5 58.1,48.5 53.7,44.3 59.8,43.5" fill="#EC4899" stroke="#FACC15" stroke-width="1.4" opacity="0.88"/>
+          <line x1="46" y1="46" x2="54" y2="46" stroke="#FACC15" stroke-width="2.4"/>
+        `;
+      }
       if (accList.includes('acc_headphones')) {
         accLayer += `
           <path d="M 21 48 C 21 15, 79 15, 79 48" fill="none" stroke="#F97316" stroke-width="4.2" stroke-linecap="round" filter="url(#${uid}_soft)"/>
@@ -3208,9 +3353,23 @@
           <circle cx="50" cy="82" r="3.5" fill="#FBCFE8"/>
         `;
       }
+      if (accList.includes('acc_scarf_red')) {
+        accLayer += `
+          <path d="M 35 73 Q 50 81 65 73 L 67 79 Q 50 87 33 79 Z" fill="#DC2626" filter="url(#${uid}_soft)"/>
+          <polygon points="55,78 63,78 66,95 57,93" fill="#B91C1C" filter="url(#${uid}_soft)"/>
+        `;
+      }
       if (accList.includes('acc_pin_star')) {
         accLayer += `
           <polygon points="63,84 64.6,87.4 68.3,87.9 65.6,90.5 66.3,94.2 63,92.4 59.7,94.2 60.4,90.5 57.7,87.9 61.4,87.4" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+        `;
+      }
+      if (accList.includes('acc_medal_gold')) {
+        accLayer += `
+          <polygon points="43,75 48,87 50,87 46,75" fill="#2563EB"/>
+          <polygon points="57,75 52,87 50,87 54,75" fill="#DC2626"/>
+          <circle cx="50" cy="89" r="5.5" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" filter="url(#${uid}_soft)"/>
+          <text x="50" y="91.5" text-anchor="middle" font-size="6.5" font-weight="900" fill="#78350F">1</text>
         `;
       }
 
@@ -3240,11 +3399,37 @@
           <polygon points="74,31 69.5,13 56.5,25" fill="#1E293B" filter="url(#${uid}_shadow)"/>
           <polygon points="70.5,28 67.8,17.5 59.5,25" fill="#FB7185"/>
         `;
+      } else if (cfg.headwear === 'hw_bunny_ears') {
+        hatLayer = `
+          <ellipse cx="34" cy="17" rx="5" ry="13" transform="rotate(-12 34 17)" fill="#FFFFFF" stroke="#F472B6" stroke-width="1.8" filter="url(#${uid}_soft)"/>
+          <ellipse cx="34" cy="17" rx="2.4" ry="8" transform="rotate(-12 34 17)" fill="#FBCFE8"/>
+          <ellipse cx="66" cy="17" rx="5" ry="13" transform="rotate(12 66 17)" fill="#FFFFFF" stroke="#F472B6" stroke-width="1.8" filter="url(#${uid}_soft)"/>
+          <ellipse cx="66" cy="17" rx="2.4" ry="8" transform="rotate(12 66 17)" fill="#FBCFE8"/>
+        `;
+      } else if (cfg.headwear === 'hw_wizard') {
+        hatLayer = `
+          <ellipse cx="50" cy="30" rx="32" ry="6" fill="#4C1D95" filter="url(#${uid}_shadow)"/>
+          <polygon points="26,30 50,6 74,30" fill="#6D28D9" filter="url(#${uid}_shadow)"/>
+          <polygon points="50,15 51.6,18.5 55.4,19 52.6,21.6 53.3,25.4 50,23.6 46.7,25.4 47.4,21.6 44.6,19 48.4,18.5" fill="#FACC15"/>
+        `;
+      } else if (cfg.headwear === 'hw_ninja') {
+        hatLayer = `
+          <rect x="22" y="27" width="56" height="7" rx="3" fill="#1E293B" filter="url(#${uid}_soft)"/>
+          <rect x="38" y="26.5" width="24" height="8" rx="2" fill="#94A3B8" stroke="#334155" stroke-width="1"/>
+          <circle cx="50" cy="30.5" r="2.2" fill="#EF4444"/>
+        `;
       } else if (cfg.headwear === 'hw_grad') {
         hatLayer = `
           <polygon points="50,9 16,22 50,34 84,22" fill="#1E293B" filter="url(#${uid}_shadow)"/>
           <rect x="33" y="24" width="34" height="8" fill="#0F172A"/>
           <line x1="76" y1="23" x2="79" y2="39" stroke="url(#${uid}_gold)" stroke-width="2.6" stroke-linecap="round"/>
+        `;
+      } else if (cfg.headwear === 'hw_tiara') {
+        hatLayer = `
+          <path d="M 30 28 Q 50 15 70 28 L 65 29 Q 50 22 35 29 Z" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <polygon points="50,14 53,21 50,25 47,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.8"/>
+          <circle cx="40" cy="23" r="1.8" fill="#F43F5E"/>
+          <circle cx="60" cy="23" r="1.8" fill="#F43F5E"/>
         `;
       } else if (cfg.headwear === 'hw_crown') {
         hatLayer = `
@@ -3252,6 +3437,11 @@
           <circle cx="50" cy="21" r="2.6" fill="#E11D48"/>
           <circle cx="38" cy="23" r="1.9" fill="#38BDF8"/>
           <circle cx="62" cy="23" r="1.9" fill="#38BDF8"/>
+        `;
+      } else if (cfg.headwear === 'hw_halo') {
+        hatLayer = `
+          <ellipse cx="50" cy="13" rx="18" ry="4.5" fill="none" stroke="#FEF08A" stroke-width="3.5" filter="url(#${uid}_soft)"/>
+          <ellipse cx="50" cy="13" rx="18" ry="4.5" fill="none" stroke="#F59E0B" stroke-width="1.2"/>
         `;
       }
 
@@ -3263,8 +3453,9 @@
           </clipPath>
           <g clip-path="url(#${uid}_clip)">
             <rect x="8" y="8" width="84" height="84" fill="url(#${uid}_bg)"/>
+            ${bgDecorLayer}
             ${backHairLayer}
-            ${backpackBack}
+            ${backAccLayer}
             ${outfitDetail}
             ${backpackStraps}
             ${earsLayer}
@@ -4553,40 +4744,69 @@
       startQuestionLiveTimer('blitz');
     };
 
+    function calculateBalancedBlitzReward(diffKey, elapsedSec, nextStreak) {
+      const diffScale = {
+        basic:    { mult: 0.45, streakStep: 5, label: 'Asas Terus' },
+        jari_all: { mult: 0.80, streakStep: 3, label: 'Jari Formula' },
+        friends:  { mult: 0.85, streakStep: 3, label: 'Formula 5 & 10' },
+        twodigit: { mult: 0.95, streakStep: 3, label: 'Dua Digit' },
+        all:      { mult: 1.00, streakStep: 3, label: 'Campur Semua' },
+        hundreds: { mult: 1.15, streakStep: 3, label: 'Ratus & Ribu' }
+      };
+      const cfg = diffScale[diffKey] || diffScale.jari_all;
+      const raw = calculateSpeedBonusPoints(elapsedSec);
+      const scaledPts = Math.max(2, Math.round(raw.total * cfg.mult));
+      const earnedCoin = (nextStreak > 0 && nextStreak % cfg.streakStep === 0) ? 1 : 0;
+      const remainingToCoin = cfg.streakStep - (nextStreak % cfg.streakStep);
+      return {
+        pts: scaledPts,
+        coin: earnedCoin,
+        speedLabel: raw.label,
+        streakStep: cfg.streakStep,
+        remainingToCoin,
+        bonus: raw.bonus
+      };
+    }
+
     function checkBlitzAnswer(chosen, btnEl) {
       const elapsedSec = stopQuestionLiveTimer('blitz');
       const fb = document.getElementById('blitz-feedback');
       const allBtns = document.querySelectorAll('#blitz-options-grid button');
       allBtns.forEach(b => b.disabled = true);
+      const diffKey = document.getElementById('blitz-difficulty')?.value || 'jari_all';
 
       if (chosen === currentBlitzAnswer) {
         playCheer();
-        const reward = calculateSpeedBonusPoints(elapsedSec);
         blitzStreak += 1;
+        const bw = calculateBalancedBlitzReward(diffKey, elapsedSec, blitzStreak);
 
         let blitzStreakPts = 0;
         let blitzStreakCoins = 0;
         let blitzStreakTag = '';
         if (blitzStreak > 0 && blitzStreak % 10 === 0) {
           const tier = blitzStreak / 10;
-          blitzStreakPts = 25 * tier;
-          blitzStreakCoins = 3 * tier;
+          blitzStreakPts = diffKey === 'basic' ? 10 : (20 * tier);
+          blitzStreakCoins = diffKey === 'basic' ? 1 : (2 * tier);
           blitzStreakTag = `<br><span class="inline-block mt-1 bg-amber-300 text-amber-950 px-2.5 py-0.5 rounded-full text-[11px] font-black border border-amber-600">🔥 BONUS ${blitzStreak} BERTURUT-TURUT: +${blitzStreakPts} Markah & +${blitzStreakCoins} Coin!</span>`;
           triggerConfetti();
         } else if (blitzStreak % 5 === 0) {
           triggerConfetti();
         }
 
-        const totalBlitzPts = reward.total + blitzStreakPts;
-        const totalBlitzCoins = 1 + blitzStreakCoins;
+        const totalBlitzPts = bw.pts + blitzStreakPts;
+        const totalBlitzCoins = bw.coin + blitzStreakCoins;
         blitzScore += totalBlitzPts;
+
+        const coinNote = bw.coin > 0
+          ? `& +${bw.coin} Coin ${COIN_ICON_HTML} (Syarat ${bw.streakStep} berturut tercapai!)`
+          : `(Lagi ${bw.remainingToCoin} berturut untuk +1 Coin ${COIN_ICON_HTML})`;
 
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}${blitzStreakTag}`;
+        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${bw.pts} Markah ${coinNote}${blitzStreakTag}`;
         fb.innerHTML = bOkHtml;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(bOkHtml, (reward.bonus > 0 || blitzStreakPts > 0) ? 'bonus' : 'success');
+        showQuizInstantPopup(bOkHtml, (bw.bonus > 0 || totalBlitzCoins > 0) ? 'bonus' : 'success');
 
         if (currentPlayer) {
           addPlayerReward(totalBlitzCoins, totalBlitzPts);
@@ -5317,8 +5537,19 @@
       const previewEl = document.getElementById('avatar-studio-preview');
       if (previewEl) previewEl.innerHTML = renderRealisticAvatarSVG(cfg, "w-full h-full");
 
+      const allCatalogIds = [
+        ...AVATAR_STUDIO_CATALOG.face,
+        ...AVATAR_STUDIO_CATALOG.hair,
+        ...AVATAR_STUDIO_CATALOG.headwear,
+        ...AVATAR_STUDIO_CATALOG.accessory,
+        ...AVATAR_STUDIO_CATALOG.bg,
+        ...AVATAR_STUDIO_CATALOG.frame
+      ].filter(it => it.cost > 0);
+      const ownedPaidCount = allCatalogIds.filter(it => currentPlayer.ownedAvatarItems.includes(it.id)).length;
       const captionEl = document.getElementById('avatar-studio-caption');
-      if (captionEl) captionEl.innerText = `Profil ${currentPlayer.name} (${cfg.gender === 'girl' ? 'Perempuan' : 'Lelaki'})`;
+      if (captionEl) {
+        captionEl.innerHTML = `Profil <b>${currentPlayer.name}</b> (${cfg.gender === 'girl' ? 'Perempuan' : 'Lelaki'}) • <span class="text-indigo-700">🎒 Koleksi Kedai: ${ownedPaidCount}/${allCatalogIds.length} Item</span>`;
+      }
 
       const boyBtn = document.getElementById('btn-gender-boy');
       const girlBtn = document.getElementById('btn-gender-girl');
@@ -5394,8 +5625,16 @@
           }
         }
 
+        const tierCardStyles = {
+          Biasa:    'bg-white border-slate-200',
+          Comel:    'bg-pink-50/40 border-pink-200',
+          Istimewa: 'bg-sky-50/50 border-sky-300',
+          Gah:      'bg-amber-50/60 border-amber-300',
+          Epik:     'bg-orange-50/70 border-orange-400',
+          Legenda:  'bg-gradient-to-b from-purple-50 to-amber-50 border-purple-400 shadow-xs'
+        };
         const card = document.createElement('div');
-        card.className = `flex flex-col items-center justify-between rounded-2xl p-2 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : 'bg-white border-slate-200'}`;
+        card.className = `flex flex-col items-center justify-between rounded-2xl p-2 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : (tierCardStyles[item.tier] || 'bg-white border-slate-200')}`;
 
         const thumb = document.createElement('div');
         thumb.className = 'w-16 h-16 rounded-2xl mb-1 relative flex items-center justify-center';
@@ -8617,7 +8856,7 @@
     window.createArenaDuelRoom = async function(invitedOpponent = null) {
       if (!currentPlayer) return;
       playClick();
-      const diffKey = document.getElementById('arena-difficulty-select')?.value || 'lvl23';
+      const diffKey = document.getElementById('arena-difficulty-select')?.value || 'jari_all';
       const roomCode = String(Math.floor(1000 + Math.random() * 9000));
       const questions = generateArenaQuestionBank(diffKey, 35);
       const myId = currentPlayer.accountId || currentPlayer.key;
@@ -9144,28 +9383,42 @@
       });
     }
 
-    function calculateArenaQuestionReward(elapsedSec, streakNum, isMarathonTurbo) {
-      let basePts = 10;
-      let speedBonus = 0;
+    const ARENA_DIFFICULTY_REWARDS = {
+      lvl1:     { label: '🖐️ Jari Asas (0.7x)',    ptsMult: 0.7, botCoinCap: 2, pvpRankCoins: [6, 4, 2, 1] },
+      jari_all: { label: '🖐️ Jari Formula (1.0x)', ptsMult: 1.0, botCoinCap: 3, pvpRankCoins: [8, 5, 3, 2] },
+      lvl23:    { label: '🧮 Sempoa 5/10 (1.25x)', ptsMult: 1.25, botCoinCap: 4, pvpRankCoins: [10, 6, 4, 2] },
+      lvl45:    { label: '🚀 Darab/Bahagi (1.5x)', ptsMult: 1.5, botCoinCap: 5, pvpRankCoins: [12, 8, 5, 3] }
+    };
+
+    function getArenaDifficultyConfig(diffKey) {
+      return ARENA_DIFFICULTY_REWARDS[diffKey] || ARENA_DIFFICULTY_REWARDS.jari_all;
+    }
+
+    function calculateArenaQuestionReward(elapsedSec, streakNum, isMarathonTurbo, diffKey = 'jari_all') {
+      const dCfg = getArenaDifficultyConfig(diffKey);
+      let rawBase = 10;
+      let rawSpeedBonus = 0;
       let speedLabel = '✅ MARKAH PENUH';
       if (elapsedSec < 2.0) {
-        speedBonus = 10;
-        speedLabel = '⚡ KILAT (<2s) +10 Bonus';
+        rawSpeedBonus = 10;
+        speedLabel = '⚡ KILAT (<2s)';
       } else if (elapsedSec < 5.0) {
-        speedBonus = 5;
-        speedLabel = '🚀 PANTAS (<5s) +5 Bonus';
+        rawSpeedBonus = 5;
+        speedLabel = '🚀 PANTAS (<5s)';
       } else if (elapsedSec >= 9.0) {
-        basePts = 5;
-        speedLabel = '🐢 PERLAHAN (5 Markah)';
+        rawBase = 5;
+        speedLabel = '🐢 PERLAHAN';
       }
-      const turboBonus = isMarathonTurbo ? 5 : 0;
-      const streakBonus = (streakNum > 0 && streakNum % 5 === 0) ? 10 : 0;
+      const basePts = Math.round(rawBase * dCfg.ptsMult);
+      const speedBonus = Math.round((rawSpeedBonus + (isMarathonTurbo ? 5 : 0)) * dCfg.ptsMult);
+      const streakBonus = (streakNum > 0 && streakNum % 5 === 0) ? Math.round(10 * dCfg.ptsMult) : 0;
       return {
-        total: basePts + speedBonus + turboBonus + streakBonus,
+        total: basePts + speedBonus + streakBonus,
         basePts,
-        speedBonus: speedBonus + turboBonus,
+        speedBonus,
         streakBonus,
-        speedLabel
+        speedLabel,
+        diffLabel: dCfg.label
       };
     }
 
@@ -9178,6 +9431,7 @@
       allBtns.forEach(b => b.disabled = true);
       const fb = document.getElementById('arena-turn-feedback');
       const mode = activeArenaRoomData?.mode || 'kuiz_kilat';
+      const diffKey = activeArenaRoomData?.difficulty || 'jari_all';
       const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
       arenaAnsweredCount++;
       arenaTotalAnswerSec += elapsedSec;
@@ -9187,7 +9441,7 @@
         arenaStreak++;
         arenaCorrectCount++;
         const hasTurbo = mode === 'marathon_gp' && arenaStreak >= 5;
-        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, hasTurbo);
+        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, hasTurbo, diffKey);
         arenaSpeedBonusEarned += rw.speedBonus;
         arenaStreakBonusEarned += rw.streakBonus;
         const ptsGain = rw.total;
@@ -9198,7 +9452,7 @@
           const streakNote = rw.streakBonus > 0 ? ` • 🔥 ${arenaStreak} Berturut (+${rw.streakBonus})` : '';
           fb.innerText = hasTurbo
             ? `🔥 TURBO API! Lompat 2 Langkah (+${ptsGain} Markah • ${elapsedSec.toFixed(1)}s)${streakNote}`
-            : `${rw.speedLabel} (${elapsedSec.toFixed(1)}s) → +${ptsGain} Markah${streakNote}`;
+            : `${rw.speedLabel} (${elapsedSec.toFixed(1)}s) → +${ptsGain} Markah [${rw.diffLabel}]${streakNote}`;
           fb.classList.remove('hidden');
         }
         arenaQIndex++;
@@ -9254,12 +9508,14 @@
       if (fb) fb.classList.add('hidden');
       document.getElementById('arena-anzan-input').value = '';
 
+      const diffKey = activeArenaRoomData?.difficulty || 'jari_all';
+      const maxDigitVal = diffKey === 'lvl45' ? 49 : (diffKey === 'lvl23' ? 19 : 9);
       const count = Math.min(7, 2 + arenaAnzanRound);
       const speed = Math.max(350, 950 - arenaAnzanRound * 90);
       const seq = [];
       let sum = 0;
       for (let i = 0; i < count; i++) {
-        const val = Math.floor(Math.random() * 9) + 1;
+        const val = Math.floor(Math.random() * maxDigitVal) + 1;
         seq.push(val);
         sum += val;
       }
@@ -9292,6 +9548,7 @@
       e.preventDefault();
       if (arenaAnzanFlashing) return;
       const val = parseInt(document.getElementById('arena-anzan-input').value, 10);
+      const diffKey = activeArenaRoomData?.difficulty || 'jari_all';
       const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
       const form = document.getElementById('arena-anzan-form');
       const fb = document.getElementById('arena-turn-feedback');
@@ -9303,13 +9560,13 @@
         playCheer();
         arenaCorrectCount++;
         arenaStreak++;
-        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, arenaAnzanRound >= 3);
+        const rw = calculateArenaQuestionReward(elapsedSec, arenaStreak, arenaAnzanRound >= 3, diffKey);
         arenaSpeedBonusEarned += rw.speedBonus;
         arenaStreakBonusEarned += rw.streakBonus;
-        const ptsGain = rw.total + 5;
+        const ptsGain = rw.total + Math.round(5 * getArenaDifficultyConfig(diffKey).ptsMult);
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
-          fb.innerText = `⚡ Tepat (${arenaAnzanAnswer}) dalam ${elapsedSec.toFixed(1)}s! +${ptsGain} Markah!`;
+          fb.innerText = `⚡ Tepat (${arenaAnzanAnswer}) dalam ${elapsedSec.toFixed(1)}s! +${ptsGain} Markah [${rw.diffLabel}]!`;
           fb.classList.remove('hidden');
         }
         await syncMyArenaProgress(ptsGain, Math.min(10, arenaAnzanRound), arenaAnzanRound >= 3, false, false);
@@ -9444,27 +9701,24 @@
       const myRankIdx = plist.findIndex(p => p.id === myId);
       const myPlayerObj = plist.find(p => p.id === myId) || { score: 0 };
       const sumEl = document.getElementById('arena-result-summary');
+      const diffKey = activeArenaRoomData?.difficulty || 'jari_all';
+      const dCfg = getArenaDifficultyConfig(diffKey);
 
+      const humanPlayers = plist.filter(p => !p.isBot);
+      const isPvpMatch = humanPlayers.length >= 2;
       const avgSec = arenaCorrectCount > 0 ? (arenaTotalAnswerSec / arenaCorrectCount) : 0;
       const inMatchScore = myPlayerObj.score || 0;
 
-      // Pengiraan Coin berdasarkan bilangan soalan betul + kelajuan purata + bonus rentetan
-      let questionCoins = arenaCorrectCount; // 1 Coin bagi setiap jawapan betul
-      let speedCoinBonus = 0;
-      if (arenaCorrectCount >= 3) {
-        if (avgSec > 0 && avgSec < 2.5) speedCoinBonus = 3;
-        else if (avgSec > 0 && avgSec < 5.0) speedCoinBonus = 2;
-        else if (avgSec > 0 && avgSec < 8.0) speedCoinBonus = 1;
-      }
-      const streakCoinBonus = Math.floor(arenaStreakBonusEarned / 10);
+      // Nisbah kelayakan berdasarkan bilangan soalan dijawab betul (minimum 5 jawapan betul untuk ganjaran penuh)
+      const completionRatio = Math.min(1, arenaCorrectCount / 5);
 
       let rankPtsBonus = 0;
-      let rankCoinBonus = 0;
+      let baseMatchCoinCap = 0;
       let rankHeadline = '';
 
       if (arenaCorrectCount === 0) {
         rankPtsBonus = 0;
-        rankCoinBonus = 0;
+        baseMatchCoinCap = 0;
         rankHeadline = 'Tiada soalan dijawab betul kali ini. Cuba lagi!';
       } else if (isTeamMode) {
         const redPts = plist.filter(p => p.team === 'red').reduce((s, p) => s + (p.score || 0), 0);
@@ -9473,47 +9727,59 @@
         const teamWon = (myTeam === 'red' && redPts > bluePts) || (myTeam === 'blue' && bluePts > redPts);
         if (teamWon) {
           triggerConfetti();
-          rankPtsBonus = 20;
-          rankCoinBonus = 2;
+          rankPtsBonus = Math.round(15 * dCfg.ptsMult * completionRatio);
+          baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[0] : dCfg.botCoinCap;
           rankHeadline = `🏆 Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang (${redPts} vs ${bluePts})!`;
         } else {
-          rankPtsBonus = 5;
-          rankCoinBonus = 0;
+          rankPtsBonus = Math.round(5 * dCfg.ptsMult * completionRatio);
+          baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[2] : Math.max(1, dCfg.botCoinCap - 1);
           rankHeadline = `🤝 Skor Pasukan: Merah ${redPts} vs Biru ${bluePts}`;
         }
       } else if (myRankIdx === 0) {
         triggerConfetti();
-        rankPtsBonus = 25;
-        rankCoinBonus = 3;
+        rankPtsBonus = Math.round(20 * dCfg.ptsMult * completionRatio);
+        baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[0] : dCfg.botCoinCap;
         rankHeadline = '🥇 Juara #1 Pentas Podium!';
       } else if (myRankIdx === 1) {
-        rankPtsBonus = 15;
-        rankCoinBonus = 2;
+        rankPtsBonus = Math.round(12 * dCfg.ptsMult * completionRatio);
+        baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[1] : Math.max(1, dCfg.botCoinCap - 1);
         rankHeadline = '🥈 Naib Juara #2 Pentas Podium!';
       } else if (myRankIdx === 2) {
-        rankPtsBonus = 8;
-        rankCoinBonus = 1;
+        rankPtsBonus = Math.round(6 * dCfg.ptsMult * completionRatio);
+        baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[2] : Math.max(1, dCfg.botCoinCap - 2);
         rankHeadline = '🥉 Tempat Ke-3 Pentas Podium!';
       } else {
         rankPtsBonus = 0;
-        rankCoinBonus = 0;
+        baseMatchCoinCap = isPvpMatch ? dCfg.pvpRankCoins[3] : 1;
         rankHeadline = `Kedudukan #${Math.max(1, myRankIdx + 1)}`;
       }
 
+      // Bonus +1 Coin jika purata jawapan pantas (< 4.0s) dan sekurang-kurangnya 5 soalan betul
+      const speedCoinExtra = (arenaCorrectCount >= 5 && avgSec > 0 && avgSec < 4.0) ? 1 : 0;
+
       const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus);
-      const finalTotalCoins = arenaCorrectCount === 0 ? 0 : (questionCoins + speedCoinBonus + streakCoinBonus + rankCoinBonus);
+      const finalTotalCoins = arenaCorrectCount === 0
+        ? 0
+        : Math.max(1, Math.round(baseMatchCoinCap * completionRatio) + speedCoinExtra);
 
       playCheer();
       if (sumEl) {
         const avgLabel = arenaCorrectCount > 0 ? `${avgSec.toFixed(1)}s/soalan` : '-';
+        const matchTypeLabel = isPvpMatch
+          ? `⚔️ Perlawanan Pemain Sebenar (${humanPlayers.length} Pemain)`
+          : '🤖 Latihan Bot (Had Coin Seimbang)';
         sumEl.innerHTML = `
           <div class="text-xs sm:text-sm font-black text-amber-300 mb-1">${rankHeadline}</div>
+          <div class="flex flex-wrap justify-center gap-1 mb-1">
+            <span class="text-[10px] font-black bg-white/15 text-sky-200 px-2 py-0.5 rounded-full">${dCfg.label}</span>
+            <span class="text-[10px] font-black bg-white/15 text-amber-200 px-2 py-0.5 rounded-full">${matchTypeLabel}</span>
+          </div>
           <div class="text-[11px] font-bold text-white/90 space-y-0.5">
             <div>✅ Jawapan Betul: <b>${arenaCorrectCount}/${Math.max(arenaAnsweredCount, arenaCorrectCount)}</b> • ⚡ Purata Masa: <b>${avgLabel}</b></div>
-            <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> (Bonus Laju: +${arenaSpeedBonusEarned}, Bonus Berturut: +${arenaStreakBonusEarned}) + Bonus Podium: <b>+${rankPtsBonus}</b></div>
+            <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> + Bonus Podium: <b>+${rankPtsBonus}</b> = <b>+${finalTotalPoints} Markah</b></div>
             <div class="pt-1 text-xs font-black text-emerald-300">
-              Jumlah Diterima: +${finalTotalPoints} Markah & +${finalTotalCoins} Coin ${COIN_ICON_HTML}
-              <span class="block text-[10px] font-bold text-amber-200/90">(${questionCoins} Coin Soalan + ${speedCoinBonus} Coin Laju + ${streakCoinBonus} Coin Berturut + ${rankCoinBonus} Coin Podium)</span>
+              Ganjaran Coin Diterima: +${finalTotalCoins} Coin ${COIN_ICON_HTML}
+              <span class="block text-[10px] font-bold text-amber-200/90">(${Math.round(baseMatchCoinCap * completionRatio)} Coin Kedudukan & Tahap${speedCoinExtra > 0 ? ' + 1 Coin Pantas' : ''})</span>
             </div>
           </div>
         `;
@@ -9778,7 +10044,9 @@
         playCheer();
         triggerConfetti();
         const reward = calculateAnzanTotalWithSpeed(flashAnzanBasePoints, elapsedSec);
-        const coinsEarned = flashAnzanBasePoints >= 35 ? 3 : 2;
+        const fLvlVal = document.getElementById('flash-level')?.value || '1d';
+        const fCntVal = parseInt(document.getElementById('flash-count')?.value, 10) || 5;
+        const coinsEarned = (fLvlVal === '1d' || fCntVal < 5) ? 0 : (fLvlVal === '2d' ? 1 : 2);
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🧠 Hebat Master Anzan (${elapsedSec.toFixed(1)}s)! Jawapan <b>${flashAnzanAnswer.toLocaleString()}</b> tepat!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqStr})</span>`;
         if (currentPlayer) {
@@ -10232,7 +10500,9 @@
         playCheer();
         triggerConfetti();
         const reward = calculateAnzanTotalWithSpeed(dictAnzanBasePoints, elapsedSec);
-        const coinsEarned = dictAnzanBasePoints >= 35 ? 3 : 2;
+        const dLvlVal = document.getElementById('dict-level')?.value || '1d';
+        const dCntVal = parseInt(document.getElementById('dict-count')?.value, 10) || 4;
+        const coinsEarned = (dLvlVal === '1d' || dCntVal < 5) ? 0 : (dLvlVal === '2d' ? 1 : 2);
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🎉 Tepat (${elapsedSec.toFixed(1)}s)! Pendengaran & kiraan minda anda sangat tajam (<b>${dictCorrectAnswer.toLocaleString()}</b>)!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqText})</span>`;
         if (currentPlayer) {

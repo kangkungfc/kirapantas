@@ -142,7 +142,7 @@
         <h1 id="login-app-title" class="text-2xl sm:text-3xl font-bold text-amber-900">Jari & Abakus Pintar</h1>
         <p id="login-app-subtitle" class="text-xs sm:text-sm font-bold text-slate-500 mt-1 mb-5">Platform Belajar Kira Pantas Chisanbop & Soroban</p>
 
-        <form onsubmit="handlePlayerLogin(event)" class="space-y-3 text-left">
+        <form onsubmit="event.preventDefault()" class="space-y-3 text-left">
           <div>
             <label id="lbl-login-name" class="block text-xs font-black text-slate-700 mb-1">Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
             <input id="input-player-name" type="text" required minlength="2" maxlength="25" placeholder="Contoh: Aiman / aiman_01 / Siti Nur" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
@@ -155,14 +155,15 @@
               <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan yang ditaip</span>
             </label>
           </div>
-          <div>
-            <label id="lbl-login-pin" class="block text-xs font-black text-slate-700 mb-1">PIN Pemulihan 4-Digit <span class="text-slate-400 font-bold">(Pilihan untuk murid baharu — lalai: 0000)</span></label>
-            <input id="input-player-pin" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="Contoh: 1234 (digunakan jika lupa kata laluan)" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
-          </div>
           <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
-          <button id="btn-login-submit" type="submit" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-base py-3.5 border-2 border-emerald-700 mt-2">
-            🚀 Mula Belajar Sekarang
-          </button>
+          <div class="grid grid-cols-2 gap-2.5 pt-2">
+            <button id="btn-login-submit" type="button" onclick="handlePlayerAuthAction('login')" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm py-3.5 border-2 border-blue-800">
+              🔑 Log Masuk
+            </button>
+            <button id="btn-register-submit" type="button" onclick="handlePlayerAuthAction('register')" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-sm py-3.5 border-2 border-emerald-700">
+              ✨ Daftar Baru
+            </button>
+          </div>
         </form>
 
         <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
@@ -171,7 +172,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.10
+            Versi 1.9.12
           </span>
         </div>
 
@@ -181,15 +182,15 @@
             <h3 class="text-sm font-black text-indigo-950">🔑 Tetapkan Semula Kata Laluan</h3>
             <button type="button" onclick="toggleResetPasswordPanel(false)" class="text-xs font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
           </div>
-          <p class="text-[11px] font-bold text-indigo-800">Masukkan nama akaun anda, diikuti <b>PIN Pemulihan 4-Digit</b> anda ATAU <b>Kod Guru (<span class="underline">GURU2026</span>)</b>.</p>
+          <p class="text-[11px] font-bold text-indigo-800">Masukkan nama akaun anda, diikuti <b>PIN Pemulihan 4-Digit</b> yang telah ditetapkan semasa pendaftaran.</p>
           <form onsubmit="handleResetForgottenPassword(event)" class="space-y-2.5">
             <div>
               <label class="block text-[11px] font-black text-slate-700 mb-0.5">Nama Pelajar Sedia Ada</label>
               <input id="reset-acc-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama akaun tepat" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-bold text-xs bg-white" />
             </div>
             <div>
-              <label class="block text-[11px] font-black text-slate-700 mb-0.5">PIN Pemulihan 4-Digit atau Kod Guru</label>
-              <input id="reset-acc-pin" type="text" required minlength="4" maxlength="15" placeholder="Contoh: 1234 atau GURU2026" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-bold text-xs bg-white" />
+              <label class="block text-[11px] font-black text-slate-700 mb-0.5">PIN Pemulihan 4-Digit</label>
+              <input id="reset-acc-pin" type="text" inputmode="numeric" required minlength="4" maxlength="15" placeholder="Contoh: 1234" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-bold text-xs bg-white" />
             </div>
             <div>
               <label class="block text-[11px] font-black text-slate-700 mb-0.5">Kata Laluan Baharu</label>
@@ -201,6 +202,65 @@
             </button>
           </form>
         </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SKRIN 0B: PERSEDIAAN PERTAMA PELAJAR BAHARU (AVATAR + PIN 4-DIGIT)
+         ======================================================== -->
+    <section id="screen-new-setup" class="hidden py-2 space-y-4">
+      <div class="bubbly-card bg-white border-4 border-emerald-400 p-5 text-center space-y-4">
+        <div>
+          <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-3 py-0.5 rounded-full border border-emerald-300 mb-1">🎉 Pendaftaran Berjaya!</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-800">🎨 Cipta Avatar & PIN Pemulihan</h2>
+          <p class="text-xs font-bold text-slate-500 mt-0.5">Hai <b id="setup-new-player-name" class="text-emerald-700">Pelajar</b>! Lengkapkan profil anda sebelum mula belajar:</p>
+        </div>
+
+        <!-- Pratonton Avatar 3D Langsung -->
+        <div class="bg-gradient-to-b from-sky-50 to-amber-50/60 border-2 border-amber-200 rounded-3xl p-4 space-y-3">
+          <div id="setup-avatar-preview" class="w-28 h-28 mx-auto rounded-3xl relative"></div>
+
+          <!-- Pilihan Jantina -->
+          <div class="flex items-center justify-center gap-2">
+            <button type="button" id="btn-setup-boy" onclick="updateNewStudentAvatar('gender', 'boy')" class="px-3.5 py-1.5 rounded-xl text-xs font-black border-2 bg-sky-400 text-sky-950 border-sky-600">👦 Lelaki</button>
+            <button type="button" id="btn-setup-girl" onclick="updateNewStudentAvatar('gender', 'girl')" class="px-3.5 py-1.5 rounded-xl text-xs font-black border-2 bg-white text-slate-600 border-slate-300">👧 Perempuan</button>
+          </div>
+
+          <!-- Pilihan Warna Kulit -->
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <span class="text-[11px] font-black text-slate-600">Warna Kulit:</span>
+            <button type="button" onclick="updateNewStudentAvatar('skin', '#FFE5D0')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#FFE5D0" title="Cerah"></button>
+            <button type="button" onclick="updateNewStudentAvatar('skin', '#F7C8A0')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#F7C8A0" title="Sawo Matang Cerah"></button>
+            <button type="button" onclick="updateNewStudentAvatar('skin', '#DDA175')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#DDA175" title="Sawo Matang"></button>
+            <button type="button" onclick="updateNewStudentAvatar('skin', '#A66A43')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#A66A43" title="Gelap Manis"></button>
+          </div>
+
+          <!-- Pilihan Warna Rambut -->
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <span class="text-[11px] font-black text-slate-600">Warna Rambut:</span>
+            <button type="button" onclick="updateNewStudentAvatar('hairColor', 'brown')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#5C3620" title="Coklat Perang"></button>
+            <button type="button" onclick="updateNewStudentAvatar('hairColor', 'black')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#1E293B" title="Hitam Pekat"></button>
+            <button type="button" onclick="updateNewStudentAvatar('hairColor', 'honey')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#B45309" title="Perang Madu"></button>
+            <button type="button" onclick="updateNewStudentAvatar('hairColor', 'auburn')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#EA580C" title="Karamel Oren"></button>
+            <button type="button" onclick="updateNewStudentAvatar('hairColor', 'pink')" class="w-6 h-6 rounded-full border-2 border-slate-400 shadow-sm" style="background:#DB2777" title="Pink Pastel"></button>
+          </div>
+
+          <!-- Pilihan Gaya Rambut / Tudung Permulaan (Percuma) -->
+          <div id="setup-hair-options" class="flex flex-wrap items-center justify-center gap-1.5 pt-1"></div>
+        </div>
+
+        <!-- Tetapan No. PIN Pemulihan 4 Digit -->
+        <form onsubmit="completeNewStudentSetup(event)" class="text-left bg-indigo-50 border-2 border-indigo-300 rounded-2xl p-4 space-y-2.5">
+          <label for="setup-recovery-pin" class="block text-xs font-black text-indigo-950">
+            🔐 Tetapkan No. PIN Pemulihan 4-Digit Anda <span class="text-rose-600">*</span>
+          </label>
+          <p class="text-[11px] font-bold text-indigo-800">Gunakan 4 nombor mudah diingat (contoh: <b>1234</b>). PIN ini diperlukan sekiranya anda terlupa kata laluan nanti.</p>
+          <input id="setup-recovery-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="Masukkan 4 digit nombor (cth: 1234)" class="w-full px-4 py-3 rounded-2xl border-2 border-indigo-300 focus:border-indigo-600 focus:outline-none font-black text-center text-lg tracking-widest bg-white" />
+          <div id="setup-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2"></div>
+          <button id="btn-complete-setup" type="submit" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-base py-3.5 border-2 border-emerald-700 mt-1">
+            🚀 Simpan Profil & Masuk ke Menu Utama
+          </button>
+        </form>
       </div>
     </section>
 
@@ -4742,29 +4802,138 @@
       }, 1000);
     }
 
-    window.handlePlayerLogin = async function(e) {
+    function renderNewStudentSetupPreview() {
+      if (!currentPlayer) return;
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      const nameEl = document.getElementById('setup-new-player-name');
+      if (nameEl) nameEl.innerText = currentPlayer.name;
+      const prevEl = document.getElementById('setup-avatar-preview');
+      if (prevEl) prevEl.innerHTML = renderRealisticAvatarSVG(cfg, 'w-full h-full');
+
+      const boyBtn = document.getElementById('btn-setup-boy');
+      const girlBtn = document.getElementById('btn-setup-girl');
+      if (boyBtn && girlBtn) {
+        boyBtn.className = `px-3.5 py-1.5 rounded-xl text-xs font-black border-2 transition ${cfg.gender === 'boy' ? 'bg-sky-400 text-sky-950 border-sky-600' : 'bg-white text-slate-600 border-slate-300'}`;
+        girlBtn.className = `px-3.5 py-1.5 rounded-xl text-xs font-black border-2 transition ${cfg.gender === 'girl' ? 'bg-pink-400 text-pink-950 border-pink-600' : 'bg-white text-slate-600 border-slate-300'}`;
+      }
+
+      const hairBox = document.getElementById('setup-hair-options');
+      if (hairBox) {
+        const starterOptions = cfg.gender === 'girl'
+          ? [
+              { label: '💇 Beralun', hair: 'hair_wavy_girl', hw: 'hw_none' },
+              { label: '🧕 Tudung Pink', hair: 'hair_wavy_girl', hw: 'hw_tudung_pink' },
+              { label: '🧕 Tudung Biru', hair: 'hair_wavy_girl', hw: 'hw_tudung_blue' },
+              { label: '🧕 Tudung Hijau', hair: 'hair_wavy_girl', hw: 'hw_tudung_emerald' }
+            ]
+          : [
+              { label: '💇 Jambul Gaya', hair: 'hair_quiff', hw: 'hw_none' },
+              { label: '🧢 Topi Merah', hair: 'hair_quiff', hw: 'hw_cap_red' },
+              { label: '🧢 Topi Biru', hair: 'hair_quiff', hw: 'hw_cap_blue' }
+            ];
+
+        hairBox.innerHTML = starterOptions.map(opt => {
+          const isSelected = cfg.hair === opt.hair && cfg.headwear === opt.hw;
+          return `<button type="button" onclick="selectStarterStyle('${opt.hair}', '${opt.hw}')" class="px-2.5 py-1 rounded-xl text-[11px] font-black border-2 ${isSelected ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white text-slate-700 border-slate-200'}">${opt.label}</button>`;
+        }).join('');
+      }
+    }
+
+    window.updateNewStudentAvatar = function(field, val) {
+      if (!currentPlayer) return;
+      playClick();
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      cfg[field] = val;
+      if (field === 'gender') {
+        cfg.headwear = 'hw_none';
+        sanitizeAvatarForGender(cfg);
+      }
+      renderNewStudentSetupPreview();
+    };
+
+    window.selectStarterStyle = function(hairId, hwId) {
+      if (!currentPlayer) return;
+      playClick();
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      cfg.hair = hairId;
+      cfg.headwear = hwId;
+      if (!currentPlayer.ownedAvatarItems.includes(hairId)) currentPlayer.ownedAvatarItems.push(hairId);
+      if (hwId !== 'hw_none' && !currentPlayer.ownedAvatarItems.includes(hwId)) currentPlayer.ownedAvatarItems.push(hwId);
+      renderNewStudentSetupPreview();
+    };
+
+    window.completeNewStudentSetup = async function(e) {
       e.preventDefault();
+      if (!currentPlayer) return;
+      playClick();
+      const pinInp = document.getElementById('setup-recovery-pin');
+      const errEl = document.getElementById('setup-error-msg');
+      const btn = document.getElementById('btn-complete-setup');
+      const pinVal = (pinInp?.value || '').trim();
+
+      if (errEl) errEl.classList.add('hidden');
+      if (!/^\d{4}$/.test(pinVal)) {
+        playWrong();
+        if (errEl) {
+          errEl.innerText = '⚠️ Sila masukkan tepat 4 digit nombor untuk PIN Pemulihan (contoh: 1234).';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Menyimpan Profil...';
+      }
+
+      try {
+        currentPlayer.recoveryPin = pinVal;
+        await savePlayerCloud();
+        playCheer();
+        triggerConfetti();
+        document.getElementById('screen-new-setup').classList.add('hidden');
+        document.getElementById('app-header').classList.remove('hidden');
+        syncPlayerUI();
+        startPlayerSessionTimer();
+        navTo('home');
+        showAppToast(`🎉 Selamat datang, ${currentPlayer.name}! Profil & PIN (${pinVal}) disimpan.`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = '🚀 Simpan Profil & Masuk ke Menu Utama';
+        }
+      }
+    };
+
+    window.handlePlayerAuthAction = async function(mode) {
       playClick();
       const nameInput = document.getElementById('input-player-name');
       const passInput = document.getElementById('input-player-pass');
-      const pinInput = document.getElementById('input-player-pin');
       const errBox = document.getElementById('login-error-msg');
-      const submitBtn = document.getElementById('btn-login-submit');
+      const loginBtn = document.getElementById('btn-login-submit');
+      const regBtn = document.getElementById('btn-register-submit');
 
       const displayName = nameInput.value || '';
       const password = passInput.value || '';
-      const rawPin = (pinInput?.value || '').trim();
-      const validPin = /^\d{4}$/.test(rawPin) ? rawPin : '0000';
 
       errBox.classList.add('hidden');
       if (displayName.trim().length < 2) {
-        errBox.innerText = 'Sila masukkan nama pelajar yang sah (sekurang-kurangnya 2 aksara).';
+        playWrong();
+        errBox.innerText = '⚠️ Sila masukkan nama pelajar yang sah (sekurang-kurangnya 2 aksara).';
+        errBox.classList.remove('hidden');
+        return;
+      }
+      if (password.length < 3) {
+        playWrong();
+        errBox.innerText = '⚠️ Sila masukkan kata laluan (sekurang-kurangnya 3 aksara).';
         errBox.classList.remove('hidden');
         return;
       }
 
-      submitBtn.disabled = true;
-      submitBtn.innerText = '⏳ Menyemak Akaun...';
+      if (loginBtn) loginBtn.disabled = true;
+      if (regBtn) regBtn.disabled = true;
+      if (mode === 'login' && loginBtn) loginBtn.innerText = '⏳ Menyemak...';
+      if (mode === 'register' && regBtn) regBtn.innerText = '⏳ Mendaftar...';
 
       try {
         const isAdminAttempt = displayName.trim().toLowerCase() === ADMIN_DEFAULT_NAME;
@@ -4795,16 +4964,21 @@
           await purgeAdminFromCloudScoreboard();
         }
 
-        if (existingAccount) {
+        if (mode === 'login') {
+          if (!existingAccount) {
+            playWrong();
+            errBox.innerHTML = `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
+            errBox.classList.remove('hidden');
+            return;
+          }
           if (existingAccount.password !== password) {
             playWrong();
-            errBox.innerHTML = `⚠️ Nama <b>"${existingAccount.name}"</b> telah didaftarkan! Jika ini akaun anda, masukkan kata laluan yang betul (atau klik <b>Lupa Kata Laluan?</b> di bawah). Jika murid baharu, guna nama unik lain.`;
+            errBox.innerHTML = `⚠️ Kata laluan tidak tepat untuk akaun <b>"${existingAccount.name}"</b>! Cuba lagi atau klik <b>🔑 Lupa Kata Laluan?</b> di bawah.`;
             errBox.classList.remove('hidden');
-            submitBtn.disabled = false;
-            submitBtn.innerText = '🚀 Mula Belajar Sekarang';
             return;
           }
 
+          /* Akaun LAMA berjaya log masuk -> terus ke Menu Utama */
           const permanentId = existingAccount.accountId || existingAccount.key || generatePermanentAccountId();
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
@@ -4818,7 +4992,7 @@
             nameKey: normalizePlayerKey(existingAccount.name || displayName),
             name: existingAccount.name || displayName,
             password: existingAccount.password,
-            recoveryPin: existingAccount.recoveryPin || validPin || '0000',
+            recoveryPin: existingAccount.recoveryPin || '0000',
             preferredLang: keptLang,
             isAdmin: isAdminUser,
             stars: Number(existingAccount.stars) || 0,
@@ -4851,7 +5025,21 @@
           showAppToast(isAdminUser
             ? '🛡️ Selamat datang Admin! Semua 6 Tahap dibuka & Panel Admin sedia digunakan.'
             : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
+
+          document.getElementById('screen-login').classList.add('hidden');
+          document.getElementById('app-header').classList.remove('hidden');
+          syncPlayerUI();
+          startPlayerSessionTimer();
+          navTo('home');
         } else {
+          /* Mod DAFTAR BARU */
+          if (existingAccount) {
+            playWrong();
+            errBox.innerHTML = `⚠️ Nama <b>"${existingAccount.name}"</b> sudah wujud! Jika ini akaun lama anda, sila tekan butang biru <b>🔑 Log Masuk</b>. Jika murid baharu, guna nama unik yang lain.`;
+            errBox.classList.remove('hidden');
+            return;
+          }
+
           const newAccountId = generatePermanentAccountId();
           const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || currentAppLang || 'ms';
           currentPlayer = {
@@ -4860,7 +5048,7 @@
             nameKey: normalizePlayerKey(displayName),
             name: displayName,
             password: password,
-            recoveryPin: validPin,
+            recoveryPin: '0000',
             preferredLang: keptLang,
             stars: 0,
             totalPoints: 0,
@@ -4881,22 +5069,30 @@
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
           playCheer();
-          triggerConfetti();
-          showAppToast(`Akaun baharu "${currentPlayer.name}" didaftarkan! PIN Pemulihan anda: ${validPin}`);
-        }
 
-        document.getElementById('screen-login').classList.add('hidden');
-        document.getElementById('app-header').classList.remove('hidden');
-        syncPlayerUI();
-        startPlayerSessionTimer();
-        navTo('home');
+          /* Pelajar baharu dibawa ke skrin persediaan Avatar & No. PIN Pemulihan 4 digit dahulu */
+          document.getElementById('screen-login').classList.add('hidden');
+          document.getElementById('app-header').classList.add('hidden');
+          const pinField = document.getElementById('setup-recovery-pin');
+          if (pinField) pinField.value = '';
+          const setupErr = document.getElementById('setup-error-msg');
+          if (setupErr) setupErr.classList.add('hidden');
+          renderNewStudentSetupPreview();
+          document.getElementById('screen-new-setup').classList.remove('hidden');
+        }
       } catch (err) {
         playWrong();
-        errBox.innerText = 'Ralat semasa log masuk. Sila cuba sebentar lagi.';
+        errBox.innerText = 'Ralat semasa pengesahan akaun. Sila cuba sebentar lagi.';
         errBox.classList.remove('hidden');
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = '🚀 Mula Belajar Sekarang';
+        if (loginBtn) {
+          loginBtn.disabled = false;
+          loginBtn.innerText = '🔑 Log Masuk';
+        }
+        if (regBtn) {
+          regBtn.disabled = false;
+          regBtn.innerText = '✨ Daftar Baru';
+        }
       }
     };
 
@@ -4929,7 +5125,7 @@
         if (!isAuthorized) {
           playWrong();
           msgBox.className = 'text-xs font-extrabold rounded-xl p-2 bg-rose-100 text-rose-800 border border-rose-300';
-          msgBox.innerText = '❌ PIN Pemulihan 4-Digit atau Kod Guru tidak sah! Sila minta bantuan guru jika terlupa PIN.';
+          msgBox.innerText = '❌ PIN Pemulihan 4-Digit tidak sah! Sila minta bantuan guru/admin jika terlupa PIN.';
           msgBox.classList.remove('hidden');
           return;
         }
@@ -5100,7 +5296,7 @@
       }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
-      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
+      ['new-setup', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });

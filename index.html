@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.32
+            Versi 1.9.34
           </span>
         </div>
 
@@ -435,8 +435,8 @@
                 <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">LANGKAH 1</span>
                 <span id="badge-start-here-modules" class="bg-amber-300 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">⭐ MULA DI SINI</span>
               </div>
-              <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar (Tahap 1 – 6)</div>
-              <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">Belajar dari asas 10 jari hingga kalkulator manusia</div>
+              <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar (Jari & Sempoa)</div>
+              <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">Laluan Jari (Asas, Kawan 5/10 & Gabungan) + Laluan Sempoa</div>
             </div>
           </div>
           <span class="text-xl font-black flex-shrink-0">▶️</span>
@@ -536,7 +536,17 @@
     <section id="screen-modules" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button id="btn-mod-back-home" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <h2 id="mod-screen-heading" class="text-lg font-bold text-slate-800">📚 6 Tahap Master Abacus</h2>
+        <h2 id="mod-screen-heading" class="text-lg font-bold text-slate-800">📚 Modul Jari & Sempoa</h2>
+      </div>
+
+      <!-- Pemilih Laluan Belajar: Laluan Jari (Tanpa Sempoa) vs Laluan Sempoa -->
+      <div id="modules-track-switcher" class="grid grid-cols-2 gap-2">
+        <button type="button" onclick="switchModulesTrack('jari')" id="track-btn-jari" class="bubbly-btn bg-sky-600 text-white border-2 border-sky-900 py-3 px-2 text-xs font-black">
+          🖐️ Laluan Jari (3 Tahap)
+        </button>
+        <button type="button" onclick="switchModulesTrack('sempoa')" id="track-btn-sempoa" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-3 px-2 text-xs font-black">
+          🧮 Laluan Sempoa (4 Tahap)
+        </button>
       </div>
 
       <!-- Kad Ucapan Master Abacus & Panduan Latihan Harian 15 Minit Ibu Bapa -->
@@ -637,14 +647,30 @@
             <div id="mod-q-visual" class="flex flex-wrap items-center justify-center gap-3 py-1"></div>
           </div>
 
-          <!-- Sempoa Bantu Kira Interaktif (Disembunyikan Secara Default) -->
+          <!-- Alat Bantu Kira Interaktif: Jari (Untuk Laluan Jari) & Sempoa (Untuk Laluan Sempoa) -->
           <div class="space-y-2">
             <div class="flex items-center justify-between gap-2">
-              <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5 flex-shrink-0">
-                <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
-              </button>
-              <span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-right">Praktis gerakkan jari & sempoa untuk memori otot!</span>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" onclick="toggleHelperFingers()" id="mod-finger-toggle-btn" class="bubbly-btn bg-emerald-100 border-2 border-emerald-400 px-3 py-1.5 text-[11px] font-black text-emerald-950 flex items-center gap-1.5 flex-shrink-0">
+                  <span>🖐️</span> <span id="mod-finger-toggle-label">Buka Jari Kira</span>
+                </button>
+                <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5 flex-shrink-0">
+                  <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
+                </button>
+              </div>
+              <span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-right">Praktis gerakkan jari untuk memori otot!</span>
             </div>
+
+            <!-- Simulator Jari Bantu Kira (0 - 99) -->
+            <div id="mod-helper-fingers-wrap" class="hidden bg-emerald-900 rounded-2xl p-2.5 border-3 border-emerald-700 shadow-inner space-y-2">
+              <div class="flex items-center justify-between bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-xs font-black">
+                <span>Bacaan Jari Anda: <span id="mod-helper-finger-val" class="text-amber-300 text-sm">0</span></span>
+                <button type="button" onclick="resetHelperFingers()" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg">🔄 Lipat Semua</button>
+              </div>
+              <div id="mod-helper-fingers-board" class="grid grid-cols-2 gap-2 items-center justify-items-center bg-white rounded-xl p-2"></div>
+            </div>
+
+            <!-- Sempoa Bantu Kira -->
             <div id="mod-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
               <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
                 <span><span id="lbl-mod-abacus-read">Bacaan Sempoa Anda:</span> <span id="mod-helper-val" class="text-amber-300 text-sm">0</span></span>
@@ -727,11 +753,12 @@
             <span class="text-xs font-black bg-amber-400 text-amber-950 px-2.5 py-1 rounded-xl">🔥 Rentetan: <span id="blitz-streak">0</span></span>
           </div>
           <select id="blitz-difficulty" onchange="generateNextBlitzQuestion()" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1 text-purple-900">
-            <option value="all">Semua Tahap</option>
-            <option value="basic">Asas Sa (1-9)</option>
-            <option value="friends">Kawan 5 & 10</option>
-            <option value="twodigit">Dua Digit (10-99)</option>
-            <option value="hundreds">Ratus & Ribu (>99)</option>
+            <option value="jari_all" selected>🖐️ Jari Sahaja (Asas + Kawan 5/10 + Gabungan)</option>
+            <option value="basic">🖐️ Jari Asas Terus (0 - 99)</option>
+            <option value="friends">🖐️ Jari Formula Kawan 5, 10 & Gabungan</option>
+            <option value="all">🧮 Campur Semua (Jari & Sempoa)</option>
+            <option value="twodigit">🧮 Sempoa Dua Digit (10-99)</option>
+            <option value="hundreds">🧮 Sempoa Ratus & Ribu (>99)</option>
           </select>
         </div>
 
@@ -1346,9 +1373,10 @@
             <div class="flex items-center justify-between gap-2">
               <label class="text-xs font-black text-slate-700">🎯 Pilih Tahap Soalan:</label>
               <select id="arena-difficulty-select" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-950">
-                <option value="lvl1">Tahap 1: Kira 10 Jari (0 – 99)</option>
-                <option value="lvl23" selected>Tahap 2 & 3: Sempoa & Kawan 5/10</option>
-                <option value="lvl45">Tahap 4 & 5: Darab/Bahagi & Rantaian</option>
+                <option value="jari_all" selected>🖐️ Jari Sahaja (0–99: Asas + Kawan 5/10 + Gabungan)</option>
+                <option value="lvl1">🖐️ Jari Asas Terus (0 – 99)</option>
+                <option value="lvl23">🧮 Sempoa & Kawan 5/10</option>
+                <option value="lvl45">🧮 Darab/Bahagi & Rantaian</option>
               </select>
             </div>
 
@@ -1456,13 +1484,22 @@
           <div id="arena-turn-feedback" class="hidden rounded-2xl p-2.5 text-center text-xs font-black"></div>
         </div>
 
-        <!-- Zon Keputusan & Pentas Podium Juara (🥇 🥈 🥉) -->
-        <div id="arena-result-box" class="hidden bg-gradient-to-b from-amber-50 to-emerald-50 border-3 border-amber-400 rounded-2xl p-4 text-center space-y-3">
-          <div id="arena-result-trophy" class="text-5xl">🏆</div>
-          <h4 id="arena-result-title" class="text-lg font-black text-slate-900">Pentas Juara Perlawanan!</h4>
+        <!-- Zon Keputusan & Pentas Podium Juara 1, 2, 3 dengan Avatar 3D Pemain -->
+        <div id="arena-result-box" class="hidden bg-gradient-to-b from-indigo-950 via-purple-950 to-slate-900 text-white border-4 border-amber-400 rounded-3xl p-4 text-center space-y-3 shadow-xl">
+          <div class="inline-block text-[10px] font-black uppercase tracking-wider bg-amber-300 text-amber-950 px-3 py-0.5 rounded-full">
+            🏆 Pentas Podium Juara
+          </div>
+
+          <!-- Pentas Podium 3D (2 - 1 - 3) + Avatar Pemain -->
+          <div id="arena-visual-podium-stage" class="grid grid-cols-3 gap-2 items-end pt-3 px-1"></div>
+
+          <!-- Senarai Kedudukan Penuh (Tempat ke-4 dan seterusnya jika ramai) -->
           <div id="arena-podium-list" class="space-y-1.5 text-left"></div>
-          <p id="arena-result-summary" class="text-xs font-bold text-slate-700"></p>
-          <button type="button" onclick="exitCurrentArenaRoom()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs py-3 border-2 border-emerald-800">
+
+          <!-- Ganjaran Coin & Markah Pemain -->
+          <div id="arena-result-summary" class="bg-white/10 border border-white/20 rounded-2xl p-2.5 text-xs font-black text-amber-200"></div>
+
+          <button type="button" onclick="exitCurrentArenaRoom()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs py-3 border-2 border-emerald-900">
             🔄 Kembali ke Lobi Arena
           </button>
         </div>
@@ -2085,12 +2122,16 @@
 
     const MODULE_UNLOCK_REQ = {
       1: 0,
+      'jari2': 0,
+      'jari3': 20,
       2: 0,
       3: 15,
       4: 35,
       5: 60,
       6: 90
     };
+    const JARI_TRACK_IDS = [1, 'jari2', 'jari3'];
+    const SEMPOA_TRACK_IDS = [2, 3, 4, 5, 6];
 
     const HAIR_COLOR_PALETTES = {
       brown:  { light: '#8B5A2B', mid: '#5C3620', dark: '#3A2010', shine: '#D2A679' },
@@ -3285,6 +3326,62 @@
           </div>
         `
       },
+      'jari2': {
+        track: 'jari',
+        levelNum: 2,
+        title: 'Formula Rahsia Jari (Kawan 5, 10 & Gabungan)',
+        shortTitle: 'Formula Jari 5 & 10',
+        ageGroup: '🖐️ Laluan Jari • Tahap 2 (Tanpa Sempoa)',
+        subtitle: 'Selesaikan kiraan jari apabila jari pada satu tangan tidak mencukupi (Kawan 5, Kawan 10 & Gabungan).',
+        icon: '🤝',
+        bgGradient: 'from-rose-500 to-pink-600',
+        border: 'border-rose-900',
+        renderGuide: () => `
+          <div class="space-y-3">
+            <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
+                  <span>🖐️</span> Makmal Formula Jari (100% Guna Jari Sahaja)
+                </div>
+                <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
+              </div>
+
+              <div class="grid grid-cols-4 gap-1">
+                <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Kawan 5</button>
+                <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Kawan 10</button>
+                <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ Gabungan</button>
+                <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Kuiz Mini</button>
+              </div>
+
+              <div id="m3-tab-content"></div>
+              <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+            </div>
+          </div>
+        `
+      },
+      'jari3': {
+        track: 'jari',
+        levelNum: 3,
+        title: 'Silat Jari Kilat (Bayangan Jari 0 – 99)',
+        shortTitle: 'Silat Jari Kilat',
+        ageGroup: '⚡ Laluan Jari • Tahap 3 (Pantas & Rantaian)',
+        subtitle: 'Kira rantaian 3 hingga 4 nombor dua-digit dengan pantas menggunakan kemahiran jari!',
+        icon: '⚡',
+        bgGradient: 'from-violet-500 to-indigo-700',
+        border: 'border-indigo-950',
+        renderGuide: () => `
+          <div class="space-y-3">
+            <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-2 text-[11px]">
+              <div class="font-black text-indigo-950">🖐️ Teknik Kiraan Pantas 2 Tangan (0 – 99):</div>
+              <ul class="list-disc list-inside space-y-1 font-bold text-slate-700">
+                <li><b>Baca Puluh Dulu (Tangan Kiri), Baru Sa (Tangan Kanan):</b> Contoh <code class="bg-white px-1 rounded">24 + 13</code> → tambah 10 di kiri, tambah 3 di kanan = <b>37</b>.</li>
+                <li><b>Gunakan Kawan 5 & 10 Bila Jari Penuh:</b> Contoh <code class="bg-white px-1 rounded">18 + 6</code> → naik 10 di kiri (+10), dan di kanan guna gabungan <code class="bg-white px-1 rounded">-5 + 1</code> = <b>24</b>!</li>
+                <li><b>Air Fingering (Jari di Udara):</b> Gerakkan jari di atas meja semasa membaca setiap langkah operasi.</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
       2: {
         title: 'Rakan Sempoa Saya (Suanpan 1:4)',
         shortTitle: 'Rakan Sempoa Saya',
@@ -3668,6 +3765,13 @@
       if (stageEl) stageEl.classList.remove('hidden');
       const cat = MOD3_FORMULAS[tabKey];
       if (!cat) return;
+      const isJariMod = activeModId === 'jari2';
+
+      const jariStories = {
+        kecil: 'Bila 4 jari biasa (1, 2, 3, 4) di tangan kanan tak cukup, kita minta tolong Ibu Jari (Bos Besar = 5)! Pasangan Kawan 5 ialah: 1↔4 dan 2↔3.',
+        besar: 'Bila jari tangan kanan (Sa) tak cukup, kita naikkan 1 jari di tangan kiri (+10)! Pasangan Kawan 10 ialah: 1↔9, 2↔8, 3↔7, 4↔6, 5↔5.',
+        gabung: 'Bila Ibu Jari (5) sudah pun terbuka dan kita perlu tambah atau tolak 6, 7, 8, atau 9 — kita gerakkan Tangan Kiri (10) dan Ibu Jari (5) serentak!'
+      };
 
       const renderButtons = (arr, opType, btnColor) => arr.map((item, idx) => `
         <button type="button" onclick="previewMod3Formula('${tabKey}', '${opType}', ${idx})"
@@ -3681,18 +3785,18 @@
         <div class="space-y-2.5 text-[11px]">
           <div class="bg-white/90 rounded-xl p-2.5 border border-slate-200">
             <div class="font-black text-slate-900">${cat.title}</div>
-            <p class="font-bold text-slate-600 mt-0.5">${cat.story}</p>
+            <p class="font-bold text-slate-600 mt-0.5">${isJariMod ? jariStories[tabKey] : cat.story}</p>
           </div>
 
           <div class="space-y-1">
-            <div class="font-black text-emerald-800 text-[10px] uppercase tracking-wider">➕ Semua Formula Tambah (Klik untuk lihat contoh sempoa):</div>
+            <div class="font-black text-emerald-800 text-[10px] uppercase tracking-wider">➕ Semua Formula Tambah (Klik untuk lihat contoh ${isJariMod ? 'jari' : 'sempoa'}):</div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               ${renderButtons(cat.add, 'add', 'bg-emerald-50 border-emerald-300 text-emerald-950')}
             </div>
           </div>
 
           <div class="space-y-1">
-            <div class="font-black text-rose-800 text-[10px] uppercase tracking-wider">➖ Semua Formula Tolak (Klik untuk lihat contoh sempoa):</div>
+            <div class="font-black text-rose-800 text-[10px] uppercase tracking-wider">➖ Semua Formula Tolak (Klik untuk lihat contoh ${isJariMod ? 'jari' : 'sempoa'}):</div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               ${renderButtons(cat.sub, 'sub', 'bg-rose-50 border-rose-300 text-rose-950')}
             </div>
@@ -3710,6 +3814,50 @@
       if (!cat || !stageEl) return;
       const item = cat[opType][idx];
       if (!item) return;
+
+      const isJariMod = activeModId === 'jari2';
+      if (isJariMod) {
+        const stStart = numberToFingerStates(item.start);
+        const stEnd = numberToFingerStates(item.end);
+        const jariTip = item.tip
+          .replace(/Manik Bumi \(bawah\)|Manik bawah|manik bawah/gi, '4 jari biasa')
+          .replace(/Manik Syurga|Bos Besar \(5\)|Bos 5/gi, 'Ibu Jari (5)')
+          .replace(/tiang Puluh/gi, 'Tangan Kiri (Puluh)')
+          .replace(/tiang Sa|Tiang Sa/gi, 'Tangan Kanan (Sa)')
+          .replace(/1 manik Puluh/gi, '1 jari Tangan Kiri');
+        const jariAction = item.action
+          .replace(/Turun 5 ⬇️/g, 'Buka Ibu Jari (5) 👍')
+          .replace(/Naik 5 ⬆️/g, 'Lipat Ibu Jari (5)')
+          .replace(/Tambah 10 ⬆️/g, 'Buka +10 (Kiri)')
+          .replace(/Tolak 10 ⬇️/g, 'Lipat -10 (Kiri)');
+
+        stageEl.innerHTML = `
+          <div class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula Jari: ${item.f}</div>
+          <div class="text-sm font-black text-slate-800">Contoh Kiraan Jari: <span class="text-indigo-700">${item.ex}</span></div>
+          <div class="grid grid-cols-3 gap-1.5 items-center text-center">
+            <div class="bg-slate-50 rounded-xl p-1.5 border border-slate-200">
+              <div class="text-[9px] font-black text-slate-500 mb-1">1. Mula (${item.start})</div>
+              <div class="flex justify-center gap-0.5">
+                ${renderRealisticHandSVG('left', stStart.left, false, 'w-11 h-14')}
+                ${renderRealisticHandSVG('right', stStart.right, false, 'w-11 h-14')}
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-1.5 border border-amber-300">
+              <div class="text-[9px] font-black text-amber-800 mb-1">2. Gerakan Jari</div>
+              <div class="text-[10px] font-black text-rose-700 py-3 leading-snug">${jariAction}</div>
+            </div>
+            <div class="bg-emerald-50 rounded-xl p-1.5 border border-emerald-300">
+              <div class="text-[9px] font-black text-emerald-800 mb-1">3. Hasil (${item.end})</div>
+              <div class="flex justify-center gap-0.5">
+                ${renderRealisticHandSVG('left', stEnd.left, false, 'w-11 h-14')}
+                ${renderRealisticHandSVG('right', stEnd.right, false, 'w-11 h-14')}
+              </div>
+            </div>
+          </div>
+          <p class="text-[11px] font-bold text-slate-700 bg-amber-50/70 rounded-xl p-2 border border-amber-200">🖐️ <b>Cara Ingat Jari:</b> ${jariTip}</p>
+        `;
+        return;
+      }
 
       stageEl.innerHTML = `
         <div class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula Dipilih: ${item.f}</div>
@@ -3825,7 +3973,7 @@
     }
 
     function buildProcedural50QuestionsForModule(modId, mod3Filter = 'random') {
-      const cacheKey = `${modId}_${modId === 3 ? mod3Filter : 'default'}`;
+      const cacheKey = `${modId}_${(modId === 3 || modId === 'jari2') ? mod3Filter : 'default'}`;
       const historySet = getModuleHistorySet(cacheKey);
       const bank = [];
       const sessionKeys = new Set();
@@ -3946,8 +4094,47 @@
               }
             }
           }
-        } else if (modId === 3) {
-          /* TAHAP 3: Penjanaan Dinamik 2-Nombor & Rantaian 3-Nombor bagi Kawan Kecil, Kawan Besar, Gabungan & Random */
+        } else if (modId === 'jari3') {
+          /* LALUAN JARI TAHAP 3: Silat Jari Kilat (Rantaian 3-4 Nombor 0 - 99 Menggunakan Jari Sahaja) */
+          let guard = 0;
+          while (bank.length < 25 && guard < 4000) {
+            guard++;
+            const n1 = Math.floor(Math.random() * 45) + 12;
+            const n2 = Math.floor(Math.random() * 38) + 11;
+            const n3 = Math.floor(Math.random() * 25) + 4;
+            const isSub = bank.length % 2 === 1;
+            const ans = isSub ? (n1 + n2 - n3) : (n1 + n2 + n3);
+            if (ans >= 1 && ans <= 99) {
+              const expr = isSub ? `${n1} + ${n2} - ${n3}` : `${n1} + ${n2} + ${n3}`;
+              pushFresh(`j3_3t_${expr}`, {
+                prompt: `Silat Jari Kilat (3 Langkah 0–99): ${expr} = ?`,
+                visualHtml: `<div class="text-xl sm:text-2xl font-black text-indigo-900 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${expr}</div>`,
+                options: makeNumericOptions(ans, 1, 99),
+                answer: ans
+              }, allowFallback);
+            }
+          }
+          while (bank.length < 50 && guard < 9000) {
+            guard++;
+            const n1 = Math.floor(Math.random() * 38) + 14;
+            const n2 = Math.floor(Math.random() * 32) + 11;
+            const n3 = Math.floor(Math.random() * 20) + 5;
+            const n4 = Math.floor(Math.random() * 18) + 3;
+            const ans = n1 + n2 - n3 + n4;
+            if (ans >= 1 && ans <= 99) {
+              const expr = `${n1} + ${n2} - ${n3} + ${n4}`;
+              pushFresh(`j3_4t_${expr}`, {
+                prompt: `Pecut 10 Jari (4 Langkah): ${expr} = ?`,
+                visualHtml: `<div class="text-lg sm:text-xl font-black text-violet-900 bg-white px-4 py-2 rounded-2xl border-2 border-violet-200">${expr}</div>`,
+                options: makeNumericOptions(ans, 1, 99),
+                answer: ans
+              }, allowFallback);
+            }
+          }
+        } else if (modId === 3 || modId === 'jari2') {
+          const isJariFormula = modId === 'jari2';
+          const ctxWord = isJariFormula ? 'Jari' : 'Sempoa';
+          /* Penjanaan Dinamik 2-Nombor & Rantaian 3-Nombor bagi Kawan Kecil, Kawan Besar, Gabungan & Random */
           const genKecil = (targetCount) => {
             const basePatterns = [
               [1, 4, '+'], [2, 3, '+'], [2, 4, '+'], [3, 2, '+'], [3, 3, '+'], [3, 4, '+'],
@@ -4251,7 +4438,7 @@
     let blitzStreak = 0;
 
     window.generateNextBlitzQuestion = function() {
-      const diff = document.getElementById('blitz-difficulty')?.value || 'all';
+      const diff = document.getElementById('blitz-difficulty')?.value || 'jari_all';
       const fb = document.getElementById('blitz-feedback');
       if (fb) fb.classList.add('hidden');
       /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan Cabaran Kilat seterusnya */
@@ -4265,9 +4452,11 @@
 
       do {
         tries++;
-        const mode = diff === 'all'
-          ? ['basic', 'friends', 'twodigit', 'hundreds', 'abacus'][Math.floor(Math.random() * 5)]
-          : diff;
+        const mode = diff === 'jari_all'
+          ? ['basic', 'friends'][Math.floor(Math.random() * 2)]
+          : (diff === 'all'
+            ? ['basic', 'friends', 'twodigit', 'hundreds', 'abacus'][Math.floor(Math.random() * 5)]
+            : diff);
 
         if (mode === 'basic') {
           tag = 'Asas Sa (1-9)';
@@ -4283,16 +4472,35 @@
             ans = top - sub;
           }
         } else if (mode === 'friends') {
-          tag = 'Kawan 5 & Kawan 10';
-          const a = Math.floor(Math.random() * 25) + 4;
-          const b = Math.floor(Math.random() * 9) + 1;
-          if (Math.random() > 0.45) {
-            qText = `${a} + ${b} = ?`;
-            ans = a + b;
+          const subKind = Math.floor(Math.random() * 3);
+          if (subKind === 0) {
+            tag = '🖐️ Jari: Kawan 5';
+            const pairs5 = [[3,4,'+'], [4,3,'+'], [2,4,'+'], [4,2,'+'], [6,4,'-'], [7,3,'-'], [6,2,'-'], [5,1,'-']];
+            const [x, y, op] = pairs5[Math.floor(Math.random() * pairs5.length)];
+            const tens = Math.floor(Math.random() * 8) * 10;
+            const start = tens + x;
+            ans = op === '+' ? start + y : start - y;
+            qText = `${start} ${op} ${y} = ?`;
+          } else if (subKind === 1) {
+            tag = '🖐️ Jari: Kawan 10';
+            const a = Math.floor(Math.random() * 65) + 14;
+            const b = Math.floor(Math.random() * 9) + 1;
+            if (Math.random() > 0.45 && a + b <= 99) {
+              qText = `${a} + ${b} = ?`;
+              ans = a + b;
+            } else {
+              const top = a + 10;
+              qText = `${top} - ${b} = ?`;
+              ans = top - b;
+            }
           } else {
-            const top = a + 10;
-            qText = `${top} - ${b} = ?`;
-            ans = top - b;
+            tag = '🖐️ Jari: Formula Gabungan';
+            const gabPairs = [[6,7,'+'], [7,6,'+'], [6,8,'+'], [5,9,'+'], [13,6,'-'], [13,7,'-'], [14,8,'-'], [14,9,'-']];
+            const [x, y, op] = gabPairs[Math.floor(Math.random() * gabPairs.length)];
+            const tens = Math.floor(Math.random() * 7) * 10;
+            const start = tens + x;
+            ans = op === '+' ? start + y : start - y;
+            qText = `${start} ${op} ${y} = ?`;
           }
         } else if (mode === 'twodigit') {
           tag = 'Dua Digit (10-99)';
@@ -4400,27 +4608,54 @@
       document.getElementById('blitz-streak').innerText = blitzStreak;
     }
 
-    /* 7. PENGURUSAN LATIHAN MODUL (50 SOALAN) */
+    /* 7. PENGURUSAN LATIHAN MODUL TERPISAH: LALUAN JARI vs LALUAN SEMPOA */
     let activeModId = 1;
+    let activeModulesTrack = 'jari';
     let activeModQuestions = [];
     let activeModIndex = 0;
     let activeModSessionCorrect = 0;
     let activeModConsecutiveStreak = 0;
+
+    let helperFingerLeft = [false, false, false, false, false];
+    let helperFingerRight = [false, false, false, false, false];
+    let isHelperFingersVisible = false;
+
+    window.switchModulesTrack = function(trackKey, silent = false) {
+      if (!silent) playClick();
+      activeModulesTrack = trackKey === 'sempoa' ? 'sempoa' : 'jari';
+      const jBtn = document.getElementById('track-btn-jari');
+      const sBtn = document.getElementById('track-btn-sempoa');
+      if (jBtn) {
+        jBtn.className = activeModulesTrack === 'jari'
+          ? 'bubbly-btn bg-sky-600 text-white border-2 border-sky-900 py-3 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-3 px-2 text-xs font-black';
+      }
+      if (sBtn) {
+        sBtn.className = activeModulesTrack === 'sempoa'
+          ? 'bubbly-btn bg-amber-500 text-amber-950 border-2 border-amber-800 py-3 px-2 text-xs font-black'
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-3 px-2 text-xs font-black';
+      }
+      renderModulesMenu();
+    };
 
     function renderModulesMenu() {
       const grid = document.getElementById('modules-menu-grid');
       if (!grid || !currentPlayer) return;
       grid.innerHTML = '';
 
-      for (let m = 1; m <= 6; m++) {
+      const trackIds = activeModulesTrack === 'sempoa' ? SEMPOA_TRACK_IDS : JARI_TRACK_IDS;
+      const trackPrefix = activeModulesTrack === 'sempoa' ? 'Sempoa Tahap' : 'Jari Tahap';
+
+      trackIds.forEach((m, idx) => {
         const meta = MODULES_META[m];
-        const req = MODULE_UNLOCK_REQ[m];
+        const req = MODULE_UNLOCK_REQ[m] ?? 0;
         const unlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= req;
         if (unlocked && !currentPlayer.unlockedModules.includes(m)) {
           currentPlayer.unlockedModules.push(m);
         }
         const best = (currentPlayer.modScores && currentPlayer.modScores[m]) || 0;
         const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
+        const displayStep = idx + 1;
 
         const card = document.createElement('button');
         card.className = `bubbly-card bg-gradient-to-r ${meta.bgGradient} border-4 ${meta.border} p-4 text-left text-white flex items-center justify-between gap-3 ${unlocked ? '' : 'opacity-85'}`;
@@ -4439,8 +4674,8 @@
             <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl flex-shrink-0">${unlocked ? meta.icon : '🔒'}</div>
             <div class="min-w-0 space-y-0.5">
               <div class="flex flex-wrap items-center gap-1.5">
-                <span class="inline-block bg-white text-slate-900 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black uppercase tracking-wide shadow-sm">${t.levelWord} ${m}</span>
-                ${m === 1 && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ MULA DI SINI</span>' : ''}
+                <span class="inline-block bg-white text-slate-900 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black uppercase tracking-wide shadow-sm">${trackPrefix} ${displayStep}</span>
+                ${(m === 1 || m === 'jari2') && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ LATIHAN JARI</span>' : ''}
                 ${!unlocked ? `<span class="inline-flex items-center gap-1 bg-black/30 text-white px-2 py-0.5 rounded-lg text-[10px] font-black">${t.needWord} ${req} ${COIN_ICON_HTML}</span>` : ''}
               </div>
               <div class="text-sm sm:text-base font-extrabold text-white drop-shadow-sm truncate">${meta.title}</div>
@@ -4452,11 +4687,105 @@
           </div>
         `;
         grid.appendChild(card);
-      }
+      });
     }
 
-    let activeMod3QuizCategory = 'random';
+    function setHelperFingersVisibility(isVisible) {
+      isHelperFingersVisible = Boolean(isVisible);
+      const wrap = document.getElementById('mod-helper-fingers-wrap');
+      const lbl = document.getElementById('mod-finger-toggle-label');
+      if (wrap) wrap.classList.toggle('hidden', !isHelperFingersVisible);
+      if (lbl) lbl.innerText = isHelperFingersVisible ? 'Sembunyi Jari Kira' : 'Buka Jari Kira';
+      if (isHelperFingersVisible) renderHelperFingersBoard();
+    }
 
+    function renderHelperFingersBoard() {
+      const board = document.getElementById('mod-helper-fingers-board');
+      const valEl = document.getElementById('mod-helper-finger-val');
+      if (!board) return;
+
+      const buildHand = (side, arr) => {
+        const svg = renderRealisticHandSVG(side, arr, false, 'w-full max-w-[125px] h-auto');
+        return svg.replace(/<g /g, (m, offset) => m);
+      };
+
+      const renderClickableHand = (handSide, fingerState) => {
+        const isLeft = handSide === 'left';
+        const labels = isLeft ? ['50', '10', '10', '10', '10'] : ['5', '1', '1', '1', '1'];
+        const fingerColors = isLeft
+          ? ['#F59E0B', '#10B981', '#10B981', '#10B981', '#10B981']
+          : ['#F59E0B', '#3B82F6', '#3B82F6', '#3B82F6', '#3B82F6'];
+
+        const fingers = [0, 1, 2, 3, 4].map(idx => {
+          const active = !!fingerState[idx];
+          const col = active ? fingerColors[idx] : '#E2E8F0';
+          const stroke = active ? '#1E293B' : '#94A3B8';
+          const clickAttr = `onclick="toggleHelperFinger('${handSide}', ${idx})" style="cursor:pointer"`;
+          if (idx === 0) {
+            const tx = isLeft ? 88 : 12;
+            const rot = isLeft ? (active ? 28 : 58) : (active ? -28 : -58);
+            return `
+              <g ${clickAttr} transform="translate(${tx}, 74) rotate(${rot})">
+                <rect x="-9" y="-28" width="18" height="32" rx="9" fill="${col}" stroke="${stroke}" stroke-width="2.2"/>
+                <text x="0" y="-10" text-anchor="middle" font-size="9" font-weight="900" fill="${active ? '#FFFFFF' : '#64748B'}">${labels[0]}</text>
+              </g>
+            `;
+          }
+          const order = isLeft ? (5 - idx) : idx;
+          const xPos = 22 + (order - 1) * 16;
+          const fullH = [38, 44, 41, 33][idx - 1];
+          const h = active ? fullH : 16;
+          const yPos = 64 - h;
+          return `
+            <g ${clickAttr}>
+              <rect x="${xPos}" y="${yPos}" width="13" height="${h}" rx="6.5" fill="${col}" stroke="${stroke}" stroke-width="2.2"/>
+              <text x="${xPos + 6.5}" y="${yPos + 11}" text-anchor="middle" font-size="8" font-weight="900" fill="${active ? '#FFFFFF' : '#64748B'}">${labels[idx]}</text>
+            </g>
+          `;
+        }).join('');
+
+        return `
+          <svg viewBox="0 0 110 115" class="w-full max-w-[125px] h-auto">
+            ${fingers}
+            <rect x="20" y="56" width="66" height="44" rx="20" fill="#FDE68A" stroke="#B45309" stroke-width="2.4"/>
+            <text x="53" y="91" text-anchor="middle" font-size="9" font-weight="900" fill="#78350F">${isLeft ? 'KIRI (PULUH)' : 'KANAN (SA)'}</text>
+          </svg>
+        `;
+      };
+
+      board.innerHTML = `
+        ${renderClickableHand('left', helperFingerLeft)}
+        ${renderClickableHand('right', helperFingerRight)}
+      `;
+      const calcHand = (arr, mult) => {
+        let s = arr[0] ? 5 * mult : 0;
+        for (let i = 1; i <= 4; i++) if (arr[i]) s += mult;
+        return s;
+      };
+      if (valEl) valEl.innerText = calcHand(helperFingerLeft, 10) + calcHand(helperFingerRight, 1);
+    }
+
+    window.toggleHelperFingers = function() {
+      playClick();
+      setHelperFingersVisibility(!isHelperFingersVisible);
+      keepQuizBottomInView();
+    };
+
+    window.toggleHelperFinger = function(side, idx) {
+      playClick();
+      if (side === 'left') helperFingerLeft[idx] = !helperFingerLeft[idx];
+      else helperFingerRight[idx] = !helperFingerRight[idx];
+      renderHelperFingersBoard();
+    };
+
+    window.resetHelperFingers = function(silent = false) {
+      if (!silent) playClick();
+      helperFingerLeft = [false, false, false, false, false];
+      helperFingerRight = [false, false, false, false, false];
+      renderHelperFingersBoard();
+    };
+
+    let activeMod3QuizCategory = 'random';
     let isModNoteCollapsed = false;
     let quizPopupTimer = null;
 
@@ -4533,15 +4862,16 @@
         badgeEl.innerText = st.label;
       }
 
-      if (activeModId === 3) {
+      if (activeModId === 3 || activeModId === 'jari2') {
+        const prefix = activeModId === 'jari2' ? 'Formula Jari' : 'Sempoa Tahap 3';
         const subNames = {
-          kecil: 'Tahap 3 (Kawan Kecil 5)',
-          besar: 'Tahap 3 (Kawan Besar 10)',
-          gabung: 'Tahap 3 (Formula Gabungan)',
-          random: 'Tahap 3 (Formula Rahsia 5 & 10)'
+          kecil: `${prefix} (Kawan Kecil 5)`,
+          besar: `${prefix} (Kawan Besar 10)`,
+          gabung: `${prefix} (Formula Gabungan)`,
+          random: `${prefix} (Kawan 5, 10 & Gabungan)`
         };
-        setPlayerCurrentActivity(subNames[activeMod3QuizCategory] || 'Tahap 3 (Formula Rahsia 5 & 10)');
-        activeModQuestions = buildProcedural50QuestionsForModule(3, activeMod3QuizCategory);
+        setPlayerCurrentActivity(subNames[activeMod3QuizCategory] || prefix);
+        activeModQuestions = buildProcedural50QuestionsForModule(activeModId, activeMod3QuizCategory);
         activeModIndex = 0;
         activeModSessionCorrect = 0;
         activeModConsecutiveStreak = 0;
@@ -4558,30 +4888,45 @@
       activeModSessionCorrect = 0;
       activeModConsecutiveStreak = 0;
 
+      const isJariTrack = JARI_TRACK_IDS.includes(modId);
+      const stepNumber = isJariTrack ? (JARI_TRACK_IDS.indexOf(modId) + 1) : (SEMPOA_TRACK_IDS.indexOf(modId) + 1);
+      const badgeLabel = isJariTrack ? `🖐️ Jari Tahap ${stepNumber}` : `🧮 Sempoa Tahap ${stepNumber}`;
+
       const meta = MODULES_META[modId];
-      const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
       document.getElementById('modules-menu-grid').classList.add('hidden');
+      document.getElementById('modules-track-switcher')?.classList.add('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
       if (pCard) pCard.classList.add('hidden');
       document.getElementById('module-detail-view').classList.remove('hidden');
-      document.getElementById('mod-badge-level').innerText = `${t.levelWord} ${modId}`;
+      document.getElementById('mod-badge-level').innerText = badgeLabel;
       const ageEl = document.getElementById('mod-guide-age-badge');
-      if (ageEl) ageEl.innerText = meta.ageGroup || `${t.levelWord} ${modId}`;
-      document.getElementById('mod-guide-title').innerText = `${t.levelWord} ${modId}: ${meta.title}`;
+      if (ageEl) ageEl.innerText = meta.ageGroup || badgeLabel;
+      document.getElementById('mod-guide-title').innerText = `${badgeLabel}: ${meta.title}`;
       document.getElementById('mod-guide-subtitle').innerText = meta.subtitle;
       document.getElementById('mod-guide-content').innerHTML = meta.renderGuide();
 
-      /* Sentiasa buka paparan nota apabila modul mula dipilih dari senarai */
       window.toggleModuleGuideNote(true);
 
-      /* Tetapkan keadaan awal sempoa sekali sahaja semasa modul dibuka (Tahap 2-4 terbuka, Tahap 1 & 5-6 tertutup) */
-      const initialOpenAbacus = modId >= 2 && modId <= 4;
-      setHelperAbacusVisibility('mod', initialOpenAbacus);
+      // Untuk Laluan Jari: sembunyikan Sempoa dan tunjukkan butang Jari Kira; untuk Laluan Sempoa: buka Sempoa bagi Tahap 2-4
+      const fingerBtn = document.getElementById('mod-finger-toggle-btn');
+      const abacusBtn = document.getElementById('mod-helper-toggle-btn');
+      if (isJariTrack) {
+        if (fingerBtn) fingerBtn.classList.remove('hidden');
+        if (abacusBtn) abacusBtn.classList.add('hidden');
+        setHelperAbacusVisibility('mod', false);
+        setHelperFingersVisibility(modId === 1 || modId === 'jari2');
+      } else {
+        if (fingerBtn) fingerBtn.classList.add('hidden');
+        if (abacusBtn) abacusBtn.classList.remove('hidden');
+        setHelperFingersVisibility(false);
+        setHelperAbacusVisibility('mod', modId >= 2 && modId <= 4);
+      }
 
+      const hasFormulaFilter = modId === 3 || modId === 'jari2';
       const m3FilterBar = document.getElementById('mod3-quiz-filter-bar');
-      if (m3FilterBar) m3FilterBar.classList.toggle('hidden', modId !== 3);
+      if (m3FilterBar) m3FilterBar.classList.toggle('hidden', !hasFormulaFilter);
 
-      if (modId === 3) {
+      if (hasFormulaFilter) {
         switchMod3InfographicTab('kecil');
         window.setMod3QuizCategory('random', true);
       }
@@ -4589,8 +4934,8 @@
 
       const hintTextEl = document.getElementById('mod-helper-hint-text');
       if (hintTextEl) {
-        if (modId === 1) {
-          hintTextEl.innerText = '🖐️ Praktis gerakkan 10 jari untuk latih memori otot!';
+        if (isJariTrack) {
+          hintTextEl.innerText = '🖐️ Tekan jari di bawah untuk praktis buka & lipat jari!';
         } else if (modId >= 2 && modId <= 4) {
           hintTextEl.innerText = '🧮 Praktis gerakkan manik sempoa untuk memori otot!';
         } else {
@@ -4598,7 +4943,7 @@
         }
       }
 
-      setPlayerCurrentActivity(`Tahap ${modId} (${meta.shortTitle})`);
+      setPlayerCurrentActivity(`${badgeLabel} (${meta.shortTitle})`);
       renderCurrentModuleQuestion();
     }
 
@@ -4606,6 +4951,7 @@
       setPlayerCurrentActivity('Senarai Modul Belajar');
       playClick();
       document.getElementById('module-detail-view').classList.add('hidden');
+      document.getElementById('modules-track-switcher')?.classList.remove('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
       if (pCard) pCard.classList.remove('hidden');
       document.getElementById('modules-menu-grid').classList.remove('hidden');
@@ -4614,7 +4960,8 @@
 
     window.reshuffleModuleQuestions = function() {
       playClick();
-      activeModQuestions = buildProcedural50QuestionsForModule(activeModId, activeModId === 3 ? activeMod3QuizCategory : 'random');
+      const hasFormulaFilter = activeModId === 3 || activeModId === 'jari2';
+      activeModQuestions = buildProcedural50QuestionsForModule(activeModId, hasFormulaFilter ? activeMod3QuizCategory : 'random');
       activeModIndex = 0;
       activeModSessionCorrect = 0;
       activeModConsecutiveStreak = 0;
@@ -4625,8 +4972,8 @@
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
-      /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan seterusnya, cuma kosongkan nilai manik */
       resetHelperAbacus('mod', true);
+      resetHelperFingers(true);
       document.getElementById('mod-q-num').innerText = activeModIndex + 1;
       const pct = Math.round(((activeModIndex + 1) / 50) * 100);
       document.getElementById('mod-progress-bar').style.width = `${pct}%`;
@@ -4716,7 +5063,7 @@
           renderCurrentModuleQuestion();
         } else {
           triggerConfetti();
-          const doneHtml = `🏆 Tahniah! Anda tamatkan semua 50 soalan Tahap ${activeModId} dengan skor ${activeModSessionCorrect}/50!`;
+          const doneHtml = `🏆 Tahniah! Anda tamatkan semua 50 soalan modul ini dengan skor ${activeModSessionCorrect}/50!`;
           fb.className = 'rounded-2xl p-4 text-center text-xs font-black bg-amber-100 text-amber-900 border-2 border-amber-400';
           fb.innerHTML = doneHtml;
           fb.classList.remove('hidden');
@@ -4986,7 +5333,8 @@
 
       if (activeStudioTab === 'modules') {
         container.className = 'grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-0.5';
-        for (let m = 3; m <= 6; m++) {
+        const unlockableList = ['jari3', 3, 4, 5, 6];
+        for (const m of unlockableList) {
           const meta = MODULES_META[m];
           const isUnlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= MODULE_UNLOCK_REQ[m];
           const req = MODULE_UNLOCK_REQ[m];
@@ -6524,8 +6872,9 @@
         document.getElementById('module-detail-view').classList.add('hidden');
         const pCard = document.getElementById('parent-daily-guide-card');
         if (pCard) pCard.classList.remove('hidden');
+        document.getElementById('modules-track-switcher')?.classList.remove('hidden');
         document.getElementById('modules-menu-grid').classList.remove('hidden');
-        renderModulesMenu();
+        switchModulesTrack(activeModulesTrack, true);
       } else if (screenName === 'simulator') {
         setPlayerCurrentActivity('Simulator Jari (0–99)');
         renderFingerSimulator();
@@ -8113,7 +8462,30 @@
     function generateArenaQuestionBank(diffKey, count = 35) {
       const list = [];
       for (let i = 0; i < count; i++) {
-        if (diffKey === 'lvl1') {
+        if (diffKey === 'jari_all') {
+          if (i % 4 === 0) {
+            const target = Math.floor(Math.random() * 88) + 11;
+            const st = numberToFingerStates(target);
+            list.push({
+              prompt: 'Berapakah nilai 10 jari ini?',
+              visualHtml: `<div class="flex gap-2 justify-center">${renderRealisticHandSVG('left', st.left, false, 'w-20 h-24')}${renderRealisticHandSVG('right', st.right, false, 'w-20 h-24')}</div>`,
+              options: makeNumericOptions(target, 1, 99),
+              answer: target
+            });
+          } else {
+            const a = Math.floor(Math.random() * 55) + 6;
+            const b = Math.floor(Math.random() * 9) + 1;
+            const isAdd = i % 2 === 1;
+            const ans = isAdd ? (a + b) : (a + 10 - b);
+            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + 10} - ${b} = ?`;
+            list.push({
+              prompt,
+              visualHtml: '',
+              options: makeNumericOptions(ans, 1, 99),
+              answer: ans
+            });
+          }
+        } else if (diffKey === 'lvl1') {
           const target = Math.floor(Math.random() * 88) + 11;
           const st = numberToFingerStates(target);
           list.push({
@@ -8889,6 +9261,69 @@
       }
     };
 
+    function renderArenaVisualPodium(plist, myId, isTeamMode) {
+      const stageEl = document.getElementById('arena-visual-podium-stage');
+      if (!stageEl) return;
+
+      const p1 = plist[0] || null;
+      const p2 = plist[1] || null;
+      const p3 = plist[2] || null;
+
+      const buildPodiumColumn = (playerObj, rankNum) => {
+        const heights = { 1: 'h-24', 2: 'h-16', 3: 'h-12' };
+        const blockStyles = {
+          1: 'bg-gradient-to-b from-amber-300 via-amber-400 to-amber-600 text-amber-950 border-amber-200',
+          2: 'bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400 text-slate-900 border-white',
+          3: 'bg-gradient-to-b from-orange-300 via-amber-600 to-amber-800 text-white border-orange-200'
+        };
+        const avatarSizes = { 1: 'w-16 h-16', 2: 'w-13 h-13', 3: 'w-12 h-12' };
+        const crownHtml = rankNum === 1 ? `<div class="text-xl -mb-1.5 animate-bounce">👑</div>` : '';
+
+        if (!playerObj) {
+          return `
+            <div class="flex flex-col items-center justify-end opacity-40">
+              <div class="${avatarSizes[rankNum]} rounded-full bg-white/10 border-2 border-dashed border-white/30 flex items-center justify-center text-xs font-black mb-1">-</div>
+              <div class="text-[10px] font-bold text-slate-400 mb-1">Tiada</div>
+              <div class="w-full ${heights[rankNum]} ${blockStyles[rankNum]} border-t-2 rounded-t-2xl flex items-center justify-center font-black text-lg shadow-inner">
+                ${rankNum}
+              </div>
+            </div>
+          `;
+        }
+
+        const isMe = playerObj.id === myId;
+        const safeName = (playerObj.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const teamDot = isTeamMode ? (playerObj.team === 'blue' ? '🔵 ' : '🔴 ') : '';
+        const avSvg = renderRealisticAvatarSVG(playerObj.avatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
+
+        return `
+          <div class="flex flex-col items-center justify-end min-w-0">
+            ${crownHtml}
+            <div class="${avatarSizes[rankNum]} rounded-full relative mb-1 ${rankNum === 1 ? 'ring-3 ring-amber-300 shadow-lg' : ''}">
+              ${avSvg}
+            </div>
+            <div class="w-full text-[11px] font-black truncate px-0.5 ${isMe ? 'text-amber-300' : 'text-white'}">
+              ${teamDot}${safeName}
+            </div>
+            <div class="text-[10px] font-extrabold text-emerald-300 mb-1">
+              ${playerObj.score || 0} pts
+            </div>
+            <div class="w-full ${heights[rankNum]} ${blockStyles[rankNum]} border-t-2 rounded-t-2xl flex flex-col items-center justify-center shadow-lg">
+              <span class="text-xl sm:text-2xl font-black leading-none">${rankNum}</span>
+              <span class="text-[9px] font-black uppercase tracking-wider opacity-80">${rankNum === 1 ? 'Juara' : (rankNum === 2 ? 'Naib Juara' : 'Ke-3')}</span>
+            </div>
+          </div>
+        `;
+      };
+
+      // Susunan Podium Klasik: Kiri = Tempat 2, Tengah = Tempat 1 (Paling Tinggi), Kanan = Tempat 3
+      stageEl.innerHTML = [
+        buildPodiumColumn(p2, 2),
+        buildPodiumColumn(p1, 1),
+        buildPodiumColumn(p3, 3)
+      ].join('');
+    }
+
     function finishArenaMatch() {
       if (!activeArenaRoomData || arenaRewardGranted) return;
       arenaRewardGranted = true;
@@ -8909,32 +9344,41 @@
       resBox.classList.remove('hidden');
 
       const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+      const isTeamMode = activeArenaRoomData.mode === 'team_tug';
       const plist = getRoomParticipantsArray(activeArenaRoomData).sort((a, b) => {
         if (Boolean(a.eliminated) !== Boolean(b.eliminated)) return a.eliminated ? 1 : -1;
         return (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0);
       });
 
+      // Papar Pentas Podium 1, 2, 3 dengan Avatar 3D Pemain yang Menang
+      renderArenaVisualPodium(plist, myId, isTeamMode);
+
+      // Papar pemain ke-4 dan ke bawah (jika ramai pemain)
       const podiumEl = document.getElementById('arena-podium-list');
       if (podiumEl) {
-        podiumEl.innerHTML = plist.slice(0, 5).map((p, idx) => {
-          const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+        const restPlayers = plist.slice(3, 10);
+        podiumEl.innerHTML = restPlayers.map((p, idx) => {
+          const rankNum = idx + 4;
           const safeN = (p.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          const teamTag = activeArenaRoomData.mode === 'team_tug' ? (p.team === 'blue' ? '🔵 ' : '🔴 ') : '';
+          const avSvg = renderRealisticAvatarSVG(p.avatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
+          const teamTag = isTeamMode ? (p.team === 'blue' ? '🔵 ' : '🔴 ') : '';
           return `
-            <div class="flex items-center justify-between bg-white border ${p.id === myId ? 'border-amber-400 bg-amber-50' : 'border-slate-200'} rounded-xl px-3 py-1.5 text-xs font-black">
-              <span>${medal} ${teamTag}${safeN}</span>
-              <span class="text-indigo-800">${p.score || 0} Markah</span>
+            <div class="flex items-center justify-between bg-white/10 border ${p.id === myId ? 'border-amber-400 bg-amber-400/20' : 'border-white/15'} rounded-xl px-3 py-1.5 text-xs font-black text-white">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="text-amber-300">#${rankNum}</span>
+                <div class="w-6 h-6 rounded-full flex-shrink-0">${avSvg}</div>
+                <span class="truncate">${teamTag}${safeN}</span>
+              </div>
+              <span class="text-emerald-300 flex-shrink-0">${p.score || 0} pts</span>
             </div>
           `;
         }).join('');
       }
 
       const myRankIdx = plist.findIndex(p => p.id === myId);
-      const trophyEl = document.getElementById('arena-result-trophy');
-      const titleEl = document.getElementById('arena-result-title');
       const sumEl = document.getElementById('arena-result-summary');
 
-      if (activeArenaRoomData.mode === 'team_tug') {
+      if (isTeamMode) {
         const redPts = plist.filter(p => p.team === 'red').reduce((s, p) => s + (p.score || 0), 0);
         const bluePts = plist.filter(p => p.team === 'blue').reduce((s, p) => s + (p.score || 0), 0);
         const myTeam = activeArenaRoomData.participants?.[myId]?.team || 'red';
@@ -8942,35 +9386,25 @@
         if (teamWon) {
           playCheer();
           triggerConfetti();
-          if (trophyEl) trophyEl.innerText = '🏆';
-          if (titleEl) titleEl.innerText = `Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang!`;
-          if (sumEl) sumEl.innerHTML = `Merah: <b>${redPts}</b> vs Biru: <b>${bluePts}</b> • <span class="text-emerald-700">+30 Bonus Markah & +3 Coin ${COIN_ICON_HTML}</span>`;
+          if (sumEl) sumEl.innerHTML = `🏆 Pasukan ${myTeam === 'red' ? 'Merah 🔴' : 'Biru 🔵'} Menang (${redPts} vs ${bluePts})!<br><span class="text-emerald-300">+30 Bonus Markah & +3 Coin ${COIN_ICON_HTML}</span>`;
           if (currentPlayer) addPlayerReward(3, 30);
         } else {
           playCheer();
-          if (trophyEl) trophyEl.innerText = '🤝';
-          if (titleEl) titleEl.innerText = 'Pertarungan Pasukan Tamat!';
-          if (sumEl) sumEl.innerHTML = `Merah: <b>${redPts}</b> vs Biru: <b>${bluePts}</b> • <span class="text-indigo-700">+15 Markah Penyertaan & +1 Coin ${COIN_ICON_HTML}</span>`;
+          if (sumEl) sumEl.innerHTML = `🤝 Skor Pasukan: Merah ${redPts} vs Biru ${bluePts}<br><span class="text-sky-300">+15 Markah Penyertaan & +1 Coin ${COIN_ICON_HTML}</span>`;
           if (currentPlayer) addPlayerReward(1, 15);
         }
       } else if (myRankIdx === 0) {
         playCheer();
         triggerConfetti();
-        if (trophyEl) trophyEl.innerText = '🥇';
-        if (titleEl) titleEl.innerText = 'Tahniah! Anda Juara #1!';
-        if (sumEl) sumEl.innerHTML = `<span class="text-emerald-700 font-black">+35 Bonus Markah & +3 Coin ${COIN_ICON_HTML}!</span>`;
+        if (sumEl) sumEl.innerHTML = `Ganjaran Juara #1: <span class="text-emerald-300">+35 Bonus Markah & +3 Coin ${COIN_ICON_HTML}!</span>`;
         if (currentPlayer) addPlayerReward(3, 35);
       } else if (myRankIdx === 1) {
         playCheer();
-        if (trophyEl) trophyEl.innerText = '🥈';
-        if (titleEl) titleEl.innerText = 'Hebat! Tempat Ke-2!';
-        if (sumEl) sumEl.innerHTML = `<span class="text-indigo-700 font-black">+20 Bonus Markah & +2 Coin ${COIN_ICON_HTML}!</span>`;
+        if (sumEl) sumEl.innerHTML = `Ganjaran Tempat Ke-2: <span class="text-sky-300">+20 Bonus Markah & +2 Coin ${COIN_ICON_HTML}!</span>`;
         if (currentPlayer) addPlayerReward(2, 20);
       } else {
         playCheer();
-        if (trophyEl) trophyEl.innerText = '🥉';
-        if (titleEl) titleEl.innerText = `Tamat di Kedudukan #${Math.max(1, myRankIdx + 1)}!`;
-        if (sumEl) sumEl.innerHTML = `<span class="text-slate-700 font-black">+12 Markah & +1 Coin ${COIN_ICON_HTML}</span>`;
+        if (sumEl) sumEl.innerHTML = `Kedudukan Anda (#${Math.max(1, myRankIdx + 1)}): <span class="text-amber-300">+12 Markah & +1 Coin ${COIN_ICON_HTML}</span>`;
         if (currentPlayer) addPlayerReward(1, 12);
       }
 

@@ -200,7 +200,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.22
+            Versi 1.9.23
           </span>
         </div>
 
@@ -4976,7 +4976,7 @@
       const s = Math.max(0, Math.floor(totalSec || 0));
       const hours = Math.floor(s / 3600);
       const mins = Math.floor((s % 3600) / 60);
-      return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+      return `${hours} jam ${mins} min`;
     }
 
     function getTodayDateKey() {
@@ -5908,7 +5908,7 @@
                   </div>
                   <div class="flex flex-wrap items-center gap-1 mt-1">
                     <span class="text-[9px] font-bold bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full" title="Masa terakhir aktif">📅 ${lastActiveLabel}</span>
-                    <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini (Jam:Min)">🕒 Hari ini: ${todayHHMM}</span>
+                    <span class="text-[9px] font-extrabold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full" title="Masa aktif hari ini">🕒 Hari ini: ${todayHHMM}</span>
                   </div>
                 </div>
               </div>
@@ -6138,7 +6138,7 @@
                 <div class="min-w-0">
                   <div class="text-sm font-black text-slate-800 truncate">${safeName}</div>
                   <div class="text-[10px] font-bold text-slate-500">ID: <span class="font-mono">${id}</span> • PIN: <b>${st.recoveryPin || '0000'}</b></div>
-                  <div class="text-[10px] font-extrabold text-indigo-700 inline-flex items-center gap-1 flex-wrap">${COIN_ICON_HTML} ${st.stars || 0} Coin • 🏅 ${st.totalPoints || 0} Markah • ⏱️ ${formatDurationMMSS(st.playSeconds || 0)}</div>
+                  <div class="text-[10px] font-extrabold text-indigo-700 inline-flex items-center gap-1 flex-wrap">${COIN_ICON_HTML} ${st.stars || 0} Coin • 🏅 ${st.totalPoints || 0} Markah • ⏱️ ${formatDurationHHMM(st.playSeconds || 0)}</div>
                 </div>
               </div>
             </div>

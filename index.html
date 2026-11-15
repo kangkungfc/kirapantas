@@ -171,7 +171,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.7
+            Versi 1.9.8
           </span>
         </div>
 
@@ -627,15 +627,16 @@
         <div class="grid grid-cols-3 gap-2 bg-rose-50 p-2.5 rounded-2xl border-2 border-rose-200">
           <div>
             <label class="block text-[10px] font-black text-rose-900 mb-0.5">Tahap Digit</label>
-            <select id="flash-level" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
+            <select id="flash-level" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
               <option value="1d">1 Digit (Jari/Sa)</option>
               <option value="2d">2 Digit (10-99)</option>
               <option value="3d">3 Digit (Ratus)</option>
+              <option value="4d">4 Digit (Ribu)</option>
             </select>
           </div>
           <div>
             <label class="block text-[10px] font-black text-rose-900 mb-0.5">Bil. Nombor</label>
-            <select id="flash-count" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
+            <select id="flash-count" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
               <option value="3">3 Nombor</option>
               <option value="5" selected>5 Nombor</option>
               <option value="7">7 Nombor</option>
@@ -644,13 +645,18 @@
           </div>
           <div>
             <label class="block text-[10px] font-black text-rose-900 mb-0.5">Kelajuan</label>
-            <select id="flash-speed" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
+            <select id="flash-speed" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
               <option value="1300">Perlahan (1.3s)</option>
               <option value="850" selected>Sederhana (0.85s)</option>
               <option value="500">Kilat (0.5s)</option>
               <option value="300">Master (0.3s)</option>
             </select>
           </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-[11px] font-black text-amber-950">
+          <span>🏆 Potensi Markah Asas: <span id="flash-potential-points" class="text-rose-700">12</span> Markah</span>
+          <span class="text-[10px] text-amber-800">⚡ Jawab &lt;2s = +10 Bonus!</span>
         </div>
 
         <!-- Skrin Kilas Nombor -->
@@ -666,7 +672,10 @@
 
         <!-- Kotak Jawapan Selepas Kilasan Tamat -->
         <form id="flash-answer-form" onsubmit="submitFlashAnzan(event)" class="hidden space-y-2 pt-1">
-          <label class="block text-xs font-black text-slate-700 text-center">Berapakah jumlah akhir dalam bayangan minda anda?</label>
+          <div class="flex items-center justify-between gap-2">
+            <label class="text-xs font-black text-slate-700">Berapakah jumlah akhir dalam bayangan minda anda?</label>
+            <span id="flash-q-timer-badge" class="inline-flex items-center gap-1 text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full">⏱️ 0.0s</span>
+          </div>
           <div class="flex gap-2">
             <input id="flash-user-input" type="number" required placeholder="Taip jumlah..." class="flex-1 px-4 py-3 rounded-2xl border-2 border-rose-400 font-black text-lg text-center bg-rose-50 focus:outline-none" />
             <button type="submit" class="bubbly-btn bg-emerald-500 text-white font-black px-5 py-3 border-2 border-emerald-700 text-sm">Semak ✅</button>
@@ -712,7 +721,7 @@
           <p class="text-[11px] font-bold text-slate-500">Dengar sebutan operasi nombor dan kira dalam minda tanpa melihat skrin!</p>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 bg-indigo-50 p-2.5 rounded-2xl border-2 border-indigo-200">
+        <div class="grid grid-cols-2 gap-2 bg-indigo-50 p-2.5 rounded-2xl border-2 border-indigo-200">
           <div>
             <label class="block text-[10px] font-black text-indigo-900 mb-0.5">🗣️ Bahasa Suara</label>
             <select id="dict-lang" onchange="previewDictationVoice()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
@@ -724,19 +733,36 @@
           </div>
           <div>
             <label class="block text-[10px] font-black text-indigo-900 mb-0.5">Julat Nombor</label>
-            <select id="dict-level" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
+            <select id="dict-level" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
               <option value="1d">Asas (1 - 9)</option>
-              <option value="2d">Puluh (10 - 50)</option>
+              <option value="2d">Puluh (10 - 99)</option>
+              <option value="3d">Ratus (100 - 999)</option>
+              <option value="4d">Ribu (1,000 - 9,999)</option>
             </select>
           </div>
           <div>
             <label class="block text-[10px] font-black text-indigo-900 mb-0.5">Bil. Sebutan</label>
-            <select id="dict-count" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
+            <select id="dict-count" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
               <option value="4" selected>4 Sebutan</option>
               <option value="6">6 Sebutan</option>
               <option value="8">8 Sebutan</option>
+              <option value="10">10 Sebutan</option>
             </select>
           </div>
+          <div>
+            <label class="block text-[10px] font-black text-indigo-900 mb-0.5">⚡ Kelajuan Suara</label>
+            <select id="dict-speed" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
+              <option value="slow">Perlahan</option>
+              <option value="normal" selected>Sederhana</option>
+              <option value="fast">Pantas</option>
+              <option value="blitz">Kilat</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-[11px] font-black text-amber-950">
+          <span>🏆 Potensi Markah Asas: <span id="dict-potential-points" class="text-indigo-700">12</span> Markah</span>
+          <span class="text-[10px] text-amber-800">⚡ Jawab &lt;2s = +10 Bonus!</span>
         </div>
 
         <div class="bg-indigo-950 text-white rounded-3xl p-5 text-center border-4 border-indigo-700 space-y-2">
@@ -750,7 +776,10 @@
         </button>
 
         <form id="dict-answer-form" onsubmit="submitDictationAnzan(event)" class="hidden space-y-2 pt-1">
-          <label id="dict-answer-label" class="block text-xs font-black text-slate-700 text-center">Masukkan jumlah hasil dikte kiraan:</label>
+          <div class="flex items-center justify-between gap-2">
+            <label id="dict-answer-label" class="text-xs font-black text-slate-700">Masukkan jumlah hasil dikte kiraan:</label>
+            <span id="dict-q-timer-badge" class="inline-flex items-center gap-1 text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full">⏱️ 0.0s</span>
+          </div>
           <div class="flex gap-2">
             <input id="dict-user-input" type="number" required placeholder="Jumlah..." class="flex-1 px-4 py-3 rounded-2xl border-2 border-indigo-400 font-black text-lg text-center bg-indigo-50 focus:outline-none" />
             <button type="submit" class="bubbly-btn bg-emerald-500 text-white font-black px-5 py-3 border-2 border-emerald-700 text-sm">Semak ✅</button>
@@ -1599,6 +1628,10 @@
     }
 
     function playClick() { playTone(520, 'triangle', 0.07, 0.08); }
+    function playTick() {
+      playTone(1150, 'square', 0.032, 0.11);
+      setTimeout(() => playTone(880, 'triangle', 0.025, 0.06), 28);
+    }
     function playCheer() {
       playTone(523.25, 'sine', 0.12, 0.12);
       setTimeout(() => playTone(659.25, 'sine', 0.12, 0.12), 90);
@@ -5398,6 +5431,99 @@
       }
     };
 
+    let flashAnzanBasePoints = 12;
+    let flashAnswerStartTime = 0;
+    let flashAnswerTimerInterval = null;
+    let dictAnzanBasePoints = 12;
+    let dictAnswerStartTime = 0;
+    let dictAnswerTimerInterval = null;
+
+    function calculateAnzanDifficultyPoints(mode, level, count, speedVal) {
+      const digitScoreMap = { '1d': 6, '2d': 14, '3d': 26, '4d': 42 };
+      const baseDigit = digitScoreMap[level] || 6;
+      const countMult = Math.max(0.7, count / 4);
+      let speedMult = 1.0;
+      if (mode === 'flash') {
+        const sp = Number(speedVal) || 850;
+        if (sp <= 300) speedMult = 2.0;
+        else if (sp <= 500) speedMult = 1.55;
+        else if (sp <= 850) speedMult = 1.15;
+        else speedMult = 0.85;
+      } else {
+        if (speedVal === 'blitz') speedMult = 1.9;
+        else if (speedVal === 'fast') speedMult = 1.45;
+        else if (speedVal === 'normal') speedMult = 1.1;
+        else speedMult = 0.85;
+      }
+      return Math.max(5, Math.round(baseDigit * countMult * speedMult));
+    }
+
+    function calculateAnzanTotalWithSpeed(basePoints, elapsedSec) {
+      if (elapsedSec < 2.0) {
+        return { total: basePoints + 10, earnedBase: basePoints, bonus: 10, label: '⚡ KILAT SUPER (+10 Bonus)' };
+      }
+      if (elapsedSec < 5.0) {
+        return { total: basePoints + 5, earnedBase: basePoints, bonus: 5, label: '🚀 PANTAS (+5 Bonus)' };
+      }
+      if (elapsedSec < 9.0) {
+        return { total: basePoints, earnedBase: basePoints, bonus: 0, label: `✅ MARKAH PENUH (${basePoints})` };
+      }
+      const half = Math.max(3, Math.round(basePoints * 0.5));
+      return { total: half, earnedBase: half, bonus: 0, label: `🐢 SEPARUH MARKAH (${half})` };
+    }
+
+    function startAnzanAnswerTimer(ctx) {
+      if (ctx === 'flash') {
+        if (flashAnswerTimerInterval) clearInterval(flashAnswerTimerInterval);
+        flashAnswerStartTime = performance.now();
+        const badge = document.getElementById('flash-q-timer-badge');
+        if (badge) badge.innerText = '⏱️ 0.0s';
+        flashAnswerTimerInterval = setInterval(() => {
+          const el = document.getElementById('flash-q-timer-badge');
+          if (!el) return;
+          el.innerText = `⏱️ ${((performance.now() - flashAnswerStartTime) / 1000).toFixed(1)}s`;
+        }, 100);
+      } else {
+        if (dictAnswerTimerInterval) clearInterval(dictAnswerTimerInterval);
+        dictAnswerStartTime = performance.now();
+        const badge = document.getElementById('dict-q-timer-badge');
+        if (badge) badge.innerText = '⏱️ 0.0s';
+        dictAnswerTimerInterval = setInterval(() => {
+          const el = document.getElementById('dict-q-timer-badge');
+          if (!el) return;
+          el.innerText = `⏱️ ${((performance.now() - dictAnswerStartTime) / 1000).toFixed(1)}s`;
+        }, 100);
+      }
+    }
+
+    function stopAnzanAnswerTimer(ctx) {
+      if (ctx === 'flash') {
+        if (flashAnswerTimerInterval) clearInterval(flashAnswerTimerInterval);
+        flashAnswerTimerInterval = null;
+        return Math.max(0.1, (performance.now() - (flashAnswerStartTime || performance.now())) / 1000);
+      } else {
+        if (dictAnswerTimerInterval) clearInterval(dictAnswerTimerInterval);
+        dictAnswerTimerInterval = null;
+        return Math.max(0.1, (performance.now() - (dictAnswerStartTime || performance.now())) / 1000);
+      }
+    }
+
+    window.updateAnzanRewardPreviews = function() {
+      const fLvl = document.getElementById('flash-level')?.value || '1d';
+      const fCnt = parseInt(document.getElementById('flash-count')?.value, 10) || 5;
+      const fSpd = parseInt(document.getElementById('flash-speed')?.value, 10) || 850;
+      const fPts = calculateAnzanDifficultyPoints('flash', fLvl, fCnt, fSpd);
+      const fEl = document.getElementById('flash-potential-points');
+      if (fEl) fEl.innerText = fPts;
+
+      const dLvl = document.getElementById('dict-level')?.value || '1d';
+      const dCnt = parseInt(document.getElementById('dict-count')?.value, 10) || 4;
+      const dSpd = document.getElementById('dict-speed')?.value || 'normal';
+      const dPts = calculateAnzanDifficultyPoints('dict', dLvl, dCnt, dSpd);
+      const dEl = document.getElementById('dict-potential-points');
+      if (dEl) dEl.innerText = dPts;
+    };
+
     window.switchAnzanTab = function(tabName) {
       playClick();
       ['flash', 'drill', 'dictation'].forEach(t => {
@@ -5410,16 +5536,19 @@
             : 'anzan-tab bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
         }
       });
+      updateAnzanRewardPreviews();
       if (tabName === 'drill') startNewSpeedDrill();
     };
 
     window.startFlashAnzan = function() {
       playClick();
       if (flashTimerHandle) clearTimeout(flashTimerHandle);
+      if (flashAnswerTimerInterval) clearInterval(flashAnswerTimerInterval);
 
       const level = document.getElementById('flash-level').value;
       const count = parseInt(document.getElementById('flash-count').value, 10) || 5;
       const speed = parseInt(document.getElementById('flash-speed').value, 10) || 850;
+      flashAnzanBasePoints = calculateAnzanDifficultyPoints('flash', level, count, speed);
 
       const btn = document.getElementById('btn-start-flash');
       const form = document.getElementById('flash-answer-form');
@@ -5436,8 +5565,8 @@
 
       const seq = [];
       let runningTotal = 0;
-      const maxVal = level === '1d' ? 9 : level === '2d' ? 45 : 250;
-      const minVal = level === '1d' ? 1 : level === '2d' ? 10 : 100;
+      const maxVal = level === '1d' ? 9 : level === '2d' ? 99 : level === '3d' ? 999 : 4500;
+      const minVal = level === '1d' ? 1 : level === '2d' ? 10 : level === '3d' ? 100 : 1000;
 
       for (let i = 0; i < count; i++) {
         let val = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
@@ -5464,19 +5593,20 @@
         if (idx >= seq.length) {
           badgeEl.innerText = 'Tamat!';
           numEl.innerText = '❓';
-          hintEl.innerText = 'Masukkan jumlah akhir di bawah';
+          hintEl.innerText = 'Masukkan jumlah akhir di bawah dengan pantas!';
           btn.disabled = false;
           btn.classList.remove('opacity-60');
           form.classList.remove('hidden');
           document.getElementById('flash-user-input').focus();
+          startAnzanAnswerTimer('flash');
           return;
         }
 
         const n = seq[idx];
-        playTone(n > 0 ? 660 : 440, 'sine', 0.08, 0.1);
+        playTick();
         badgeEl.innerText = `${idx + 1} / ${seq.length}`;
-        numEl.innerText = n > 0 ? `+${n}` : `${n}`;
-        numEl.className = `text-5xl sm:text-6xl font-black tracking-wider ${n > 0 ? 'text-amber-400' : 'text-rose-400'}`;
+        numEl.innerText = n > 0 ? `+${n.toLocaleString()}` : `${n.toLocaleString()}`;
+        numEl.className = `${level === '4d' ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'} font-black tracking-wider ${n > 0 ? 'text-amber-400' : 'text-rose-400'}`;
         hintEl.innerText = n > 0 ? 'Tambah pada bayangan sempoa' : 'Tolak pada bayangan sempoa';
 
         flashTimerHandle = setTimeout(() => {
@@ -5491,6 +5621,7 @@
 
     window.submitFlashAnzan = function(e) {
       e.preventDefault();
+      const elapsedSec = stopAnzanAnswerTimer('flash');
       const userVal = parseInt(document.getElementById('flash-user-input').value, 10);
       const fb = document.getElementById('flash-feedback');
       const form = document.getElementById('flash-answer-form');
@@ -5501,15 +5632,17 @@
       if (userVal === flashAnzanAnswer) {
         playCheer();
         triggerConfetti();
+        const reward = calculateAnzanTotalWithSpeed(flashAnzanBasePoints, elapsedSec);
+        const coinsEarned = flashAnzanBasePoints >= 35 ? 3 : 2;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
-        fb.innerHTML = `🧠 Hebat Master Anzan! Jawapan <b>${flashAnzanAnswer}</b> tepat!<br><span class="text-[10px] font-bold text-emerald-700">(${seqStr}) • +2 Coin ${COIN_ICON_HTML} & +20 Markah</span>`;
+        fb.innerHTML = `🧠 Hebat Master Anzan (${elapsedSec.toFixed(1)}s)! Jawapan <b>${flashAnzanAnswer.toLocaleString()}</b> tepat!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqStr})</span>`;
         if (currentPlayer) {
-          addPlayerReward(2, 20);
+          addPlayerReward(coinsEarned, reward.total);
         }
       } else {
         playWrong();
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-900 border-2 border-rose-300';
-        fb.innerHTML = `❌ Jawapan anda: ${isNaN(userVal) ? '-' : userVal}. Jumlah sebenar ialah <b>${flashAnzanAnswer}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqStr})</span>`;
+        fb.innerHTML = `❌ Jawapan anda (${elapsedSec.toFixed(1)}s): ${isNaN(userVal) ? '-' : userVal.toLocaleString()}. Jumlah sebenar ialah <b>${flashAnzanAnswer.toLocaleString()}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqStr})</span>`;
       }
       fb.classList.remove('hidden');
     };
@@ -5823,7 +5956,7 @@
       };
     }
 
-    function speakDictationPhrase(text, langKey = 'ms') {
+    function speakDictationPhrase(text, langKey = 'ms', speechRate = 0.92) {
       try {
         if ('speechSynthesis' in window) {
           window.speechSynthesis.cancel();
@@ -5836,7 +5969,7 @@
           } else {
             utter.lang = cfg.bcp47;
           }
-          utter.rate = 0.92;
+          utter.rate = speechRate;
           window.speechSynthesis.speak(utter);
         }
       } catch (e) {}
@@ -5853,15 +5986,30 @@
           ? `Suara: ${cfg.label} (${matched.lang})`
           : `Suara: ${cfg.label} (Standard Peranti)`;
       }
-      speakDictationPhrase(cfg.sample, langKey);
+      speakDictationPhrase(cfg.sample, langKey, 0.95);
     };
 
     window.startDictationAnzan = function() {
       playClick();
+      if (dictAnswerTimerInterval) clearInterval(dictAnswerTimerInterval);
+
       const langKey = document.getElementById('dict-lang')?.value || 'ms';
       const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
       const level = document.getElementById('dict-level').value;
       const count = parseInt(document.getElementById('dict-count').value, 10) || 4;
+      const speedMode = document.getElementById('dict-speed')?.value || 'normal';
+      dictAnzanBasePoints = calculateAnzanDifficultyPoints('dict', level, count, speedMode);
+
+      const speedPresetMap = {
+        slow:   { rate: 0.78, gap: 2400 },
+        normal: { rate: 0.95, gap: 1850 },
+        fast:   { rate: 1.18, gap: 1400 },
+        blitz:  { rate: 1.38, gap: 1050 }
+      };
+      const chosenSpeed = speedPresetMap[speedMode] || speedPresetMap.normal;
+      const extraDigitGap = level === '4d' ? 550 : level === '3d' ? 320 : 0;
+      const stepDelayMs = chosenSpeed.gap + extraDigitGap;
+
       const btn = document.getElementById('btn-start-dict');
       const form = document.getElementById('dict-answer-form');
       const fb = document.getElementById('dict-feedback');
@@ -5876,8 +6024,8 @@
 
       const seq = [];
       let total = 0;
-      const maxN = level === '1d' ? 9 : 40;
-      const minN = level === '1d' ? 1 : 10;
+      const maxN = level === '1d' ? 9 : level === '2d' ? 99 : level === '3d' ? 999 : 4500;
+      const minN = level === '1d' ? 1 : level === '2d' ? 10 : level === '3d' ? 100 : 1000;
 
       for (let i = 0; i < count; i++) {
         const v = Math.floor(Math.random() * (maxN - minN + 1)) + minN;
@@ -5897,12 +6045,13 @@
       function playNextDictStep() {
         if (step >= seq.length) {
           iconEl.innerText = '✍️';
-          txtEl.innerText = 'Sebutan tamat! Masukkan jawapan anda di bawah.';
-          speakDictationPhrase(cfg.ask, langKey);
+          txtEl.innerText = 'Sebutan tamat! Masukkan jawapan anda dengan pantas.';
+          speakDictationPhrase(cfg.ask, langKey, chosenSpeed.rate);
           btn.disabled = false;
           btn.classList.remove('opacity-60');
           form.classList.remove('hidden');
           document.getElementById('dict-user-input').focus();
+          startAnzanAnswerTimer('dict');
           return;
         }
 
@@ -5914,10 +6063,10 @@
         iconEl.innerText = '🔊';
         txtEl.innerText = `[${cfg.label}] Sebutan ke-${step + 1} daripada ${seq.length}...`;
         playTone(val > 0 ? 580 : 420, 'triangle', 0.1, 0.08);
-        speakDictationPhrase(phrase, langKey);
+        speakDictationPhrase(phrase, langKey, chosenSpeed.rate);
 
         step++;
-        setTimeout(playNextDictStep, 1800);
+        setTimeout(playNextDictStep, stepDelayMs);
       }
 
       iconEl.innerText = '🎧';
@@ -5927,6 +6076,7 @@
 
     window.submitDictationAnzan = function(e) {
       e.preventDefault();
+      const elapsedSec = stopAnzanAnswerTimer('dict');
       const userVal = parseInt(document.getElementById('dict-user-input').value, 10);
       const fb = document.getElementById('dict-feedback');
       document.getElementById('dict-answer-form').classList.add('hidden');
@@ -5936,15 +6086,17 @@
       if (userVal === dictCorrectAnswer) {
         playCheer();
         triggerConfetti();
+        const reward = calculateAnzanTotalWithSpeed(dictAnzanBasePoints, elapsedSec);
+        const coinsEarned = dictAnzanBasePoints >= 35 ? 3 : 2;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
-        fb.innerHTML = `🎉 Tepat! Pendengaran & kiraan minda anda sangat tajam (${dictCorrectAnswer})!<br><span class="text-[10px] font-bold text-emerald-700">(${seqText}) • +2 Coin ${COIN_ICON_HTML} & +20 Markah</span>`;
+        fb.innerHTML = `🎉 Tepat (${elapsedSec.toFixed(1)}s)! Pendengaran & kiraan minda anda sangat tajam (<b>${dictCorrectAnswer.toLocaleString()}</b>)!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqText})</span>`;
         if (currentPlayer) {
-          addPlayerReward(2, 20);
+          addPlayerReward(coinsEarned, reward.total);
         }
       } else {
         playWrong();
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-900 border-2 border-rose-300';
-        fb.innerHTML = `❌ Jawapan anda: ${isNaN(userVal) ? '-' : userVal}. Jumlah sebenar ialah <b>${dictCorrectAnswer}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqText})</span>`;
+        fb.innerHTML = `❌ Jawapan anda (${elapsedSec.toFixed(1)}s): ${isNaN(userVal) ? '-' : userVal.toLocaleString()}. Jumlah sebenar ialah <b>${dictCorrectAnswer.toLocaleString()}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqText})</span>`;
       }
       fb.classList.remove('hidden');
     };

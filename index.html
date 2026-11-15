@@ -207,7 +207,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.31
+            Versi 1.9.32
           </span>
         </div>
 
@@ -499,10 +499,10 @@
             <div class="min-w-0">
               <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
                 <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">MULTIPLAYER LIVE</span>
-                <span class="bg-emerald-300 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full">🟢 1v1 & RAMAI-RAMAI</span>
+                <span class="bg-emerald-300 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full">🟢 4 MOD SERONOK</span>
               </div>
               <div class="text-base sm:text-lg font-bold leading-tight">Arena Perlawanan Online</div>
-              <div class="text-[11px] font-bold text-fuchsia-100 mt-0.5">Duel 1v1 • Kuiz Kelas Kahoot • Battle Royale • Maraton • Pasukan</div>
+              <div class="text-[11px] font-bold text-fuchsia-100 mt-0.5">Kuiz Kilat • Lumba Maraton • Battle Royale Anzan • Lawan Pasukan</div>
             </div>
           </div>
           <span class="text-xl font-black flex-shrink-0">▶️</span>
@@ -1248,7 +1248,7 @@
     </section>
 
     <!-- ========================================================
-         SKRIN 11: ARENA PERLAWANAN ONLINE REAL-TIME (1v1 & BERKUMPULAN)
+         SKRIN 11: ARENA PERLAWANAN ONLINE (4 MOD TERAS MESRA KANAK-KANAK)
          ======================================================== -->
     <section id="screen-arena" class="hidden space-y-4">
       <div class="flex items-center justify-between">
@@ -1256,163 +1256,114 @@
         <h2 class="text-lg font-bold text-purple-950">⚔️ Arena Perlawanan Online</h2>
       </div>
 
-      <!-- PAPARAN A: 7 SUBMENU MOD PERLAWANAN (1v1 & RAMAI-RAMAI) + LOBI BILIK -->
+      <!-- PAPARAN A: 4 MOD PERLAWANAN + PANDUAN CARA MAIN KANAK-KANAK + LOBI -->
       <div id="arena-lobby-view" class="space-y-3.5">
         <div class="bubbly-card bg-white border-4 border-purple-400 p-4 space-y-3">
           <div class="text-center">
-            <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 px-3 py-0.5 rounded-full border border-purple-300 mb-1">🌐 Pertandingan Masa Nyata (2 – 30 Pemain)</span>
-            <h3 class="text-base sm:text-lg font-bold text-slate-800">Pilih Mod Perlawanan</h3>
-            <p class="text-[11px] font-bold text-slate-500">Cipta bilik kod 4-digit untuk rakan atau satu kelas masuk serentak!</p>
+            <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 px-3 py-0.5 rounded-full border border-purple-300 mb-1">🌟 Boleh Main 1 vs 1 atau Ramai-ramai!</span>
+            <h3 class="text-base sm:text-lg font-bold text-slate-800">Pilih Permainan Kegemaran Anda</h3>
+            <p class="text-[11px] font-bold text-slate-500">Tekan salah satu permainan di bawah untuk baca cara main & mula berlumba!</p>
           </div>
 
-          <!-- Penapis Submenu Kategori: 1 vs 1 vs Ramai-ramai -->
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="switchArenaCategoryFilter('1v1')" id="arena-cat-1v1" class="bubbly-btn bg-violet-600 text-white border-2 border-violet-950 py-2.5 px-2 text-xs font-black">
-              ⚔️ 1 vs 1 (3 Mod)
+          <!-- 4 Kad Mod Teras Tanpa Pertindihan -->
+          <div class="grid grid-cols-1 gap-2.5">
+            <!-- Mod 1: Kuiz Kilat Serentak (10 Soalan) -->
+            <button type="button" onclick="selectArenaSubmenu('kuiz_kilat')" id="arena-sub-kuiz_kilat"
+              class="arena-sub-card w-full text-left p-3 rounded-2xl border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs transition">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-11 h-11 rounded-2xl bg-fuchsia-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🎓</div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-fuchsia-950">1. Kuiz Kilat Serentak (10 Soalan)</div>
+                    <div class="text-[11px] font-bold text-slate-600">Jawab 10 soalan sama. Lagi cepat awak tekan jawapan betul, lagi tinggi markah!</div>
+                  </div>
+                </div>
+                <span id="arena-check-kuiz_kilat" class="text-[10px] font-black bg-fuchsia-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+              </div>
             </button>
-            <button type="button" onclick="switchArenaCategoryFilter('group')" id="arena-cat-group" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black">
-              👨‍👩‍👧‍👦 Ramai-ramai (4 Mod)
+
+            <!-- Mod 2: Perlumbaan Maraton Grand Prix -->
+            <button type="button" onclick="selectArenaSubmenu('marathon_gp')" id="arena-sub-marathon_gp"
+              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🏎️</div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-emerald-950">2. Perlumbaan Maraton (20 Langkah + Turbo 🔥)</div>
+                    <div class="text-[11px] font-bold text-slate-600">Lumba gerakkan avatar ke garisan penamat! 5 betul berturut aktifkan Turbo Api!</div>
+                  </div>
+                </div>
+                <span id="arena-check-marathon_gp" class="hidden text-[10px] font-black bg-emerald-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+              </div>
+            </button>
+
+            <!-- Mod 3: Battle Royale: Flash Anzan (Sudden Death) -->
+            <button type="button" onclick="selectArenaSubmenu('royale_anzan')" id="arena-sub-royale_anzan"
+              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-11 h-11 rounded-2xl bg-amber-500 text-amber-950 flex items-center justify-center text-2xl flex-shrink-0">👑</div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-amber-950">3. Battle Royale: Flash Anzan (Kalah Mati)</div>
+                    <div class="text-[11px] font-bold text-slate-600">Kira nombor berkelip dalam minda! Tersalah kira terus terkeluar sampai tinggal 1 juara.</div>
+                  </div>
+                </div>
+                <span id="arena-check-royale_anzan" class="hidden text-[10px] font-black bg-amber-500 text-amber-950 px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+              </div>
+            </button>
+
+            <!-- Mod 4: Pertarungan Pasukan (Merah vs Biru) -->
+            <button type="button" onclick="selectArenaSubmenu('team_tug')" id="arena-sub-team_tug"
+              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-400 transition">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-r from-rose-500 to-sky-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🚩</div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-indigo-950">4. Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)</div>
+                    <div class="text-[11px] font-bold text-slate-600">Pilih pasukan & bekerjasama tarik tali kuasa selama 75 saat untuk menang beramai-ramai!</div>
+                  </div>
+                </div>
+                <span id="arena-check-team_tug" class="hidden text-[10px] font-black bg-indigo-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
+              </div>
             </button>
           </div>
 
-          <!-- Senarai Submenu Perlawanan -->
-          <div class="space-y-2">
-            <!-- KATEGORI BERKUMPULAN (3 - 30 PEMAIN) -->
-            <div id="arena-group-modes-wrap" class="hidden space-y-2">
-              <div class="text-[10px] font-black text-fuchsia-800 uppercase tracking-wider px-1">👨‍👩‍👧‍👦 Mod Perlawanan Ramai-Ramai (3 – 30 Pemain):</div>
-
-              <!-- Submenu 4: Kuiz Kelas Langsung (Kahoot!-Style) -->
-              <button type="button" onclick="selectArenaSubmenu('kahoot_live')" id="arena-sub-kahoot_live"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-fuchsia-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-fuchsia-600 text-white flex items-center justify-center text-xl flex-shrink-0">🎓</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-fuchsia-950">Kuiz Kelas Langsung (ala Kahoot!)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Soalan serentak dengan pemasa 10s, papan podium Top 3 & juara kelas!</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-kahoot_live" class="hidden text-[10px] font-black bg-fuchsia-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-
-              <!-- Submenu 5: Battle Royale: Last Man Standing -->
-              <button type="button" onclick="selectArenaSubmenu('battle_royale')" id="arena-sub-battle_royale"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-500 text-amber-950 flex items-center justify-center text-xl flex-shrink-0">👑</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-amber-950">Battle Royale: Last Man Standing</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Bertarung ramai-ramai! Salah jawab atau terlalu lambat tersingkir hingga tinggal 1 juara.</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-battle_royale" class="hidden text-[10px] font-black bg-amber-500 text-amber-950 px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-
-              <!-- Submenu 6: Perlumbaan Maraton Kumpulan (Grand Prix) -->
-              <button type="button" onclick="selectArenaSubmenu('marathon_gp')" id="arena-sub-marathon_gp"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl flex-shrink-0">🏎️</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-emerald-950">Perlumbaan Maraton Grand Prix (20 Langkah)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Lumba hingga 10 avatar 3D serentak! Siapa paling awal capai 20 jawapan betul menang.</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-marathon_gp" class="hidden text-[10px] font-black bg-emerald-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-
-              <!-- Submenu 7: Pertarungan Pasukan (Merah vs Biru) -->
-              <button type="button" onclick="selectArenaSubmenu('team_tug')" id="arena-sub-team_tug"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-r from-rose-500 to-sky-600 text-white flex items-center justify-center text-xl flex-shrink-0">🚩</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-indigo-950">Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Pilih pasukan & tarik bar kuasa beramai-ramai dalam 75 saat!</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-team_tug" class="hidden text-[10px] font-black bg-indigo-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
+          <!-- Kotak Penerangan Mesra Kanak-Kanak (Berubah Secara Dinamik Mengikut Mod Dipilih) -->
+          <div id="arena-kid-guide-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-xs font-black text-amber-950">
+              <span>💡</span>
+              <span id="arena-kid-guide-title">Cara Main: Kuiz Kilat Serentak (10 Soalan)</span>
             </div>
-
-            <!-- KATEGORI 1v1 (2 PEMAIN) -->
-            <div id="arena-1v1-modes-wrap" class="space-y-2">
-              <div class="text-[10px] font-black text-violet-800 uppercase tracking-wider px-1">⚔️ Mod Perlawanan 1v1 (2 Pemain):</div>
-
-              <!-- Submenu 1: Duel 10 Soalan -->
-              <button type="button" onclick="selectArenaSubmenu('duel10')" id="arena-sub-duel10"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-3 border-violet-600 bg-violet-50 shadow-xs transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-violet-600 text-white flex items-center justify-center text-xl flex-shrink-0">⚔️</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-violet-950">Arena Duel 1v1 (10 Soalan)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">10 soalan sama untuk 2 pemain. Siapa paling tepat & pantas menang!</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-duel10" class="text-[10px] font-black bg-violet-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-
-              <!-- Submenu 2: Lumba Kilat 60 Saat -->
-              <button type="button" onclick="selectArenaSubmenu('race60')" id="arena-sub-race60"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-teal-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-teal-500 text-white flex items-center justify-center text-xl flex-shrink-0">🏁</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-teal-950">Perlumbaan Kilat 60 Saat (1v1)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Pecut 60 saat! 5 jawapan betul berturut aktifkan Turbo Api 🔥!</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-race60" class="hidden text-[10px] font-black bg-teal-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-
-              <!-- Submenu 3: Flash Anzan Sudden Death -->
-              <button type="button" onclick="selectArenaSubmenu('anzan_sd')" id="arena-sub-anzan_sd"
-                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-rose-400 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-xl flex-shrink-0">🧠</div>
-                    <div>
-                      <div class="text-xs sm:text-sm font-black text-rose-950">Flash Anzan Serentak (Sudden Death)</div>
-                      <div class="text-[10px] sm:text-[11px] font-bold text-slate-600">Kelipan nombor semakin laju setiap pusingan. Salah kira terus tersingkir!</div>
-                    </div>
-                  </div>
-                  <span id="arena-check-anzan_sd" class="hidden text-[10px] font-black bg-rose-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-                </div>
-              </button>
-            </div>
+            <ul id="arena-kid-guide-steps" class="text-[11px] font-bold text-slate-700 space-y-1 pl-1">
+              <li>✅ Semua pemain akan dapat <b>10 soalan yang sama</b>.</li>
+              <li>⚡ Jawab dengan <b>betul & paling pantas</b> untuk dapat markah bonus!</li>
+              <li>🏆 Selepas 10 soalan, 3 pemain markah tertinggi naik ke pentas juara 🥇🥈🥉!</li>
+            </ul>
           </div>
 
           <!-- Tetapan Tahap Kesukaran & Butang Cipta / Sertai Bilik -->
           <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <label class="text-xs font-black text-slate-700">🎯 Tahap Soalan Bilik:</label>
+              <label class="text-xs font-black text-slate-700">🎯 Pilih Tahap Soalan:</label>
               <select id="arena-difficulty-select" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-950">
-                <option value="lvl1">Tahap 1: Asas 10 Jari (0 – 99)</option>
+                <option value="lvl1">Tahap 1: Kira 10 Jari (0 – 99)</option>
                 <option value="lvl23" selected>Tahap 2 & 3: Sempoa & Kawan 5/10</option>
                 <option value="lvl45">Tahap 4 & 5: Darab/Bahagi & Rantaian</option>
               </select>
             </div>
 
             <button type="button" onclick="createArenaDuelRoom()" class="w-full bubbly-btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-sm py-3 border-2 border-purple-950">
-              ➕ Cipta Bilik Perlawanan Baharu
+              ➕ Cipta Bilik Baharu (Dapat Kod 4-Digit)
             </button>
 
-            <div class="pt-2 border-t border-slate-200 flex gap-1.5">
-              <input id="arena-join-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="Kod Bilik 4-Digit (cth: 4829)" class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
-              <button type="button" onclick="joinArenaRoomByCode()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-4 py-2 text-xs font-black">
-                🚪 Sertai
-              </button>
+            <div class="pt-2 border-t border-slate-200 space-y-1">
+              <div class="text-[10px] font-black text-slate-500">Sudah ada kod bilik daripada kawan atau cikgu? Masukkan di sini:</div>
+              <div class="flex gap-1.5">
+                <input id="arena-join-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="Taip 4 Nombor (cth: 4829)" class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+                <button type="button" onclick="joinArenaRoomByCode()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-4 py-2 text-xs font-black">
+                  🚪 Masuk
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1420,26 +1371,26 @@
         <!-- Senarai Bilik Terbuka (Menunggu Pemain Secara Langsung) -->
         <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h4 class="text-sm font-black text-emerald-950">🟢 Bilik Menunggu Pemain (Klik untuk Masuk)</h4>
+            <h4 class="text-sm font-black text-emerald-950">🟢 Bilik Kawan Yang Sedang Menunggu</h4>
             <button type="button" onclick="subscribeOpenArenaRooms()" class="text-[11px] font-black text-emerald-700 underline">🔄 Segar</button>
           </div>
           <div id="arena-open-rooms-list" class="space-y-2 max-h-[240px] overflow-y-auto scroll-smooth-touch"></div>
         </div>
       </div>
 
-      <!-- PAPARAN B: BILIK MENUNGGU / GELANGGANG PERLAWANAN LIVE (1v1 & BERKUMPULAN) -->
+      <!-- PAPARAN B: BILIK MENUNGGU / GELANGGANG PERLAWANAN LIVE (2 HINGGA 30 PEMAIN) -->
       <div id="arena-match-view" class="hidden bubbly-card bg-white border-4 border-fuchsia-500 p-4 space-y-3">
         <!-- Bar Status Bilik & Butang Keluar -->
         <div class="flex items-center justify-between gap-2 bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5">
           <div class="min-w-0">
-            <div id="arena-room-mode-title" class="text-xs font-black text-purple-950 truncate">⚔️ Arena Perlawanan</div>
+            <div id="arena-room-mode-title" class="text-xs font-black text-purple-950 truncate">🎓 Kuiz Kilat Serentak</div>
             <div class="text-[10px] font-bold text-slate-600">
               Kod Bilik: <span id="arena-room-code-badge" class="font-mono font-black text-sm bg-amber-300 text-amber-950 px-2 py-0.5 rounded-lg">0000</span>
               • <span id="arena-players-count-badge" class="font-black text-indigo-700">1 Pemain</span>
             </div>
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span id="arena-match-timer-badge" class="hidden text-xs font-black bg-rose-600 text-white px-2.5 py-1 rounded-xl">⏱️ 60s</span>
+            <span id="arena-match-timer-badge" class="hidden text-xs font-black bg-rose-600 text-white px-2.5 py-1 rounded-xl">⏱️ 75s</span>
             <button type="button" onclick="exitCurrentArenaRoom()" class="bubbly-btn bg-rose-100 text-rose-800 border border-rose-300 px-2.5 py-1.5 text-[11px] font-black">✖️ Keluar</button>
           </div>
         </div>
@@ -1455,21 +1406,21 @@
           </div>
         </div>
 
-        <!-- Papan Trek / Kedudukan Langsung Semua Pemain Dalam Bilik (Menyokong 2 hingga 30 Pemain!) -->
+        <!-- Papan Trek / Kedudukan Langsung Semua Pemain Dalam Bilik -->
         <div id="arena-live-standings-board" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white rounded-2xl p-3 space-y-2 border-2 border-indigo-500 max-h-[210px] overflow-y-auto scroll-smooth-touch"></div>
 
         <!-- Zon Lobi Menunggu Pemain & Mula Perlawanan -->
         <div id="arena-waiting-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center space-y-2.5">
           <div class="text-3xl animate-bounce">⏳</div>
-          <div id="arena-waiting-text" class="text-xs sm:text-sm font-black text-amber-950">Kongsikan Kod Bilik kepada rakan-rakan anda untuk masuk!</div>
+          <div id="arena-waiting-text" class="text-xs sm:text-sm font-black text-amber-950">Beritahu Kod Bilik 4-digit di atas kepada kawan-kawan anda untuk masuk!</div>
 
           <!-- Pemilih Pasukan (Hanya untuk Mod Pertarungan Pasukan Merah vs Biru) -->
           <div id="arena-team-picker-box" class="hidden grid grid-cols-2 gap-2 pt-1">
             <button type="button" onclick="switchMyArenaTeam('red')" id="btn-pick-team-red" class="bubbly-btn bg-rose-600 text-white border-2 border-rose-950 py-2 text-xs font-black">
-              🔴 Sertai Pasukan Merah
+              🔴 Masuk Pasukan Merah
             </button>
             <button type="button" onclick="switchMyArenaTeam('blue')" id="btn-pick-team-blue" class="bubbly-btn bg-white text-sky-900 border-2 border-sky-400 py-2 text-xs font-black">
-              🔵 Sertai Pasukan Biru
+              🔵 Masuk Pasukan Biru
             </button>
           </div>
 
@@ -1478,7 +1429,7 @@
               🚀 Mula Perlawanan Sekarang!
             </button>
             <button id="btn-arena-bot-sparring" type="button" onclick="addArenaBotPlayers()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-3.5 py-2 text-xs font-black">
-              🤖 Tambah Rakan Bot (Uji / Latihan)
+              🤖 Tambah Rakan Bot (Jika Tiada Kawan)
             </button>
           </div>
         </div>
@@ -1494,7 +1445,7 @@
           <!-- Pilihan Jawapan Objektif -->
           <div id="arena-options-grid" class="grid grid-cols-2 gap-2.5"></div>
 
-          <!-- Input Jawapan Flash Anzan Sudden Death -->
+          <!-- Input Jawapan Battle Royale: Flash Anzan -->
           <form id="arena-anzan-form" onsubmit="submitArenaAnzanAnswer(event)" class="hidden space-y-2">
             <div class="flex gap-2">
               <input id="arena-anzan-input" type="number" required placeholder="Taip jumlah kelipan..." class="flex-1 px-4 py-3 rounded-2xl border-2 border-rose-400 font-black text-lg text-center bg-rose-50 focus:outline-none" />
@@ -8054,9 +8005,9 @@
       }).join('');
     }
 
-    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (7 MOD: 1v1 & BERKUMPULAN 2–30 PEMAIN) */
-    const ARENA_LOCAL_ROOMS_KEY = 'kirapantas_arena_rooms_v2';
-    let selectedArenaMode = 'duel10';
+    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (4 MOD TERAS MESRA KANAK-KANAK: 2–30 PEMAIN) */
+    const ARENA_LOCAL_ROOMS_KEY = 'kirapantas_arena_rooms_v3';
+    let selectedArenaMode = 'kuiz_kilat';
     let activeArenaRoomId = null;
     let activeArenaRoomData = null;
     let arenaRoomUnsubscribe = null;
@@ -8065,7 +8016,7 @@
     let arenaQShownAt = 0;
     let arenaStreak = 0;
     let arenaRaceTimerInterval = null;
-    let arenaRaceTimeLeft = 60;
+    let arenaRaceTimeLeft = 75;
     let arenaAnzanRound = 1;
     let arenaAnzanAnswer = 0;
     let arenaAnzanFlashing = false;
@@ -8073,16 +8024,46 @@
     let arenaMatchStartedLocally = false;
     let arenaRewardGranted = false;
 
-    const GROUP_ARENA_MODES = ['kahoot_live', 'battle_royale', 'marathon_gp', 'team_tug'];
-
     const ARENA_MODE_LABELS = {
-      kahoot_live:   '🎓 Kuiz Kelas Langsung (ala Kahoot!)',
-      battle_royale: '👑 Battle Royale: Last Man Standing',
-      marathon_gp:   '🏎️ Perlumbaan Maraton Grand Prix (20 Langkah)',
-      team_tug:      '🚩 Pertarungan Pasukan (Merah vs Biru)',
-      duel10:        '⚔️ Arena Duel 1v1 (10 Soalan)',
-      race60:        '🏁 Perlumbaan Kilat 60 Saat (1v1)',
-      anzan_sd:      '🧠 Flash Anzan Sudden Death'
+      kuiz_kilat:   '🎓 Kuiz Kilat Serentak (10 Soalan)',
+      marathon_gp:  '🏎️ Perlumbaan Maraton (20 Langkah + Turbo 🔥)',
+      royale_anzan: '👑 Battle Royale: Flash Anzan (Kalah Mati)',
+      team_tug:     '🚩 Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)'
+    };
+
+    const ARENA_KID_GUIDES = {
+      kuiz_kilat: {
+        title: 'Cara Main: Kuiz Kilat Serentak (10 Soalan)',
+        steps: [
+          '✅ Semua pemain (2 hingga 30 orang) akan dapat <b>10 soalan yang sama</b>.',
+          '⚡ Jawab dengan <b>betul & paling pantas</b> untuk dapat markah bonus!',
+          '🏆 Selepas 10 soalan, 3 pemain markah tertinggi naik ke pentas juara 🥇🥈🥉!'
+        ]
+      },
+      marathon_gp: {
+        title: 'Cara Main: Perlumbaan Maraton (20 Langkah)',
+        steps: [
+          '🏎️ Setiap jawapan betul gerakkan avatar awak <b>1 langkah ke hadapan</b> di trek lumba.',
+          '🔥 Jawab betul <b>5 kali berturut-turut</b> untuk aktifkan <b>Turbo Api</b> (lompat 2 langkah sekali gus)!',
+          '🏁 Siapa sampai garisan <b>20 langkah</b> paling awal dialah Juara!'
+        ]
+      },
+      royale_anzan: {
+        title: 'Cara Main: Battle Royale Flash Anzan (Kalah Mati)',
+        steps: [
+          '👀 Perhatikan nombor yang berkelip di skrin dan kira jumlahnya dalam minda.',
+          '⚡ Setiap pusingan kelipan nombor akan jadi <b>semakin laju</b>!',
+          '👑 Sesiapa yang tersalah kira akan terkeluar. Pemain terakhir yang bertahan menang!'
+        ]
+      },
+      team_tug: {
+        title: 'Cara Main: Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)',
+        steps: [
+          '🤝 Pilih untuk masuk <b>Pasukan Merah 🔴</b> atau <b>Pasukan Biru 🔵</b> di bilik menunggu.',
+          '💪 Setiap jawapan betul akan menambah kuasa pasukan awak pada <b>Bar Tarik Tali</b> di atas!',
+          '⏱️ Pasukan dengan markah tertinggi selepas <b>75 saat</b> menang beramai-ramai!'
+        ]
+      }
     };
 
     function loadLocalArenaRooms() {
@@ -8101,45 +8082,14 @@
       } catch (e) {}
     }
 
-    window.switchArenaCategoryFilter = function(catKey) {
-      playClick();
-      const oneBtn = document.getElementById('arena-cat-1v1');
-      const grpBtn = document.getElementById('arena-cat-group');
-      const grpWrap = document.getElementById('arena-group-modes-wrap');
-      const oneWrap = document.getElementById('arena-1v1-modes-wrap');
-      const isGroup = catKey === 'group';
-
-      if (oneBtn) {
-        oneBtn.className = !isGroup
-          ? 'bubbly-btn bg-violet-600 text-white border-2 border-violet-950 py-2.5 px-2 text-xs font-black'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
-      }
-      if (grpBtn) {
-        grpBtn.className = isGroup
-          ? 'bubbly-btn bg-fuchsia-600 text-white border-2 border-fuchsia-950 py-2.5 px-2 text-xs font-black'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
-      }
-      if (oneWrap) oneWrap.classList.toggle('hidden', isGroup);
-      if (grpWrap) grpWrap.classList.toggle('hidden', !isGroup);
-
-      if (isGroup && !GROUP_ARENA_MODES.includes(selectedArenaMode)) {
-        selectArenaSubmenu('kahoot_live');
-      } else if (!isGroup && GROUP_ARENA_MODES.includes(selectedArenaMode)) {
-        selectArenaSubmenu('duel10');
-      }
-    };
-
     window.selectArenaSubmenu = function(modeKey) {
       playClick();
-      selectedArenaMode = ARENA_MODE_LABELS[modeKey] ? modeKey : 'kahoot_live';
+      selectedArenaMode = ARENA_MODE_LABELS[modeKey] ? modeKey : 'kuiz_kilat';
       const activeCardStyles = {
-        kahoot_live:   'border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs',
-        battle_royale: 'border-3 border-amber-500 bg-amber-50 shadow-xs',
-        marathon_gp:   'border-3 border-emerald-600 bg-emerald-50 shadow-xs',
-        team_tug:      'border-3 border-indigo-600 bg-indigo-50 shadow-xs',
-        duel10:        'border-3 border-violet-600 bg-violet-50 shadow-xs',
-        race60:        'border-3 border-teal-600 bg-teal-50 shadow-xs',
-        anzan_sd:      'border-3 border-rose-600 bg-rose-50 shadow-xs'
+        kuiz_kilat:   'border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs',
+        marathon_gp:  'border-3 border-emerald-600 bg-emerald-50 shadow-xs',
+        royale_anzan: 'border-3 border-amber-500 bg-amber-50 shadow-xs',
+        team_tug:     'border-3 border-indigo-600 bg-indigo-50 shadow-xs'
       };
       Object.keys(ARENA_MODE_LABELS).forEach(k => {
         const card = document.getElementById(`arena-sub-${k}`);
@@ -8150,6 +8100,14 @@
         }
         if (chk) chk.classList.toggle('hidden', !isAct);
       });
+
+      const guide = ARENA_KID_GUIDES[selectedArenaMode];
+      const gTitle = document.getElementById('arena-kid-guide-title');
+      const gSteps = document.getElementById('arena-kid-guide-steps');
+      if (guide && gTitle && gSteps) {
+        gTitle.innerText = guide.title;
+        gSteps.innerHTML = guide.steps.map(s => `<li>${s}</li>`).join('');
+      }
     };
 
     function generateArenaQuestionBank(diffKey, count = 35) {
@@ -8238,12 +8196,12 @@
         const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
         const openOnes = roomsArr.filter(r => r && r.status === 'waiting' && r.hostId !== myId && (Date.now() - (r.createdAt || 0)) < 900000);
         if (openOnes.length === 0) {
-          listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-4">Tiada bilik terbuka buat masa ini. Cipta bilik baharu di atas!</div>`;
+          listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-4">Belum ada bilik kawan yang menunggu. Tekan butang ungu di atas untuk cipta bilik!</div>`;
           return;
         }
         listEl.innerHTML = openOnes.map(r => {
           const safeHost = (r.hostName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          const modeLabel = ARENA_MODE_LABELS[r.mode] || '⚔️ Arena Perlawanan';
+          const modeLabel = ARENA_MODE_LABELS[r.mode] || '🎓 Kuiz Kilat Serentak';
           const pCount = getRoomParticipantsArray(r).length;
           return `
             <div class="flex items-center justify-between gap-2 bg-emerald-50/80 border-2 border-emerald-200 rounded-2xl p-2.5">
@@ -8334,7 +8292,7 @@
           fromAvatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
           toId: invitedOpponent.id,
           toName: invitedOpponent.name,
-          text: `⚔️ Cabaran ${ARENA_MODE_LABELS[selectedArenaMode]}! Masuk Arena guna Kod Bilik: ${roomCode}`,
+          text: `⚔️ Jom lawan ${ARENA_MODE_LABELS[selectedArenaMode]}! Masuk Arena guna Kod Bilik: ${roomCode}`,
           isRead: false,
           createdAt: Date.now()
         };
@@ -8355,7 +8313,7 @@
     window.challengePlayerFromScoreboard = async function(targetId, targetName) {
       if (!currentPlayer || currentPlayer.isAdmin) return;
       navTo('arena');
-      selectArenaSubmenu('duel10');
+      selectArenaSubmenu('kuiz_kilat');
       await createArenaDuelRoom({ id: targetId, name: targetName });
     };
 
@@ -8363,7 +8321,7 @@
       const code = (document.getElementById('arena-join-code-input')?.value || '').trim();
       if (!/^\d{4}$/.test(code)) {
         playWrong();
-        showAppToast('⚠️ Sila masukkan kod bilik 4-digit yang sah.');
+        showAppToast('⚠️ Sila masukkan 4 nombor kod bilik yang sah.');
         return;
       }
       await joinArenaRoomDirect(code);
@@ -8386,27 +8344,24 @@
 
       if (!roomData) {
         playWrong();
-        showAppToast(`❌ Bilik kod ${roomCode} tidak ditemui atau telah tamat.`);
+        showAppToast(`❌ Bilik kod ${roomCode} tidak ditemui atau sudah tamat.`);
         return;
       }
 
       const myId = currentPlayer.accountId || currentPlayer.key;
       const existingList = getRoomParticipantsArray(roomData);
-      const isGroupMode = GROUP_ARENA_MODES.includes(roomData.mode);
-      const maxCap = isGroupMode ? 30 : 2;
 
       if (roomData.status !== 'waiting' && !(roomData.participants && roomData.participants[myId])) {
         playWrong();
-        showAppToast('⚠️ Perlawanan dalam bilik ini sudah bermula.');
+        showAppToast('⚠️ Perlawanan dalam bilik ini sudah pun bermula.');
         return;
       }
-      if (existingList.length >= maxCap && !(roomData.participants && roomData.participants[myId])) {
+      if (existingList.length >= 30 && !(roomData.participants && roomData.participants[myId])) {
         playWrong();
-        showAppToast(`⚠️ Bilik ini sudah mencapai had maksimum (${maxCap} pemain).`);
+        showAppToast('⚠️ Bilik ini sudah penuh (maksimum 30 pemain).');
         return;
       }
 
-      // Bahagikan pasukan secara automatik untuk mod Pasukan Merah vs Biru
       const redCount = existingList.filter(p => p.team === 'red').length;
       const blueCount = existingList.filter(p => p.team === 'blue').length;
       const assignedTeam = redCount <= blueCount ? 'red' : 'blue';
@@ -8425,12 +8380,6 @@
         isBot: false,
         joinedAt: Date.now()
       };
-
-      // Untuk mod 1v1 klasik, terus mula apabila pemain ke-2 masuk; untuk mod berkumpulan, tunggu tuan rumah tekan "Mula Perlawanan"
-      if (!isGroupMode && getRoomParticipantsArray(roomData).length >= 2) {
-        roomData.status = 'playing';
-        roomData.startedAt = Date.now();
-      }
 
       const localRooms = loadLocalArenaRooms();
       localRooms[roomCode] = roomData;
@@ -8465,7 +8414,6 @@
     window.addArenaBotPlayers = async function() {
       if (!activeArenaRoomData || !activeArenaRoomId) return;
       playClick();
-      const isGroup = GROUP_ARENA_MODES.includes(activeArenaRoomData.mode);
       const botProfiles = [
         { id: 'bot_soroban_1', name: '🤖 Aiman Bot', gender: 'boy' },
         { id: 'bot_soroban_2', name: '🤖 Sofia Bot', gender: 'girl' },
@@ -8473,9 +8421,7 @@
       ];
 
       if (!activeArenaRoomData.participants) activeArenaRoomData.participants = {};
-      const botsToAdd = isGroup ? botProfiles : [botProfiles[0]];
-
-      botsToAdd.forEach((bp, idx) => {
+      botProfiles.forEach((bp, idx) => {
         if (!activeArenaRoomData.participants[bp.id]) {
           activeArenaRoomData.participants[bp.id] = {
             id: bp.id,
@@ -8493,11 +8439,6 @@
         }
       });
 
-      if (!isGroup) {
-        activeArenaRoomData.status = 'playing';
-        activeArenaRoomData.startedAt = Date.now();
-      }
-
       const localRooms = loadLocalArenaRooms();
       localRooms[activeArenaRoomId] = activeArenaRoomData;
       saveLocalArenaRooms(localRooms);
@@ -8508,9 +8449,8 @@
         } catch (e) {}
       }
 
-      showAppToast(isGroup ? '🤖 3 Rakan Bot ditambah! Tekan "Mula Perlawanan Sekarang!" bila bersedia.' : '🤖 Perlawanan menentang Bot bermula!');
+      showAppToast('🤖 3 Rakan Bot sudah masuk! Tekan butang hijau "🚀 Mula Perlawanan Sekarang!" bila bersedia.');
       onArenaRoomUpdated(activeArenaRoomData);
-      if (!isGroup) startArenaBotsSimulation();
     };
 
     window.hostStartArenaMatchNow = async function() {
@@ -8518,7 +8458,7 @@
       const plist = getRoomParticipantsArray(activeArenaRoomData);
       if (plist.length < 2) {
         playWrong();
-        showAppToast('⚠️ Perlukan sekurang-kurangnya 2 pemain (atau tambah Rakan Bot) untuk bermula.');
+        showAppToast('⚠️ Perlukan sekurang-kurangnya 2 pemain (atau tekan Tambah Rakan Bot) untuk mula.');
         return;
       }
       playCheer();
@@ -8562,8 +8502,8 @@
         const mode = activeArenaRoomData.mode;
         bots.forEach(bot => {
           if (Math.random() < 0.72) {
-            if (mode === 'battle_royale' || mode === 'anzan_sd') {
-              if (Math.random() < 0.16 && (bot.progress || 0) >= 2) {
+            if (mode === 'royale_anzan') {
+              if (Math.random() < 0.18 && (bot.progress || 0) >= 2) {
                 bot.eliminated = true;
                 bot.done = true;
               } else {
@@ -8574,7 +8514,7 @@
               bot.score = (bot.score || 0) + 10;
               bot.progress = Math.min(20, (bot.progress || 0) + 1);
               if (bot.progress >= 20) bot.done = true;
-            } else if (mode === 'duel10' || mode === 'kahoot_live') {
+            } else if (mode === 'kuiz_kilat') {
               bot.score = (bot.score || 0) + (Math.floor(Math.random() * 6) + 10);
               bot.progress = Math.min(10, (bot.progress || 0) + 1);
               if (bot.progress >= 10) bot.done = true;
@@ -8598,7 +8538,7 @@
       arenaAnzanRound = 1;
 
       showArenaMatchView();
-      document.getElementById('arena-room-mode-title').innerText = ARENA_MODE_LABELS[initialData.mode] || '⚔️ Arena Perlawanan';
+      document.getElementById('arena-room-mode-title').innerText = ARENA_MODE_LABELS[initialData.mode] || '🎓 Kuiz Kilat Serentak';
       document.getElementById('arena-room-code-badge').innerText = roomCode;
       document.getElementById('arena-result-box').classList.add('hidden');
       document.getElementById('arena-gameplay-box').classList.add('hidden');
@@ -8630,9 +8570,15 @@
       const countBadge = document.getElementById('arena-players-count-badge');
       if (countBadge) countBadge.innerText = `${plist.length} Pemain`;
 
-      // Papar kawalan lobi khusus (Butang Mula Tuan Rumah & Pemilih Pasukan Merah/Biru)
       const hostStartBtn = document.getElementById('btn-arena-host-start');
       if (hostStartBtn) hostStartBtn.classList.toggle('hidden', !isHost);
+
+      const waitTxt = document.getElementById('arena-waiting-text');
+      if (waitTxt) {
+        waitTxt.innerText = isHost
+          ? 'Beritahu Kod Bilik 4-digit di atas kepada kawan-kawan anda. Tekan Mula apabila semua sudah masuk!'
+          : `Menunggu ${room.hostName || 'Tuan Rumah'} menekan butang Mula Perlawanan...`;
+      }
 
       const teamPicker = document.getElementById('arena-team-picker-box');
       if (teamPicker) teamPicker.classList.toggle('hidden', !isTeamMode);
@@ -8644,7 +8590,6 @@
         if (bBtn) bBtn.className = `bubbly-btn py-2 text-xs font-black border-2 ${myTeam === 'blue' ? 'bg-sky-600 text-white border-sky-950' : 'bg-white text-sky-800 border-sky-300'}`;
       }
 
-      // Bar Tarik Tali Pasukan Merah vs Biru
       const tugWrap = document.getElementById('arena-team-tug-bar-wrap');
       if (tugWrap) {
         tugWrap.classList.toggle('hidden', !isTeamMode);
@@ -8659,10 +8604,9 @@
         }
       }
 
-      // Papan Trek / Kedudukan Langsung Semua Pemain (Menyokong 2 hingga 30 Pemain!)
       const boardEl = document.getElementById('arena-live-standings-board');
       if (boardEl) {
-        const maxSteps = room.mode === 'marathon_gp' || room.mode === 'race60' ? 20 : 10;
+        const maxSteps = room.mode === 'marathon_gp' ? 20 : 10;
         boardEl.innerHTML = plist.map((p, idx) => {
           const isMe = p.id === myId;
           const safeName = (p.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -8702,27 +8646,24 @@
         document.getElementById('arena-waiting-box').classList.add('hidden');
         document.getElementById('arena-gameplay-box').classList.remove('hidden');
 
-        if (room.mode === 'race60') {
-          startArenaTimedCountdown(60);
-        } else if (room.mode === 'team_tug') {
+        if (room.mode === 'team_tug') {
           startArenaTimedCountdown(75);
         } else {
           document.getElementById('arena-match-timer-badge').classList.add('hidden');
         }
 
-        if (room.mode === 'anzan_sd') {
+        if (room.mode === 'royale_anzan') {
           startArenaAnzanSuddenDeathRound();
         } else {
           renderNextArenaQuestion();
         }
       }
 
-      // Semak syarat tamat perlawanan mengikut mod
       if (room.status === 'playing' && plist.length >= 2) {
         const activeAlive = plist.filter(p => !p.eliminated);
         const allFinished = plist.every(p => p.done || p.eliminated);
         const someoneWonMarathon = room.mode === 'marathon_gp' && plist.some(p => (p.progress || 0) >= 20);
-        const lastManStanding = (room.mode === 'battle_royale' || room.mode === 'anzan_sd') && activeAlive.length <= 1;
+        const lastManStanding = room.mode === 'royale_anzan' && activeAlive.length <= 1;
 
         if (allFinished || someoneWonMarathon || lastManStanding) {
           finishArenaMatch();
@@ -8776,13 +8717,6 @@
       if (!activeArenaRoomData) return;
       const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
       const me = activeArenaRoomData.participants ? activeArenaRoomData.participants[myId] : null;
-      if (me && me.eliminated) {
-        document.getElementById('arena-options-grid').classList.add('hidden');
-        document.getElementById('arena-q-counter').innerText = '💀 MOD PENONTON (TERSingkir)';
-        document.getElementById('arena-q-prompt').innerText = 'Anda telah tersingkir. Saksikan baki pemain berentap!';
-        document.getElementById('arena-q-visual').innerHTML = '';
-        return;
-      }
 
       const qList = activeArenaRoomData.questions || [];
       const q = qList[arenaQIndex % qList.length];
@@ -8796,14 +8730,12 @@
       const mode = activeArenaRoomData.mode;
       const counterEl = document.getElementById('arena-q-counter');
       if (counterEl) {
-        if (mode === 'duel10' || mode === 'kahoot_live') {
+        if (mode === 'kuiz_kilat') {
           counterEl.innerText = `Soalan ${arenaQIndex + 1} / 10`;
         } else if (mode === 'marathon_gp') {
           counterEl.innerText = `Maraton Grand Prix • Langkah ${me ? me.progress : 0} / 20`;
-        } else if (mode === 'battle_royale') {
-          counterEl.innerText = `Battle Royale • Pusingan #${arenaQIndex + 1}`;
         } else {
-          counterEl.innerText = `Soalan Pecut #${arenaQIndex + 1}`;
+          counterEl.innerText = `Pertarungan Pasukan • Soalan #${arenaQIndex + 1}`;
         }
       }
       document.getElementById('arena-q-prompt').innerText = q.prompt;
@@ -8824,27 +8756,26 @@
       const allBtns = document.querySelectorAll('#arena-options-grid button');
       allBtns.forEach(b => b.disabled = true);
       const fb = document.getElementById('arena-turn-feedback');
-      const mode = activeArenaRoomData?.mode || 'duel10';
+      const mode = activeArenaRoomData?.mode || 'kuiz_kilat';
       const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
 
       if (chosen === correctAns) {
         playCheer();
         arenaStreak++;
-        const hasTurbo = (mode === 'race60' || mode === 'marathon_gp') && arenaStreak >= 5;
-        // Mod Kahoot beri markah bonus kelajuan (10 hingga 20 mata)
-        const speedBonus = mode === 'kahoot_live' ? Math.max(0, Math.round(10 - elapsedSec)) : 0;
+        const hasTurbo = mode === 'marathon_gp' && arenaStreak >= 5;
+        const speedBonus = mode === 'kuiz_kilat' ? Math.max(0, Math.round(10 - elapsedSec)) : 0;
         const ptsGain = (hasTurbo ? 15 : 10) + speedBonus;
 
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-emerald-100 text-emerald-900';
           fb.innerText = hasTurbo
-            ? `🔥 TURBO API AKTIF! +${ptsGain} Markah!`
+            ? `🔥 TURBO API AKTIF! Lompat 2 Langkah (+${ptsGain} Markah)!`
             : `⚡ Tepat (${elapsedSec.toFixed(1)}s)! +${ptsGain} Markah!`;
           fb.classList.remove('hidden');
         }
         arenaQIndex++;
-        const isTenQMode = mode === 'duel10' || mode === 'kahoot_live';
+        const isTenQMode = mode === 'kuiz_kilat';
         const isMarathon = mode === 'marathon_gp';
         const stepVal = isMarathon
           ? Math.min(20, (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0) + (hasTurbo ? 2 : 1))
@@ -8854,7 +8785,7 @@
         await syncMyArenaProgress(ptsGain, stepVal, hasTurbo, isDone, false);
 
         if (isDone) {
-          if (fb) fb.innerText = '🏁 Anda telah tamat! Menunggu keputusan pentas juara...';
+          if (fb) fb.innerText = '🏁 Tahniah, anda sudah tamat! Menunggu keputusan akhir...';
           return;
         }
         setTimeout(() => {
@@ -8866,24 +8797,13 @@
         arenaStreak = 0;
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
 
-        // Dalam Battle Royale, jawapan salah terus menyingkirkan pemain!
-        if (mode === 'battle_royale') {
-          if (fb) {
-            fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-rose-100 text-rose-900';
-            fb.innerText = `💀 Tersingkir daripada Battle Royale! Jawapan sebenar: ${correctAns}`;
-            fb.classList.remove('hidden');
-          }
-          await syncMyArenaProgress(0, arenaQIndex, false, true, true);
-          return;
-        }
-
         if (fb) {
           fb.className = 'rounded-2xl p-2 text-center text-xs font-black bg-rose-100 text-rose-900';
-          fb.innerText = `❌ Salah! Jawapan: ${correctAns}`;
+          fb.innerText = `❌ Kurang tepat! Jawapan sebenar: ${correctAns}`;
           fb.classList.remove('hidden');
         }
         arenaQIndex++;
-        const isTenQMode = mode === 'duel10' || mode === 'kahoot_live';
+        const isTenQMode = mode === 'kuiz_kilat';
         const isDone = isTenQMode && arenaQIndex >= 10;
         const curStep = mode === 'marathon_gp'
           ? (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0)
@@ -8918,7 +8838,7 @@
       }
       arenaAnzanAnswer = sum;
 
-      document.getElementById('arena-q-counter').innerText = `Pusingan Sudden Death #${arenaAnzanRound} (${speed}ms)`;
+      document.getElementById('arena-q-counter').innerText = `Pusingan Battle Royale #${arenaAnzanRound} (${speed}ms)`;
       const promptEl = document.getElementById('arena-q-prompt');
       let idx = 0;
 
@@ -8926,7 +8846,7 @@
         if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
         if (idx >= seq.length) {
           arenaAnzanFlashing = false;
-          promptEl.innerText = '❓ Berapakah jumlahnya?';
+          promptEl.innerText = '❓ Berapakah jumlah kelipan tadi?';
           form.classList.remove('hidden');
           document.getElementById('arena-anzan-input').focus();
           return;
@@ -8936,7 +8856,7 @@
         idx++;
         setTimeout(stepFlash, speed);
       }
-      promptEl.innerText = '👀 Fokus...';
+      promptEl.innerText = '👀 Fokus pada skrin...';
       setTimeout(stepFlash, 600);
     }
 

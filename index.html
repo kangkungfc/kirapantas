@@ -172,7 +172,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.12
+            Versi 1.9.14
           </span>
         </div>
 
@@ -265,6 +265,45 @@
     </section>
 
     <!-- ========================================================
+         SKRIN 0C: MISI PERTAMA MURID BAHARU (PANDUAN MULA BELAJAR)
+         ======================================================== -->
+    <section id="screen-first-mission" class="hidden py-2 space-y-4">
+      <div class="bubbly-card bg-white border-4 border-sky-400 p-5 text-center space-y-4">
+        <div id="mission-avatar-preview" class="w-24 h-24 mx-auto rounded-3xl relative animate-float"></div>
+        <div>
+          <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 px-3 py-0.5 rounded-full border border-amber-300 mb-1">🌟 Profil Sedia!</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Selamat Datang, <span id="mission-player-name" class="text-sky-700">Pelajar</span>!</h2>
+          <p class="text-xs font-bold text-slate-500 mt-1">Sebagai permulaan, mari kenali cara mengira nombor 0 hingga 99 menggunakan <b>10 jari tangan</b> anda dahulu.</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-sky-50 to-indigo-50 border-2 border-sky-200 rounded-2xl p-3.5 text-left space-y-2 text-xs">
+          <div class="font-black text-sky-950 flex items-center gap-1.5"><span>🗺️</span> Peta Perjalanan Belajar Anda:</div>
+          <div class="flex items-center gap-2 font-bold text-slate-700">
+            <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">1</span>
+            <span><b>Tahap 1 (Keajaiban 10 Jari):</b> Fahami asas nombor di jari</span>
+          </div>
+          <div class="flex items-center gap-2 font-bold text-slate-700">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">2</span>
+            <span><b>Tahap 2 – 6 (Sempoa & Anzan):</b> Kuasai manik & kiraan kilat</span>
+          </div>
+          <div class="flex items-center gap-2 font-bold text-slate-700">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-amber-950 text-[11px] font-black flex items-center justify-center flex-shrink-0">3</span>
+            <span><b>Kumpul Coin ($):</b> Buka tahap baharu & beli bingkai avatar!</span>
+          </div>
+        </div>
+
+        <div class="space-y-2.5 pt-1">
+          <button type="button" onclick="startFirstMissionNow()" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-base py-3.5 border-2 border-blue-800">
+            🚀 Mula Misi 1: Tahap 1 (10 Jari)
+          </button>
+          <button type="button" onclick="skipToMainMenu()" class="w-full bubbly-btn bg-white text-slate-700 font-black text-xs py-2.5 border-2 border-slate-300">
+            🏠 Lihat Semua Menu Utama
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
          SKRIN 1: MENU UTAMA (DASHBOARD 4 TERAS + PROFIL)
          ======================================================== -->
     <section id="screen-home" class="hidden space-y-4">
@@ -291,50 +330,73 @@
         </div>
       </div>
 
-      <!-- Grid 4 Menu Utama -->
-      <div class="grid grid-cols-2 gap-3.5">
-        <button onclick="navTo('modules')" class="bubbly-card bg-gradient-to-br from-sky-400 to-blue-600 border-4 border-blue-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
-          <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">📚</div>
-          <div>
-            <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar</div>
-            <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">6 Tahap + 300 Soalan</div>
-          </div>
-        </button>
-
-        <button onclick="navTo('simulator')" class="bubbly-card bg-gradient-to-br from-emerald-400 to-teal-600 border-4 border-teal-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
-          <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🖐️</div>
-          <div>
-            <div id="menu-title-simulator" class="text-base sm:text-lg font-bold leading-tight">Simulator Jari</div>
-            <div id="menu-sub-simulator" class="text-[11px] font-bold text-emerald-100 mt-0.5">Kira 0 hingga 99</div>
-          </div>
-        </button>
-
-        <button onclick="navTo('abacus')" class="bubbly-card bg-gradient-to-br from-amber-400 to-orange-500 border-4 border-orange-800 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
-          <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🧮</div>
-          <div>
-            <div id="menu-title-abacus" class="text-base sm:text-lg font-bold leading-tight">Abakus 4-Tiang</div>
-            <div id="menu-sub-abacus" class="text-[11px] font-bold text-amber-100 mt-0.5">Kira 0 hingga 9,999</div>
-          </div>
-        </button>
-
-        <button onclick="navTo('quiz')" class="bubbly-card bg-gradient-to-br from-purple-500 to-indigo-700 border-4 border-indigo-900 p-4 text-left text-white flex flex-col justify-between min-h-[145px]">
-          <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">⚡</div>
-          <div>
-            <div id="menu-title-quiz" class="text-base sm:text-lg font-bold leading-tight">Cabaran Kilat</div>
-            <div id="menu-sub-quiz" class="text-[11px] font-bold text-purple-100 mt-0.5">Uji Kepantasan Tanpa Had</div>
-          </div>
-        </button>
-
-        <button onclick="navTo('anzan')" class="col-span-2 bubbly-card bg-gradient-to-r from-rose-500 via-pink-600 to-fuchsia-600 border-4 border-rose-900 p-4 text-left text-white flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner flex-shrink-0">🧠</div>
-            <div>
-              <div id="menu-title-anzan" class="text-base sm:text-lg font-bold leading-tight">Akademi Master Anzan & Pecut</div>
-              <div id="menu-sub-anzan" class="text-[11px] font-bold text-pink-100 mt-0.5">Flash Anzan • Pecut Bentuk Manik/Jari • Dikte Suara</div>
+      <!-- Laluan Pembelajaran Terancang (Langkah 1 -> 2 -> 3) -->
+      <div class="space-y-3">
+        <!-- Langkah 1: Modul Belajar Utama (Penuh di Atas) -->
+        <button onclick="navTo('modules')" class="w-full bubbly-card bg-gradient-to-r from-sky-500 to-blue-600 border-4 border-blue-800 p-4 text-left text-white flex items-center justify-between gap-3 relative">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center text-3xl shadow-inner flex-shrink-0">📚</div>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">LANGKAH 1</span>
+                <span id="badge-start-here-modules" class="bg-amber-300 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">⭐ MULA DI SINI</span>
+              </div>
+              <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar (Tahap 1 – 6)</div>
+              <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">Belajar dari asas 10 jari hingga kalkulator manusia</div>
             </div>
           </div>
-          <span class="bg-amber-300 text-amber-950 text-[10px] font-black px-2.5 py-1 rounded-full flex-shrink-0">PRO</span>
+          <span class="text-xl font-black flex-shrink-0">▶️</span>
         </button>
+
+        <!-- Langkah 2: Alat Latihan Bebas (Simulator Jari & Abakus) -->
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="navTo('simulator')" class="bubbly-card bg-gradient-to-br from-emerald-400 to-teal-600 border-4 border-teal-800 p-3.5 text-left text-white flex flex-col justify-between min-h-[132px]">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🖐️</div>
+              <span class="bg-black/20 text-white text-[9px] font-black px-2 py-0.5 rounded-full">ALAT 1</span>
+            </div>
+            <div>
+              <div id="menu-title-simulator" class="text-sm sm:text-base font-bold leading-tight">Simulator Jari</div>
+              <div id="menu-sub-simulator" class="text-[10px] font-bold text-emerald-100 mt-0.5">Cuba kira 0 – 99</div>
+            </div>
+          </button>
+
+          <button onclick="navTo('abacus')" class="bubbly-card bg-gradient-to-br from-amber-400 to-orange-500 border-4 border-orange-800 p-3.5 text-left text-white flex flex-col justify-between min-h-[132px]">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🧮</div>
+              <span class="bg-black/20 text-white text-[9px] font-black px-2 py-0.5 rounded-full">ALAT 2</span>
+            </div>
+            <div>
+              <div id="menu-title-abacus" class="text-sm sm:text-base font-bold leading-tight">Abakus 4-Tiang</div>
+              <div id="menu-sub-abacus" class="text-[10px] font-bold text-amber-100 mt-0.5">Cuba manik 0 – 9,999</div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Langkah 3: Arena Ujian & Cabaran Kilat -->
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="navTo('quiz')" class="bubbly-card bg-gradient-to-br from-purple-500 to-indigo-700 border-4 border-indigo-900 p-3.5 text-left text-white flex flex-col justify-between min-h-[132px]">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">⚡</div>
+              <span class="bg-black/20 text-white text-[9px] font-black px-2 py-0.5 rounded-full">CABARAN</span>
+            </div>
+            <div>
+              <div id="menu-title-quiz" class="text-sm sm:text-base font-bold leading-tight">Cabaran Kilat</div>
+              <div id="menu-sub-quiz" class="text-[10px] font-bold text-purple-100 mt-0.5">Uji kepantasan rawak</div>
+            </div>
+          </button>
+
+          <button onclick="navTo('anzan')" class="bubbly-card bg-gradient-to-br from-rose-500 to-pink-600 border-4 border-rose-900 p-3.5 text-left text-white flex flex-col justify-between min-h-[132px]">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-2xl bg-white/25 flex items-center justify-center text-2xl shadow-inner">🧠</div>
+              <span class="bg-amber-300 text-amber-950 text-[9px] font-black px-2 py-0.5 rounded-full">PRO</span>
+            </div>
+            <div>
+              <div id="menu-title-anzan" class="text-sm sm:text-base font-bold leading-tight">Akademi Anzan</div>
+              <div id="menu-sub-anzan" class="text-[10px] font-bold text-pink-100 mt-0.5">Flash, Pecut & Suara</div>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- Bar Pintasan Bawah -->
@@ -3699,14 +3761,18 @@
         card.innerHTML = `
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-2xl flex-shrink-0">${unlocked ? meta.icon : '🔒'}</div>
-            <div class="min-w-0">
-              <div class="text-[10px] font-black uppercase tracking-wider text-white/90">${t.levelWord} ${m} ${unlocked ? `• ${meta.ageGroup.replace(/^[^\s]+\s/, '')}` : `• ${t.needWord} ${req} ${COIN_ICON_HTML}`}</div>
-              <div class="text-sm sm:text-base font-bold truncate">${meta.title}</div>
-              <div class="text-[11px] font-bold text-white/90 truncate">${meta.subtitle}</div>
+            <div class="min-w-0 space-y-0.5">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="inline-block bg-white text-slate-900 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black uppercase tracking-wide shadow-sm">${t.levelWord} ${m}</span>
+                ${m === 1 && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ MULA DI SINI</span>' : ''}
+                ${!unlocked ? `<span class="inline-flex items-center gap-1 bg-black/30 text-white px-2 py-0.5 rounded-lg text-[10px] font-black">${t.needWord} ${req} ${COIN_ICON_HTML}</span>` : ''}
+              </div>
+              <div class="text-sm sm:text-base font-extrabold text-white drop-shadow-sm truncate">${meta.title}</div>
+              <div class="text-[11px] font-bold text-white/95 truncate">${unlocked ? meta.ageGroup : meta.subtitle}</div>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
-            <span class="inline-flex items-center gap-1 bg-black/25 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ${COIN_ICON_HTML}` : t.lockedWord}</span>
+            <span class="inline-flex items-center gap-1 bg-black/30 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ${COIN_ICON_HTML}` : t.lockedWord}</span>
           </div>
         `;
         grid.appendChild(card);
@@ -4664,6 +4730,10 @@
       if (accStarsEl) accStarsEl.innerText = stars;
       if (accPtsEl) accPtsEl.innerText = pts;
       if (accPinEl) accPinEl.innerText = currentPlayer.recoveryPin || '0000';
+      const startBadge = document.getElementById('badge-start-here-modules');
+      if (startBadge) {
+        startBadge.classList.toggle('hidden', pts > 0 || isAdmin);
+      }
       if (currentPlayer.preferredLang && ['ms', 'en', 'zh', 'ar'].includes(currentPlayer.preferredLang)) {
         applyAppLanguageUI(currentPlayer.preferredLang);
       }
@@ -4895,14 +4965,31 @@
         document.getElementById('app-header').classList.remove('hidden');
         syncPlayerUI();
         startPlayerSessionTimer();
-        navTo('home');
-        showAppToast(`🎉 Selamat datang, ${currentPlayer.name}! Profil & PIN (${pinVal}) disimpan.`);
+
+        const mNameEl = document.getElementById('mission-player-name');
+        if (mNameEl) mNameEl.innerText = currentPlayer.name;
+        const mAvEl = document.getElementById('mission-avatar-preview');
+        if (mAvEl) mAvEl.innerHTML = renderRealisticAvatarSVG(ensurePlayerAvatarConfig(currentPlayer), 'w-full h-full');
+        document.getElementById('screen-first-mission').classList.remove('hidden');
       } finally {
         if (btn) {
           btn.disabled = false;
           btn.innerText = '🚀 Simpan Profil & Masuk ke Menu Utama';
         }
       }
+    };
+
+    window.startFirstMissionNow = function() {
+      playClick();
+      document.getElementById('screen-first-mission').classList.add('hidden');
+      navTo('modules');
+      openModuleDetail(1);
+    };
+
+    window.skipToMainMenu = function() {
+      playClick();
+      document.getElementById('screen-first-mission').classList.add('hidden');
+      navTo('home');
     };
 
     window.handlePlayerAuthAction = async function(mode) {
@@ -5296,7 +5383,7 @@
       }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
-      ['new-setup', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
+      ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });

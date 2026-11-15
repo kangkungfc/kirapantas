@@ -113,7 +113,10 @@
         </div>
       </div>
       <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-        <button id="btn-header-admin" onclick="navTo('admin')" class="hidden bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">🛡️</button>
+        <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
+          <span>🛡️</span>
+          <span id="header-admin-notif-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-900 text-[10px] font-black flex items-center justify-center shadow">0</span>
+        </button>
         <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
         <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
         <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
@@ -200,7 +203,7 @@
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.23
+            Versi 1.9.24
           </span>
         </div>
 
@@ -494,8 +497,10 @@
         <button id="btn-bottom-scoreboard" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
         </button>
-        <button id="btn-home-admin-panel" onclick="navTo('admin')" class="hidden col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
-          <span>🛡️</span> Buka Panel Admin (Urus Akaun Pelajar, Reset Password & Padam)
+        <button id="btn-home-admin-panel" onclick="openAdminPanelWithAlerts()" class="hidden relative col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
+          <span>🛡️</span>
+          <span>Buka Panel Admin (Urus Akaun Pelajar & Aduan)</span>
+          <span id="home-admin-notif-badge" class="hidden inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-950 text-[11px] font-black shadow animate-bounce">0</span>
         </button>
       </div>
     </section>
@@ -4628,7 +4633,7 @@
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
 
       const starEl = document.getElementById('studio-star-balance');
-      if (starEl) starEl.innerText = currentPlayer.stars || 0;
+      if (starEl) starEl.innerText = currentPlayer.isAdmin ? '∞ Unlimited' : (currentPlayer.stars || 0);
 
       const previewEl = document.getElementById('avatar-studio-preview');
       if (previewEl) previewEl.innerHTML = renderRealisticAvatarSVG(cfg, "w-full h-full");
@@ -4861,14 +4866,17 @@
 
     window.buyAvatarPart = function(category, itemId, cost) {
       if (!currentPlayer) return;
-      if ((currentPlayer.stars || 0) < cost) {
+      const isAdm = Boolean(currentPlayer.isAdmin);
+      if (!isAdm && (currentPlayer.stars || 0) < cost) {
         playWrong();
         showAppToast(`Coin anda tidak mencukupi! Perlukan ${cost} Coin (Anda ada ${currentPlayer.stars || 0} Coin).`);
         return;
       }
       playCheer();
       triggerConfetti();
-      currentPlayer.stars -= cost;
+      if (!isAdm) {
+        currentPlayer.stars -= cost;
+      }
       if (!currentPlayer.ownedAvatarItems.includes(itemId)) {
         currentPlayer.ownedAvatarItems.push(itemId);
       }
@@ -4881,7 +4889,7 @@
 
     window.unlockModuleNow = function(modNum, cost) {
       if (!currentPlayer) return;
-      if ((currentPlayer.stars || 0) < cost) {
+      if (!currentPlayer.isAdmin && (currentPlayer.stars || 0) < cost) {
         playWrong();
         showAppToast(`Kumpul sekurang-kurangnya ${cost} Coin untuk membuka Tahap ${modNum}!`);
         return;
@@ -5137,7 +5145,7 @@
       if (mName) mName.innerText = displayLabel;
       if (aName) aName.innerText = displayLabel;
 
-      const stars = currentPlayer.stars || 0;
+      const stars = currentPlayer.isAdmin ? '∞ Unlimited' : (currentPlayer.stars || 0);
       const pts = currentPlayer.totalPoints || 0;
       const hPts = document.getElementById('header-points-count');
       const hStars = document.getElementById('header-star-count');
@@ -5559,6 +5567,9 @@
           document.getElementById('app-header').classList.remove('hidden');
           syncPlayerUI();
           startPlayerSessionTimer();
+          if (isAdminUser) {
+            refreshAdminAllData();
+          }
           navTo('home');
         } else {
           /* Mod DAFTAR BARU */
@@ -6292,6 +6303,7 @@
     const SUPPORT_TICKETS_STORAGE_KEY = 'kirapantas_support_tickets_v1';
     let adminCachedTickets = [];
     let activeAdminTab = 'students';
+    let expandedAdminTicketIds = new Set();
 
     function loadLocalSupportTickets() {
       try {
@@ -6308,6 +6320,40 @@
         localStorage.setItem(SUPPORT_TICKETS_STORAGE_KEY, JSON.stringify(tickets));
       } catch (e) {}
     }
+
+    function updateAdminNotificationBadges() {
+      const pendingCount = adminCachedTickets.filter(t => t.status !== 'resolved').length;
+      const unreadCount = adminCachedTickets.filter(t => !t.isRead && t.status !== 'resolved').length;
+
+      const homeBadge = document.getElementById('home-admin-notif-badge');
+      const headerBadge = document.getElementById('header-admin-notif-badge');
+      const tabBadge = document.getElementById('admin-open-tickets-badge');
+
+      if (homeBadge) {
+        homeBadge.innerText = String(pendingCount);
+        homeBadge.classList.toggle('hidden', pendingCount <= 0);
+      }
+      if (headerBadge) {
+        headerBadge.innerText = String(pendingCount);
+        headerBadge.classList.toggle('hidden', pendingCount <= 0);
+      }
+      if (tabBadge) {
+        tabBadge.innerText = unreadCount > 0 ? `${pendingCount} (${unreadCount} Baru)` : `${pendingCount}`;
+      }
+    }
+
+    window.openAdminPanelWithAlerts = async function() {
+      if (!currentPlayer || !currentPlayer.isAdmin) {
+        navTo('home');
+        return;
+      }
+      navTo('admin');
+      await refreshAdminAllData();
+      const hasPending = adminCachedTickets.some(t => t.status !== 'resolved');
+      if (hasPending) {
+        switchAdminPanelTab('tickets');
+      }
+    };
 
     window.toggleSupportHelpPanel = function(forceState) {
       playClick();
@@ -6365,6 +6411,7 @@
         message: messageText || '(Tiada catatan tambahan)',
         source: isLoginCtx ? 'Skrin Log Masuk' : 'Dalam Akaun',
         status: 'open',
+        isRead: false,
         createdAt: Date.now()
       };
 
@@ -6383,7 +6430,7 @@
         playCheer();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300';
-          fb.innerText = `✅ Laporan berjaya dihantar kepada Admin! Sila maklumkan kepada guru/admin jika perlukan tindakan segera.`;
+          fb.innerText = `✅ Laporan berjaya dihantar kepada Admin! Anda boleh semak status & balasan Admin di sini.`;
           fb.classList.remove('hidden');
         }
         const msgField = document.getElementById(isLoginCtx ? 'support-login-msg' : 'support-acc-msg');
@@ -6432,9 +6479,29 @@
       await Promise.all([loadAdminStudentList(), loadAdminSupportTickets()]);
     };
 
+    function sortAdminTicketsPriority(list) {
+      return [...list].sort((a, b) => {
+        const aDone = a.status === 'resolved';
+        const bDone = b.status === 'resolved';
+        if (aDone !== bDone) return aDone ? 1 : -1;
+
+        const aRead = Boolean(a.isRead);
+        const bRead = Boolean(b.isRead);
+        if (!aDone && !bDone && aRead !== bRead) {
+          return aRead ? 1 : -1;
+        }
+        return (b.createdAt || 0) - (a.createdAt || 0);
+      });
+    }
+
     window.loadAdminSupportTickets = async function() {
       const merged = new Map();
-      loadLocalSupportTickets().forEach(t => { if (t && t.id) merged.set(t.id, t); });
+      loadLocalSupportTickets().forEach(t => {
+        if (t && t.id) {
+          t.isRead = Boolean(t.isRead);
+          merged.set(t.id, t);
+        }
+      });
 
       if (db) {
         try {
@@ -6445,6 +6512,7 @@
               const d = docSnap.data();
               if (d) {
                 d.id = d.id || docSnap.id;
+                d.isRead = Boolean(d.isRead);
                 merged.set(d.id, d);
               }
             });
@@ -6455,14 +6523,8 @@
         }
       }
 
-      adminCachedTickets = Array.from(merged.values()).sort((a, b) => {
-        if ((a.status === 'open') !== (b.status === 'open')) return a.status === 'open' ? -1 : 1;
-        return (b.createdAt || 0) - (a.createdAt || 0);
-      });
-
-      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
-      const badge = document.getElementById('admin-open-tickets-badge');
-      if (badge) badge.innerText = `${openCount} Baru`;
+      adminCachedTickets = sortAdminTicketsPriority(Array.from(merged.values()));
+      updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
 
@@ -6550,7 +6612,7 @@
         const safeIssue = (t.issueType || 'Masalah Akaun').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeMsg = (t.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeReply = (t.adminReply || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
-        const isResolved = t.status === 'resolved' || Boolean(safeReply);
+        const isResolved = t.status === 'resolved';
         const timeStr = t.createdAt ? formatLastActiveText(t.createdAt, false) : 'Baru dihantar';
         const replyTimeStr = t.repliedAt ? formatLastActiveText(t.repliedAt, false) : '';
 
@@ -6558,7 +6620,7 @@
           <div class="bg-white rounded-xl p-3 border-2 ${isResolved ? 'border-emerald-300' : 'border-amber-300'} space-y-1.5">
             <div class="flex items-center justify-between gap-2">
               <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${isResolved ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">
-                ${isResolved ? '✅ Sudah Dibalas / Selesai' : '⏳ Menunggu Semakan Admin'}
+                ${isResolved ? '✅ Selesai' : (safeReply ? '💬 Dibalas Admin (Dalam Tindakan)' : '⏳ Belum Selesai / Menunggu Admin')}
               </span>
               <span class="text-[9px] font-bold text-slate-400">${timeStr}</span>
             </div>
@@ -6580,6 +6642,36 @@
       }).join('');
     };
 
+    window.toggleAdminTicketExpand = async function(ticketId) {
+      playClick();
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      if (!target) return;
+
+      if (expandedAdminTicketIds.has(ticketId)) {
+        expandedAdminTicketIds.delete(ticketId);
+      } else {
+        expandedAdminTicketIds.add(ticketId);
+        if (!target.isRead) {
+          target.isRead = true;
+          target.readAt = Date.now();
+          saveLocalSupportTickets(adminCachedTickets);
+          updateAdminNotificationBadges();
+          if (db) {
+            try {
+              await authReadyPromise;
+              if (fbUser) {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), {
+                  isRead: true,
+                  readAt: target.readAt
+                }, { merge: true });
+              }
+            } catch (e) {}
+          }
+        }
+      }
+      renderAdminTicketsList();
+    };
+
     function renderAdminTicketsList() {
       const listEl = document.getElementById('admin-tickets-list');
       if (!listEl) return;
@@ -6589,55 +6681,87 @@
         return;
       }
 
+      adminCachedTickets = sortAdminTicketsPriority(adminCachedTickets);
+
       listEl.innerHTML = adminCachedTickets.map(t => {
         const safeName = (t.playerName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeIssue = (t.issueType || 'Masalah Akaun').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeMsg = (t.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeReply = (t.adminReply || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
-        const isOpen = t.status === 'open';
+        const isResolved = t.status === 'resolved';
+        const isRead = Boolean(t.isRead);
+        const isExpanded = expandedAdminTicketIds.has(t.id);
         const timeStr = t.createdAt ? formatLastActiveText(t.createdAt, false) : 'Baru dihantar';
 
+        const cardBg = !isResolved && !isRead
+          ? 'bg-rose-50/95 border-rose-400 shadow-sm'
+          : (!isResolved ? 'bg-amber-50/90 border-amber-400' : 'bg-slate-50 border-slate-200');
+
+        const readBadge = isRead
+          ? `<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">👁️ Sudah Dibaca</span>`
+          : `<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-rose-600 text-white animate-pulse">🔵 Belum Dibaca</span>`;
+
+        const statusBadge = isResolved
+          ? `<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">✅ Selesai</span>`
+          : `<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 border border-amber-400">⏳ Belum Selesai</span>`;
+
         return `
-          <div class="rounded-2xl p-3 border-2 space-y-2 ${isOpen ? 'bg-amber-50/90 border-amber-400' : 'bg-slate-50 border-slate-200'}">
-            <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0 flex-1">
+          <div class="rounded-2xl border-2 overflow-hidden transition ${cardBg}">
+            <!-- Ringkasan Aduan (Klik untuk Buka & Baca Aduan Penuh) -->
+            <div onclick="toggleAdminTicketExpand('${t.id}')" class="p-3 cursor-pointer select-none flex items-start justify-between gap-2 hover:bg-black/[0.02]">
+              <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex flex-wrap items-center gap-1.5">
-                  <span class="text-xs font-black text-slate-900">${safeName}</span>
-                  <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${isOpen ? 'bg-rose-600 text-white' : 'bg-emerald-100 text-emerald-800'}">${isOpen ? 'BARU' : 'SELESAI'}</span>
-                  <span class="text-[9px] font-bold text-slate-500">• ${timeStr} (${t.source || 'Aplikasi'})</span>
+                  <span class="text-xs sm:text-sm font-black text-slate-900">${safeName}</span>
+                  ${readBadge}
+                  ${statusBadge}
                 </div>
-                <div class="text-[11px] font-black text-indigo-900 mt-1">${safeIssue}</div>
-                <p class="text-[11px] font-bold text-slate-700 bg-white/90 rounded-xl p-2 mt-1 border border-slate-200">${safeMsg}</p>
+                <div class="text-[11px] font-black text-indigo-900">${safeIssue}</div>
+                <div class="text-[10px] font-bold text-slate-500">🕒 ${timeStr} • 📍 ${t.source || 'Aplikasi'} ${safeReply ? '• 💬 Sudah dibalas' : ''}</div>
+              </div>
+              <div class="flex-shrink-0 text-xs font-black text-indigo-700 bg-white/90 border border-indigo-200 px-2.5 py-1 rounded-xl">
+                ${isExpanded ? '🔼 Tutup' : '📖 Baca'}
               </div>
             </div>
 
-            ${safeReply ? `
-              <div class="bg-emerald-100/80 border border-emerald-300 rounded-xl p-2 text-[11px] font-bold text-emerald-950">
-                <b>🛡️ Balasan Anda:</b> ${safeReply}
+            <!-- Kandungan Penuh & Tindakan (Hanya Terbuka Selepas Admin Tekan Aduan) -->
+            ${isExpanded ? `
+              <div class="px-3 pb-3 pt-2 border-t border-slate-200/90 space-y-2.5 bg-white/60">
+                <div class="space-y-1">
+                  <div class="text-[10px] font-black text-slate-500 uppercase tracking-wide">📝 Butiran Aduan Pemain:</div>
+                  <p class="text-xs font-bold text-slate-800 bg-white rounded-xl p-2.5 border border-slate-200 whitespace-pre-wrap">${safeMsg}</p>
+                </div>
+
+                ${safeReply ? `
+                  <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-2.5 text-[11px] font-bold text-emerald-950">
+                    <b>🛡️ Balasan Admin:</b> ${safeReply}
+                  </div>
+                ` : ''}
+
+                <!-- Borang Balas Mesej (Tidak Automatik Tandakan Selesai) -->
+                <div class="space-y-1">
+                  <label class="block text-[10px] font-black text-indigo-950">💬 Balas Mesej kepada ${safeName}:</label>
+                  <div class="flex gap-1.5">
+                    <input id="admin-reply-input-${t.id}" type="text" maxlength="250" value="${safeReply.replace(/"/g, '&quot;')}" placeholder="Tulis balasan untuk murid..." class="flex-1 px-3 py-2 rounded-xl border border-indigo-300 text-xs font-bold bg-white focus:outline-none" />
+                    <button type="button" onclick="adminSendTicketReply('${t.id}')" class="bubbly-btn bg-indigo-600 text-white border border-indigo-900 px-3 py-2 text-[11px] font-black flex-shrink-0">
+                      📨 Balas
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Butang Kawalan Status Selesai / Belum Selesai, Reset Password & Padam Kekal -->
+                <div class="flex flex-wrap gap-1.5 pt-1.5 border-t border-slate-200">
+                  <button type="button" onclick="adminToggleTicketStatus('${t.id}')" class="flex-1 bubbly-btn ${isResolved ? 'bg-amber-100 text-amber-950 border border-amber-400' : 'bg-emerald-500 text-white border border-emerald-700'} py-2 px-2.5 text-[11px] font-black">
+                    ${isResolved ? '🔄 Tandakan Belum Selesai' : '✅ Tandakan Selesai'}
+                  </button>
+                  <button type="button" onclick="adminQuickResetFromTicket('${t.id}')" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-2.5 text-[11px] font-black">
+                    🔑 Reset Pass
+                  </button>
+                  <button type="button" onclick="adminDeleteSupportTicket('${t.id}')" class="bubbly-btn bg-rose-600 text-white border border-rose-900 py-2 px-2.5 text-[11px] font-black">
+                    🗑️ Padam
+                  </button>
+                </div>
               </div>
             ` : ''}
-
-            <!-- Borang Reply Terus Kepada Murid -->
-            <div class="flex gap-1.5 pt-1">
-              <input id="admin-reply-input-${t.id}" type="text" maxlength="250" value="${safeReply.replace(/"/g, '&quot;')}" placeholder="Tulis balasan untuk ${safeName}..." class="flex-1 px-3 py-1.5 rounded-xl border border-indigo-300 text-[11px] font-bold bg-white focus:outline-none" />
-              <button type="button" onclick="adminSendTicketReply('${t.id}')" class="bubbly-btn bg-indigo-600 text-white border border-indigo-900 px-3 py-1.5 text-[10px] font-black flex-shrink-0">
-                💬 Balas
-              </button>
-            </div>
-
-            <div class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-200/80">
-              <button type="button" onclick="adminQuickResetFromTicket('${t.id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-1.5 px-2 text-[10px] font-black">
-                🔑 Reset Password Pelajar
-              </button>
-              ${isOpen ? `
-                <button type="button" onclick="adminResolveSupportTicket('${t.id}')" class="bubbly-btn bg-emerald-500 text-white border border-emerald-700 py-1.5 px-2.5 text-[10px] font-black">
-                  ✅ Selesai
-                </button>
-              ` : ''}
-              <button type="button" onclick="adminDeleteSupportTicket('${t.id}')" class="bubbly-btn bg-rose-100 text-rose-800 border border-rose-300 py-1.5 px-2.5 text-[10px] font-black">
-                🗑️ Padam
-              </button>
-            </div>
           </div>
         `;
       }).join('');
@@ -6658,8 +6782,7 @@
 
       target.adminReply = replyText;
       target.repliedAt = Date.now();
-      target.status = 'resolved';
-      target.resolvedAt = Date.now();
+      target.isRead = true;
       saveLocalSupportTickets(adminCachedTickets);
 
       if (db) {
@@ -6674,13 +6797,48 @@
       playCheer();
       const fb = document.getElementById('admin-action-feedback');
       if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `💬 Balasan kepada "${target.playerName}" telah disimpan & ditandakan selesai!`;
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
+        fb.innerText = `💬 Balasan kepada "${target.playerName}" telah dihantar! (Status kekal: ${target.status === 'resolved' ? 'Selesai' : 'Belum Selesai'})`;
         fb.classList.remove('hidden');
       }
-      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
-      const badge = document.getElementById('admin-open-tickets-badge');
-      if (badge) badge.innerText = `${openCount} Baru`;
+      updateAdminNotificationBadges();
+      renderAdminTicketsList();
+    };
+
+    window.adminToggleTicketStatus = async function(ticketId) {
+      playClick();
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      if (!target) return;
+
+      const nextResolved = target.status !== 'resolved';
+      target.status = nextResolved ? 'resolved' : 'open';
+      target.isRead = true;
+      if (nextResolved) {
+        target.resolvedAt = Date.now();
+      } else {
+        delete target.resolvedAt;
+      }
+      saveLocalSupportTickets(adminCachedTickets);
+
+      if (db) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), target);
+          }
+        } catch (e) {}
+      }
+
+      playCheer();
+      const fb = document.getElementById('admin-action-feedback');
+      if (fb) {
+        fb.className = `text-xs font-extrabold rounded-xl p-2.5 text-center ${nextResolved ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-amber-100 text-amber-950 border border-amber-300'}`;
+        fb.innerText = nextResolved
+          ? `✅ Aduan daripada "${target.playerName}" telah dilabelkan SELESAI.`
+          : `🔄 Aduan daripada "${target.playerName}" dibuka semula sebagai BELUM SELESAI.`;
+        fb.classList.remove('hidden');
+      }
+      updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
 
@@ -6702,47 +6860,42 @@
         return;
       }
       await adminResetStudentPassword(matchedStudent.accountId || matchedStudent.key);
-      await adminResolveSupportTicket(ticketId, true);
-    };
-
-    window.adminResolveSupportTicket = async function(ticketId, silent = false) {
-      if (!silent) playClick();
-      const target = adminCachedTickets.find(t => t.id === ticketId);
-      if (!target) return;
-      target.status = 'resolved';
-      target.resolvedAt = Date.now();
-      saveLocalSupportTickets(adminCachedTickets);
-
-      if (db) {
-        try {
-          await authReadyPromise;
-          if (fbUser) {
-            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), target);
-          }
-        } catch (e) {}
-      }
-      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
-      const badge = document.getElementById('admin-open-tickets-badge');
-      if (badge) badge.innerText = `${openCount} Baru`;
-      renderAdminTicketsList();
     };
 
     window.adminDeleteSupportTicket = async function(ticketId) {
       playClick();
-      adminCachedTickets = adminCachedTickets.filter(t => t.id !== ticketId);
-      saveLocalSupportTickets(adminCachedTickets);
-      if (db) {
-        try {
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      const senderName = target ? target.playerName : 'Pelajar';
+      const fb = document.getElementById('admin-action-feedback');
+
+      try {
+        if (db) {
           await authReadyPromise;
-          if (fbUser) {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
-          }
-        } catch (e) {}
+          if (!fbUser) throw new Error('Sambungan Firebase belum disahkan.');
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
+        }
+
+        expandedAdminTicketIds.delete(ticketId);
+        adminCachedTickets = adminCachedTickets.filter(t => t.id !== ticketId);
+        saveLocalSupportTickets(adminCachedTickets);
+        updateAdminNotificationBadges();
+        renderAdminTicketsList();
+
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
+          fb.innerText = `🗑️ Aduan daripada "${senderName}" telah dipadam sepenuhnya daripada sistem.`;
+          fb.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error('Gagal padam aduan:', err);
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `❌ Gagal memadam aduan di awan (${err?.code || err?.message || 'permission-denied'}).`;
+          fb.classList.remove('hidden');
+        }
       }
-      const openCount = adminCachedTickets.filter(t => t.status === 'open').length;
-      const badge = document.getElementById('admin-open-tickets-badge');
-      if (badge) badge.innerText = `${openCount} Baru`;
-      renderAdminTicketsList();
     };
 
     let flashAnzanBasePoints = 12;

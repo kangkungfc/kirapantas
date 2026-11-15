@@ -76,6 +76,9 @@
   <!-- Kanvas Konfeti -->
   <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
+  <!-- Pop-up Segera Keputusan Kuiz (Sentiasa Nampak Di Skrin Tanpa Terlindung) -->
+  <div id="quiz-instant-popup" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none"></div>
+
   <!-- Bar Atas Pemain (Disembunyikan sebelum Log Masuk) -->
   <header id="app-header" class="hidden sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b-4 border-amber-300 px-3 py-2 shadow-sm">
     <div class="max-w-xl mx-auto flex items-center justify-between gap-2">
@@ -172,7 +175,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.15
+            Versi 1.9.16
           </span>
         </div>
 
@@ -465,11 +468,11 @@
         </div>
 
         <!-- Kad Nota Infografik (Boleh Lipat / Collapsible) -->
-        <div class="bubbly-card bg-white border-4 border-sky-300 p-4 space-y-3">
-          <div class="flex items-start justify-between gap-2">
-            <div>
-              <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-1">Sasaran Umur</div>
-              <h3 id="mod-guide-title" class="text-lg font-bold text-slate-800">Tajuk Tahap</h3>
+        <div id="mod-guide-card" class="bubbly-card bg-white border-4 border-sky-300 p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-0.5">Sasaran Umur</div>
+              <h3 id="mod-guide-title" class="text-base sm:text-lg font-bold text-slate-800 truncate">Tajuk Tahap</h3>
               <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
             </div>
             <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-3 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
@@ -3703,8 +3706,10 @@
         blitzStreak += 1;
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerHTML = `🎉 Tepat dalam ${elapsedSec.toFixed(1)}s! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
+        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
+        fb.innerHTML = bOkHtml;
         fb.classList.remove('hidden');
+        showQuizInstantPopup(bOkHtml, reward.bonus > 0 ? 'bonus' : 'success');
 
         if (currentPlayer) {
           addPlayerReward(1, reward.total);
@@ -3716,8 +3721,10 @@
         blitzStreak = 0;
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        fb.innerText = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah ${currentBlitzAnswer}.`;
+        const bWrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah <b>${currentBlitzAnswer}</b>.`;
+        fb.innerHTML = bWrongHtml;
         fb.classList.remove('hidden');
+        showQuizInstantPopup(bWrongHtml, 'wrong');
         setTimeout(() => generateNextBlitzQuestion(), 1400);
       }
 
@@ -3781,14 +3788,58 @@
 
     let activeMod3QuizCategory = 'random';
 
+    let isModNoteCollapsed = false;
+    let quizPopupTimer = null;
+
+    function showQuizInstantPopup(htmlMsg, variant = 'success') {
+      const pop = document.getElementById('quiz-instant-popup');
+      if (!pop) return;
+      if (quizPopupTimer) clearTimeout(quizPopupTimer);
+      const styles = {
+        bonus:   'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-amber-950 border-amber-700',
+        success: 'bg-emerald-600 text-white border-emerald-900',
+        wrong:   'bg-rose-600 text-white border-rose-950'
+      };
+      pop.className = `fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none ${styles[variant] || styles.success}`;
+      pop.innerHTML = htmlMsg;
+      pop.classList.remove('hidden');
+      quizPopupTimer = setTimeout(() => {
+        pop.classList.add('hidden');
+      }, 1350);
+    }
+
+    function keepQuizBottomInView() {
+      if (!isModNoteCollapsed) return;
+      const quizBox = document.getElementById('mod-quiz-box');
+      if (!quizBox) return;
+      requestAnimationFrame(() => {
+        quizBox.scrollIntoView({ behavior: 'auto', block: 'end' });
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'auto' });
+      });
+    }
+
     window.toggleModuleGuideNote = function(forceExpand) {
       if (typeof forceExpand !== 'boolean') playClick();
       const contentEl = document.getElementById('mod-guide-content');
+      const subEl = document.getElementById('mod-guide-subtitle');
+      const ageEl = document.getElementById('mod-guide-age-badge');
+      const cardEl = document.getElementById('mod-guide-card');
       const btnEl = document.getElementById('btn-toggle-mod-guide');
       if (!contentEl || !btnEl) return;
       const shouldShow = typeof forceExpand === 'boolean' ? forceExpand : contentEl.classList.contains('hidden');
+      isModNoteCollapsed = !shouldShow;
       contentEl.classList.toggle('hidden', !shouldShow);
+      if (subEl) subEl.classList.toggle('hidden', !shouldShow);
+      if (ageEl) ageEl.classList.toggle('hidden', !shouldShow);
+      if (cardEl) {
+        cardEl.classList.toggle('p-3.5', shouldShow);
+        cardEl.classList.toggle('py-2', !shouldShow);
+        cardEl.classList.toggle('px-3.5', !shouldShow);
+      }
       btnEl.innerText = shouldShow ? '🔼 Tutup Nota' : '📖 Buka Nota';
+      if (!shouldShow) {
+        keepQuizBottomInView();
+      }
     };
 
     window.setMod3QuizCategory = function(catKey, silent = false) {
@@ -3914,6 +3965,7 @@
         optBox.appendChild(btn);
       });
       startQuestionLiveTimer('mod');
+      keepQuizBottomInView();
     }
 
     function checkModuleQuestionAnswer(chosen, btnEl) {
@@ -3928,9 +3980,11 @@
         const reward = calculateSpeedBonusPoints(elapsedSec);
         activeModSessionCorrect++;
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
+        const msgHtml = `🌟 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerHTML = `🌟 Hebat (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}`;
+        fb.innerHTML = msgHtml;
         fb.classList.remove('hidden');
+        showQuizInstantPopup(msgHtml, reward.bonus > 0 ? 'bonus' : 'success');
 
         if (currentPlayer) {
           addPlayerReward(1, reward.total);
@@ -3944,10 +3998,13 @@
       } else {
         playWrong();
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3 text-base font-black text-white';
+        const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>.`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        fb.innerText = `❌ Jawapan kurang tepat (${elapsedSec.toFixed(1)}s). Jawapan betul ialah ${q.answer}.`;
+        fb.innerHTML = wrongHtml;
         fb.classList.remove('hidden');
+        showQuizInstantPopup(wrongHtml, 'wrong');
       }
+      keepQuizBottomInView();
 
       setTimeout(() => {
         if (activeModIndex < 49) {
@@ -3955,9 +4012,12 @@
           renderCurrentModuleQuestion();
         } else {
           triggerConfetti();
+          const doneHtml = `🏆 Tahniah! Anda tamatkan semua 50 soalan Tahap ${activeModId} dengan skor ${activeModSessionCorrect}/50!`;
           fb.className = 'rounded-2xl p-4 text-center text-xs font-black bg-amber-100 text-amber-900 border-2 border-amber-400';
-          fb.innerHTML = `🏆 Tahniah! Anda tamatkan semua 50 soalan Tahap ${activeModId} dengan skor ${activeModSessionCorrect}/50!`;
+          fb.innerHTML = doneHtml;
           fb.classList.remove('hidden');
+          showQuizInstantPopup(doneHtml, 'bonus');
+          keepQuizBottomInView();
         }
       }, 1050);
     }
@@ -4052,6 +4112,7 @@
       const st = helperAbacusState[ctxKey];
       if (!st) return;
       setHelperAbacusVisibility(ctxKey, !st.visible);
+      if (ctxKey === 'mod') keepQuizBottomInView();
     };
 
     window.toggleHelperTop = function(ctxKey, rIdx) {

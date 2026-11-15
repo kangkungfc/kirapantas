@@ -171,7 +171,7 @@
           </button>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.8
+            Versi 1.9.10
           </span>
         </div>
 
@@ -342,12 +342,17 @@
           <span id="mod-badge-level" class="text-xs font-black bg-indigo-600 text-white px-3 py-1 rounded-full">Tahap 1</span>
         </div>
 
-        <!-- Kad Nota Infografik -->
+        <!-- Kad Nota Infografik (Boleh Lipat / Collapsible) -->
         <div class="bubbly-card bg-white border-4 border-sky-300 p-4 space-y-3">
-          <div>
-            <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-1">Sasaran Umur</div>
-            <h3 id="mod-guide-title" class="text-lg font-bold text-slate-800">Tajuk Tahap</h3>
-            <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-1">Sasaran Umur</div>
+              <h3 id="mod-guide-title" class="text-lg font-bold text-slate-800">Tajuk Tahap</h3>
+              <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
+            </div>
+            <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-3 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
+              🔼 Tutup Nota
+            </button>
           </div>
           <div id="mod-guide-content" class="space-y-3 text-xs"></div>
         </div>
@@ -360,6 +365,20 @@
               <div class="text-[11px] font-bold text-slate-500"><span id="lbl-mod-best">Rekod Terbaik Tahap:</span> <span id="mod-best-score" class="text-emerald-600 font-black">0</span>/50 <span class="gold-coin-icon">$</span></div>
             </div>
             <button id="btn-mod-reshuffle" onclick="reshuffleModuleQuestions()" class="bubbly-btn bg-sky-100 border-2 border-sky-300 px-2.5 py-1.5 text-[11px] font-black text-sky-800">🔀 Kocok Semula</button>
+          </div>
+
+          <!-- Pemilih Jenis Kuiz Khusus Tahap 3 (Kawan Kecil, Kawan Besar, Gabungan, Random) -->
+          <div id="mod3-quiz-filter-bar" class="hidden bg-rose-50/90 border-2 border-rose-200 rounded-2xl p-2.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-rose-950 uppercase tracking-wide">🎯 Pilih Jenis Latihan Kuiz Formula:</span>
+              <span id="mod3-quiz-mode-badge" class="text-[10px] font-black bg-purple-100 text-purple-900 px-2 py-0.5 rounded-full">🎲 Random Semua</span>
+            </div>
+            <div class="grid grid-cols-4 gap-1">
+              <button type="button" onclick="setMod3QuizCategory('kecil')" id="m3-qtype-kecil" class="m3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-rose-900 border border-rose-200">✋ Kawan Kecil</button>
+              <button type="button" onclick="setMod3QuizCategory('besar')" id="m3-qtype-besar" class="m3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Kawan Besar</button>
+              <button type="button" onclick="setMod3QuizCategory('gabung')" id="m3-qtype-gabung" class="m3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ Gabungan</button>
+              <button type="button" onclick="setMod3QuizCategory('random')" id="m3-qtype-random" class="m3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black bg-amber-400 text-amber-950 border border-amber-600 shadow-sm">🎲 Random</button>
+            </div>
           </div>
 
           <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
@@ -3196,7 +3215,7 @@
       return shuffleArray(Array.from(set));
     }
 
-    function build50QuestionsForModule(modId) {
+    function build50QuestionsForModule(modId, mod3Filter = 'random') {
       const list = [];
       for (let i = 0; i < 50; i++) {
         if (modId === 1) {
@@ -3271,14 +3290,18 @@
             });
           }
         } else if (modId === 3) {
-          /* TAHAP 3: Kawan Kecil (5), Kawan Besar (10) & Formula Gabungan */
-          if (i < 17) {
+          /* TAHAP 3: Kawan Kecil (5), Kawan Besar (10), Formula Gabungan atau Random */
+          const qType = mod3Filter === 'random'
+            ? (i < 17 ? 'kecil' : i < 34 ? 'besar' : 'gabung')
+            : mod3Filter;
+
+          if (qType === 'kecil') {
             const kawanKecil = [
               [3, 4, '+'], [4, 1, '+'], [4, 2, '+'], [4, 3, '+'], [2, 3, '+'], [2, 4, '+'], [1, 4, '+'],
               [5, 1, '-'], [5, 2, '-'], [5, 3, '-'], [5, 4, '-'], [6, 2, '-'], [7, 3, '-'], [8, 4, '-']
             ];
             const [a, b, op] = kawanKecil[i % kawanKecil.length];
-            const bonus = (i % 4) * 10;
+            const bonus = ((i + Math.floor(i / 14)) % 8) * 10;
             const start = a + bonus;
             const ans = op === '+' ? start + b : start - b;
             list.push({
@@ -3287,10 +3310,10 @@
               options: makeNumericOptions(ans, 0, 99),
               answer: ans
             });
-          } else if (i < 34) {
+          } else if (qType === 'besar') {
             const isAdd = i % 2 === 0;
             if (isAdd) {
-              const base = ((i % 7) + 1) * 10 + ((i % 4) + 6);
+              const base = (((i + Math.floor(i / 7)) % 7) + 1) * 10 + ((i % 4) + 6);
               const addV = ((i * 3) % 9) + 1;
               const ans = base + addV;
               list.push({
@@ -3300,7 +3323,7 @@
                 answer: ans
               });
             } else {
-              const base = ((i % 7) + 2) * 10 + (i % 4);
+              const base = (((i + Math.floor(i / 7)) % 7) + 2) * 10 + (i % 4);
               const subV = ((i * 3) % 9) + 1;
               const ans = base - subV;
               list.push({
@@ -3317,7 +3340,7 @@
               [11, 6, '-'], [12, 6, '-'], [13, 7, '-'], [14, 8, '-'], [14, 9, '-']
             ];
             const [a, b, op] = gabungan[i % gabungan.length];
-            const bonus = (i % 3) * 20;
+            const bonus = ((i + Math.floor(i / 15)) % 7) * 10;
             const start = a + bonus;
             const ans = op === '+' ? start + b : start - b;
             list.push({
@@ -3454,7 +3477,7 @@
       const diff = document.getElementById('blitz-difficulty')?.value || 'all';
       const fb = document.getElementById('blitz-feedback');
       if (fb) fb.classList.add('hidden');
-      hideHelperAbacusDefault('blitz');
+      /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan Cabaran Kilat seterusnya */
       resetHelperAbacus('blitz', true);
 
       let qText = '';
@@ -3630,10 +3653,53 @@
       }
     }
 
+    let activeMod3QuizCategory = 'random';
+
+    window.toggleModuleGuideNote = function(forceExpand) {
+      if (typeof forceExpand !== 'boolean') playClick();
+      const contentEl = document.getElementById('mod-guide-content');
+      const btnEl = document.getElementById('btn-toggle-mod-guide');
+      if (!contentEl || !btnEl) return;
+      const shouldShow = typeof forceExpand === 'boolean' ? forceExpand : contentEl.classList.contains('hidden');
+      contentEl.classList.toggle('hidden', !shouldShow);
+      btnEl.innerText = shouldShow ? '🔼 Tutup Nota' : '📖 Buka Nota';
+    };
+
+    window.setMod3QuizCategory = function(catKey, silent = false) {
+      if (!silent) playClick();
+      activeMod3QuizCategory = ['kecil', 'besar', 'gabung', 'random'].includes(catKey) ? catKey : 'random';
+
+      document.querySelectorAll('.m3-qtype-btn').forEach(btn => {
+        btn.className = 'm3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-slate-700 border border-slate-200';
+      });
+      const activeBtn = document.getElementById(`m3-qtype-${activeMod3QuizCategory}`);
+      const badgeEl = document.getElementById('mod3-quiz-mode-badge');
+      const styleMap = {
+        kecil:  { cls: 'bg-rose-500 text-white border border-rose-700 shadow-sm', label: '✋ Kawan Kecil (5)', badgeCls: 'bg-rose-100 text-rose-900' },
+        besar:  { cls: 'bg-indigo-600 text-white border border-indigo-800 shadow-sm', label: '🚀 Kawan Besar (10)', badgeCls: 'bg-indigo-100 text-indigo-900' },
+        gabung: { cls: 'bg-purple-600 text-white border border-purple-800 shadow-sm', label: '⚡ Gabungan (10 & 5)', badgeCls: 'bg-purple-100 text-purple-900' },
+        random: { cls: 'bg-amber-400 text-amber-950 border border-amber-600 shadow-sm', label: '🎲 Random Semua', badgeCls: 'bg-amber-100 text-amber-950' }
+      };
+      const st = styleMap[activeMod3QuizCategory];
+      if (activeBtn && st) activeBtn.className = `m3-qtype-btn py-1.5 px-1 rounded-xl text-[10px] font-black ${st.cls}`;
+      if (badgeEl && st) {
+        badgeEl.className = `text-[10px] font-black px-2 py-0.5 rounded-full ${st.badgeCls}`;
+        badgeEl.innerText = st.label;
+      }
+
+      if (activeModId === 3) {
+        activeModQuestions = build50QuestionsForModule(3, activeMod3QuizCategory);
+        activeModIndex = 0;
+        activeModSessionCorrect = 0;
+        renderCurrentModuleQuestion();
+      }
+    };
+
     function openModuleDetail(modId) {
       playClick();
       activeModId = modId;
-      activeModQuestions = build50QuestionsForModule(modId);
+      activeMod3QuizCategory = 'random';
+      activeModQuestions = build50QuestionsForModule(modId, activeMod3QuizCategory);
       activeModIndex = 0;
       activeModSessionCorrect = 0;
 
@@ -3649,8 +3715,20 @@
       document.getElementById('mod-guide-title').innerText = `${t.levelWord} ${modId}: ${meta.title}`;
       document.getElementById('mod-guide-subtitle').innerText = meta.subtitle;
       document.getElementById('mod-guide-content').innerHTML = meta.renderGuide();
+
+      /* Sentiasa buka paparan nota apabila modul mula dipilih dari senarai */
+      window.toggleModuleGuideNote(true);
+
+      /* Tetapkan keadaan awal sempoa sekali sahaja semasa modul dibuka (Tahap 2-4 terbuka, Tahap 1 & 5-6 tertutup) */
+      const initialOpenAbacus = modId >= 2 && modId <= 4;
+      setHelperAbacusVisibility('mod', initialOpenAbacus);
+
+      const m3FilterBar = document.getElementById('mod3-quiz-filter-bar');
+      if (m3FilterBar) m3FilterBar.classList.toggle('hidden', modId !== 3);
+
       if (modId === 3) {
         switchMod3InfographicTab('kecil');
+        window.setMod3QuizCategory('random', true);
       }
       document.getElementById('mod-best-score').innerText = (currentPlayer?.modScores?.[modId]) || 0;
 
@@ -3679,7 +3757,7 @@
 
     window.reshuffleModuleQuestions = function() {
       playClick();
-      activeModQuestions = build50QuestionsForModule(activeModId);
+      activeModQuestions = build50QuestionsForModule(activeModId, activeModId === 3 ? activeMod3QuizCategory : 'random');
       activeModIndex = 0;
       activeModSessionCorrect = 0;
       renderCurrentModuleQuestion();
@@ -3689,9 +3767,7 @@
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
-      /* Tahap 2, 3 & 4 adalah tahap pembelajaran sempoa -> buka sempoa secara default; Tahap 1 (Jari) & 5-6 (Anzan) -> tutup secara default */
-      const shouldAutoOpenAbacus = activeModId >= 2 && activeModId <= 4;
-      setHelperAbacusVisibility('mod', shouldAutoOpenAbacus);
+      /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan seterusnya, cuma kosongkan nilai manik */
       resetHelperAbacus('mod', true);
       document.getElementById('mod-q-num').innerText = activeModIndex + 1;
       const pct = Math.round(((activeModIndex + 1) / 50) * 100);
@@ -5217,6 +5293,7 @@
       } else if (screenName === 'abacus') {
         renderInteractiveAbacus();
       } else if (screenName === 'quiz') {
+        hideHelperAbacusDefault('blitz');
         generateNextBlitzQuestion();
       } else if (screenName === 'rewards') {
         renderAvatarStudio();

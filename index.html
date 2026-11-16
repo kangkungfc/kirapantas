@@ -232,7 +232,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.56
+            Versi 1.9.57
           </span>
         </div>
 
@@ -621,9 +621,14 @@
               <h3 id="mod-guide-title" class="text-base sm:text-lg font-bold text-slate-800 truncate">Tajuk Tahap</h3>
               <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
             </div>
-            <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-3 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
-              🔼 Tutup Nota
-            </button>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <button type="button" id="btn-read-mod-guide" onclick="speakModuleGuideNote()" class="bubbly-btn bg-amber-300 hover:bg-amber-400 border-2 border-amber-600 px-2.5 py-1.5 text-[11px] font-black text-amber-950 flex-shrink-0" title="Dengar penerangan nota dibacakan">
+                🔊 Dengar
+              </button>
+              <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-3 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
+                🔼 Tutup Nota
+              </button>
+            </div>
           </div>
           <div id="mod-guide-content" class="space-y-3 text-xs"></div>
         </div>
@@ -4152,32 +4157,32 @@
       1: {
         title: 'Keajaiban 10 Jari (Chisanbop)',
         shortTitle: 'Keajaiban 10 Jari',
-        ageGroup: '👶 Sasaran Umur: 4 – 6 Tahun (Prasekolah / Tadika)',
-        subtitle: 'Membina kefahaman nombor secara fizikal (0 – 99) tanpa bergantung pada sempoa.',
+        ageGroup: '👶 Umur 4 – 6 Tahun • Asas 10 Jari',
+        subtitle: 'Kira nombor 0 sampai 99 guna dua belah tangan sahaja!',
+        speakText: 'Hai kawan-kawan! Dalam Tahap 1, tangan kiri ialah rumah puluh. Ibu jari kiri bernilai lima puluh, dan empat jari lain bernilai sepuluh setiap satu. Tangan kanan pula rumah sa. Ibu jari kanan bernilai lima, dan empat jari lain bernilai satu setiap satu. Jom tekan butang nombor di bawah untuk lihat gaya jari!',
         icon: '🖐️',
         bgGradient: 'from-sky-400 to-blue-600',
         border: 'border-blue-800',
         renderGuide: () => `
           <div class="space-y-3">
             <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-2.5">
-              <div class="font-black text-sky-950 flex items-center gap-1.5"><span>👑</span> Rahsia Nilai Dua Belah Tangan:</div>
+              <div class="font-black text-sky-950 flex items-center gap-1.5"><span>👑</span> Rahsia Kuasa Dua Tangan Kita:</div>
               <div class="grid grid-cols-2 gap-2 text-center">
                 <div class="bg-white border-2 border-emerald-300 rounded-2xl p-2.5 shadow-sm">
-                  <div class="text-xs font-black text-emerald-800">👈 Tangan Kiri (Rumah Puluh)</div>
+                  <div class="text-xs font-black text-emerald-800">👈 Tangan Kiri (Puluh)</div>
                   <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 Bos Puluh = 50</div>
-                  <div class="text-[11px] font-bold text-slate-600 mt-1">4 Jari Lain = <b>10</b> setiap satu</div>
+                  <div class="text-[11px] font-bold text-slate-600 mt-1">4 Jari Biasa = <b>10</b> setiap satu</div>
                 </div>
                 <div class="bg-white border-2 border-blue-300 rounded-2xl p-2.5 shadow-sm">
-                  <div class="text-xs font-black text-blue-800">👉 Tangan Kanan (Rumah Sa)</div>
+                  <div class="text-xs font-black text-blue-800">👉 Tangan Kanan (Sa)</div>
                   <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 Bos Besar = 5</div>
-                  <div class="text-[11px] font-bold text-slate-600 mt-1">4 Jari Lain = <b>1</b> setiap satu</div>
+                  <div class="text-[11px] font-bold text-slate-600 mt-1">4 Jari Biasa = <b>1</b> setiap satu</div>
                 </div>
               </div>
             </div>
 
             <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
-              <div class="font-black text-amber-950">🎮 Permainan Kanak-Kanak: "Teka Nombor Rahsia"</div>
-              <p class="text-[11px] font-bold text-slate-600">Tekan butang di bawah untuk melihat gaya jari sebenar dari 0 hingga 99:</p>
+              <div class="font-black text-amber-950">🎮 Cuba Tekan Nombor Di Bawah:</div>
               <div class="flex flex-wrap justify-center gap-1.5">
                 ${[1, 5, 7, 15, 25, 63, 99].map(v => `<button type="button" onclick="demoGuideBothHands(${v})" class="bubbly-btn bg-white border-2 border-amber-400 px-2.5 py-1 text-[11px] font-black text-amber-950">Tunjuk ${v}</button>`).join('')}
               </div>
@@ -4186,7 +4191,7 @@
                   ${renderRealisticHandSVG('left', numberToFingerStates(63).left, false, 'w-24 h-28')}
                   ${renderRealisticHandSVG('right', numberToFingerStates(63).right, false, 'w-24 h-28')}
                 </div>
-                <span class="text-[11px] font-black text-emerald-800">Contoh: Kiri (50 + 10 = 60) + Kanan (5 + 3 = 8) → 63</span>
+                <span class="text-[11px] font-black text-emerald-800">Contoh 63: Kiri (50 + 10 = 60) + Kanan (5 + 3 = 8)</span>
               </div>
             </div>
           </div>
@@ -4198,7 +4203,8 @@
         title: 'Formula Rahsia Jari (Kawan 5, 10 & Gabungan)',
         shortTitle: 'Formula Jari 5 & 10',
         ageGroup: '🖐️ Laluan Jari • Tahap 2 (Tanpa Sempoa)',
-        subtitle: 'Selesaikan kiraan jari apabila jari pada satu tangan tidak mencukupi (Kawan 5, Kawan 10 & Gabungan).',
+        subtitle: 'Bila jari tak cukup, kita panggil Kawan 5 dan Kawan 10 tolong!',
+        speakText: 'Bila empat jari biasa tak cukup, kita panggil Ibu Jari bernilai lima sebagai Kawan Lima. Kalau jari tangan kanan masih tak cukup, kita buka satu jari di tangan kiri bernilai sepuluh sebagai Kawan Sepuluh. Tekan mana-mana formula di bawah untuk lihat jari bergerak!',
         icon: '🤝',
         bgGradient: 'from-rose-500 to-pink-600',
         border: 'border-rose-900',
@@ -4207,9 +4213,8 @@
             <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
               <div class="flex items-center justify-between gap-2">
                 <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
-                  <span>🖐️</span> Makmal Formula Jari (100% Guna Jari Sahaja)
+                  <span>🖐️</span> Makmal Formula Jari (Klik Formula Di Bawah!)
                 </div>
-                <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
               </div>
 
               <div class="grid grid-cols-4 gap-1">
@@ -4231,19 +4236,29 @@
         title: 'Silat Jari Kilat (Bayangan Jari 0 – 99)',
         shortTitle: 'Silat Jari Kilat',
         ageGroup: '⚡ Laluan Jari • Tahap 3 (Pantas & Rantaian)',
-        subtitle: 'Kira rantaian 3 hingga 4 nombor dua-digit dengan pantas menggunakan kemahiran jari!',
+        subtitle: 'Kira 3 hingga 4 nombor berturut-turut dengan pantas!',
+        speakText: 'Rahsia kira pantas dua tangan: Pertama, kira tangan kiri iaitu puluh dahulu, baru tangan kanan iaitu sa. Kedua, gerakkan jari di atas meja mengikut setiap nombor satu demi satu.',
         icon: '⚡',
         bgGradient: 'from-violet-500 to-indigo-700',
         border: 'border-indigo-950',
         renderGuide: () => `
-          <div class="space-y-3">
+          <div class="space-y-2.5">
             <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-2 text-[11px]">
-              <div class="font-black text-indigo-950">🖐️ Teknik Kiraan Pantas 2 Tangan (0 – 99):</div>
-              <ul class="list-disc list-inside space-y-1 font-bold text-slate-700">
-                <li><b>Baca Puluh Dulu (Tangan Kiri), Baru Sa (Tangan Kanan):</b> Contoh <code class="bg-white px-1 rounded">24 + 13</code> → tambah 10 di kiri, tambah 3 di kanan = <b>37</b>.</li>
-                <li><b>Gunakan Kawan 5 & 10 Bila Jari Penuh:</b> Contoh <code class="bg-white px-1 rounded">18 + 6</code> → naik 10 di kiri (+10), dan di kanan guna gabungan <code class="bg-white px-1 rounded">-5 + 1</code> = <b>24</b>!</li>
-                <li><b>Air Fingering (Jari di Udara):</b> Gerakkan jari di atas meja semasa membaca setiap langkah operasi.</li>
-              </ul>
+              <div class="font-black text-indigo-950">⚡ 3 Rahsia Pantas Silat Jari:</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-bold text-slate-700">
+                <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                  <div class="font-black text-indigo-800">1️⃣ Kiri Dulu, Baru Kanan</div>
+                  <div class="mt-0.5">Kira <b>Puluh (Kiri)</b> dulu, kemudian baru <b>Sa (Kanan)</b>.</div>
+                </div>
+                <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                  <div class="font-black text-rose-700">2️⃣ Guna Kawan 5 & 10</div>
+                  <div class="mt-0.5">Cth <code class="bg-rose-50 px-1 rounded">18 + 6</code>: buka +10 kiri, dan kanan buat <code class="bg-rose-50 px-1 rounded">-5 + 1</code> = <b>24</b>!</div>
+                </div>
+                <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                  <div class="font-black text-emerald-800">3️⃣ Gerak Jari Di Meja</div>
+                  <div class="mt-0.5">Gerakkan jari mengikut setiap nombor supaya tidak lupa!</div>
+                </div>
+              </div>
             </div>
           </div>
         `
@@ -4251,41 +4266,29 @@
       2: {
         title: 'Rakan Sempoa Saya (Suanpan 1:4)',
         shortTitle: 'Rakan Sempoa Saya',
-        ageGroup: '🧒 Sasaran Umur: 6 – 7 Tahun',
-        subtitle: 'Mengenali anatomi sempoa 1:4, postur badan & teknik penjarian pantas.',
+        ageGroup: '🧒 Umur 6 – 7 Tahun • Kenali Sempoa',
+        subtitle: 'Manik dikira hanya apabila ia rapat ke Palang Tengah!',
+        speakText: 'Mari kenali sempoa! Manik merah di atas palang bernilai lima. Empat manik kuning di bawah bernilai satu setiap satu. Ingat ya, manik hanya dikira apabila rapat menyentuh palang tengah!',
         icon: '🧮',
         bgGradient: 'from-emerald-400 to-teal-600',
         border: 'border-teal-800',
         renderGuide: () => `
           <div class="space-y-3">
             <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
-              <div class="font-black text-amber-950">🏛️ Anatomi Sempoa Moden (1 Manik Atas : 4 Manik Bawah):</div>
+              <div class="font-black text-amber-950">🏛️ Kenali Bahagian Sempoa:</div>
               <div class="grid grid-cols-2 gap-2 text-[11px]">
                 <div class="bg-rose-50 border border-rose-300 rounded-xl p-2">
-                  <div class="font-black text-rose-800">🔴 Manik Syurga (Atas)</div>
-                  <div class="font-bold text-slate-600">1 manik di atas palang bernilai <b>5</b>.</div>
+                  <div class="font-black text-rose-800">🔴 Manik Atas = 5</div>
+                  <div class="font-bold text-slate-600">1 manik merah di atas bernilai <b>5</b>.</div>
                 </div>
                 <div class="bg-amber-100/70 border border-amber-300 rounded-xl p-2">
-                  <div class="font-black text-amber-900">🟡 Manik Bumi (Bawah)</div>
+                  <div class="font-black text-amber-900">🟡 Manik Bawah = 1</div>
                   <div class="font-bold text-slate-600">4 manik di bawah bernilai <b>1</b> setiap satu.</div>
                 </div>
-                <div class="bg-white border border-slate-200 rounded-xl p-2">
-                  <div class="font-black text-slate-800">➖ Palang Pemisah</div>
-                  <div class="font-bold text-slate-600">Manik dikira hanya bila <b>rapat ke palang</b>!</div>
+                <div class="bg-white border border-slate-200 rounded-xl p-2 col-span-2">
+                  <div class="font-black text-emerald-800">⭐ Peraturan Emas Palang Tengah:</div>
+                  <div class="font-bold text-slate-600">Manik dikira <b>HANYA BILA RAPAT</b> menyentuh palang tengah! Gunakan 👍 Ibu Jari untuk tolak naik, dan ☝️ Telunjuk untuk tolak turun.</div>
                 </div>
-                <div class="bg-sky-50 border border-sky-200 rounded-xl p-2">
-                  <div class="font-black text-sky-800">📍 Titik Tengah (Unit Point)</div>
-                  <div class="font-bold text-slate-600">Menandakan tiang <b>Sa</b>, diikuti Puluh, Ratus & Ribu.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-3 space-y-1.5">
-              <div class="font-black text-emerald-950">✌️ Teknik Penjarian (Fingering Technique):</div>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-[11px] font-bold">
-                <div class="bg-white rounded-xl p-2 border border-emerald-200"><b>👍 Ibu Jari Kanan:</b> Tolak Manik Bumi ke atas (+1 hingga +4).</div>
-                <div class="bg-white rounded-xl p-2 border border-emerald-200"><b>☝️ Telunjuk Kanan:</b> Tolak Manik Bumi turun (-1..-4) & gerak Manik Syurga (±5).</div>
-                <div class="bg-white rounded-xl p-2 border border-emerald-200"><b>🤚 Tangan Kiri:</b> Pegang bingkai sempoa dengan kemas & tegak.</div>
               </div>
             </div>
 
@@ -4295,7 +4298,7 @@
               </div>
               <div id="guide-demo-box" class="flex flex-col items-center">
                 ${renderAbacusQuestionSVG(26, 3)}
-                <span class="text-[11px] font-black text-amber-900">Contoh: Tiang Puluh = 2, Tiang Sa = 6 → 26</span>
+                <span class="text-[11px] font-black text-amber-900">Contoh 26: Tiang Puluh = 2, Tiang Sa = 6</span>
               </div>
             </div>
           </div>
@@ -4304,23 +4307,21 @@
       3: {
         title: 'Kawan Kecil & Kawan Besar (Formula Rahsia)',
         shortTitle: 'Formula Rahsia 5 & 10',
-        ageGroup: '🎒 Sasaran Umur: 7 – 8 Tahun',
-        subtitle: 'Menyelesaikan kiraan apabila manik pada satu tiang tidak mencukupi.',
+        ageGroup: '🎒 Umur 7 – 8 Tahun • Formula Manik',
+        subtitle: 'Bila manik satu tiang tak cukup, panggil Geng 5 dan Geng 10!',
+        speakText: 'Bila manik bawah tak cukup, kita panggil Bos Besar bernilai lima turun membantu sebagai Geng Lima. Kalau satu tiang masih tak cukup, kita pinjam sepuluh dari tiang sebelah kiri sebagai Geng Sepuluh!',
         icon: '🤝',
         bgGradient: 'from-rose-400 to-pink-600',
         border: 'border-pink-800',
         renderGuide: () => `
           <div class="space-y-3">
-            <!-- Papan Cerita & Simulator Interaktif Formula Rahsia -->
             <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
               <div class="flex items-center justify-between gap-2">
                 <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
-                  <span>🪄</span> Makmal Infografik Interaktif Formula
+                  <span>🪄</span> Makmal Formula Sempoa (Klik Formula Di Bawah!)
                 </div>
-                <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
               </div>
 
-              <!-- 4 Tab Kategori Comel -->
               <div class="grid grid-cols-4 gap-1">
                 <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Geng 5</button>
                 <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Geng 10</button>
@@ -4328,29 +4329,8 @@
                 <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Kuiz Mini</button>
               </div>
 
-              <!-- Kandungan Tab Dinamik -->
               <div id="m3-tab-content"></div>
-
-              <!-- Pentas Demo Visual Manik Sempoa Langkah-Demi-Langkah -->
-              <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm">
-                <div class="inline-block bg-rose-100 text-rose-900 text-[10px] font-black px-2.5 py-0.5 rounded-full">Contoh Interaktif: Kawan Kecil Tambah (+4 = +5 - 1)</div>
-                <div class="text-sm font-black text-slate-800">Kira <span class="text-rose-600">3 + 4</span> pada Sempoa:</div>
-                <div class="grid grid-cols-3 gap-1.5 items-center text-center">
-                  <div class="bg-slate-50 rounded-xl p-1.5 border border-slate-200">
-                    <div class="text-[9px] font-black text-slate-500 mb-1">1. Mula (3)</div>
-                    ${renderAbacusQuestionSVG(3, 2).replace('w-48 h-36', 'w-24 h-24')}
-                  </div>
-                  <div class="bg-amber-50 rounded-xl p-1.5 border border-amber-300">
-                    <div class="text-[9px] font-black text-amber-800 mb-1">2. Turun 5, Tolak 1</div>
-                    <div class="text-xs font-black text-rose-700 py-6">+5 ⬇️<br>-1 ⬇️</div>
-                  </div>
-                  <div class="bg-emerald-50 rounded-xl p-1.5 border border-emerald-300">
-                    <div class="text-[9px] font-black text-emerald-800 mb-1">3. Hasil (7)</div>
-                    ${renderAbacusQuestionSVG(7, 2).replace('w-48 h-36', 'w-24 h-24')}
-                  </div>
-                </div>
-                <p class="text-[11px] font-bold text-slate-600">💡 <b>Cerita Comel:</b> Manik bawah cuma tinggal 1 (tak cukup 4). Jadi kita panggil <b>Bos Besar (5)</b> turun membantu, dan pulangkan <b>1 kawan kecilnya</b>!</p>
-              </div>
+              <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
             </div>
           </div>
         `
@@ -4358,34 +4338,27 @@
       4: {
         title: 'Darab & Bahagi Kilat',
         shortTitle: 'Darab & Bahagi Kilat',
-        ageGroup: '🚀 Sasaran Umur: 8 – 10 Tahun',
-        subtitle: 'Menguasai darab dan bahagi nombor besar dari Kiri ke Kanan pada sempoa.',
+        ageGroup: '🚀 Umur 8 – 10 Tahun • Teknik Pecah Nombor',
+        subtitle: 'Pecahkan nombor besar dari KIRI ke KANAN supaya sangat senang!',
+        speakText: 'Rahsia darab dan bahagi kilat ialah pecahkan nombor dari kiri ke kanan! Contoh dua puluh empat darab tiga: darab dua puluh darab tiga jadi enam puluh dahulu, kemudian tambah empat darab tiga iaitu dua belas. Jumlahnya tujuh puluh dua!',
         icon: '✖️',
         bgGradient: 'from-amber-400 to-orange-600',
         border: 'border-orange-800',
         renderGuide: () => `
           <div class="space-y-3">
-            <div class="bg-amber-100/80 border-2 border-amber-300 rounded-2xl p-2.5 text-center text-[11px] font-black text-amber-950">
-              ⭐ Prasyarat Wajib: Hafal sifir asas 1 × 1 hingga 9 × 9 di luar kepala!
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
-              <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-3 space-y-1.5">
-                <div class="font-black text-orange-950">✖️ Teknik Darab Sempoa (Kiri → Kanan)</div>
-                <ol class="list-decimal list-inside space-y-1 font-bold text-slate-700">
-                  <li><b>Kira Jumlah Digit:</b> Cth <code class="bg-white px-1 rounded">24 × 3</code> ada 2 + 1 = <b>3 tiang</b> (mula tiang Ratus).</li>
-                  <li><b>Darab Digit Terbesar Dulu:</b> <code class="bg-white px-1 rounded">20 × 3 = 60</code> (letak pada Ratus & Puluh).</li>
-                  <li><b>Darab Digit Sa:</b> <code class="bg-white px-1 rounded">4 × 3 = 12</code> (tambah pada Puluh & Sa) → <b>72</b>!</li>
-                </ol>
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+              <div class="text-xs font-black text-amber-950">🎮 Tekan Contoh Untuk Lihat Cara Pecah Nombor:</div>
+              <div class="flex flex-wrap justify-center gap-1.5">
+                <button type="button" onclick="demoMod4StepExample('mul1')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 24 × 3</button>
+                <button type="button" onclick="demoMod4StepExample('mul2')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 132 × 4</button>
+                <button type="button" onclick="demoMod4StepExample('div1')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 96 ÷ 4</button>
+                <button type="button" onclick="demoMod4StepExample('div2')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 145 ÷ 5</button>
               </div>
-
-              <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-1.5">
-                <div class="font-black text-sky-950">➗ Teknik Bahagi Sempoa (Kiri → Kanan)</div>
-                <ol class="list-decimal list-inside space-y-1 font-bold text-slate-700">
-                  <li><b>Letak Nombor Besar:</b> Cth <code class="bg-white px-1 rounded">96 ÷ 4</code> diletak pada tiang Puluh & Sa.</li>
-                  <li><b>Bahagi Tiang Kiri Dulu:</b> <code class="bg-white px-1 rounded">9 ÷ 4 = 2</code> (baki 10). Tolak <code class="bg-white px-1 rounded">2 × 4 = 8</code>, tinggal <b>16</b>.</li>
-                  <li><b>Bahagi Baki:</b> <code class="bg-white px-1 rounded">16 ÷ 4 = 4</code>. Jawapan akhir → <b>24</b>!</li>
-                </ol>
+              <div id="mod4-step-demo-box" class="bg-white border-2 border-orange-200 rounded-2xl p-3 text-left space-y-1.5 text-[11px]">
+                <div class="font-black text-orange-900">✖️ Contoh: 24 × 3 = ?</div>
+                <div class="font-bold text-slate-700">1️⃣ Darab nombor depan (Puluh) dulu: <b>20 × 3 = 60</b></div>
+                <div class="font-bold text-slate-700">2️⃣ Darab nombor belakang (Sa): <b>4 × 3 = 12</b></div>
+                <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Gabungkan: 60 + 12 = 72!</div>
               </div>
             </div>
           </div>
@@ -4394,30 +4367,31 @@
       5: {
         title: 'Silat Jari Kilat (Anzan / Bayangan Minda)',
         shortTitle: 'Silat Jari Kilat (Anzan)',
-        ageGroup: '⚡ Sasaran Umur: 9 – 12 Tahun',
-        subtitle: 'Memindahkan bayangan manik terus ke otak kanan & latihan Flash Anzan.',
+        ageGroup: '⚡ Umur 9 – 12 Tahun • Kira Dalam Minda',
+        subtitle: 'Bayangkan manik sempoa bergerak di dalam minda tanpa menyentuh sempoa!',
+        speakText: 'Dalam latihan Anzan, bayangkan gambar manik sempoa dalam minda kamu dan gerakkan jari di atas meja mengikut setiap nombor. Jom cuba tekan butang Cuba Kilas tiga nombor di bawah!',
         icon: '🧠',
         bgGradient: 'from-purple-500 to-fuchsia-700',
         border: 'border-purple-900',
         renderGuide: () => `
           <div class="space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
-              <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-3 space-y-1">
-                <div class="font-black text-purple-950">👁️ 1. Sempoa Minda (Otak Kanan)</div>
-                <p class="font-bold text-slate-700">Tutup mata dan bayangkan gambar manik sempoa yang bergerak naik dan turun seperti gambar foto dalam minda.</p>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5 space-y-1">
+                <div class="font-black text-purple-950">👁️ 1. Gambar Dalam Minda</div>
+                <p class="font-bold text-slate-700">Bayangkan manik merah (5) dan manik kuning (1) naik turun dalam kepala.</p>
               </div>
-              <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-3 space-y-1">
-                <div class="font-black text-pink-950">🖐️ 2. Air Fingering (Jari di Udara)</div>
-                <p class="font-bold text-slate-700">Gerakkan jari di atas meja seolah-olah menyentuh sempoa halimunan untuk mengunci fokus visual otak.</p>
+              <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-2.5 space-y-1">
+                <div class="font-black text-pink-950">🖐️ 2. Jari Di Atas Meja</div>
+                <p class="font-bold text-slate-700">Gerakkan jari di atas meja seolah-olah sedang menolak manik halimunan!</p>
               </div>
             </div>
 
             <div class="bg-slate-900 text-white rounded-2xl p-3.5 text-center space-y-2 border-2 border-purple-400">
-              <div class="text-xs font-black text-amber-300">⚡ Mini Uji Kilat Anzan (Kelipan 0.8 Saat)</div>
+              <div class="text-xs font-black text-amber-300">⚡ Cuba Uji Mata Kilat (Kelipan 0.8 Saat)</div>
               <div id="mod5-mini-flash-num" class="text-3xl font-black text-white py-1">Sedia?</div>
               <div class="flex flex-wrap justify-center gap-2">
                 <button type="button" onclick="runMiniAnzanDemo()" class="bubbly-btn bg-amber-400 text-amber-950 text-[11px] font-black px-3 py-1.5">▶️ Cuba Kilas 3 Nombor</button>
-                <button type="button" onclick="navTo('anzan')" class="bubbly-btn bg-rose-500 text-white text-[11px] font-black px-3 py-1.5">🚀 Buka Akademi Flash Anzan</button>
+                <button type="button" onclick="navTo('anzan')" class="bubbly-btn bg-rose-500 text-white text-[11px] font-black px-3 py-1.5">🚀 Buka Akademi Anzan</button>
               </div>
             </div>
           </div>
@@ -4426,31 +4400,88 @@
       6: {
         title: 'Pejuang Antarabangsa (Peringkat Master)',
         shortTitle: 'Pejuang Antarabangsa',
-        ageGroup: '🏆 Sasaran Umur: 10 Tahun ke Atas (Pertandingan Dunia)',
-        subtitle: 'Kelajuan maksimum, ketepatan 100%, perpuluhan, negatif & kawalan fokus.',
+        ageGroup: '🏆 Umur 10+ Tahun • Cabaran Juara',
+        subtitle: 'Kuasai nombor perpuluhan, nombor negatif & bertenang seperti juara!',
+        speakText: 'Tahniah kerana sampai ke Tahap Juara! Untuk nombor perpuluhan, tambah nombor bulat dahulu kemudian baru tambah sen di belakang. Untuk nombor negatif pula, jika tolak nombor lebih besar, jawapannya ada tanda tolak di depan!',
         icon: '🏆',
         bgGradient: 'from-teal-500 to-cyan-700',
         border: 'border-cyan-900',
         renderGuide: () => `
           <div class="space-y-3">
-            <div class="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-3 space-y-2 text-[11px]">
-              <div class="font-black text-cyan-950">🌍 Piawaian Pertandingan Antarabangsa:</div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-bold text-slate-700">
-                <div class="bg-white rounded-xl p-2 border border-cyan-200"><b>🔢 Nombor Kompleks:</b> Tambah/tolak 3–5 digit, perpuluhan (cth: <code class="text-cyan-800">14.5 + 8.75</code>) & negatif.</div>
-                <div class="bg-white rounded-xl p-2 border border-cyan-200"><b>⚡ Darab/Bahagi Besar:</b> Operasi pantas seperti <code class="text-cyan-800">4,829 × 76</code> atau <code class="text-cyan-800">84,592 ÷ 38</code>.</div>
-                <div class="bg-white rounded-xl p-2 border border-cyan-200"><b>👂 Ujian Mendengar:</b> Mendengar deretan nombor laju tanpa melihat kertas.</div>
-                <div class="bg-white rounded-xl p-2 border border-cyan-200"><b>⏱️ Speed Test:</b> Menyelesaikan 100–200 soalan dalam 3 hingga 5 minit.</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+              <div class="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-2.5 space-y-1">
+                <div class="font-black text-cyan-950">💰 Tip Nombor Perpuluhan (Sen)</div>
+                <div class="font-bold text-slate-700">Cth <code class="bg-white px-1 rounded">14.5 + 8.7</code>: Kira <b>14 + 8 = 22</b> dulu, kemudian <b>0.5 + 0.7 = 1.2</b> → <b>23.2</b>!</div>
+              </div>
+              <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-2.5 space-y-1">
+                <div class="font-black text-rose-950">❄️ Tip Nombor Negatif (Bawah Sifar)</div>
+                <div class="font-bold text-slate-700">Cth <code class="bg-white px-1 rounded">15 - 20</code>: Beza 20 dan 15 ialah 5. Sebab tolak nombor lebih besar, letak tanda <b>-5</b>!</div>
               </div>
             </div>
 
             <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3 text-center space-y-2">
-              <div class="text-xs font-black text-emerald-950">🧘‍♂️ Pengurusan Emosi & Fokus (Teknik Pernafasan Juara)</div>
-              <p id="breath-coach-text" class="text-[11px] font-bold text-emerald-800">Supaya jari tidak kaku di pentas pertandingan: Tarik nafas 4 saat → Tahan 4 saat → Hembus 4 saat.</p>
-              <button type="button" onclick="startBreathingCoach()" class="bubbly-btn bg-emerald-500 text-white text-[11px] font-black px-4 py-1.5 border border-emerald-700">🌬️ Mula Latihan Tenang 12 Saat</button>
+              <div class="text-xs font-black text-emerald-950">🧘‍♂️ Teknik Pernafasan Tenang Juara (12 Saat)</div>
+              <p id="breath-coach-text" class="text-[11px] font-bold text-emerald-800">Tarik nafas 4 saat → Tahan 4 saat → Hembus 4 saat supaya minda tenang!</p>
+              <button type="button" onclick="startBreathingCoach()" class="bubbly-btn bg-emerald-500 text-white text-[11px] font-black px-4 py-1.5 border border-emerald-700">🌬️ Mula Latihan Tenang</button>
             </div>
           </div>
         `
       }
+    };
+
+    window.demoMod4StepExample = function(key) {
+      playClick();
+      const box = document.getElementById('mod4-step-demo-box');
+      if (!box) return;
+      const examples = {
+        mul1: `
+          <div class="font-black text-orange-900">✖️ Contoh: 24 × 3 = ?</div>
+          <div class="font-bold text-slate-700">1️⃣ Darab nombor depan (Puluh) dulu: <b>20 × 3 = 60</b></div>
+          <div class="font-bold text-slate-700">2️⃣ Darab nombor belakang (Sa): <b>4 × 3 = 12</b></div>
+          <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Gabungkan: 60 + 12 = 72!</div>
+        `,
+        mul2: `
+          <div class="font-black text-orange-900">✖️ Contoh: 132 × 4 = ?</div>
+          <div class="font-bold text-slate-700">1️⃣ Ratus: <b>100 × 4 = 400</b></div>
+          <div class="font-bold text-slate-700">2️⃣ Puluh & Sa: <b>30 × 4 = 120</b> dan <b>2 × 4 = 8</b></div>
+          <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Gabungkan: 400 + 120 + 8 = 528!</div>
+        `,
+        div1: `
+          <div class="font-black text-sky-900">➗ Contoh: 96 ÷ 4 = ?</div>
+          <div class="font-bold text-slate-700">1️⃣ Bahagi nombor depan (90 ÷ 4): dapat <b>20</b> (baki 16)</div>
+          <div class="font-bold text-slate-700">2️⃣ Bahagi baki (16 ÷ 4): dapat <b>4</b></div>
+          <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Jawapan Akhir: 20 + 4 = 24!</div>
+        `,
+        div2: `
+          <div class="font-black text-sky-900">➗ Contoh: 145 ÷ 5 = ?</div>
+          <div class="font-bold text-slate-700">1️⃣ Bahagi 100 ÷ 5 = <b>20</b></div>
+          <div class="font-bold text-slate-700">2️⃣ Bahagi baki 45 ÷ 5 = <b>9</b></div>
+          <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Jawapan Akhir: 20 + 9 = 29!</div>
+        `
+      };
+      box.innerHTML = examples[key] || examples.mul1;
+    };
+
+    window.speakModuleGuideNote = function() {
+      playClick();
+      const meta = MODULES_META[activeModId];
+      if (!meta || !meta.speakText) return;
+      if (!('speechSynthesis' in window)) {
+        showAppToast('⚠️ Pelayar ini tidak menyokong suara pembaca nota.');
+        return;
+      }
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(meta.speakText);
+        utter.lang = 'ms-MY';
+        utter.rate = 0.96;
+        utter.pitch = 1.08;
+        const btn = document.getElementById('btn-read-mod-guide');
+        if (btn) btn.innerText = '🗣️ Membaca...';
+        utter.onend = () => { if (btn) btn.innerText = '🔊 Dengar'; };
+        utter.onerror = () => { if (btn) btn.innerText = '🔊 Dengar'; };
+        window.speechSynthesis.speak(utter);
+      } catch (e) {}
     };
 
     applyAppLanguageUI(currentAppLang);
@@ -5843,6 +5874,7 @@
     }
 
     window.closeModuleView = function() {
+      try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
       setPlayerCurrentActivity('Senarai Modul Belajar');
       playClick();
       document.getElementById('module-detail-view').classList.add('hidden');

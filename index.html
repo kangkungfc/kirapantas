@@ -70,6 +70,24 @@
     .bead-transition {
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+    @keyframes bonusPopBounce {
+      0% { transform: translate(-50%, 16px) scale(0.65); opacity: 0; }
+      55% { transform: translate(-50%, -6px) scale(1.06); opacity: 1; }
+      80% { transform: translate(-50%, 2px) scale(0.98); opacity: 1; }
+      100% { transform: translate(-50%, 0px) scale(1); opacity: 1; }
+    }
+    @keyframes floatRewardBurst {
+      0% { transform: translate(-50%, 0px) scale(0.5); opacity: 0; }
+      25% { transform: translate(-50%, -18px) scale(1.15); opacity: 1; }
+      75% { transform: translate(-50%, -46px) scale(1.02); opacity: 1; }
+      100% { transform: translate(-50%, -72px) scale(0.9); opacity: 0; }
+    }
+    .animate-bonus-pop {
+      animation: bonusPopBounce 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    .animate-reward-burst {
+      animation: floatRewardBurst 1.15s ease-out forwards;
+    }
     .gold-coin-icon {
       display: inline-flex;
       align-items: center;
@@ -97,6 +115,7 @@
 
   <!-- Pop-up Segera Keputusan Kuiz (Sentiasa Nampak Di Skrin Tanpa Terlindung) -->
   <div id="quiz-instant-popup" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none"></div>
+  <div id="quiz-reward-burst-layer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
   <!-- Bar Atas Pemain (Disembunyikan sebelum Log Masuk) -->
   <header id="app-header" class="hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 px-2 sm:px-3 py-1.5 sm:py-2 shadow-sm">
@@ -232,7 +251,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.57
+            Versi 1.9.59
           </span>
         </div>
 
@@ -2428,11 +2447,25 @@
     let blitzQuestionStartTime = 0;
     let blitzQuestionTimerInterval = null;
 
-    function calculateSpeedBonusPoints(elapsedSec) {
-      if (elapsedSec < 2.0) return { total: 20, bonus: 10, label: '⚡ KILAT SUPER (+10 Bonus)' };
-      if (elapsedSec < 5.0) return { total: 15, bonus: 5, label: '🚀 PANTAS (+5 Bonus)' };
-      if (elapsedSec < 9.0) return { total: 10, bonus: 0, label: '✅ MARKAH PENUH (10)' };
-      return { total: 5, bonus: 0, label: '🐢 SEPARUH MARKAH (5)' };
+    function getSpeedThresholdsForTier(levelOrDiffKey) {
+      // Kategori Kompleks (Tahap 4 Darab/Bahagi, Tahap 5 Anzan, Tahap 6 Master, atau Ratus & Ribu)
+      if ([4, 5, 6, 'hundreds', 'all'].includes(levelOrDiffKey)) {
+        return { superFast: 5.5, fast: 10.0, full: 15.0 };
+      }
+      // Kategori Formula & Rantaian (Jari Tahap 2/3, Sempoa Tahap 3, atau Formula/Dua Digit)
+      if (['jari2', 'jari3', 3, 'jari_all', 'friends', 'twodigit'].includes(levelOrDiffKey)) {
+        return { superFast: 4.0, fast: 7.5, full: 12.0 };
+      }
+      // Kategori Asas (Jari Tahap 1, Sempoa Tahap 2, atau Asas Sa)
+      return { superFast: 3.0, fast: 6.0, full: 10.0 };
+    }
+
+    function calculateSpeedBonusPoints(elapsedSec, levelOrDiffKey = 1) {
+      const th = getSpeedThresholdsForTier(levelOrDiffKey);
+      if (elapsedSec < th.superFast) return { tierKey: 'super_fast', total: 20, bonus: 10, label: `⚡ KILAT SUPER (<${th.superFast}s • +10 Bonus)` };
+      if (elapsedSec < th.fast) return { tierKey: 'fast', total: 15, bonus: 5, label: `🚀 PANTAS (<${th.fast}s • +5 Bonus)` };
+      if (elapsedSec < th.full) return { tierKey: 'full', total: 10, bonus: 0, label: `✅ MARKAH PENUH (<${th.full}s • 10)` };
+      return { tierKey: 'slow', total: 5, bonus: 0, label: `🐢 SEPARUH MARKAH (≥${th.full}s • 5)` };
     }
 
     function startQuestionLiveTimer(ctx) {
@@ -2629,6 +2662,34 @@
       setTimeout(() => playTone(659.25, 'sine', 0.12, 0.12), 90);
       setTimeout(() => playTone(783.99, 'sine', 0.22, 0.14), 180);
     }
+    function playTierCelebrationSound(tierKey, hasCombo = false) {
+      if (hasCombo) {
+        // Fanfare Piala 5-not
+        playTone(523.25, 'triangle', 0.11, 0.13);
+        setTimeout(() => playTone(659.25, 'triangle', 0.11, 0.13), 75);
+        setTimeout(() => playTone(783.99, 'triangle', 0.11, 0.14), 150);
+        setTimeout(() => playTone(1046.50, 'sine', 0.16, 0.16), 225);
+        setTimeout(() => playTone(1318.51, 'sine', 0.28, 0.16), 310);
+        return;
+      }
+      if (tierKey === 'super_fast') {
+        // Arpeggio 4-not Kilat Super
+        playTone(587.33, 'triangle', 0.10, 0.13);
+        setTimeout(() => playTone(739.99, 'triangle', 0.10, 0.13), 75);
+        setTimeout(() => playTone(880.00, 'sine', 0.12, 0.14), 150);
+        setTimeout(() => playTone(1174.66, 'sine', 0.24, 0.15), 225);
+      } else if (tierKey === 'fast') {
+        // Chime 3-not Pantas
+        playCheer();
+      } else if (tierKey === 'full') {
+        // Chime 2-not Markah Penuh
+        playTone(523.25, 'sine', 0.11, 0.11);
+        setTimeout(() => playTone(659.25, 'sine', 0.18, 0.12), 95);
+      } else {
+        // Nada Lembut Galakan
+        playTone(493.88, 'sine', 0.14, 0.09);
+      }
+    }
     function playWrong() {
       playTone(220, 'sawtooth', 0.15, 0.09);
       setTimeout(() => playTone(185, 'sawtooth', 0.2, 0.09), 120);
@@ -2636,14 +2697,14 @@
 
     setTimeout(() => updateAudioToggleButtonsUI(), 0);
 
-    function triggerConfetti() {
+    function triggerConfetti(pieceCount = 45) {
       const canvas = document.getElementById('confetti-canvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6'];
-      const pieces = Array.from({ length: 45 }, () => ({
+      const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6', '#FACC15'];
+      const pieces = Array.from({ length: pieceCount }, () => ({
         x: canvas.width / 2 + (Math.random() - 0.5) * 180,
         y: canvas.height / 2,
         vx: (Math.random() - 0.5) * 12,
@@ -5460,11 +5521,12 @@
         hundreds: { mult: 1.15, streakStep: 3, label: 'Ratus & Ribu' }
       };
       const cfg = diffScale[diffKey] || diffScale.jari_all;
-      const raw = calculateSpeedBonusPoints(elapsedSec);
+      const raw = calculateSpeedBonusPoints(elapsedSec, diffKey);
       const scaledPts = Math.max(2, Math.round(raw.total * cfg.mult));
       const earnedCoin = (nextStreak > 0 && nextStreak % cfg.streakStep === 0) ? 1 : 0;
       const remainingToCoin = cfg.streakStep - (nextStreak % cfg.streakStep);
       return {
+        tierKey: raw.tierKey,
         pts: scaledPts,
         coin: earnedCoin,
         speedLabel: raw.label,
@@ -5482,37 +5544,51 @@
       const diffKey = document.getElementById('blitz-difficulty')?.value || 'jari_all';
 
       if (chosen === currentBlitzAnswer) {
-        playCheer();
         blitzStreak += 1;
         const bw = calculateBalancedBlitzReward(diffKey, elapsedSec, blitzStreak);
 
         let blitzStreakPts = 0;
         let blitzStreakCoins = 0;
         let blitzStreakTag = '';
-        if (blitzStreak > 0 && blitzStreak % 10 === 0) {
+        const isBlitzCombo10 = blitzStreak > 0 && blitzStreak % 10 === 0;
+        if (isBlitzCombo10) {
           const tier = blitzStreak / 10;
           blitzStreakPts = diffKey === 'basic' ? 10 : (20 * tier);
           blitzStreakCoins = diffKey === 'basic' ? 1 : (2 * tier);
-          blitzStreakTag = `<br><span class="inline-block mt-1 bg-amber-300 text-amber-950 px-2.5 py-0.5 rounded-full text-[11px] font-black border border-amber-600">🔥 BONUS ${blitzStreak} BERTURUT-TURUT: +${blitzStreakPts} Markah & +${blitzStreakCoins} Coin!</span>`;
-          triggerConfetti();
-        } else if (blitzStreak % 5 === 0) {
-          triggerConfetti();
+          blitzStreakTag = `<br><span class="inline-block mt-1 bg-white text-rose-700 px-3 py-0.5 rounded-full text-[11px] font-black shadow-sm">🏆 COMBO ${blitzStreak} BERTURUT: +${blitzStreakPts} Markah & +${blitzStreakCoins} Coin!</span>`;
+          triggerConfetti(75);
+        } else if (bw.tierKey === 'super_fast' || blitzStreak % 5 === 0) {
+          triggerConfetti(30);
         }
+
+        playTierCelebrationSound(bw.tierKey, isBlitzCombo10);
 
         const totalBlitzPts = bw.pts + blitzStreakPts;
         const totalBlitzCoins = bw.coin + blitzStreakCoins;
         blitzScore += totalBlitzPts;
 
         const coinNote = bw.coin > 0
-          ? `& +${bw.coin} Coin ${COIN_ICON_HTML} (Syarat ${bw.streakStep} berturut tercapai!)`
-          : `(Lagi ${bw.remainingToCoin} berturut untuk +1 Coin ${COIN_ICON_HTML})`;
+          ? `& <b>+${bw.coin} Coin</b> ${COIN_ICON_HTML}`
+          : `(Lagi ${bw.remainingToCoin} berturut → +1 ${COIN_ICON_HTML})`;
+
+        const tierHeaders = {
+          super_fast: `<span class="inline-flex items-center gap-1 bg-amber-950 text-amber-300 px-3 py-0.5 rounded-full text-xs font-black tracking-wide shadow">⚡🔥 KILAT SUPER! BONUS KELAJUAN</span>`,
+          fast:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black tracking-wide">🚀✨ PANTAS! BONUS KELAJUAN</span>`,
+          full:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black">🌟 HEBAT! MARKAH PENUH</span>`,
+          slow:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black">👍 BETUL! CUBA LEBIH LAJU LAGI</span>`
+        };
+        const headerBadge = isBlitzCombo10
+          ? `<span class="inline-flex items-center gap-1 bg-yellow-300 text-amber-950 px-3 py-0.5 rounded-full text-xs font-black shadow">🏆🔥 JUARA COMBO ${blitzStreak}!</span>`
+          : (tierHeaders[bw.tierKey] || tierHeaders.full);
+        const popupVariant = isBlitzCombo10 ? 'combo' : bw.tierKey;
 
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        const bOkHtml = `🎉 Tahniah (${elapsedSec.toFixed(1)}s)! +${bw.pts} Markah ${coinNote}${blitzStreakTag}`;
-        fb.innerHTML = bOkHtml;
+        const bOkHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${bw.pts} Markah</b> ${coinNote}${blitzStreakTag}`;
+        fb.innerHTML = `${headerBadge}<div class="mt-1">${bOkHtml}</div>`;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(bOkHtml, (bw.bonus > 0 || totalBlitzCoins > 0) ? 'bonus' : 'success');
+        showQuizInstantPopup(bOkHtml, popupVariant, headerBadge);
+        triggerCenterRewardBurst(totalBlitzPts, totalBlitzCoins, bw.tierKey, isBlitzCombo10);
 
         if (currentPlayer) {
           addPlayerReward(totalBlitzCoins, totalBlitzPts);
@@ -5715,21 +5791,45 @@
     let isModNoteCollapsed = false;
     let quizPopupTimer = null;
 
-    function showQuizInstantPopup(htmlMsg, variant = 'success') {
+    function triggerCenterRewardBurst(ptsEarned, coinsEarned, tierKey = 'full', isCombo = false) {
+      const layer = document.getElementById('quiz-reward-burst-layer');
+      if (!layer) return;
+      const badge = document.createElement('div');
+      const burstStyles = {
+        combo:      'from-amber-400 via-orange-400 to-rose-500 text-white border-yellow-200 text-base sm:text-lg',
+        super_fast: 'from-amber-300 via-yellow-300 to-orange-400 text-amber-950 border-amber-700 text-base sm:text-lg',
+        fast:       'from-sky-500 via-indigo-500 to-purple-600 text-white border-sky-200 text-sm sm:text-base',
+        full:       'from-emerald-500 to-teal-600 text-white border-emerald-200 text-sm',
+        slow:       'from-teal-500 to-cyan-600 text-white border-teal-200 text-xs sm:text-sm'
+      };
+      const cls = isCombo ? burstStyles.combo : (burstStyles[tierKey] || burstStyles.full);
+      const coinPart = coinsEarned > 0 ? ` <span class="ml-1.5 bg-black/20 px-2 py-0.5 rounded-full">+${coinsEarned} ${COIN_ICON_HTML}</span>` : '';
+      badge.className = `animate-reward-burst fixed top-[42%] left-1/2 px-4 py-2 rounded-full bg-gradient-to-r ${cls} font-black border-2 shadow-2xl flex items-center gap-1 whitespace-nowrap`;
+      badge.innerHTML = `<span>+${ptsEarned} 🏅</span>${coinPart}`;
+      layer.appendChild(badge);
+      setTimeout(() => badge.remove(), 1200);
+    }
+
+    function showQuizInstantPopup(htmlMsg, variant = 'success', customHeaderHtml = '') {
       const pop = document.getElementById('quiz-instant-popup');
       if (!pop) return;
       if (quizPopupTimer) clearTimeout(quizPopupTimer);
       const styles = {
-        bonus:   'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-amber-950 border-amber-700',
-        success: 'bg-emerald-600 text-white border-emerald-900',
-        wrong:   'bg-rose-600 text-white border-rose-950'
+        combo:      'bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 text-white border-yellow-200 ring-4 ring-amber-400/50',
+        super_fast: 'bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 text-amber-950 border-amber-700 ring-4 ring-yellow-300/60',
+        fast:       'bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 text-white border-indigo-200 ring-4 ring-sky-400/40',
+        full:       'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-900',
+        slow:       'bg-gradient-to-r from-teal-600 to-cyan-700 text-white border-teal-950',
+        bonus:      'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-amber-950 border-amber-700',
+        success:    'bg-emerald-600 text-white border-emerald-900',
+        wrong:      'bg-rose-600 text-white border-rose-950'
       };
-      pop.className = `fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none ${styles[variant] || styles.success}`;
-      pop.innerHTML = htmlMsg;
+      pop.className = `animate-bonus-pop fixed bottom-4 left-1/2 z-50 max-w-md w-[94%] rounded-3xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 pointer-events-none ${styles[variant] || styles.success}`;
+      pop.innerHTML = customHeaderHtml ? `<div class="mb-1">${customHeaderHtml}</div><div>${htmlMsg}</div>` : htmlMsg;
       pop.classList.remove('hidden');
       quizPopupTimer = setTimeout(() => {
         pop.classList.add('hidden');
-      }, 1350);
+      }, variant === 'combo' ? 1650 : 1350);
     }
 
     function keepQuizBottomInView() {
@@ -5921,6 +6021,11 @@
       });
       const streakBadge = document.getElementById('mod-q-streak-badge');
       if (streakBadge) streakBadge.innerText = `🔥 Berturut: ${activeModConsecutiveStreak}`;
+      const speedHintEl = document.getElementById('mod-q-speed-hint');
+      if (speedHintEl) {
+        const th = getSpeedThresholdsForTier(activeModId);
+        speedHintEl.innerText = `⚡ <${th.superFast}s (+10) • 🚀 <${th.fast}s (+5)`;
+      }
       startQuestionLiveTimer('mod');
       keepQuizBottomInView();
     }
@@ -5933,31 +6038,47 @@
 
       const fb = document.getElementById('mod-q-feedback');
       if (chosen === q.answer) {
-        playCheer();
-        const reward = calculateSpeedBonusPoints(elapsedSec);
+        const reward = calculateSpeedBonusPoints(elapsedSec, activeModId);
         activeModSessionCorrect++;
         activeModConsecutiveStreak++;
 
         let streakBonusPts = 0;
         let streakBonusCoins = 0;
         let streakTagHtml = '';
-        if (activeModConsecutiveStreak > 0 && activeModConsecutiveStreak % 10 === 0) {
+        const isCombo10 = activeModConsecutiveStreak > 0 && activeModConsecutiveStreak % 10 === 0;
+        if (isCombo10) {
           const tier = activeModConsecutiveStreak / 10;
           streakBonusPts = 25 * tier;
           streakBonusCoins = 3 * tier;
-          streakTagHtml = `<br><span class="inline-block mt-1 bg-amber-300 text-amber-950 px-2.5 py-0.5 rounded-full text-[11px] font-black border border-amber-600">🔥 BONUS ${activeModConsecutiveStreak} BERTURUT-TURUT: +${streakBonusPts} Markah & +${streakBonusCoins} Coin!</span>`;
-          triggerConfetti();
+          streakTagHtml = `<br><span class="inline-block mt-1 bg-white text-rose-700 px-3 py-0.5 rounded-full text-[11px] font-black shadow-sm">🏆 COMBO ${activeModConsecutiveStreak} BERTURUT: +${streakBonusPts} Markah & +${streakBonusCoins} Coin!</span>`;
+          triggerConfetti(75);
+        } else if (reward.tierKey === 'super_fast') {
+          triggerConfetti(28);
         }
+
+        playTierCelebrationSound(reward.tierKey, isCombo10);
 
         const totalEarnedPts = reward.total + streakBonusPts;
         const totalEarnedCoins = 1 + streakBonusCoins;
 
+        const tierHeaders = {
+          super_fast: `<span class="inline-flex items-center gap-1 bg-amber-950 text-amber-300 px-3 py-0.5 rounded-full text-xs font-black tracking-wide shadow">⚡🔥 KILAT SUPER! +10 BONUS</span>`,
+          fast:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black tracking-wide">🚀✨ PANTAS! +5 BONUS</span>`,
+          full:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black">🌟 HEBAT! MARKAH PENUH</span>`,
+          slow:       `<span class="inline-flex items-center gap-1 bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-black">👍 BETUL! CUBA LEBIH LAJU LAGI</span>`
+        };
+        const headerBadge = isCombo10
+          ? `<span class="inline-flex items-center gap-1 bg-yellow-300 text-amber-950 px-3 py-0.5 rounded-full text-xs font-black shadow">🏆🔥 JUARA COMBO ${activeModConsecutiveStreak}!</span>`
+          : (tierHeaders[reward.tierKey] || tierHeaders.full);
+        const popupVariant = isCombo10 ? 'combo' : reward.tierKey;
+
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
-        const msgHtml = `🌟 Tahniah (${elapsedSec.toFixed(1)}s)! +${reward.total} Markah (${reward.label}) & +1 Coin ${COIN_ICON_HTML}${streakTagHtml}`;
+        const msgHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${reward.total} Markah</b> & <b>+1 Coin</b> ${COIN_ICON_HTML}${streakTagHtml}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerHTML = msgHtml;
+        fb.innerHTML = `${headerBadge}<div class="mt-1">${msgHtml}</div>`;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(msgHtml, (reward.bonus > 0 || streakBonusPts > 0) ? 'bonus' : 'success');
+        showQuizInstantPopup(msgHtml, popupVariant, headerBadge);
+        triggerCenterRewardBurst(totalEarnedPts, totalEarnedCoins, reward.tierKey, isCombo10);
 
         const streakBadge = document.getElementById('mod-q-streak-badge');
         if (streakBadge) streakBadge.innerText = `🔥 Berturut: ${activeModConsecutiveStreak}`;

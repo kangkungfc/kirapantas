@@ -109,7 +109,7 @@
             <span class="text-indigo-700 bg-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
             <span class="text-amber-700 bg-amber-100 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-0.5 sm:gap-1" title="Jumlah Coin"><span class="gold-coin-icon">$</span> <span id="header-star-count">0</span></span>
             <span class="hidden xs:inline-flex sm:inline-flex text-sky-700 bg-sky-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
-            <span id="header-network-badge" class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-full" title="Status Sambungan">🟢 Online</span>
+            <span id="header-network-badge" class="inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300" title="Status Sambungan">🟢 Online</span>
           </div>
         </div>
       </div>
@@ -117,6 +117,11 @@
         <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
           <span>🛡️</span>
           <span id="header-admin-notif-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-900 text-[10px] font-black flex items-center justify-center shadow">0</span>
+        </button>
+        <button id="btn-header-parent" onclick="navTo('parent')" class="hidden relative bubbly-btn bg-teal-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-teal-900 inline-flex items-center gap-1" title="Panel Pemantauan Anak">
+          <span>👨‍👩‍👧‍👦</span>
+          <span class="hidden sm:inline">Anak</span>
+          <span id="header-parent-children-badge" class="bg-amber-300 text-teal-950 text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
         </button>
         <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
           <span>💌</span>
@@ -185,6 +190,18 @@
               <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan yang ditaip</span>
             </label>
           </div>
+          <div class="bg-amber-50/90 border-2 border-amber-200 rounded-2xl p-2.5 space-y-1.5">
+            <div class="text-[11px] font-black text-amber-950">👤 Pilih Jenis Akaun (Untuk Daftar Baru):</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" id="btn-role-student" onclick="selectRegisterAccountRole('student')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
+                🎓 Akaun Pelajar
+              </button>
+              <button type="button" id="btn-role-parent" onclick="selectRegisterAccountRole('parent')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-slate-700 border-slate-300 transition">
+                👨‍👩‍👧‍👦 Akaun Ibu Bapa
+              </button>
+            </div>
+            <div id="role-register-hint" class="text-[10px] font-bold text-slate-500">Pelajar boleh belajar, kumpul coin & bertanding.</div>
+          </div>
           <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
           <div class="grid grid-cols-2 gap-2.5 pt-2">
             <button id="btn-login-submit" type="button" onclick="handlePlayerAuthAction('login')" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm py-3.5 border-2 border-blue-800">
@@ -207,11 +224,11 @@
             </button>
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
-          <div id="login-offline-banner" class="hidden w-full text-[11px] font-extrabold text-amber-950 bg-amber-100 border-2 border-amber-400 rounded-xl px-3 py-2">
-            🟠 <b>Mod Offline Aktif:</b> Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar &amp; berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
+          <div id="login-offline-banner" class="hidden w-full bg-amber-100 border-2 border-amber-400 text-amber-950 rounded-xl px-3 py-2 text-[11px] font-black">
+            🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.48 (Offline-Ready)
+            Versi 1.9.50
           </span>
         </div>
 
@@ -522,6 +539,11 @@
           <span>🛡️</span>
           <span>Buka Panel Admin (Urus Akaun Pelajar & Aduan)</span>
           <span id="home-admin-notif-badge" class="hidden inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-950 text-[11px] font-black shadow animate-bounce">0</span>
+        </button>
+        <button id="btn-home-parent-panel" onclick="navTo('parent')" class="hidden relative col-span-2 bubbly-btn bg-gradient-to-r from-teal-600 to-emerald-700 border-3 border-teal-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
+          <span>👨‍👩‍👧‍👦</span>
+          <span>Panel Kawalan Ibu Bapa (Pantau Kemajuan Anak)</span>
+          <span id="home-parent-children-badge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-amber-300 text-teal-950 border-2 border-teal-950 text-[11px] font-black shadow">0 Anak</span>
         </button>
       </div>
     </section>
@@ -1495,6 +1517,59 @@
       </div>
     </section>
 
+    <!-- ========================================================
+         SKRIN 12: PANEL KAWALAN IBU BAPA (PANTAU KEMAJUAN ANAK)
+         ======================================================== -->
+    <section id="screen-parent" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
+        <button onclick="loadParentChildrenDashboard()" class="bubbly-btn bg-teal-100 border-2 border-teal-400 px-3 py-2 text-xs font-black text-teal-900">🔄 Segar Laporan</button>
+      </div>
+
+      <div class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-3.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-bold text-teal-950">👨‍👩‍👧‍👦 Panel Pemantauan Ibu Bapa</h2>
+            <p class="text-[11px] font-bold text-slate-500">Pantau markah, baki coin, masa belajar & penguasaan tahap setiap anak anda.</p>
+          </div>
+          <span id="parent-linked-count-badge" class="text-xs font-black bg-teal-100 text-teal-900 px-3 py-1 rounded-full border border-teal-300">0 Anak</span>
+        </div>
+
+        <!-- Borang Pautkan Akaun Anak -->
+        <div class="bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-3 space-y-2">
+          <div class="text-xs font-black text-teal-950">🔗 Pautkan Akaun Anak Baharu</div>
+          <p class="text-[10px] font-bold text-slate-600">Masukkan <b>Nama Akaun Anak</b> yang tepat beserta <b>PIN Pemulihan 4-Digit</b> akaun anak tersebut untuk pengesahan.</p>
+          <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
+            <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+            <button id="btn-parent-link-submit" type="submit" class="sm:col-span-3 bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border-2 border-teal-900 py-2.5 text-xs font-black">
+              ➕ Pautkan Akaun Anak Sekarang
+            </button>
+          </form>
+          <div id="parent-link-feedback" class="hidden text-xs font-extrabold rounded-xl p-2 text-center"></div>
+        </div>
+
+        <!-- Ringkasan Keseluruhan Anak-Anak -->
+        <div id="parent-summary-cards" class="grid grid-cols-3 gap-2 text-center">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-2.5">
+            <div class="text-[10px] font-black text-indigo-800">🏅 Jumlah Markah</div>
+            <div id="parent-sum-points" class="text-base font-black text-indigo-950 mt-0.5">0</div>
+          </div>
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5">
+            <div class="text-[10px] font-black text-amber-800">🪙 Jumlah Coin</div>
+            <div id="parent-sum-stars" class="text-base font-black text-amber-950 mt-0.5">0</div>
+          </div>
+          <div class="bg-sky-50 border border-sky-200 rounded-2xl p-2.5">
+            <div class="text-[10px] font-black text-sky-800">⏱️ Masa Hari Ini</div>
+            <div id="parent-sum-time" class="text-sm font-black text-sky-950 mt-0.5">0 jam 0 min</div>
+          </div>
+        </div>
+
+        <!-- Senarai Kad Prestasi Terperinci Setiap Anak -->
+        <div id="parent-children-list" class="space-y-3 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+      </div>
+    </section>
+
     <!-- HAB MESEJ SATU HALAMAN (INBOX + SEND + SENT DALAM SATU PAGE) -->
     <div id="player-inbox-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-2.5 sm:p-3">
       <div class="bubbly-card bg-white border-4 border-emerald-400 w-full max-w-md p-4 space-y-3">
@@ -1570,6 +1645,7 @@
     let scoreboardUnsubscribe = null;
     let isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
     let isCloudSyncInProgress = false;
+    let selectedRegisterRole = 'student';
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jari-abakus-pintar';
     const APP_LANG_STORAGE_KEY = 'kirapantas_selected_lang_v1';
     let currentAppLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || 'ms';
@@ -2096,7 +2172,7 @@
         }
       });
       persistLocalAccountsToStorage();
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -2134,6 +2210,7 @@
 
     const AVATAR_STUDIO_CATALOG = {
       face: [
+        // Watak Lelaki (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
         { id: 'boy_leo',    name: 'Aiman (Melayu Ceria)',     gender: 'boy',  cost: 0 },
         { id: 'boy_adam',   name: 'Wei Ming (Cina Pintar)',   gender: 'boy',  cost: 0 },
         { id: 'boy_zack',   name: 'Liam (Orang Putih)',       gender: 'boy',  cost: 0 },
@@ -2143,6 +2220,7 @@
         { id: 'boy_harith', name: 'Kenji (Jepun Fokus)',      gender: 'boy',  cost: 0 },
         { id: 'boy_kai',    name: 'Kai (Cyber Kaca Mata)',    gender: 'boy',  cost: 0 },
         { id: 'boy_ryu',    name: 'Ryu (Legenda Naga)',       gender: 'boy',  cost: 0 },
+        // Watak Perempuan (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
         { id: 'girl_hana',  name: 'Hana (Melayu Manis)',      gender: 'girl', cost: 0 },
         { id: 'girl_sofia', name: 'Mei Ling (Cina Comel)',    gender: 'girl', cost: 0 },
         { id: 'girl_maya',  name: 'Chloe (Orang Putih)',      gender: 'girl', cost: 0 },
@@ -2154,6 +2232,7 @@
         { id: 'girl_aurora',name: 'Aurora (Ratu Kristal)',    gender: 'girl', cost: 0 }
       ],
       outfit: [
+        // Susunan Harga Berperingkat Mengikut Set Lengkap 5 Kategori
         { id: 'out_hoodie_amber',  name: 'Hoodie Kuning Ceria',   tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_crew_charcoal', name: 'Baju T-Shirt Kolar',    tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_polo_teal',     name: 'Baju Polo Hijau',       tier: 'Biasa',    gender: 'unisex', cost: 15 },
@@ -2188,6 +2267,7 @@
           setApply: { outfit: 'out_dragon_emperor', hair: 'hair_samurai', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon', 'acc_scarf_red'], frame: 'fr_dragon' } }
       ],
       hair: [
+        // Susunan Harga Rambut Mengikut Padanan Set
         { id: 'hair_quiff',      name: 'Jambul Gaya (Putera)',   tier: 'Biasa',    gender: 'boy',  cost: 0,  setTag: '🤴 Set Sut Putera', setApply: { hair: 'hair_quiff', outfit: 'out_prince_royal', headwear: 'hw_crown' } },
         { id: 'hair_wavy_girl',  name: 'Beralun Lembut',         tier: 'Biasa',    gender: 'girl', cost: 0 },
         { id: 'hair_neat',       name: 'Sikat Kemas (Sekolah)',  tier: 'Biasa',    gender: 'boy',  cost: 12, setTag: '🎒 Set Sekolah/Graduan', setApply: { hair: 'hair_neat', outfit: 'out_school_uniform' } },
@@ -2205,6 +2285,7 @@
         { id: 'hair_samurai',    name: 'Sanggul Maharaja Naga',  tier: 'Legenda',  gender: 'boy',  cost: 75, setTag: '🐉 Set Maharaja Naga', setApply: { hair: 'hair_samurai', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
       ],
       headwear: [
+        // Tudung, Topi, Cekak Haiwan & Tanduk Unicorn Mengikut Padanan Set
         { id: 'hw_none',           name: 'Tiada Penutup',        tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'hw_tudung_pink',    name: 'Tudung Bawal Pink',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
         { id: 'hw_tudung_blue',    name: 'Tudung Bawal Biru',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
@@ -2231,6 +2312,7 @@
         { id: 'hw_dragon_crest',   name: 'Mahkota Tanduk Naga',  tier: 'Legenda',  gender: 'unisex', cost: 150,setTag: '🐉 Set Maharaja Naga', setApply: { headwear: 'hw_dragon_crest', outfit: 'out_dragon_emperor', addAcc: ['acc_wings_dragon'], frame: 'fr_dragon' } }
       ],
       accessory: [
+        // Aksesori Stackable Mengikut Set
         { id: 'acc_glasses',       name: 'Cermin Mata Pintar',   tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 15, setTag: '🔬 Set Saintis/Graduan', setApply: { addAcc: ['acc_glasses'], outfit: 'out_lab_coat' } },
         { id: 'acc_bowtie',        name: 'Tali Leher Putera',    tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 18, setTag: '🤴 Set Sut Putera', setApply: { addAcc: ['acc_bowtie'], outfit: 'out_prince_royal' } },
         { id: 'acc_ribbon',        name: 'Reben Merah Jambu',    tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 18, setTag: '🌸 Set Sakura', setApply: { addAcc: ['acc_ribbon'], outfit: 'out_knit_bow' } },
@@ -2251,6 +2333,7 @@
         { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } }
       ],
       frame: [
+        // Bingkai Profil 3D Disusun Mengikut Harga & Padanan Set Rasmi
         { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
         { id: 'fr_rainbow',       name: 'Bulatan Pelangi Muzik', tier: 'Biasa',    cost: 20,  setTag: '🎧 Set Gaya Muzik', setApply: { frame: 'fr_rainbow', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
         { id: 'fr_starlight',     name: 'Bintang Sekolah',       tier: 'Comel',    cost: 35,  setTag: '🎒 Set Sekolah', setApply: { frame: 'fr_starlight', outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
@@ -2643,10 +2726,12 @@
       }
       if (frameId === 'fr_cat') {
         return `
+          <!-- Ekor Kucing Melengkung Di Belakang Bawah -->
           <path d="M 76 78 C 96 76, 104 54, 93 44 C 89 41, 85 45, 88 50 C 93 58, 86 69, 73 71 Z" fill="#1E293B" stroke="#F59E0B" stroke-width="1.3"/>
           <circle cx="91" cy="46" r="2.6" fill="#FDE68A"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-dasharray="7 5"/>
+          <!-- Paw Kucing Kiri -->
           <g transform="translate(10, 56) rotate(-18)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
             <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
@@ -2654,6 +2739,7 @@
             <circle cx="0" cy="-3.4" r="1.6" fill="#FB7185"/>
             <circle cx="4" cy="-2.2" r="1.6" fill="#FB7185"/>
           </g>
+          <!-- Paw Kucing Kanan -->
           <g transform="translate(90, 56) rotate(18)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
             <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
@@ -2665,6 +2751,7 @@
       }
       if (frameId === 'fr_bunny') {
         return `
+          <!-- Ekor Arnab Kontot Gebu Di Belakang Bawah -->
           <g transform="translate(82, 78)">
             <circle cx="0" cy="0" r="8.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.6"/>
             <circle cx="-3.5" cy="-3" r="4" fill="#FFFFFF"/>
@@ -2673,6 +2760,7 @@
           </g>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F472B6" stroke-width="5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="6 5"/>
+          <!-- Paw Arnab Kiri -->
           <g transform="translate(9, 54) rotate(-15)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
             <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
@@ -2680,6 +2768,7 @@
             <circle cx="0" cy="-3.4" r="1.5" fill="#F472B6"/>
             <circle cx="3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
           </g>
+          <!-- Paw Arnab Kanan -->
           <g transform="translate(91, 54) rotate(15)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
             <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
@@ -2703,11 +2792,16 @@
         return `
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#0284C7" stroke-width="5.5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="8 4"/>
+          <!-- Mikroskop Saintis 3D Di Depan Bawah (Masuk ke dalam frame & sedikit terkeluar di bawah) -->
           <g transform="translate(76, 80)">
+            <!-- Tapak Mikroskop -->
             <rect x="-11" y="13" width="22" height="4.5" rx="2" fill="#1E293B" stroke="#FFFFFF" stroke-width="0.9"/>
+            <!-- Lengan Melengkung -->
             <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#E2E8F0" stroke-width="3.6" stroke-linecap="round"/>
             <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#0284C7" stroke-width="1.4" stroke-linecap="round"/>
+            <!-- Pentas Slaid -->
             <rect x="-9" y="5" width="14" height="2.6" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="0.8"/>
+            <!-- Tiub Kanta & Kanta Mata -->
             <rect x="-5.5" y="-12" width="5.5" height="13" rx="2" transform="rotate(-18 -2 -6)" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.1"/>
             <rect x="-6.5" y="-15" width="7.5" height="3.2" rx="1.2" transform="rotate(-18 -2 -6)" fill="#0284C7"/>
             <circle cx="7" cy="3" r="2.4" fill="#FACC15" stroke="#0F172A" stroke-width="0.8"/>
@@ -2903,6 +2997,7 @@
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
     }
 
+    /* Penjana Watak 3D Pixar Pelbagai Bangsa, Sayap Luar Frame, Topi Kemas & Tudung Realistik */
     function renderRealisticAvatarSVG(cfgInput, sizeClass = "w-full h-full") {
       const cfg = sanitizeAvatarForGender({ ...(cfgInput || getDefaultAvatarConfig('boy')) });
       const hairPal = HAIR_COLOR_PALETTES[cfg.hairColor] || HAIR_COLOR_PALETTES.brown;
@@ -2915,26 +3010,27 @@
 
       const uid = 'px3d_' + Math.random().toString(36).slice(2, 8);
 
+      // 18 Watak Pelbagai Bangsa & Struktur Anatomi Wajah Unik (Melayu, Cina, Orang Putih, Afrika/Negro, India, Arab, Jepun, Cyber & Naga)
       const charSpecs = {
-        boy_leo:     { head: 'round',      iris: '#451A03', iris2: '#090D16', nose: 'button',  brow: 'thick',      mouth: 'smile',       eyeStyle: 'round',      blush: 0.24, defaultSkin: '#DDA175' },
-        boy_adam:    { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'slim',    brow: 'gentle',     mouth: 'gentle',      eyeStyle: 'monolid',    blush: 0.22, defaultSkin: '#FFE5D0' },
-        boy_zack:    { head: 'square',     iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles_b',  eyeStyle: 'wide',       blush: 0.30, defaultSkin: '#FFE8D6' },
-        boy_danish:  { head: 'broad_jaw',  iris: '#3B0764', iris2: '#090D16', nose: 'afro_b',  brow: 'bold',       mouth: 'full_grin',   eyeStyle: 'confident',  blush: 0.18, defaultSkin: '#7C472A' },
-        boy_amir:    { head: 'oval',       iris: '#047857', iris2: '#022C22', nose: 'prominent',brow: 'thick',     mouth: 'grin',        eyeStyle: 'almond',     blush: 0.24, defaultSkin: '#B8784E' },
-        boy_rayyan:  { head: 'heart',      iris: '#B45309', iris2: '#451A03', nose: 'prominent',brow: 'arab_bold', mouth: 'smirk',       eyeStyle: 'almond',     blush: 0.20, defaultSkin: '#E3B087' },
-        boy_harith:  { head: 'slender',    iris: '#4F46E5', iris2: '#1E1B4B', nose: 'petite',  brow: 'soft',       mouth: 'poised',      eyeStyle: 'monolid',    blush: 0.26, defaultSkin: '#FDE4CF' },
-        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'slim',    brow: 'bold',       mouth: 'smirk',       eyeStyle: 'wide',       blush: 0.20, defaultSkin: '#F7C8A0' },
-        boy_ryu:     { head: 'square',     iris: '#EF4444', iris2: '#7F1D1D', nose: 'broad',   brow: 'bold',       mouth: 'grin',        eyeStyle: 'confident',  blush: 0.25, defaultSkin: '#DDA175' },
+        boy_leo:     { head: 'round',      iris: '#451A03', iris2: '#090D16', nose: 'button',  brow: 'thick',      mouth: 'smile',       eyeStyle: 'round',      blush: 0.24, defaultSkin: '#DDA175' }, // Melayu
+        boy_adam:    { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'slim',    brow: 'gentle',     mouth: 'gentle',      eyeStyle: 'monolid',    blush: 0.22, defaultSkin: '#FFE5D0' }, // Cina
+        boy_zack:    { head: 'square',     iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles_b',  eyeStyle: 'wide',       blush: 0.30, defaultSkin: '#FFE8D6' }, // Orang Putih
+        boy_danish:  { head: 'broad_jaw',  iris: '#3B0764', iris2: '#090D16', nose: 'afro_b',  brow: 'bold',       mouth: 'full_grin',   eyeStyle: 'confident',  blush: 0.18, defaultSkin: '#7C472A' }, // Afrika / Negro
+        boy_amir:    { head: 'oval',       iris: '#047857', iris2: '#022C22', nose: 'prominent',brow: 'thick',     mouth: 'grin',        eyeStyle: 'almond',     blush: 0.24, defaultSkin: '#B8784E' }, // India
+        boy_rayyan:  { head: 'heart',      iris: '#B45309', iris2: '#451A03', nose: 'prominent',brow: 'arab_bold', mouth: 'smirk',       eyeStyle: 'almond',     blush: 0.20, defaultSkin: '#E3B087' }, // Arab
+        boy_harith:  { head: 'slender',    iris: '#4F46E5', iris2: '#1E1B4B', nose: 'petite',  brow: 'soft',       mouth: 'poised',      eyeStyle: 'monolid',    blush: 0.26, defaultSkin: '#FDE4CF' }, // Jepun
+        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'slim',    brow: 'bold',       mouth: 'smirk',       eyeStyle: 'wide',       blush: 0.20, defaultSkin: '#F7C8A0' }, // Cyber
+        boy_ryu:     { head: 'square',     iris: '#EF4444', iris2: '#7F1D1D', nose: 'broad',   brow: 'bold',       mouth: 'grin',        eyeStyle: 'confident',  blush: 0.25, defaultSkin: '#DDA175' }, // Naga
 
-        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',    brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'doll',       blush: 0.44, defaultSkin: '#DDA175' },
-        girl_sofia:  { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'petite',  brow: 'gentle',     mouth: 'pixar_sweet', eyeStyle: 'monolid',    blush: 0.46, defaultSkin: '#FFE5D0' },
-        girl_maya:   { head: 'heart',      iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles',    eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE8D6' },
-        girl_aina:   { head: 'broad_jaw',  iris: '#581C87', iris2: '#090D16', nose: 'afro_g',  brow: 'arched',     mouth: 'full_sweet',  eyeStyle: 'almond',     blush: 0.34, defaultSkin: '#7C472A' },
-        girl_bella:  { head: 'pixar_doll', iris: '#047857', iris2: '#022C22', nose: 'slim_g',  brow: 'arched',     mouth: 'india_bindi', eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#B8784E' },
-        girl_nadia:  { head: 'slender',    iris: '#B45309', iris2: '#451A03', nose: 'slim_g',  brow: 'arab_arch',  mouth: 'pixar_sweet', eyeStyle: 'almond',     blush: 0.44, defaultSkin: '#E3B087' },
-        girl_alya:   { head: 'round_girl', iris: '#DB2777', iris2: '#500724', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'monolid',    blush: 0.50, defaultSkin: '#FDE4CF' },
-        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#F7C8A0' },
-        girl_aurora: { head: 'pixar_doll', iris: '#06B6D4', iris2: '#0C4A6E', nose: 'cute',    brow: 'arched',     mouth: 'open_smile',  eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE5D0' }
+        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',    brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'doll',       blush: 0.44, defaultSkin: '#DDA175' }, // Melayu
+        girl_sofia:  { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'petite',  brow: 'gentle',     mouth: 'pixar_sweet', eyeStyle: 'monolid',    blush: 0.46, defaultSkin: '#FFE5D0' }, // Cina
+        girl_maya:   { head: 'heart',      iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles',    eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE8D6' }, // Orang Putih
+        girl_aina:   { head: 'broad_jaw',  iris: '#581C87', iris2: '#090D16', nose: 'afro_g',  brow: 'arched',     mouth: 'full_sweet',  eyeStyle: 'almond',     blush: 0.34, defaultSkin: '#7C472A' }, // Afrika / Negro
+        girl_bella:  { head: 'pixar_doll', iris: '#047857', iris2: '#022C22', nose: 'slim_g',  brow: 'arched',     mouth: 'india_bindi', eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#B8784E' }, // India
+        girl_nadia:  { head: 'slender',    iris: '#B45309', iris2: '#451A03', nose: 'slim_g',  brow: 'arab_arch',  mouth: 'pixar_sweet', eyeStyle: 'almond',     blush: 0.44, defaultSkin: '#E3B087' }, // Arab
+        girl_alya:   { head: 'round_girl', iris: '#DB2777', iris2: '#500724', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'monolid',    blush: 0.50, defaultSkin: '#FDE4CF' }, // Jepun
+        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#F7C8A0' }, // Luna
+        girl_aurora: { head: 'pixar_doll', iris: '#06B6D4', iris2: '#0C4A6E', nose: 'cute',    brow: 'arched',     mouth: 'open_smile',  eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE5D0' }  // Aurora
       };
       const spec = charSpecs[charId] || (isGirl ? charSpecs.girl_hana : charSpecs.boy_leo);
       const skin = spec.defaultSkin || '#DDA175';
@@ -3021,6 +3117,7 @@
         </defs>
       `;
 
+      // SAYAP & EKOR LUAR FRAME 3D (Sayap Unicorn, Sayap Naga, Ekor Kucing & Ekor Arnab Kontot)
       let outerBackWingsLayer = '';
       if (accList.includes('acc_cat_tail')) {
         outerBackWingsLayer += `
@@ -3044,17 +3141,23 @@
       if (accList.includes('acc_wings_angel')) {
         outerBackWingsLayer += `
           <g filter="url(#${uid}_shadow)">
+            <!-- SAYAP UNICORN KIRI (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
             <path d="M 18 52 C 12 30, -2 12, -16 8 C -19 14, -14 21, -7 25 C -16 23, -21 28, -18 34 C -10 35, -4 36, 2 37 C -14 37, -18 43, -14 48 C -7 48, -1 47, 5 47 C -10 49, -13 55, -8 59 C -1 58, 5 56, 10 55 C -2 59, -4 65, 2 67 C 9 65, 14 61, 18 58 Z"
               fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Perak -->
             <path d="M 17 51 C 12 35, 1 22, -9 18 C -10 23, -5 28, 2 31 C -6 31, -9 35, -6 39 C 1 39, 6 40, 11 41 C -2 42, -5 46, -1 49 C 5 49, 11 49, 16 50 Z"
               fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
             <path d="M 17 50 C 14 39, 7 31, 0 29 C 0 34, 4 38, 9 40 C 3 41, 2 44, 5 47 C 9 47, 13 48, 17 50 Z"
               fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
 
+            <!-- SAYAP UNICORN KANAN (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
             <path d="M 82 52 C 88 30, 102 12, 116 8 C 119 14, 114 21, 107 25 C 116 23, 121 28, 118 34 C 110 35, 104 36, 98 37 C 114 37, 118 43, 114 48 C 107 48, 101 47, 95 47 C 110 49, 113 55, 108 59 C 101 58, 95 56, 90 55 C 102 59, 104 65, 98 67 C 91 65, 86 61, 82 58 Z"
               fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Perak -->
             <path d="M 83 51 C 88 35, 99 22, 109 18 C 110 23, 105 28, 98 31 C 106 31, 109 35, 106 39 C 99 39, 94 40, 89 41 C 102 42, 105 46, 101 49 C 95 49, 89 49, 84 50 Z"
               fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
             <path d="M 83 50 C 86 39, 93 31, 100 29 C 100 34, 96 38, 91 40 C 97 41, 98 44, 95 47 C 91 47, 87 48, 83 50 Z"
               fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
           </g>
@@ -3063,21 +3166,26 @@
       if (accList.includes('acc_wings_dragon')) {
         outerBackWingsLayer += `
           <g filter="url(#${uid}_shadow)">
+            <!-- Sayap Naga Kiri (Membran Berapi + Tulang & Cakar Emas) -->
             <path d="M 18 66 Q 6 61 -4 68 Q -4 56 -14 57 Q -10 43 -18 35 Q -8 24 -12 12 Q 2 18 11 26 L 19 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
             <path d="M 16 61 Q 7 58 -1 62 Q 0 53 -9 53 Q -5 43 -12 36 Q -4 27 -7 19 Q 3 23 10 30 L 17 44 Z" fill="#EA580C"/>
             <path d="M 15 56 Q 8 54 3 57 Q 4 50 -3 49 Q 0 42 -5 37 Q 1 31 0 26 L 14 45 Z" fill="#FACC15" opacity="0.72"/>
+            <!-- Tulang Sayap & Cakar Naga Kiri -->
             <path d="M 18 45 Q 3 27 -12 12 M 17 49 Q 0 41 -18 35 M 17 54 Q 1 54 -14 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
             <polygon points="-12,12 -16,7 -9,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
 
+            <!-- Sayap Naga Kanan (Membran Berapi + Tulang & Cakar Emas) -->
             <path d="M 82 66 Q 94 61 104 68 Q 104 56 114 57 Q 110 43 118 35 Q 108 24 112 12 Q 98 18 89 26 L 81 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
             <path d="M 84 61 Q 93 58 101 62 Q 100 53 109 53 Q 105 43 112 36 Q 104 27 107 19 Q 97 23 90 30 L 83 44 Z" fill="#EA580C"/>
             <path d="M 85 56 Q 92 54 97 57 Q 96 50 103 49 Q 100 42 105 37 Q 99 31 100 26 L 86 45 Z" fill="#FACC15" opacity="0.72"/>
+            <!-- Tulang Sayap & Cakar Naga Kanan -->
             <path d="M 82 45 Q 97 27 112 12 M 83 49 Q 100 41 118 35 M 83 54 Q 99 54 114 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
             <polygon points="112,12 116,7 109,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
           </g>
         `;
       }
 
+      // Lapisan Rambut Belakang / Tudung Luar
       let backHairLayer = '';
       if (hasTudung) {
         backHairLayer = `
@@ -3115,6 +3223,7 @@
         }
       }
 
+      // Beg Galas Sekolah 3D (Kelihatan jelas di kiri & kanan bahu di belakang badan!)
       let backAccLayer = '';
       if (accList.includes('acc_backpack')) {
         backAccLayer += `
@@ -3126,6 +3235,7 @@
         `;
       }
 
+      // 16 Jenis Pakaian
       let outfitDetail = '';
       if (outfitId === 'out_crew_charcoal') {
         outfitDetail = `
@@ -3263,6 +3373,7 @@
         `;
       }
 
+      // Bentuk Kepala Berbeza (Termasuk Rahang Kuat / Broad Jaw, Tirus / Slender, Bulat / Round, dll.)
       const headShapes = {
         round:      'M 24 45 C 24 20, 76 20, 76 45 C 76 64, 63 72, 50 72 C 37 72, 24 64, 24 45 Z',
         oval:       'M 25.5 44 C 25.5 19, 74.5 19, 74.5 44 C 74.5 64, 61.5 73.5, 50 73.5 C 38.5 73.5, 25.5 64, 25.5 44 Z',
@@ -3276,6 +3387,7 @@
       };
       const headPath = headShapes[spec.head] || headShapes.round;
 
+      // Hidung Berbeza Mengikut Rupa Bangsa (Mancung/Pointed, Lebar Afrika/Afro, Kecil Cina/Petite, Butang Melayu/Button)
       let noseSvg = '';
       if (spec.nose === 'afro_b' || spec.nose === 'afro_g') {
         const w = spec.nose === 'afro_b' ? 5.2 : 4.4;
@@ -3316,8 +3428,10 @@
         ${noseSvg}
       `;
 
+      // Bentuk Mata Pelbagai Bangsa (Sepet/Monolid Cina & Jepun, Bundar/Doll, Badam/Almond India & Arab, Luas/Wide Orang Putih)
       let pixarEyes = '';
       if (spec.eyeStyle === 'monolid') {
+        // Mata Sepet / Almond Asia Timur (Cina & Jepun) yang comel & jelas
         pixarEyes = `
           <ellipse cx="37.5" cy="47.5" rx="6.6" ry="4.4" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
           <circle cx="37.8" cy="47.7" r="3.9" fill="url(#${uid}_iris)"/>
@@ -3390,6 +3504,7 @@
         `;
       }
 
+      // Bentuk Bibir & Ciri Khas (Bibir Penuh Afrika, Bintik Pipi Orang Putih, Bindi India, Senyuman Manis)
       let mouthSvg = '';
       if (spec.mouth === 'full_grin') {
         mouthSvg = `
@@ -3461,9 +3576,11 @@
 
       const expressionLayer = `${browSvg}${pixarEyes}${girlLashes}${mouthSvg}`;
 
+      // Rambut Depan (Disesuaikan secara automatik apabila memakai topi supaya tiada rambut terkeluar di atas topi!)
       let frontHairLayer = '';
       if (!hasTudung) {
         if (hasFullCap) {
+          // Hanya tunjukkan anak rambut (bangs) kemas di bawah garis topi supaya mengikut bentuk kepala
           frontHairLayer = `
             <path d="M 24.5 41 C 27 32, 73 32, 75.5 41 C 66 34, 54 34, 50 37.5 C 46 34, 34 34, 24.5 41 Z" fill="url(#${uid}_hair)"/>
           `;
@@ -3495,6 +3612,18 @@
               <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
               <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
               <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+            `;
+          } else if (cfg.hair === 'hair_wizard_wave') {
+            frontHairLayer = `
+              <path d="M 21 46 C 18 22, 34 14, 50 14 C 66 14, 82 22, 79 46 C 72 33, 58 32, 50 37 C 42 32, 28 33, 21 46 Z" fill="#4C1D95" stroke="#FACC15" stroke-width="1" filter="url(#${uid}_shadow)"/>
+              <circle cx="38" cy="24" r="1.6" fill="#FACC15"/>
+              <circle cx="62" cy="24" r="1.6" fill="#FACC15"/>
+            `;
+          } else if (cfg.hair === 'hair_fire_flame') {
+            frontHairLayer = `
+              <path d="M 22 44 C 17 28, 25 14, 34 9 C 33 17, 39 20, 43 11 C 46 4, 53 3, 56 12 C 60 19, 65 15, 66 9 C 75 15, 83 28, 78 44 C 69 32, 31 32, 22 44 Z"
+                fill="#EA580C" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+              <path d="M 32 34 C 34 22, 45 16, 50 10 C 55 16, 66 22, 68 34 C 58 29, 42 29, 32 34 Z" fill="#FACC15"/>
             `;
           } else if (cfg.hair === 'hair_wizard_wave') {
             frontHairLayer = `
@@ -3546,6 +3675,7 @@
         }
       }
 
+      // Lapisan Tudung Lengkap & Kemas
       const tudungFrontLayer = hasTudung ? `
         <path d="M 24 38 C 25 22, 75 22, 76 38 C 68 31, 32 31, 24 38 Z" fill="${tudungDark}"/>
         <path d="M 18 46 C 18 13, 82 13, 82 46 C 82 70, 72 88, 50 96 C 28 88, 18 70, 18 46 Z
@@ -3653,6 +3783,7 @@
         `;
       }
 
+      // Lapisan Topi & Hiasan Kepala (Direka mengikut bentuk kepala asal tanpa rambut terkeluar)
       let hatLayer = '';
       if (cfg.headwear === 'hw_cap_red') {
         hatLayer = `
@@ -3774,8 +3905,10 @@
       } else if (cfg.headwear === 'hw_unicorn_horn') {
         hatLayer = `
           <g filter="url(#${uid}_glow)">
+            <!-- Halo Cahaya Lembut -->
             <ellipse cx="50" cy="15" rx="21" ry="5.5" fill="none" stroke="#FEF9C3" stroke-width="3.5" opacity="0.88"/>
             <ellipse cx="50" cy="15" rx="21" ry="5.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="2"/>
+            <!-- Tanduk Unicorn Berlingkar Emas-Pelangi Di Tengah Dahi -->
             <polygon points="44.5,27 50,3 55.5,27" fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="1.2" stroke-linejoin="round"/>
             <line x1="46" y1="22" x2="54" y2="20" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
             <line x1="47.2" y1="16" x2="52.8" y2="14.5" stroke="#F472B6" stroke-width="1.4" stroke-linecap="round"/>
@@ -3785,6 +3918,7 @@
           </g>
         `;
       } else if (cfg.headwear === 'hw_halo') {
+        // Halo Cahaya Suci Legenda: Lingkaran cahaya emas bersinar terapung jelas di atas kepala + kilauan bintang!
         hatLayer = `
           <g filter="url(#${uid}_glow)">
             <ellipse cx="50" cy="11" rx="22" ry="6.2" fill="none" stroke="#FEF9C3" stroke-width="5.5" opacity="0.9"/>
@@ -3988,6 +4122,7 @@
         border: 'border-pink-800',
         renderGuide: () => `
           <div class="space-y-3">
+            <!-- Papan Cerita & Simulator Interaktif Formula Rahsia -->
             <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
               <div class="flex items-center justify-between gap-2">
                 <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
@@ -3996,6 +4131,7 @@
                 <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
               </div>
 
+              <!-- 4 Tab Kategori Comel -->
               <div class="grid grid-cols-4 gap-1">
                 <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Geng 5</button>
                 <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Geng 10</button>
@@ -4003,8 +4139,10 @@
                 <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Kuiz Mini</button>
               </div>
 
+              <!-- Kandungan Tab Dinamik -->
               <div id="m3-tab-content"></div>
 
+              <!-- Pentas Demo Visual Manik Sempoa Langkah-Demi-Langkah -->
               <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm">
                 <div class="inline-block bg-rose-100 text-rose-900 text-[10px] font-black px-2.5 py-0.5 rounded-full">Contoh Interaktif: Kawan Kecil Tambah (+4 = +5 - 1)</div>
                 <div class="text-sm font-black text-slate-800">Kira <span class="text-rose-600">3 + 4</span> pada Sempoa:</div>
@@ -4210,6 +4348,7 @@
       `;
     };
 
+    /* Pangkalan Data Lengkap Infografik & Contoh Interaktif Tahap 3 */
     const MOD3_FORMULAS = {
       kecil: {
         title: '✋ Geng Lima (Kawan Kecil — Kombinasi 5)',
@@ -4467,6 +4606,7 @@
       }
     };
 
+    /* 5. PENJANA 50 SOALAN INTENSIF SETIAP TAHAP (300 SOALAN) + KOCOK RAWAK */
     function shuffleArray(arr) {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
@@ -4525,6 +4665,7 @@
 
       const generatePass = (allowFallback) => {
         if (modId === 1) {
+          /* TAHAP 1: Penjanaan Dinamik Tanpa Had (Bacaan 10 Jari 1-99, Tambah/Tolak Terus & Rantaian 3-Nombor) */
           const fingerTargets = shuffleArray(Array.from({ length: 99 }, (_, k) => k + 1));
           for (const target of fingerTargets) {
             if (bank.length >= 18) break;
@@ -4581,6 +4722,7 @@
             }
           }
         } else if (modId === 2) {
+          /* TAHAP 2: 9,989 Kombinasi Sempoa 2-4 Tiang & Operasi Manik Terus */
           let guard = 0;
           while (bank.length < 26 && guard < 3000) {
             guard++;
@@ -4630,6 +4772,7 @@
             }
           }
         } else if (modId === 'jari3') {
+          /* LALUAN JARI TAHAP 3: Silat Jari Kilat (Rantaian 3-4 Nombor 0 - 99 Menggunakan Jari Sahaja) */
           let guard = 0;
           while (bank.length < 25 && guard < 4000) {
             guard++;
@@ -4666,6 +4809,9 @@
             }
           }
         } else if (modId === 3 || modId === 'jari2') {
+          const isJariFormula = modId === 'jari2';
+          const ctxWord = isJariFormula ? 'Jari' : 'Sempoa';
+          /* Penjanaan Dinamik 2-Nombor & Rantaian 3-Nombor bagi Kawan Kecil, Kawan Besar, Gabungan & Random */
           const genKecil = (targetCount) => {
             const basePatterns = [
               [1, 4, '+'], [2, 3, '+'], [2, 4, '+'], [3, 2, '+'], [3, 3, '+'], [3, 4, '+'],
@@ -4683,6 +4829,7 @@
               if (mid < 0 || mid > 99) continue;
 
               if (g % 3 === 0) {
+                // Variasi rantaian 3 nombor (Kawan Kecil + langkah susulan)
                 const c = (Math.floor(Math.random() * 3) + 1) * 10;
                 if (mid + c <= 99) {
                   const ans = mid + c;
@@ -4794,6 +4941,7 @@
             genGabung(50);
           }
         } else if (modId === 4) {
+          /* TAHAP 4: Puluhan Ribu Kombinasi Darab & Bahagi Kilat */
           let guard = 0;
           while (bank.length < 16 && guard < 2000) {
             guard++;
@@ -4844,6 +4992,7 @@
             }, allowFallback);
           }
         } else if (modId === 5) {
+          /* TAHAP 5: Sempoa Minda 3-Tiang & Rantaian Anzan 3-4 Nombor Tanpa Had */
           let guard = 0;
           while (bank.length < 14 && guard < 2000) {
             guard++;
@@ -4884,6 +5033,7 @@
             }
           }
         } else {
+          /* TAHAP 6: Puluhan Ribu Kombinasi Pertandingan (3-4 Digit, Perpuluhan, Negatif & Darab Kompleks) */
           let guard = 0;
           while (bank.length < 13 && guard < 2500) {
             guard++;
@@ -4937,11 +5087,14 @@
         }
       };
 
+      /* Pusingan 1: Jana 50 soalan yang langsung tidak bertindih dengan 150 soalan terkini */
       generatePass(false);
+      /* Pusingan 2 (sandaran jika ruang kombinasi kecil hampir habis): lengkapkan baki hingga 50 */
       if (bank.length < 50) {
         generatePass(true);
       }
 
+      /* Simpan tandatangan soalan baharu ke dalam memori anti-ulang (had 150 soalan terkini) */
       bank.forEach(item => {
         if (item._sig) {
           historySet.add(item._sig);
@@ -4965,6 +5118,7 @@
       const diff = document.getElementById('blitz-difficulty')?.value || 'jari_all';
       const fb = document.getElementById('blitz-feedback');
       if (fb) fb.classList.add('hidden');
+      /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan Cabaran Kilat seterusnya */
       resetHelperAbacus('blitz', true);
 
       let qText = '';
@@ -5256,6 +5410,11 @@
       const valEl = document.getElementById('mod-helper-finger-val');
       if (!board) return;
 
+      const buildHand = (side, arr) => {
+        const svg = renderRealisticHandSVG(side, arr, false, 'w-full max-w-[125px] h-auto');
+        return svg.replace(/<g /g, (m, offset) => m);
+      };
+
       const renderClickableHand = (handSide, fingerState) => {
         const isLeft = handSide === 'left';
         const labels = isLeft ? ['50', '10', '10', '10', '10'] : ['5', '1', '1', '1', '1'];
@@ -5454,6 +5613,7 @@
 
       window.toggleModuleGuideNote(true);
 
+      // Untuk Laluan Jari: sembunyikan Sempoa dan tunjukkan butang Jari Kira; untuk Laluan Sempoa: buka Sempoa bagi Tahap 2-4
       const fingerBtn = document.getElementById('mod-finger-toggle-btn');
       const abacusBtn = document.getElementById('mod-helper-toggle-btn');
       if (isJariTrack) {
@@ -5948,6 +6108,7 @@
           if (activeStudioTab === 'face') {
             delete previewCfg.skin;
           }
+          // Jika pratonton di tab Rambut semasa bertudung, tunjukkan gaya rambut itu tanpa tudung pada kad pratonton
           if (activeStudioTab === 'hair' && previewCfg.headwear && previewCfg.headwear.startsWith('hw_tudung')) {
             previewCfg.headwear = 'hw_none';
           }
@@ -6111,6 +6272,7 @@
         };
         if (faceDefaultSkins[itemId]) cfg.skin = faceDefaultSkins[itemId];
       }
+      // Jika pemain memilih gaya rambut semasa bertudung, tanggalkan tudung secara automatik supaya gaya rambut kelihatan!
       if (category === 'hair' && cfg.headwear && cfg.headwear.startsWith('hw_tudung')) {
         cfg.headwear = 'hw_none';
       }
@@ -6221,7 +6383,7 @@
       savePlayerCloud();
     };
 
-    /* 10. SISTEM AKAUN KEKAL (accountId), MOD OFFLINE & AUTO-SYNC */
+    /* 10. SISTEM AKAUN KEKAL (accountId), TUKAR NAMA/PASSWORD, RESET & PAPAN SKOR */
     const LOCAL_DB_STORAGE_KEY = 'jari_abakus_players_db_v1';
     const inMemoryAccounts = new Map();
 
@@ -6335,7 +6497,7 @@
     let activeScoreboardTab = 'today';
     let lastScoreboardPlayers = [];
     const SB_REACTIONS_STORAGE_KEY = 'kirapantas_sb_reactions_v1';
-    let scoreboardReactionsMap = {};
+    let scoreboardReactionsMap = {}; // { targetPlayerId: { like: [voterId...], love: [voterId...], fire: [voterId...] } }
     let scoreboardReactionsUnsubscribe = null;
 
     function loadLocalScoreboardReactions() {
@@ -6398,7 +6560,7 @@
       saveLocalScoreboardReactions(scoreboardReactionsMap);
       renderScoreboardList(lastScoreboardPlayers);
 
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -6448,6 +6610,7 @@
       return `${day}/${mon} ${hh}:${mm}`;
     }
 
+    /* Cari akaun sedia ada berdasarkan nama tepat (menyokong kedua-dua akaun lama & baharu) */
     async function findAccountByExactName(exactName) {
       const targetNameKey = normalizePlayerKey(exactName);
       loadLocalAccountsFromStorage();
@@ -6459,10 +6622,11 @@
         }
       });
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
+            /* 1. Semak terus dokumen lama jika wujud */
             const directSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', targetNameKey));
             if (directSnap.exists()) {
               const d = directSnap.data();
@@ -6473,6 +6637,7 @@
               persistLocalAccountsToStorage();
               return d;
             }
+            /* 2. Imbas koleksi players untuk akaun yang telah ditukar nama (accountId kekal) */
             const allSnaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
             allSnaps.forEach((docSnap) => {
               const d = docSnap.data();
@@ -6492,6 +6657,29 @@
       }
       return found;
     }
+
+    window.selectRegisterAccountRole = function(role) {
+      playClick();
+      selectedRegisterRole = role === 'parent' ? 'parent' : 'student';
+      const sBtn = document.getElementById('btn-role-student');
+      const pBtn = document.getElementById('btn-role-parent');
+      const hint = document.getElementById('role-register-hint');
+      if (sBtn) {
+        sBtn.className = selectedRegisterRole === 'student'
+          ? 'py-2 px-2 rounded-xl text-xs font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition'
+          : 'py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-slate-700 border-slate-300 transition';
+      }
+      if (pBtn) {
+        pBtn.className = selectedRegisterRole === 'parent'
+          ? 'py-2 px-2 rounded-xl text-xs font-black border-2 bg-teal-600 text-white border-teal-900 shadow-xs transition'
+          : 'py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-slate-700 border-slate-300 transition';
+      }
+      if (hint) {
+        hint.innerText = selectedRegisterRole === 'parent'
+          ? '👨‍👩‍👧‍👦 Ibu Bapa boleh memautkan & memantau semua akaun anak di samping bermain bersama!'
+          : '🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.';
+      }
+    };
 
     window.togglePasswordVisibility = function() {
       const passInput = document.getElementById('input-player-pass');
@@ -6522,10 +6710,22 @@
       const avatarSvg = renderRealisticAvatarSVG(cfg, 'w-full h-full');
       const isAdmin = Boolean(currentPlayer.isAdmin);
 
+      const isParent = currentPlayer.role === 'parent' || Boolean(currentPlayer.isParent);
+      if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
+
       const btnHeaderAdmin = document.getElementById('btn-header-admin');
       const btnHomeAdmin = document.getElementById('btn-home-admin-panel');
       if (btnHeaderAdmin) btnHeaderAdmin.classList.toggle('hidden', !isAdmin);
       if (btnHomeAdmin) btnHomeAdmin.classList.toggle('hidden', !isAdmin);
+
+      const btnHeaderParent = document.getElementById('btn-header-parent');
+      const btnHomeParent = document.getElementById('btn-home-parent-panel');
+      if (btnHeaderParent) btnHeaderParent.classList.toggle('hidden', !isParent);
+      if (btnHomeParent) btnHomeParent.classList.toggle('hidden', !isParent);
+      const hChildBadge = document.getElementById('header-parent-children-badge');
+      const mChildBadge = document.getElementById('home-parent-children-badge');
+      if (hChildBadge) hChildBadge.innerText = String(currentPlayer.linkedChildrenIds.length);
+      if (mChildBadge) mChildBadge.innerText = `${currentPlayer.linkedChildrenIds.length} Anak`;
 
       const hAvatar = document.getElementById('header-avatar-box');
       const mAvatar = document.getElementById('home-avatar-box');
@@ -6537,7 +6737,7 @@
       const hName = document.getElementById('header-player-name');
       const mName = document.getElementById('home-player-name');
       const aName = document.getElementById('acc-current-name-display');
-      const displayLabel = isAdmin ? `${currentPlayer.name} 🛡️` : currentPlayer.name;
+      const displayLabel = isAdmin ? `${currentPlayer.name} 🛡️` : (isParent ? `${currentPlayer.name} 👨‍👩‍👧‍👦` : currentPlayer.name);
       if (hName) hName.innerText = displayLabel;
       if (mName) mName.innerText = displayLabel;
       if (aName) aName.innerText = displayLabel;
@@ -6570,7 +6770,6 @@
       if (currentPlayer.preferredLang && ['ms', 'en', 'zh', 'ar'].includes(currentPlayer.preferredLang)) {
         applyAppLanguageUI(currentPlayer.preferredLang);
       }
-      updateNetworkStatusUI();
     }
 
     function setPlayerCurrentActivity(activityText, syncImmediately = true) {
@@ -6589,6 +6788,7 @@
       const docId = currentPlayer.accountId || currentPlayer.key;
       if (!docId) return;
 
+      /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor / Firestore semasa ujian admin */
       if (isAdminAccountRecord(currentPlayer)) {
         try {
           localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify({
@@ -6649,6 +6849,9 @@
           recoveryPin: currentPlayer.recoveryPin,
           preferredLang: currentPlayer.preferredLang,
           isAdmin: false,
+          role: currentPlayer.role === 'parent' ? 'parent' : 'student',
+          isParent: currentPlayer.role === 'parent' || Boolean(currentPlayer.isParent),
+          linkedChildrenIds: Array.isArray(currentPlayer.linkedChildrenIds) ? currentPlayer.linkedChildrenIds : [],
           stars: currentPlayer.stars || 0,
           totalPoints: currentPlayer.totalPoints || 0,
           todayPoints: currentPlayer.todayPoints || 0,
@@ -6677,6 +6880,7 @@
         inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
         persistLocalAccountsToStorage();
         updateNetworkStatusUI();
+        console.warn('Gagal menyegerak rekod akaun (disimpan dalam giliran offline):', err);
       }
     }
 
@@ -6689,14 +6893,14 @@
       if (!badge) return;
       const hasPending = Boolean(currentPlayer && currentPlayer.pendingCloudSync);
       if (!isDeviceOnline) {
-        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400 px-1.5 py-0.5 rounded-full';
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400';
         badge.innerText = hasPending ? '🟠 Offline (Menunggu Sync)' : '🟠 Mod Offline';
         badge.title = 'Tiada internet. Markah & pembelian disimpan di peranti dan akan dimuat naik automatik bila online.';
       } else if (hasPending || isCloudSyncInProgress) {
-        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-400 px-1.5 py-0.5 rounded-full animate-pulse';
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-sky-100 text-sky-900 border border-sky-400 animate-pulse';
         badge.innerText = '🔄 Memuat Naik...';
       } else {
-        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-full';
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300';
         badge.innerText = '🟢 Online';
         badge.title = 'Tersambung ke awan';
       }
@@ -6775,6 +6979,9 @@
             recoveryPin: mergedRecord.recoveryPin || '0000',
             preferredLang: mergedRecord.preferredLang || currentAppLang,
             isAdmin: false,
+            role: mergedRecord.role === 'parent' ? 'parent' : 'student',
+            isParent: mergedRecord.role === 'parent' || Boolean(mergedRecord.isParent),
+            linkedChildrenIds: Array.isArray(mergedRecord.linkedChildrenIds) ? mergedRecord.linkedChildrenIds : [],
             stars: mergedRecord.stars || 0,
             totalPoints: mergedRecord.totalPoints || 0,
             todayPoints: mergedRecord.todayPoints || 0,
@@ -6838,7 +7045,7 @@
       currentPlayer.lastActiveAt = Date.now();
       inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
       persistLocalAccountsToStorage();
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -6855,6 +7062,16 @@
     window.addEventListener('beforeunload', () => {
       markPlayerOfflineCloud();
     });
+
+    window.fillAdminLoginHint = function() {
+      playClick();
+      const nameInp = document.getElementById('input-player-name');
+      const passInp = document.getElementById('input-player-pass');
+      if (nameInp) nameInp.value = ADMIN_DEFAULT_NAME;
+      if (passInp) passInp.value = '';
+      if (passInp) passInp.focus();
+      showAppToast('Masukkan kata laluan Admin (lalai: admin123) untuk masuk ke Panel Kawalan.');
+    };
 
     function startPlayerSessionTimer() {
       if (activePlayTimer) clearInterval(activePlayTimer);
@@ -7080,9 +7297,7 @@
         if (mode === 'login') {
           if (!existingAccount) {
             playWrong();
-            errBox.innerHTML = !isDeviceOnline
-              ? `🟠 <b>Mod Offline:</b> Akaun <b>"${displayName}"</b> belum pernah log masuk di peranti ini. Sila sambung internet untuk log masuk kali pertama.`
-              : `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
+            errBox.innerHTML = `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
             errBox.classList.remove('hidden');
             return;
           }
@@ -7093,6 +7308,7 @@
             return;
           }
 
+          /* Akaun LAMA berjaya log masuk -> terus ke Menu Utama */
           const permanentId = existingAccount.accountId || existingAccount.key || generatePermanentAccountId();
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
@@ -7109,6 +7325,9 @@
             recoveryPin: existingAccount.recoveryPin || '0000',
             preferredLang: keptLang,
             isAdmin: isAdminUser,
+            role: existingAccount.role === 'parent' || existingAccount.isParent ? 'parent' : 'student',
+            isParent: existingAccount.role === 'parent' || Boolean(existingAccount.isParent),
+            linkedChildrenIds: Array.isArray(existingAccount.linkedChildrenIds) ? existingAccount.linkedChildrenIds : [],
             stars: Number(existingAccount.stars) || 0,
             totalPoints: Number(existingAccount.totalPoints) || 0,
             todayPoints: savedTodayPts,
@@ -7119,9 +7338,6 @@
             isOnline: true,
             lastActiveAt: Date.now(),
             currentActivityLabel: existingAccount.currentActivityLabel || 'Menu Utama',
-            pendingCloudSync: Boolean(existingAccount.pendingCloudSync),
-            offlineDeltaPoints: Number(existingAccount.offlineDeltaPoints) || 0,
-            offlineDeltaStars: Number(existingAccount.offlineDeltaStars) || 0,
             unlockedModules: isAdminUser
               ? [1, 2, 3, 4, 5, 6]
               : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
@@ -7139,15 +7355,10 @@
           applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
-          if (isDeviceOnline && currentPlayer.pendingCloudSync) {
-            await syncPendingOfflineAccountsToCloud(true);
-          }
           playCheer();
           showAppToast(isAdminUser
             ? '🛡️ Selamat datang Admin! Semua 6 Tahap dibuka & Panel Admin sedia digunakan.'
-            : (!isDeviceOnline
-              ? `🟠 Selamat kembali, ${currentPlayer.name} (Mod Offline)! Markah & pembelian akan dimuat naik bila online.`
-              : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`));
+            : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
 
           document.getElementById('screen-login').classList.add('hidden');
           document.getElementById('app-header').classList.remove('hidden');
@@ -7160,6 +7371,7 @@
           }
           navTo('home');
         } else {
+          /* Mod DAFTAR BARU */
           if (!isDeviceOnline) {
             playWrong();
             errBox.innerHTML = `🟠 <b>Mod Offline:</b> Pendaftaran akaun baharu memerlukan internet supaya nama tidak bertindih di papan skor. Jika sudah ada akaun di peranti ini, sila tekan <b>🔑 Log Masuk</b>.`;
@@ -7175,6 +7387,7 @@
 
           const newAccountId = generatePermanentAccountId();
           const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || currentAppLang || 'ms';
+          const isParentRole = selectedRegisterRole === 'parent';
           currentPlayer = {
             accountId: newAccountId,
             key: newAccountId,
@@ -7183,6 +7396,9 @@
             password: password,
             recoveryPin: '0000',
             preferredLang: keptLang,
+            role: isParentRole ? 'parent' : 'student',
+            isParent: isParentRole,
+            linkedChildrenIds: [],
             stars: 0,
             totalPoints: 0,
             todayPoints: 0,
@@ -7203,6 +7419,7 @@
           await savePlayerCloud();
           playCheer();
 
+          /* Pelajar baharu dibawa ke skrin persediaan Avatar & No. PIN Pemulihan 4 digit dahulu */
           document.getElementById('screen-login').classList.add('hidden');
           document.getElementById('app-header').classList.add('hidden');
           const pinField = document.getElementById('setup-recovery-pin');
@@ -7228,6 +7445,7 @@
       }
     };
 
+    /* Tetapkan Semula Kata Laluan Terlupa (Guna PIN Pemulihan 4-Digit atau Kod Guru GURU2026) */
     window.handleResetForgottenPassword = async function(e) {
       e.preventDefault();
       playClick();
@@ -7266,12 +7484,11 @@
         targetAcc.key = docId;
         targetAcc.password = newPass;
         targetAcc.updatedAt = Date.now();
-        targetAcc.pendingCloudSync = !isDeviceOnline;
 
         inMemoryAccounts.set(docId, targetAcc);
         persistLocalAccountsToStorage();
 
-        if (db && isDeviceOnline) {
+        if (db) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId), targetAcc);
@@ -7296,6 +7513,7 @@
       }
     };
 
+    /* Tukar Nama Pelajar Tanpa Mengubah ID Akaun & Pencapaian */
     window.handleChangeAccountName = async function(e) {
       e.preventDefault();
       if (!currentPlayer) return;
@@ -7358,6 +7576,7 @@
       }
     };
 
+    /* Tukar Kata Laluan Baharu & PIN Pemulihan 4-Digit */
     window.handleChangeAccountPassword = async function(e) {
       e.preventDefault();
       if (!currentPlayer) return;
@@ -7433,7 +7652,6 @@
         playerMessagesUnsubscribe = null;
       }
       currentPlayer = null;
-      updateNetworkStatusUI();
       document.getElementById('app-header').classList.add('hidden');
       ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
@@ -7690,7 +7908,7 @@
 
     window.navTo = function(screenName) {
       playClick();
-      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
+      ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena', 'parent'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -7737,6 +7955,13 @@
           return;
         }
         refreshAdminAllData();
+      } else if (screenName === 'parent') {
+        if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) {
+          navTo('home');
+          return;
+        }
+        setPlayerCurrentActivity('Panel Pemantauan Ibu Bapa');
+        loadParentChildrenDashboard();
       } else if (screenName === 'account') {
         syncPlayerUI();
         const pinInp = document.getElementById('acc-new-pin');
@@ -7747,6 +7972,295 @@
         if (pFb) pFb.classList.add('hidden');
         checkStudentSupportReplies('account');
       }
+    };
+
+    /* 10A. FUNGSI PANEL KAWALAN IBU BAPA (PAUTKAN & PANTAU AKAUN ANAK) */
+    function showParentLinkFeedback(msg, isOk) {
+      const box = document.getElementById('parent-link-feedback');
+      if (!box) return;
+      box.className = `text-xs font-extrabold rounded-xl p-2 text-center ${isOk ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300'}`;
+      box.innerText = msg;
+      box.classList.remove('hidden');
+    }
+
+    window.handleParentLinkChild = async function(e) {
+      e.preventDefault();
+      if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
+      playClick();
+      const nameInp = document.getElementById('parent-link-child-name');
+      const pinInp = document.getElementById('parent-link-child-pin');
+      const btn = document.getElementById('btn-parent-link-submit');
+      const childName = (nameInp?.value || '').trim();
+      const childPin = (pinInp?.value || '').trim();
+
+      if (childName.length < 2 || !/^\d{4}$/.test(childPin)) {
+        playWrong();
+        showParentLinkFeedback('⚠️ Sila masukkan Nama Akaun Anak yang sah dan tepat 4 digit PIN Pemulihan anak.', false);
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Menyemak Akaun Anak...';
+      }
+
+      try {
+        const foundChild = await findAccountByExactName(childName);
+        if (!foundChild || isAdminAccountRecord(foundChild)) {
+          playWrong();
+          showParentLinkFeedback(`❌ Akaun anak bernama "${childName}" tidak ditemui. Pastikan ejaan & huruf besar/kecil tepat.`, false);
+          return;
+        }
+        const childId = foundChild.accountId || foundChild.key;
+        if (childId === currentPlayer.accountId) {
+          playWrong();
+          showParentLinkFeedback('⚠️ Anda tidak boleh memautkan akaun anda sendiri sebagai anak.', false);
+          return;
+        }
+        const storedPin = String(foundChild.recoveryPin || '0000').trim();
+        if (storedPin !== childPin) {
+          playWrong();
+          showParentLinkFeedback(`🔒 PIN Pemulihan 4-Digit tidak sepadan untuk akaun "${foundChild.name}". Semak PIN di menu Urus Akaun anak.`, false);
+          return;
+        }
+
+        if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
+        if (currentPlayer.linkedChildrenIds.includes(childId)) {
+          showParentLinkFeedback(`ℹ️ Akaun "${foundChild.name}" sudah pun dipautkan dalam senarai anak anda.`, true);
+          return;
+        }
+
+        currentPlayer.linkedChildrenIds.push(childId);
+        await savePlayerCloud();
+        syncPlayerUI();
+        playCheer();
+        triggerConfetti();
+        if (nameInp) nameInp.value = '';
+        if (pinInp) pinInp.value = '';
+        showParentLinkFeedback(`✅ Berjaya! Akaun "${foundChild.name}" telah dipautkan ke profil Ibu Bapa anda.`, true);
+        await loadParentChildrenDashboard();
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = '➕ Pautkan Akaun Anak Sekarang';
+        }
+      }
+    };
+
+    window.parentUnlinkChild = async function(childId, childName) {
+      if (!currentPlayer || !Array.isArray(currentPlayer.linkedChildrenIds)) return;
+      playClick();
+      currentPlayer.linkedChildrenIds = currentPlayer.linkedChildrenIds.filter(id => id !== childId);
+      await savePlayerCloud();
+      syncPlayerUI();
+      showAppToast(`🔗 Pautan akaun "${childName}" telah dikeluarkan.`);
+      await loadParentChildrenDashboard();
+    };
+
+    window.parentGiftCoinsToChild = async function(childId, childName, bonusCoins = 10) {
+      if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
+      playCheer();
+      triggerConfetti();
+      loadLocalAccountsFromStorage();
+      let childObj = inMemoryAccounts.get(childId);
+
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', childId));
+            if (snap.exists()) childObj = snap.data();
+          }
+        } catch (e) {}
+      }
+
+      if (!childObj) {
+        showAppToast('⚠️ Rekod anak tidak ditemui buat masa ini.');
+        return;
+      }
+
+      const todayKey = getTodayDateKey();
+      const updatedStars = (Number(childObj.stars) || 0) + bonusCoins;
+      const updatedTodayStars = (childObj.todayDateKey === todayKey ? (Number(childObj.todayStars) || 0) : 0) + bonusCoins;
+      childObj.stars = updatedStars;
+      childObj.todayDateKey = todayKey;
+      childObj.todayStars = updatedTodayStars;
+      childObj.updatedAt = Date.now();
+      inMemoryAccounts.set(childId, childObj);
+      persistLocalAccountsToStorage();
+
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', childId), {
+              stars: updatedStars,
+              todayDateKey: todayKey,
+              todayStars: updatedTodayStars,
+              updatedAt: Date.now()
+            }, { merge: true });
+          }
+        } catch (e) {}
+      }
+
+      showAppToast(`🎁 Tahniah! Anda telah menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName}!`);
+      await loadParentChildrenDashboard();
+    };
+
+    window.loadParentChildrenDashboard = async function() {
+      if (!currentPlayer) return;
+      const listEl = document.getElementById('parent-children-list');
+      const countBadge = document.getElementById('parent-linked-count-badge');
+      const sumPtsEl = document.getElementById('parent-sum-points');
+      const sumStarsEl = document.getElementById('parent-sum-stars');
+      const sumTimeEl = document.getElementById('parent-sum-time');
+
+      if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
+      const linkedIds = currentPlayer.linkedChildrenIds;
+      if (countBadge) countBadge.innerText = `${linkedIds.length} Anak`;
+
+      if (linkedIds.length === 0) {
+        if (sumPtsEl) sumPtsEl.innerText = '0';
+        if (sumStarsEl) sumStarsEl.innerText = '0';
+        if (sumTimeEl) sumTimeEl.innerText = '0 jam 0 min';
+        if (listEl) {
+          listEl.innerHTML = `
+            <div class="text-center bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 space-y-1.5">
+              <div class="text-3xl">👨‍👩‍👧‍👦</div>
+              <div class="text-xs font-black text-slate-700">Belum Ada Akaun Anak Dipautkan</div>
+              <div class="text-[11px] font-bold text-slate-500">Masukkan Nama Akaun Anak & PIN 4-Digit di atas untuk mula memantau prestasi anak anda!</div>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      if (listEl) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">⏳ Memuatkan laporan kemajuan anak...</div>`;
+      }
+
+      loadLocalAccountsFromStorage();
+      const cloudMap = new Map();
+      inMemoryAccounts.forEach((v, k) => cloudMap.set(k, v));
+
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            snaps.forEach(docSnap => {
+              const d = docSnap.data();
+              if (d) {
+                const id = d.accountId || d.key || docSnap.id;
+                d.accountId = id;
+                cloudMap.set(id, d);
+                inMemoryAccounts.set(id, d);
+              }
+            });
+            persistLocalAccountsToStorage();
+          }
+        } catch (e) {}
+      }
+
+      const todayKey = getTodayDateKey();
+      let totalPtsAll = 0;
+      let totalStarsAll = 0;
+      let totalTodaySecAll = 0;
+
+      if (listEl) listEl.innerHTML = '';
+
+      linkedIds.forEach(cid => {
+        const child = cloudMap.get(cid);
+        if (!child) {
+          const missCard = document.createElement('div');
+          missCard.className = 'bg-rose-50 border-2 border-rose-200 rounded-2xl p-3 flex items-center justify-between text-xs';
+          missCard.innerHTML = `
+            <span class="font-bold text-rose-800">⚠️ Akaun anak (${cid}) tidak lagi wujud.</span>
+            <button type="button" onclick="parentUnlinkChild('${cid}', '${cid}')" class="bg-rose-600 text-white font-black px-2.5 py-1 rounded-lg text-[10px]">Buang</button>
+          `;
+          if (listEl) listEl.appendChild(missCard);
+          return;
+        }
+
+        const cPts = Number(child.totalPoints) || 0;
+        const cStars = Number(child.stars) || 0;
+        const cTodayPts = child.todayDateKey === todayKey ? (Number(child.todayPoints) || 0) : 0;
+        const cTodaySec = child.todayDateKey === todayKey ? (Number(child.todaySeconds) || 0) : 0;
+        const cTotalSec = Number(child.playSeconds) || 0;
+        const isOnlineNow = Boolean(child.isOnline) && (Date.now() - Number(child.lastActiveAt || 0) < 90000);
+        const modScores = child.modScores || {};
+
+        totalPtsAll += cPts;
+        totalStarsAll += cStars;
+        totalTodaySecAll += cTodaySec;
+
+        const stageBadges = [
+          { key: 1, label: 'Jari 1' },
+          { key: 'jari2', label: 'Jari 2' },
+          { key: 'jari3', label: 'Jari 3' },
+          { key: 2, label: 'Sempoa 1' },
+          { key: 3, label: 'Sempoa 2' },
+          { key: 4, label: 'Sempoa 3' },
+          { key: 5, label: 'Anzan 4' },
+          { key: 6, label: 'Master 5' }
+        ].map(st => {
+          const sc = Number(modScores[st.key]) || 0;
+          const doneCls = sc >= 40 ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : (sc > 0 ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-500 border-slate-200');
+          return `<span class="px-2 py-0.5 rounded-lg border text-[10px] font-black ${doneCls}">${st.label}: ${sc}/50</span>`;
+        }).join('');
+
+        const safeChildName = String(child.name || 'Anak').replace(/'/g, "\\'");
+        const card = document.createElement('div');
+        card.className = 'bg-gradient-to-br from-white to-teal-50/40 border-2 border-teal-300 rounded-2xl p-3.5 space-y-2.5 shadow-xs';
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-12 h-12 rounded-2xl flex-shrink-0 relative">${renderRealisticAvatarSVG(child.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full')}</div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-sm font-black text-slate-900 truncate">${escapeHtmlSafe(child.name || 'Anak')}</span>
+                  <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${isOnlineNow ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">
+                    ${isOnlineNow ? '🟢 Aktif Sekarang' : '⚪ Offline'}
+                  </span>
+                </div>
+                <div class="text-[10px] font-bold text-indigo-700 truncate">📍 Aktiviti: ${escapeHtmlSafe(child.currentActivityLabel || 'Menu Utama')}</div>
+              </div>
+            </div>
+            <button type="button" onclick="parentUnlinkChild('${cid}', '${safeChildName}')" class="text-[10px] font-black text-slate-400 hover:text-rose-600 px-2 py-1" title="Buang pautan anak">✖️</button>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 text-center text-[11px]">
+            <div class="bg-white border border-indigo-200 rounded-xl p-2">
+              <div class="text-[9px] font-bold text-slate-500">Markah (Hari Ini)</div>
+              <div class="font-black text-indigo-900">🏅 ${cPts} <span class="text-emerald-600">(+${cTodayPts})</span></div>
+            </div>
+            <div class="bg-white border border-amber-200 rounded-xl p-2">
+              <div class="text-[9px] font-bold text-slate-500">Baki Coin</div>
+              <div class="font-black text-amber-900 inline-flex items-center gap-1">${COIN_ICON_HTML} ${cStars}</div>
+            </div>
+            <div class="bg-white border border-sky-200 rounded-xl p-2">
+              <div class="text-[9px] font-bold text-slate-500">Masa Belajar</div>
+              <div class="font-black text-sky-900">⏱️ ${formatDurationHHMM(cTotalSec)}</div>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-[10px] font-black text-slate-600">📊 Rekod Penguasaan Setiap Tahap:</div>
+            <div class="flex flex-wrap gap-1">${stageBadges}</div>
+          </div>
+
+          <div class="pt-1 flex items-center justify-between gap-2">
+            <button type="button" onclick="parentGiftCoinsToChild('${cid}', '${safeChildName}', 10)" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-3 text-[11px] font-black inline-flex items-center justify-center gap-1">
+              <span>🎁 Hadiahkan +10 Coin Semangat</span>
+            </button>
+          </div>
+        `;
+        if (listEl) listEl.appendChild(card);
+      });
+
+      if (sumPtsEl) sumPtsEl.innerText = String(totalPtsAll);
+      if (sumStarsEl) sumStarsEl.innerText = String(totalStarsAll);
+      if (sumTimeEl) sumTimeEl.innerText = formatDurationHHMM(totalTodaySecAll);
     };
 
     /* 10B. FUNGSI PANEL ADMIN (SENARAI PELAJAR, RESET PASSWORD & PADAM AKAUN) */
@@ -7767,7 +8281,7 @@
         }
       });
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -7785,7 +8299,9 @@
             });
             persistLocalAccountsToStorage();
           }
-        } catch (err) {}
+        } catch (err) {
+          console.warn('Admin gagal baca awan:', err);
+        }
       }
 
       adminCachedStudents = Array.from(merged.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
@@ -7865,7 +8381,7 @@
         inMemoryAccounts.set(studentId, target);
         persistLocalAccountsToStorage();
 
-        if (db && isDeviceOnline) {
+        if (db) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId), target);
@@ -7881,6 +8397,11 @@
         filterAdminStudentList();
       } catch (err) {
         playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '❌ Gagal menetapkan semula kata laluan pelajar.';
+          fb.classList.remove('hidden');
+        }
       }
     };
 
@@ -7904,6 +8425,7 @@
       const fb = document.getElementById('admin-action-feedback');
 
       try {
+        /* 1. Padam semua entri sepadan dalam memori tempatan & localStorage */
         const targetNameKey = target && target.name ? normalizePlayerKey(target.name) : '';
         const idsToDelete = new Set([studentId]);
         if (target) {
@@ -7921,28 +8443,30 @@
         });
         persistLocalAccountsToStorage();
 
-        if (db && isDeviceOnline) {
+        /* 2. Padam semua dokumen sepadan dalam Firebase Firestore */
+        if (db) {
           await authReadyPromise;
-          if (fbUser) {
-            const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
-            const snap = await getDocs(playersCol);
-            const deleteJobs = [];
-            snap.forEach((docSnap) => {
-              const d = docSnap.data() || {};
-              if (
-                idsToDelete.has(docSnap.id) ||
-                idsToDelete.has(d.accountId) ||
-                idsToDelete.has(d.key) ||
-                (target && d.name === target.name)
-              ) {
-                deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)));
-              }
-            });
-            idsToDelete.forEach((docId) => {
-              deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId)));
-            });
-            await Promise.all(deleteJobs);
+          if (!fbUser) {
+            throw new Error('Sambungan Firebase belum disahkan (auth-failed).');
           }
+          const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+          const snap = await getDocs(playersCol);
+          const deleteJobs = [];
+          snap.forEach((docSnap) => {
+            const d = docSnap.data() || {};
+            if (
+              idsToDelete.has(docSnap.id) ||
+              idsToDelete.has(d.accountId) ||
+              idsToDelete.has(d.key) ||
+              (target && d.name === target.name)
+            ) {
+              deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)));
+            }
+          });
+          idsToDelete.forEach((docId) => {
+            deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId)));
+          });
+          await Promise.all(deleteJobs);
         }
 
         adminPendingDeleteId = null;
@@ -7950,12 +8474,18 @@
         playCheer();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya.`;
+          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya daripada awan & peranti.`;
           fb.classList.remove('hidden');
         }
         filterAdminStudentList();
       } catch (err) {
+        console.error('Ralat padam akaun Firestore:', err);
         playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `❌ Gagal memadam akaun di awan (${err?.code || err?.message || 'permission-denied'}). Semak Firestore Rules agar membenarkan operasi delete.`;
+          fb.classList.remove('hidden');
+        }
       }
     };
 
@@ -8080,7 +8610,7 @@
         localList.unshift(ticketObj);
         saveLocalSupportTickets(localList.slice(0, 100));
 
-        if (db && isDeviceOnline) {
+        if (db) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), ticketObj);
@@ -8098,6 +8628,11 @@
         if (!isLoginCtx) checkStudentSupportReplies('account');
       } catch (err) {
         playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-amber-100 text-amber-950 border border-amber-300';
+          fb.innerText = '⚠️ Laporan disimpan pada peranti ini (sambungan awan terhad).';
+          fb.classList.remove('hidden');
+        }
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -8151,9 +8686,12 @@
         const aDone = a.status === 'resolved';
         const bDone = b.status === 'resolved';
         if (aDone !== bDone) return aDone ? 1 : -1;
+
         const aRead = Boolean(a.isRead);
         const bRead = Boolean(b.isRead);
-        if (!aDone && !bDone && aRead !== bRead) return aRead ? 1 : -1;
+        if (!aDone && !bDone && aRead !== bRead) {
+          return aRead ? 1 : -1;
+        }
         return (b.createdAt || 0) - (a.createdAt || 0);
       });
     }
@@ -8167,7 +8705,7 @@
         }
       });
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8182,7 +8720,9 @@
             });
             saveLocalSupportTickets(Array.from(merged.values()));
           }
-        } catch (err) {}
+        } catch (err) {
+          console.warn('Gagal muat tiket aduan awan:', err);
+        }
       }
 
       adminCachedTickets = sortAdminTicketsPriority(Array.from(merged.values()));
@@ -8241,7 +8781,7 @@
       const merged = new Map();
       loadLocalSupportTickets().forEach(t => { if (t && t.id) merged.set(t.id, t); });
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8318,7 +8858,7 @@
           target.readAt = Date.now();
           saveLocalSupportTickets(adminCachedTickets);
           updateAdminNotificationBadges();
-          if (db && isDeviceOnline) {
+          if (db) {
             try {
               await authReadyPromise;
               if (fbUser) {
@@ -8369,6 +8909,7 @@
 
         return `
           <div class="rounded-2xl border-2 overflow-hidden transition ${cardBg}">
+            <!-- Ringkasan Aduan (Klik untuk Buka & Baca Aduan Penuh) -->
             <div onclick="toggleAdminTicketExpand('${t.id}')" class="p-3 cursor-pointer select-none flex items-start justify-between gap-2 hover:bg-black/[0.02]">
               <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex flex-wrap items-center gap-1.5">
@@ -8384,6 +8925,7 @@
               </div>
             </div>
 
+            <!-- Kandungan Penuh & Tindakan (Hanya Terbuka Selepas Admin Tekan Aduan) -->
             ${isExpanded ? `
               <div class="px-3 pb-3 pt-2 border-t border-slate-200/90 space-y-2.5 bg-white/60">
                 <div class="space-y-1">
@@ -8397,6 +8939,7 @@
                   </div>
                 ` : ''}
 
+                <!-- Borang Balas Mesej (Tidak Automatik Tandakan Selesai) -->
                 <div class="space-y-1">
                   <label class="block text-[10px] font-black text-indigo-950">💬 Balas Mesej kepada ${safeName}:</label>
                   <div class="flex gap-1.5">
@@ -8407,6 +8950,7 @@
                   </div>
                 </div>
 
+                <!-- Butang Kawalan Status Selesai / Belum Selesai, Reset Password & Padam Kekal -->
                 <div class="flex flex-wrap gap-1.5 pt-1.5 border-t border-slate-200">
                   <button type="button" onclick="adminToggleTicketStatus('${t.id}')" class="flex-1 bubbly-btn ${isResolved ? 'bg-amber-100 text-amber-950 border border-amber-400' : 'bg-emerald-500 text-white border border-emerald-700'} py-2 px-2.5 text-[11px] font-black">
                     ${isResolved ? '🔄 Tandakan Belum Selesai' : '✅ Tandakan Selesai'}
@@ -8443,7 +8987,7 @@
       target.isRead = true;
       saveLocalSupportTickets(adminCachedTickets);
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8453,6 +8997,12 @@
       }
 
       playCheer();
+      const fb = document.getElementById('admin-action-feedback');
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
+        fb.innerText = `💬 Balasan kepada "${target.playerName}" telah dihantar! (Status kekal: ${target.status === 'resolved' ? 'Selesai' : 'Belum Selesai'})`;
+        fb.classList.remove('hidden');
+      }
       updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
@@ -8472,7 +9022,7 @@
       }
       saveLocalSupportTickets(adminCachedTickets);
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8482,6 +9032,14 @@
       }
 
       playCheer();
+      const fb = document.getElementById('admin-action-feedback');
+      if (fb) {
+        fb.className = `text-xs font-extrabold rounded-xl p-2.5 text-center ${nextResolved ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-amber-100 text-amber-950 border border-amber-300'}`;
+        fb.innerText = nextResolved
+          ? `✅ Aduan daripada "${target.playerName}" telah dilabelkan SELESAI.`
+          : `🔄 Aduan daripada "${target.playerName}" dibuka semula sebagai BELUM SELESAI.`;
+        fb.classList.remove('hidden');
+      }
       updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
@@ -8495,6 +9053,12 @@
       );
       if (!matchedStudent) {
         playWrong();
+        const fb = document.getElementById('admin-action-feedback');
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `❌ Akaun pelajar "${ticket.playerName}" tidak ditemui dalam senarai pelajar berdaftar.`;
+          fb.classList.remove('hidden');
+        }
         return;
       }
       await adminResetStudentPassword(matchedStudent.accountId || matchedStudent.key);
@@ -8502,25 +9066,41 @@
 
     window.adminDeleteSupportTicket = async function(ticketId) {
       playClick();
+      const target = adminCachedTickets.find(t => t.id === ticketId);
+      const senderName = target ? target.playerName : 'Pelajar';
+      const fb = document.getElementById('admin-action-feedback');
+
       try {
-        if (db && isDeviceOnline) {
+        if (db) {
           await authReadyPromise;
-          if (fbUser) {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
-          }
+          if (!fbUser) throw new Error('Sambungan Firebase belum disahkan.');
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
         }
+
         expandedAdminTicketIds.delete(ticketId);
         adminCachedTickets = adminCachedTickets.filter(t => t.id !== ticketId);
         saveLocalSupportTickets(adminCachedTickets);
         updateAdminNotificationBadges();
         renderAdminTicketsList();
+
         playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
+          fb.innerText = `🗑️ Aduan daripada "${senderName}" telah dipadam sepenuhnya daripada sistem.`;
+          fb.classList.remove('hidden');
+        }
       } catch (err) {
+        console.error('Gagal padam aduan:', err);
         playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `❌ Gagal memadam aduan di awan (${err?.code || err?.message || 'permission-denied'}).`;
+          fb.classList.remove('hidden');
+        }
       }
     };
 
-    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN */
+    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN (PILIHAN A - SAFE QUICK-CHAT) */
     const PLAYER_MSGS_STORAGE_KEY = 'kirapantas_player_quick_msgs_v1';
     let playerMessagesUnsubscribe = null;
     let cachedPlayerInbox = [];
@@ -8557,7 +9137,7 @@
 
     async function loadQuickChatPresetsCloud() {
       SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
-      if (!db || !isDeviceOnline) return SAFE_QUICK_CHAT_PRESETS;
+      if (!db) return SAFE_QUICK_CHAT_PRESETS;
       try {
         await authReadyPromise;
         if (!fbUser) return SAFE_QUICK_CHAT_PRESETS;
@@ -8578,7 +9158,7 @@
       SAFE_QUICK_CHAT_PRESETS = newList;
       saveLocalQuickChatPresets(newList);
       renderAdminQuickChatPresetsList();
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -8623,49 +9203,85 @@
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
       const inp = document.getElementById('admin-new-preset-input');
+      const fb = document.getElementById('admin-action-feedback');
       const rawText = (inp?.value || '').trim();
       if (rawText.length < 2) {
         playWrong();
         return;
       }
+
       const newItem = {
         id: `qc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
         text: rawText
       };
-      await saveQuickChatPresetsCloud([...SAFE_QUICK_CHAT_PRESETS, newItem]);
+      const updated = [...SAFE_QUICK_CHAT_PRESETS, newItem];
+      await saveQuickChatPresetsCloud(updated);
       if (inp) inp.value = '';
       playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerText = `✅ Ayat ucapan baharu berjaya ditambah!`;
+        fb.classList.remove('hidden');
+      }
     };
 
     window.adminSaveEditedQuickChatPreset = async function(presetId) {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
       const inp = document.getElementById(`admin-preset-edit-${presetId}`);
+      const fb = document.getElementById('admin-action-feedback');
       const newText = (inp?.value || '').trim();
       if (newText.length < 2) {
         playWrong();
+        showAppToast('Ayat ucapan mestilah sekurang-kurangnya 2 aksara.');
         return;
       }
-      await saveQuickChatPresetsCloud(SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it));
+
+      const updated = SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it);
+      await saveQuickChatPresetsCloud(updated);
       playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerText = `💾 Perubahan ayat ucapan telah disimpan!`;
+        fb.classList.remove('hidden');
+      }
     };
 
     window.adminDeleteQuickChatPreset = async function(presetId) {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
+      const fb = document.getElementById('admin-action-feedback');
       if (SAFE_QUICK_CHAT_PRESETS.length <= 1) {
         playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = `⚠️ Sekurang-kurangnya 1 ayat ucapan mesti dikekalkan untuk pemain.`;
+          fb.classList.remove('hidden');
+        }
         return;
       }
-      await saveQuickChatPresetsCloud(SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId));
+
+      const updated = SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId);
+      await saveQuickChatPresetsCloud(updated);
       playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
+        fb.innerText = `🗑️ Ayat ucapan telah dipadam daripada senarai.`;
+        fb.classList.remove('hidden');
+      }
     };
 
     window.adminResetQuickChatPresetsDefault = async function() {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
+      const fb = document.getElementById('admin-action-feedback');
       await saveQuickChatPresetsCloud([...DEFAULT_QUICK_CHAT_PRESETS]);
       playCheer();
+      if (fb) {
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
+        fb.innerText = `🔄 Senarai ayat ucapan telah dikembalikan kepada 6 ayat lalai.`;
+        fb.classList.remove('hidden');
+      }
     };
 
     let cachedPlayerSent = [];
@@ -8720,7 +9336,7 @@
       inMemoryAccounts.forEach(addPlayer);
       lastScoreboardPlayers.forEach(addPlayer);
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8755,7 +9371,7 @@
       };
 
       applyFilteredLists(loadLocalQuickMessages());
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
 
       try {
         await authReadyPromise;
@@ -8894,7 +9510,7 @@
       cachedPlayerInbox.forEach(m => { m.isRead = true; });
       updateQuickChatBadges();
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8926,11 +9542,6 @@
 
     window.sendSafeQuickMessage = async function(presetId) {
       if (!currentPlayer) return;
-      if (!isDeviceOnline) {
-        playWrong();
-        showAppToast('🟠 Mod Offline: Mesej rakan hanya boleh dihantar apabila tersambung ke internet.');
-        return;
-      }
       if (!quickChatRecipient) {
         playWrong();
         showAppToast('⚠️ Sila pilih rakan penerima mesej terlebih dahulu.');
@@ -8971,7 +9582,7 @@
       showAppToast(`📨 Ucapan dihantar kepada ${recipientName}!`);
       await switchPlayerMsgTab('sent');
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -9095,7 +9706,7 @@
       }).join('');
     }
 
-    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (4 MOD TERAS) */
+    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (4 MOD TERAS MESRA KANAK-KANAK: 2–30 PEMAIN) */
     const ARENA_LOCAL_ROOMS_KEY = 'kirapantas_arena_rooms_v3';
     let selectedArenaMode = 'kuiz_kilat';
     let activeArenaRoomId = null;
@@ -9337,7 +9948,7 @@
       };
 
       renderRooms(Object.values(loadLocalArenaRooms()));
-      if (!db || !isDeviceOnline) return;
+      if (!db) return;
 
       try {
         await authReadyPromise;
@@ -9393,7 +10004,7 @@
       localRooms[roomCode] = roomObj;
       saveLocalArenaRooms(localRooms);
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -9418,7 +10029,7 @@
         const allLocal = loadLocalQuickMessages();
         allLocal.unshift(inviteMsg);
         saveLocalQuickMessages(allLocal);
-        if (db && fbUser && isDeviceOnline) {
+        if (db && fbUser) {
           try {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), inviteMsg);
           } catch (e) {}
@@ -9451,7 +10062,7 @@
       playClick();
       let roomData = loadLocalArenaRooms()[roomCode] || null;
 
-      if (db && isDeviceOnline) {
+      if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -9504,7 +10115,7 @@
       localRooms[roomCode] = roomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser && isDeviceOnline) {
+      if (db && fbUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), roomData);
         } catch (e) {}
@@ -9520,7 +10131,7 @@
       if (activeArenaRoomData.participants && activeArenaRoomData.participants[myId]) {
         activeArenaRoomData.participants[myId].team = teamColor === 'blue' ? 'blue' : 'red';
         onArenaRoomUpdated(activeArenaRoomData);
-        if (db && fbUser && isDeviceOnline) {
+        if (db && fbUser) {
           try {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
               participants: { [myId]: activeArenaRoomData.participants[myId] }
@@ -9562,7 +10173,7 @@
       localRooms[activeArenaRoomId] = activeArenaRoomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser && isDeviceOnline) {
+      if (db && fbUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), activeArenaRoomData);
         } catch (e) {}
@@ -9588,7 +10199,7 @@
       localRooms[activeArenaRoomId] = activeArenaRoomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser && isDeviceOnline) {
+      if (db && fbUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
             status: 'playing',
@@ -9674,7 +10285,7 @@
 
       onArenaRoomUpdated(initialData);
 
-      if (db && fbUser && isDeviceOnline) {
+      if (db && fbUser) {
         if (arenaRoomUnsubscribe) {
           arenaRoomUnsubscribe();
           arenaRoomUnsubscribe = null;
@@ -9832,7 +10443,7 @@
 
       onArenaRoomUpdated(activeArenaRoomData);
 
-      if (db && fbUser && isDeviceOnline) {
+      if (db && fbUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
             participants: { [myId]: me }
@@ -10141,6 +10752,7 @@
         `;
       };
 
+      // Susunan Podium Klasik: Kiri = Tempat 2, Tengah = Tempat 1 (Paling Tinggi), Kanan = Tempat 3
       stageEl.innerHTML = [
         buildPodiumColumn(p2, 2),
         buildPodiumColumn(p1, 1),
@@ -10174,8 +10786,10 @@
         return (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0);
       });
 
+      // Papar Pentas Podium 1, 2, 3 dengan Avatar 3D Pemain yang Menang
       renderArenaVisualPodium(plist, myId, isTeamMode);
 
+      // Papar pemain ke-4 dan ke bawah (jika ramai pemain)
       const podiumEl = document.getElementById('arena-podium-list');
       if (podiumEl) {
         const restPlayers = plist.slice(3, 10);
@@ -10207,6 +10821,8 @@
       const isPvpMatch = humanPlayers.length >= 2;
       const avgSec = arenaCorrectCount > 0 ? (arenaTotalAnswerSec / arenaCorrectCount) : 0;
       const inMatchScore = myPlayerObj.score || 0;
+
+      // Nisbah kelayakan berdasarkan bilangan soalan dijawab betul (minimum 5 jawapan betul untuk ganjaran penuh)
       const completionRatio = Math.min(1, arenaCorrectCount / 5);
 
       let rankPtsBonus = 0;
@@ -10251,7 +10867,9 @@
         rankHeadline = `Kedudukan #${Math.max(1, myRankIdx + 1)}`;
       }
 
+      // Bonus +1 Coin jika purata jawapan pantas (< 4.0s) dan sekurang-kurangnya 5 soalan betul
       const speedCoinExtra = (arenaCorrectCount >= 5 && avgSec > 0 && avgSec < 4.0) ? 1 : 0;
+
       const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus);
       const finalTotalCoins = arenaCorrectCount === 0
         ? 0
@@ -10274,6 +10892,7 @@
             <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> + Bonus Podium: <b>+${rankPtsBonus}</b> = <b>+${finalTotalPoints} Markah</b></div>
             <div class="pt-1 text-xs font-black text-emerald-300">
               Ganjaran Coin Diterima: +${finalTotalCoins} Coin ${COIN_ICON_HTML}
+              <span class="block text-[10px] font-bold text-amber-200/90">(${Math.round(baseMatchCoinCap * completionRatio)} Coin Kedudukan & Tahap${speedCoinExtra > 0 ? ' + 1 Coin Pantas' : ''})</span>
             </div>
           </div>
         `;
@@ -10282,7 +10901,7 @@
         addPlayerReward(finalTotalCoins, finalTotalPoints);
       }
 
-      if (db && fbUser && activeArenaRoomId && isDeviceOnline) {
+      if (db && fbUser && activeArenaRoomId) {
         try {
           setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), { status: 'finished' }, { merge: true });
         } catch (e) {}
@@ -10307,7 +10926,7 @@
         const localRooms = loadLocalArenaRooms();
         delete localRooms[activeArenaRoomId];
         saveLocalArenaRooms(localRooms);
-        if (db && fbUser && isDeviceOnline) {
+        if (db && fbUser) {
           try {
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId));
           } catch (e) {}
@@ -10330,7 +10949,6 @@
       navTo('home');
     };
 
-    /* 11. AKADEMI MASTER ANZAN (FLASH ANZAN, PECUT & DIKTE SUARA) */
     let flashAnzanBasePoints = 12;
     let flashAnswerStartTime = 0;
     let flashAnswerTimerInterval = null;
@@ -10555,7 +11173,7 @@
       fb.classList.remove('hidden');
     };
 
-    /* 12. PECUT BENTUK JARI & MANIK SEMPOA */
+    /* 12. PECUT BENTUK JARI & MANIK SEMPOA (MUSCLE MEMORY: +3 MARKAH, 0 COIN) */
     let drillTarget = 47;
     let drillSolvedCount = 0;
     let drillLocked = false;
@@ -10742,7 +11360,7 @@
         const ones = drillTarget % 10;
         if (fb) {
           fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
-          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Kiri (Puluh) = ${tens} + Kanan (Sa) = ${ones}.`;
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Kiri (Puluh) = ${tens} + Kanan (Sa) = ${ones}. (Tiada markah diberikan — tekan "Tukar Nombor" untuk soalan baharu!)`;
           fb.classList.remove('hidden');
         }
       } else {
@@ -10757,7 +11375,7 @@
         renderDrillInteractiveStage();
         if (fb) {
           fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
-          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Ratus = ${dHundreds}, Puluh = ${dTens}, Sa = ${dOnes}.`;
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Ratus = ${dHundreds}, Puluh = ${dTens}, Sa = ${dOnes}. (Tiada markah diberikan — tekan "Tukar Nombor" untuk soalan baharu!)`;
           fb.classList.remove('hidden');
         }
       }
@@ -10789,8 +11407,7 @@
       if (targetEl) targetEl.innerText = drillTarget;
       resetDrillStage(true);
     };
-
-    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA) */
+    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA: MELAYU, ENGLISH, MANDARIN, ARAB) */
     let dictCorrectAnswer = 0;
     let dictSequenceList = [];
 

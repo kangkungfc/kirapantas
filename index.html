@@ -200,33 +200,36 @@
         <h1 id="login-app-title" class="text-2xl sm:text-3xl font-bold text-amber-900">Jari & Abakus Pintar</h1>
         <p id="login-app-subtitle" class="text-xs sm:text-sm font-bold text-slate-500 mt-1 mb-5">Platform Belajar Kira Pantas Chisanbop & Soroban</p>
 
+        <!-- Butang Cuba Main Terus 1-Klik (Mod Tetamu / Guest) -->
+        <div class="mb-4">
+          <button type="button" onclick="startGuestDemoMode()" class="w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 text-amber-950 font-black text-sm sm:text-base py-3.5 px-4 border-3 border-amber-700 shadow-lg flex items-center justify-center gap-2">
+            <span class="text-xl">🎮</span>
+            <span>Cuba Main Sekarang (Tanpa Daftar)</span>
+          </button>
+          <p class="text-[10px] font-bold text-slate-500 mt-1">Terus main 10 Jari & Sempoa serta-merta! Boleh simpan rekod bila-bila masa.</p>
+        </div>
+
+        <div class="relative flex items-center justify-center mb-3">
+          <div class="border-t border-slate-200 w-full"></div>
+          <span class="bg-white px-2.5 text-[10px] font-black text-slate-400 uppercase tracking-wider whitespace-nowrap">Atau Masuk Akaun Anda</span>
+          <div class="border-t border-slate-200 w-full"></div>
+        </div>
+
         <form onsubmit="event.preventDefault()" class="space-y-3 text-left">
           <div>
-            <label id="lbl-login-name" class="block text-xs font-black text-slate-700 mb-1">Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
-            <input id="input-player-name" type="text" required minlength="2" maxlength="25" placeholder="Contoh: Aiman / aiman_01 / Siti Nur" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
+            <label id="lbl-login-name" class="block text-xs font-black text-slate-700 mb-1">Taip Nama Anda</label>
+            <input id="input-player-name" type="text" required minlength="2" maxlength="25" placeholder="Contoh: Aiman / Siti Nur" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
           </div>
           <div>
             <label id="lbl-login-pass" class="block text-xs font-black text-slate-700 mb-1">Kata Laluan</label>
             <input id="input-player-pass" type="password" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
             <label class="inline-flex items-center gap-2 mt-2 cursor-pointer select-none">
               <input id="toggle-show-pass" type="checkbox" onchange="togglePasswordVisibility()" class="w-4 h-4 rounded accent-amber-500 border-slate-300 cursor-pointer" />
-              <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan yang ditaip</span>
+              <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan</span>
             </label>
           </div>
-          <div class="bg-amber-50/90 border-2 border-amber-200 rounded-2xl p-2.5 space-y-1.5">
-            <div class="text-[11px] font-black text-amber-950">👤 Pilih Jenis Akaun (Untuk Daftar Baru):</div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" id="btn-role-student" onclick="selectRegisterAccountRole('student')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
-                🎓 Akaun Pelajar
-              </button>
-              <button type="button" id="btn-role-parent" onclick="selectRegisterAccountRole('parent')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-slate-700 border-slate-300 transition">
-                👨‍👩‍👧‍👦 Akaun Ibu Bapa
-              </button>
-            </div>
-            <div id="role-register-hint" class="text-[10px] font-bold text-slate-500">Pelajar boleh belajar, kumpul coin & bertanding.</div>
-          </div>
           <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
-          <div class="grid grid-cols-2 gap-2.5 pt-2">
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
             <button id="btn-login-submit" type="button" onclick="handlePlayerAuthAction('login')" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm py-3.5 border-2 border-blue-800">
               🔑 Log Masuk
             </button>
@@ -236,8 +239,22 @@
           </div>
         </form>
 
+        <!-- Butang Terus Untuk Ibu Bapa / Pengajar & Menu Bantuan -->
         <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
-          <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="w-full bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-2.5 space-y-1.5 text-left">
+            <div class="text-[10px] font-black text-teal-950 uppercase tracking-wide">👤 Jenis Akaun (Untuk Daftar Baru):</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" id="btn-role-student" onclick="selectRegisterAccountRole('student')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
+                🎓 Akaun Pelajar
+              </button>
+              <button type="button" id="btn-role-parent" onclick="selectRegisterAccountRole('parent')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-teal-900 border-teal-300 transition">
+                👨‍👩‍👧‍👦 Ibu Bapa / Pengajar
+              </button>
+            </div>
+            <div id="role-register-hint" class="text-[10px] font-bold text-slate-600">Pelajar boleh belajar, kumpul coin & bertanding.</div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
             <button id="btn-forgot-pass" type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
               🔑 Lupa Kata Laluan?
             </button>
@@ -246,12 +263,13 @@
               🆘 Hubungi Admin / Lapor Masalah
             </button>
           </div>
-          <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
+
+          <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Simpan tahap, coin & avatar anda secara automatik.</p>
           <div id="login-offline-banner" class="hidden w-full bg-amber-100 border-2 border-amber-400 text-amber-950 rounded-xl px-3 py-2 text-[11px] font-black">
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.59
+            Versi 1.9.64
           </span>
         </div>
 
@@ -437,6 +455,17 @@
          SKRIN 1: MENU UTAMA (DASHBOARD 4 TERAS + PROFIL)
          ======================================================== -->
     <section id="screen-home" class="hidden space-y-4">
+      <!-- Banner Simpan Rekod Khas Untuk Mod Tetamu (Guest) -->
+      <div id="guest-save-banner" class="hidden bubbly-card bg-gradient-to-r from-amber-200 via-yellow-100 to-orange-200 border-3 border-amber-500 p-3 flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-xs font-black text-amber-950">🎮 Anda Sedang Dalam Mod Tetamu</div>
+          <div class="text-[10px] font-bold text-amber-900">Daftar nama percuma supaya Coin & Avatar tidak hilang!</div>
+        </div>
+        <button type="button" onclick="promptUpgradeGuestToAccount()" class="bubbly-btn bg-emerald-600 text-white text-[11px] font-black px-3 py-2 border-2 border-emerald-900 flex-shrink-0">
+          ✨ Simpan Rekod
+        </button>
+      </div>
+
       <!-- Kad Profil & Avatar 3D -->
       <div class="bubbly-card bg-white border-4 border-amber-300 p-4 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
@@ -458,6 +487,17 @@
             ⚙️ Urus Akaun
           </button>
         </div>
+      </div>
+
+      <!-- Kad Misi Harian 3 Bintang (Daily Quest Retention Hook) -->
+      <div id="daily-quest-card" class="bubbly-card bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 border-3 border-indigo-300 p-3.5 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <div class="text-xs font-black text-indigo-950 flex items-center gap-1.5">
+            <span>🌟</span> Misi Harian 3 Bintang
+          </div>
+          <span id="daily-quest-progress-badge" class="text-[10px] font-black bg-indigo-600 text-white px-2.5 py-0.5 rounded-full">0 / 3 Selesai</span>
+        </div>
+        <div id="daily-quest-list" class="grid grid-cols-1 gap-1.5 text-[11px]"></div>
       </div>
 
       <!-- Laluan Pembelajaran Terancang (Langkah 1 -> 2 -> 3) -->
@@ -553,11 +593,6 @@
         <button id="btn-bottom-scoreboard" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
         </button>
-        <button id="btn-bottom-inbox" onclick="openPlayerInboxModal()" class="col-span-2 relative bubbly-btn bg-gradient-to-r from-emerald-50 to-teal-50 border-3 border-emerald-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-emerald-950">
-          <span>💌</span>
-          <span>Peti Ucapan & Cabaran Rakan</span>
-          <span id="home-inbox-badge" class="hidden inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-rose-600 text-white text-[10px] font-black shadow animate-bounce">0</span>
-        </button>
         <button id="btn-home-admin-panel" onclick="openAdminPanelWithAlerts()" class="hidden relative col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
           <span>🛡️</span>
           <span>Buka Panel Admin (Urus Akaun Pelajar & Aduan)</span>
@@ -652,11 +687,23 @@
           <div id="mod-guide-content" class="space-y-3 text-xs"></div>
         </div>
 
-        <!-- Kad Latihan 50 Soalan Kocok Rawak -->
+        <!-- Kad Latihan 5 Bintang Mini (10 Soalan Setiap Bintang) -->
         <div id="mod-quiz-box" class="bubbly-card bg-white border-4 border-amber-400 p-4 space-y-3">
+          <!-- Bar 5 Bintang Kemajuan -->
+          <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-2.5 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1" id="mod-5-stars-bar">
+              <span class="text-base opacity-40">⭐</span>
+              <span class="text-base opacity-40">⭐</span>
+              <span class="text-base opacity-40">⭐</span>
+              <span class="text-base opacity-40">⭐</span>
+              <span class="text-base opacity-40">⭐</span>
+            </div>
+            <span id="mod-star-stage-badge" class="text-[11px] font-black bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full">⭐ Bintang 1/5 • Soalan 1/10</span>
+          </div>
+
           <div class="flex items-center justify-between gap-2">
             <div>
-              <div class="text-xs font-black text-amber-800"><span id="lbl-mod-intensive">🎯 Latihan Intensif: Soalan</span> <span id="mod-q-num">1</span>/50</div>
+              <div class="text-xs font-black text-amber-800"><span id="lbl-mod-intensive">🎯 Pusingan Bintang: Soalan</span> <span id="mod-q-num">1</span>/10 <span class="text-[10px] text-slate-400 font-bold">(Jumlah: <span id="mod-q-overall-num">1</span>/50)</span></div>
               <div class="text-[11px] font-bold text-slate-500"><span id="lbl-mod-best">Rekod Terbaik Tahap:</span> <span id="mod-best-score" class="text-emerald-600 font-black">0</span>/50 <span class="gold-coin-icon">$</span></div>
             </div>
             <button id="btn-mod-reshuffle" onclick="reshuffleModuleQuestions()" class="bubbly-btn bg-sky-100 border-2 border-sky-300 px-2.5 py-1.5 text-[11px] font-black text-sky-800">🔀 Kocok Semula</button>
@@ -731,6 +778,17 @@
 
           <!-- Maklum Balas -->
           <div id="mod-q-feedback" class="hidden rounded-2xl p-3 text-center text-xs font-black"></div>
+
+          <!-- Kad Kemenangan Bintang Mini (Setiap 10 Soalan) -->
+          <div id="mod-star-milestone-card" class="hidden bg-gradient-to-br from-amber-300 via-yellow-200 to-orange-300 border-3 border-amber-600 rounded-3xl p-4 text-center space-y-2.5 shadow-lg">
+            <div id="mod-milestone-stars-emoji" class="text-3xl">⭐⭐</div>
+            <div id="mod-milestone-title" class="text-base sm:text-lg font-black text-amber-950">Tahniah! Bintang 1/5 Selesai!</div>
+            <p id="mod-milestone-desc" class="text-xs font-bold text-amber-900">Anda dapat bonus +3 Coin! Bersedia untuk Bintang seterusnya?</p>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button type="button" onclick="closeModuleView()" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 text-xs font-black">🏠 Rehat Dulu</button>
+              <button type="button" onclick="continueToNextModuleStar()" class="bubbly-btn bg-emerald-600 text-white border-2 border-emerald-900 py-2.5 text-xs font-black">🚀 Bintang Seterusnya!</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -745,6 +803,15 @@
       </div>
 
       <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 text-center space-y-3">
+        <!-- Bar Cabaran Mini 10 Jari (+2 Coin) -->
+        <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-2.5 flex items-center justify-between gap-2 text-left">
+          <div class="min-w-0">
+            <div class="text-[10px] font-black text-amber-800 uppercase">🎮 Cabaran Mini Jari (+2 Coin $)</div>
+            <div class="text-xs sm:text-sm font-black text-slate-900">Bentukkan nombor: <span id="sim-challenge-target" class="text-lg text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg">27</span></div>
+          </div>
+          <button type="button" onclick="nextSimFingerChallenge(true)" class="bubbly-btn bg-white border-2 border-amber-400 px-2.5 py-1.5 text-[11px] font-black text-amber-950 flex-shrink-0">⏭️ Tukar</button>
+        </div>
+
         <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl p-3 shadow-inner">
           <div id="sim-total-label" class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100">Jumlah Nilai Jari</div>
           <div id="sim-total-val" class="text-4xl font-black">0</div>
@@ -769,6 +836,15 @@
       </div>
 
       <div class="bubbly-card bg-white border-4 border-amber-400 p-4 text-center space-y-3">
+        <!-- Bar Cabaran Mini Abakus (+2 Coin) -->
+        <div class="bg-sky-50 border-2 border-sky-400 rounded-2xl p-2.5 flex items-center justify-between gap-2 text-left">
+          <div class="min-w-0">
+            <div class="text-[10px] font-black text-sky-800 uppercase">🎮 Cabaran Mini Sempoa (+2 Coin $)</div>
+            <div class="text-xs sm:text-sm font-black text-slate-900">Bentukkan nombor: <span id="aba-challenge-target" class="text-lg text-amber-800 bg-amber-100 px-2 py-0.5 rounded-lg">145</span></div>
+          </div>
+          <button type="button" onclick="nextAbacusBoardChallenge(true)" class="bubbly-btn bg-white border-2 border-sky-400 px-2.5 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">⏭️ Tukar</button>
+        </div>
+
         <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3 shadow-inner">
           <div id="aba-total-label" class="text-[11px] font-extrabold uppercase tracking-wider text-amber-100">Nilai Bacaan Sempoa</div>
           <div id="abacus-total-val" class="text-4xl font-black">0</div>
@@ -794,11 +870,13 @@
 
       <div class="bubbly-card bg-white border-4 border-purple-400 p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 bg-purple-50 p-2.5 rounded-2xl border-2 border-purple-200">
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span id="blitz-lives-badge" class="text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 px-2 py-1 rounded-xl" title="Nyawa Anda">❤️❤️❤️</span>
             <span class="text-xs font-black bg-purple-600 text-white px-2.5 py-1 rounded-xl">Skor: <span id="blitz-score">0</span></span>
-            <span class="text-xs font-black bg-amber-400 text-amber-950 px-2.5 py-1 rounded-xl">🔥 Rentetan: <span id="blitz-streak">0</span></span>
+            <span class="text-xs font-black bg-amber-400 text-amber-950 px-2.5 py-1 rounded-xl">🔥 <span id="blitz-streak">0</span></span>
+            <span class="text-[10px] font-black bg-indigo-100 text-indigo-900 px-2 py-1 rounded-xl">🏆 Rekod: <span id="blitz-best-score">0</span></span>
           </div>
-          <select id="blitz-difficulty" onchange="generateNextBlitzQuestion()" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1 text-purple-900">
+          <select id="blitz-difficulty" onchange="resetBlitzLivesAndStart()" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1 text-purple-900">
             <option value="jari_all" selected>🖐️ Jari Sahaja (Asas + Kawan 5/10 + Gabungan)</option>
             <option value="basic">🖐️ Jari Asas Terus (0 - 99)</option>
             <option value="friends">🖐️ Jari Formula Kawan 5, 10 & Gabungan</option>
@@ -836,6 +914,16 @@
 
         <div id="blitz-options-grid" class="grid grid-cols-2 gap-2.5"></div>
         <div id="blitz-feedback" class="hidden rounded-2xl p-3 text-center text-xs font-black"></div>
+
+        <!-- Kad Tamat 3 Nyawa Cabaran Kilat -->
+        <div id="blitz-gameover-card" class="hidden bg-gradient-to-br from-rose-100 via-amber-100 to-purple-100 border-3 border-rose-400 rounded-3xl p-4 text-center space-y-2.5">
+          <div class="text-3xl">💔🎮</div>
+          <div class="text-base font-black text-rose-950">Tamat 3 Nyawa!</div>
+          <div id="blitz-gameover-summary" class="text-xs font-bold text-slate-700">Skor Sesi Ini: <b>0</b> • Rekod Terbaik: <b>0</b></div>
+          <button type="button" onclick="resetBlitzLivesAndStart()" class="w-full bubbly-btn bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black text-xs py-3 border-2 border-indigo-900">
+            🔄 Main Semula (3 Nyawa Penuh ❤️❤️❤️)
+          </button>
+        </div>
       </div>
     </section>
 
@@ -846,6 +934,20 @@
       <div class="flex items-center justify-between">
         <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
         <div class="text-xs font-black bg-amber-400 text-amber-950 px-3 py-1.5 rounded-full border-2 border-amber-600 inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> Coin Anda: <span id="studio-star-balance">0</span></div>
+      </div>
+
+      <!-- Peti Hadiah Misteri Harian (Daily Mystery Gift Box) -->
+      <div class="bubbly-card bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 border-4 border-amber-500 p-3.5 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="daily-mystery-box-icon" class="w-12 h-12 rounded-2xl bg-white/80 flex items-center justify-center text-3xl shadow-sm flex-shrink-0 animate-bounce">🎁</div>
+          <div class="min-w-0">
+            <div class="text-xs font-black text-amber-950">🎁 Peti Hadiah Misteri Harian</div>
+            <div id="daily-mystery-box-desc" class="text-[10px] font-bold text-amber-900">Buka 1 peti kejutan percuma setiap hari untuk Coin atau Aksesori!</div>
+          </div>
+        </div>
+        <button type="button" id="btn-open-mystery-box" onclick="openDailyMysteryGiftBox()" class="bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0">
+          ✨ Buka Peti!
+        </button>
       </div>
 
       <!-- Pratonton Avatar 3D -->
@@ -979,10 +1081,10 @@
           <div>
             <label class="block text-[10px] font-black text-rose-900 mb-0.5">Kelajuan</label>
             <select id="flash-speed" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-rose-300 rounded-xl px-2 py-1.5">
-              <option value="1300">Perlahan (1.3s)</option>
-              <option value="850" selected>Sederhana (0.85s)</option>
-              <option value="500">Kilat (0.5s)</option>
-              <option value="300">Master (0.3s)</option>
+              <option value="1300">🐢 Santai</option>
+              <option value="850" selected>🐇 Laju</option>
+              <option value="500">🐆 Kilat</option>
+              <option value="300">🚀 Master</option>
             </select>
           </div>
         </div>
@@ -1085,10 +1187,10 @@
           <div>
             <label class="block text-[10px] font-black text-indigo-900 mb-0.5">⚡ Kelajuan Suara</label>
             <select id="dict-speed" onchange="updateAnzanRewardPreviews()" class="w-full text-xs font-black bg-white border-2 border-indigo-300 rounded-xl px-2 py-1.5">
-              <option value="slow">Perlahan</option>
-              <option value="normal" selected>Sederhana</option>
-              <option value="fast">Pantas</option>
-              <option value="blitz">Kilat</option>
+              <option value="slow">🐢 Santai</option>
+              <option value="normal" selected>🐇 Laju</option>
+              <option value="fast">🐆 Kilat</option>
+              <option value="blitz">🚀 Master</option>
             </select>
           </div>
         </div>
@@ -1147,22 +1249,31 @@
         </div>
       </div>
 
-      <!-- Kad Ringkasan Akaun Kekal -->
+      <!-- Kad Ringkasan Profil Pelajar (ID & PIN Dilindungi) -->
       <div class="bubbly-card bg-white border-4 border-amber-400 p-4 space-y-3">
-        <div class="flex items-center gap-3">
-          <div id="acc-avatar-box" class="w-16 h-16 rounded-2xl flex-shrink-0 relative"></div>
-          <div class="min-w-0 flex-1">
-            <div class="text-[10px] font-black text-amber-700 uppercase tracking-wider">ID Akaun Kekal: <span id="acc-id-display" class="font-mono text-slate-600">-</span></div>
-            <div id="acc-current-name-display" class="text-base font-black text-slate-800 truncate">Pelajar</div>
-            <div class="flex flex-wrap gap-1.5 mt-1 text-[11px] font-extrabold">
-              <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="acc-stars-display">0</span> Coin</span>
-              <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-lg">🏅 <span id="acc-points-display">0</span> Markah</span>
-              <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-lg">🔐 PIN: <span id="acc-pin-display">0000</span></span>
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="acc-avatar-box" class="w-16 h-16 rounded-2xl flex-shrink-0 relative"></div>
+            <div class="min-w-0 flex-1">
+              <div id="acc-current-name-display" class="text-base font-black text-slate-800 truncate">Pelajar</div>
+              <div class="flex flex-wrap gap-1.5 mt-1 text-[11px] font-extrabold">
+                <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="acc-stars-display">0</span> Coin</span>
+                <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-lg">🏅 <span id="acc-points-display">0</span> Markah</span>
+              </div>
             </div>
           </div>
+          <button type="button" id="btn-toggle-acc-secrets" onclick="toggleAccountSecrets()" class="bubbly-btn bg-slate-100 hover:bg-slate-200 text-slate-800 border-2 border-slate-300 px-2.5 py-1.5 text-[10px] font-black flex-shrink-0">
+            🔐 Tunjuk PIN
+          </button>
         </div>
+
+        <div id="acc-secrets-box" class="hidden bg-slate-50 border-2 border-slate-200 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px] font-black">
+          <span class="text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-lg">🔐 PIN Pemulihan: <span id="acc-pin-display">0000</span></span>
+          <span class="text-slate-600 text-[10px]">ID: <span id="acc-id-display" class="font-mono">-</span></span>
+        </div>
+
         <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2.5">
-          💡 Semua pencapaian (coin, markah, modul terbuka, rekod masa & avatar) terikat pada <b>ID Akaun Kekal</b> anda. Anda boleh menukar nama atau kata laluan bila-bila masa tanpa kehilangan sebarang rekod.
+          💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.
         </p>
       </div>
 
@@ -1573,9 +1684,14 @@
           <!-- Ganjaran Coin & Markah Pemain -->
           <div id="arena-result-summary" class="bg-white/10 border border-white/20 rounded-2xl p-2.5 text-xs font-black text-amber-200"></div>
 
-          <button type="button" onclick="exitCurrentArenaRoom()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs py-3 border-2 border-emerald-900">
-            🔄 Kembali ke Lobi Arena
-          </button>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="shareArenaChampionCard()" class="bubbly-btn bg-gradient-to-r from-amber-400 to-orange-500 text-amber-950 font-black text-xs py-3 border-2 border-amber-700">
+              📣 Kongsi Kad Juara
+            </button>
+            <button type="button" onclick="exitCurrentArenaRoom()" class="bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs py-3 border-2 border-emerald-900">
+              🔄 Lobi Arena
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -1598,17 +1714,46 @@
           <span id="parent-linked-count-badge" class="text-xs font-black bg-teal-100 text-teal-900 px-3 py-1 rounded-full border border-teal-300">0 Anak</span>
         </div>
 
-        <!-- Borang Pautkan Akaun Anak -->
-        <div class="bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-3 space-y-2">
-          <div class="text-xs font-black text-teal-950">🔗 Pautkan Akaun Anak Baharu</div>
-          <p class="text-[10px] font-bold text-slate-600">Masukkan <b>Nama Akaun Anak</b> yang tepat beserta <b>PIN Pemulihan 4-Digit</b> akaun anak tersebut untuk pengesahan.</p>
-          <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
-            <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
-            <button id="btn-parent-link-submit" type="submit" class="sm:col-span-3 bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border-2 border-teal-900 py-2.5 text-xs font-black">
-              ➕ Pautkan Akaun Anak Sekarang
+        <!-- Kotak Tambah / Pautkan Akaun Anak & Murid (2 Mod Mudah) -->
+        <div class="bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-3 space-y-2.5">
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" id="tab-parent-add-link" onclick="switchParentAddChildTab('link')" class="bubbly-btn bg-teal-600 text-white border-2 border-teal-900 py-2 px-2 text-[11px] font-black">
+              🔗 Pautkan Akaun Sedia Ada
             </button>
-          </form>
+            <button type="button" id="tab-parent-add-create" onclick="switchParentAddChildTab('create')" class="bubbly-btn bg-white text-teal-950 border-2 border-teal-300 py-2 px-2 text-[11px] font-black">
+              ✨ Cipta Akaun Anak Baru
+            </button>
+          </div>
+
+          <!-- Sub-Borang A: Pautkan Akaun Sedia Ada -->
+          <div id="parent-subpanel-link" class="space-y-2">
+            <p class="text-[10px] font-bold text-slate-600">Masukkan <b>Nama Akaun Anak</b> yang tepat beserta <b>PIN Pemulihan 4-Digit</b> akaun tersebut:</p>
+            <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
+              <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+              <button id="btn-parent-link-submit" type="submit" class="sm:col-span-3 bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border-2 border-teal-900 py-2.5 text-xs font-black">
+                ➕ Pautkan Akaun Anak Sekarang
+              </button>
+            </form>
+          </div>
+
+          <!-- Sub-Borang B: Cipta Akaun Anak / Murid Terus Tanpa Log Keluar -->
+          <div id="parent-subpanel-create" class="hidden space-y-2">
+            <p class="text-[10px] font-bold text-slate-600">Daftar akaun baharu untuk anak/murid dan pautkan terus secara automatik:</p>
+            <form onsubmit="handleParentCreateChildAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input id="parent-create-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Anak / Murid (cth: Aisyah)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
+              <input id="parent-create-child-pass" type="text" required minlength="3" maxlength="20" placeholder="Kata Laluan (cth: 1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
+              <select id="parent-create-child-gender" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none">
+                <option value="boy">👦 Murid Lelaki</option>
+                <option value="girl">👧 Murid Perempuan</option>
+              </select>
+              <input id="parent-create-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" value="1234" placeholder="PIN 4-Digit (1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+              <button id="btn-parent-create-submit" type="submit" class="sm:col-span-2 bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border-2 border-emerald-900 py-2.5 text-xs font-black">
+                ✨ Cipta & Pautkan Akaun Anak Sekarang
+              </button>
+            </form>
+          </div>
+
           <div id="parent-link-feedback" class="hidden text-xs font-extrabold rounded-xl p-2 text-center"></div>
         </div>
 
@@ -1743,7 +1888,7 @@
         langLabel: '🌐 Bahasa:',
         appTitle: 'Jari & Abakus Pintar',
         appSubtitle: 'Platform Belajar Kira Pantas Chisanbop & Soroban',
-        lblName: 'Nama Pelajar (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)',
+        lblName: 'Taip Nama Anda',
         phName: 'Contoh: Aiman / aiman_01 / Siti Nur',
         lblPass: 'Kata Laluan',
         phPass: 'Masukkan kata laluan',
@@ -5394,6 +5539,35 @@
     let currentBlitzAnswer = 0;
     let blitzScore = 0;
     let blitzStreak = 0;
+    let blitzLives = 3;
+    let blitzBestScore = Number(localStorage.getItem('kirapantas_blitz_best_v1') || 0);
+
+    function updateBlitzLivesAndBestUI() {
+      const livesEl = document.getElementById('blitz-lives-badge');
+      if (livesEl) {
+        const full = '❤️'.repeat(Math.max(0, blitzLives));
+        const empty = '🖤'.repeat(Math.max(0, 3 - blitzLives));
+        livesEl.innerText = full + empty;
+      }
+      if (blitzScore > blitzBestScore) {
+        blitzBestScore = blitzScore;
+        try { localStorage.setItem('kirapantas_blitz_best_v1', String(blitzBestScore)); } catch (e) {}
+      }
+      const bestEl = document.getElementById('blitz-best-score');
+      if (bestEl) bestEl.innerText = blitzBestScore;
+    }
+
+    window.resetBlitzLivesAndStart = function() {
+      blitzLives = 3;
+      blitzScore = 0;
+      blitzStreak = 0;
+      document.getElementById('blitz-score').innerText = '0';
+      document.getElementById('blitz-streak').innerText = '0';
+      document.getElementById('blitz-gameover-card')?.classList.add('hidden');
+      document.getElementById('blitz-options-grid')?.classList.remove('hidden');
+      updateBlitzLivesAndBestUI();
+      generateNextBlitzQuestion();
+    };
 
     window.generateNextBlitzQuestion = function() {
       const diff = document.getElementById('blitz-difficulty')?.value || 'jari_all';
@@ -5591,21 +5765,42 @@
         triggerCenterRewardBurst(totalBlitzPts, totalBlitzCoins, bw.tierKey, isBlitzCombo10);
 
         if (currentPlayer) {
+          const bTag = document.getElementById('blitz-tag')?.innerText || 'Cabaran Kilat';
+          recordStudentQuestionAttempt(`blitz_${diffKey}`, `Kilat: ${bTag}`, true);
           addPlayerReward(totalBlitzCoins, totalBlitzPts);
         }
         setTimeout(() => generateNextBlitzQuestion(), blitzStreakPts > 0 ? 1450 : 900);
       } else {
         playWrong();
         blitzStreak = 0;
+        blitzLives = Math.max(0, blitzLives - 1);
+        updateBlitzLivesAndBestUI();
+        if (currentPlayer) {
+          const bTag = document.getElementById('blitz-tag')?.innerText || 'Cabaran Kilat';
+          recordStudentQuestionAttempt(`blitz_${diffKey}`, `Kilat: ${bTag}`, false);
+          savePlayerCloud();
+        }
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        const bWrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah <b>${currentBlitzAnswer}</b>.`;
+        const bWrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah <b>${currentBlitzAnswer}</b>. (Nyawa tinggal: ${blitzLives}/3)`;
         fb.innerHTML = bWrongHtml;
         fb.classList.remove('hidden');
         showQuizInstantPopup(bWrongHtml, 'wrong');
-        setTimeout(() => generateNextBlitzQuestion(), 1400);
+        if (blitzLives <= 0) {
+          setTimeout(() => {
+            document.getElementById('blitz-options-grid')?.classList.add('hidden');
+            fb.classList.add('hidden');
+            const goCard = document.getElementById('blitz-gameover-card');
+            const goSum = document.getElementById('blitz-gameover-summary');
+            if (goSum) goSum.innerHTML = `Skor Sesi Ini: <b>${blitzScore}</b> • Rekod Terbaik: <b>${blitzBestScore}</b> 🏆`;
+            if (goCard) goCard.classList.remove('hidden');
+          }, 1100);
+        } else {
+          setTimeout(() => generateNextBlitzQuestion(), 1400);
+        }
       }
 
+      updateBlitzLivesAndBestUI();
       document.getElementById('blitz-score').innerText = blitzScore;
       document.getElementById('blitz-streak').innerText = blitzStreak;
     }
@@ -5617,6 +5812,8 @@
     let activeModIndex = 0;
     let activeModSessionCorrect = 0;
     let activeModConsecutiveStreak = 0;
+      activeModConsecutiveWrong = 0;
+    let activeModConsecutiveWrong = 0;
 
     let helperFingerLeft = [false, false, false, false, false];
     let helperFingerRight = [false, false, false, false, false];
@@ -5901,6 +6098,7 @@
         activeModIndex = 0;
         activeModSessionCorrect = 0;
         activeModConsecutiveStreak = 0;
+      activeModConsecutiveWrong = 0;
         renderCurrentModuleQuestion();
       }
     };
@@ -5995,15 +6193,50 @@
       renderCurrentModuleQuestion();
     };
 
+    function updateModule5StarsUI(qIdx) {
+      const starStage = Math.floor(qIdx / 10) + 1; // 1 to 5
+      const inStageNum = (qIdx % 10) + 1; // 1 to 10
+      const completedStars = Math.floor(qIdx / 10);
+      const bar = document.getElementById('mod-5-stars-bar');
+      if (bar) {
+        bar.innerHTML = [1, 2, 3, 4, 5].map(s =>
+          s <= completedStars
+            ? `<span class="text-lg drop-shadow-xs">⭐</span>`
+            : (s === starStage ? `<span class="text-lg animate-pulse">🌟</span>` : `<span class="text-base opacity-30">⭐</span>`)
+        ).join('');
+      }
+      const stBadge = document.getElementById('mod-star-stage-badge');
+      if (stBadge) stBadge.innerText = `⭐ Bintang ${starStage}/5 • Soalan ${inStageNum}/10`;
+      const qNumEl = document.getElementById('mod-q-num');
+      if (qNumEl) qNumEl.innerText = inStageNum;
+      const qOverallEl = document.getElementById('mod-q-overall-num');
+      if (qOverallEl) qOverallEl.innerText = qIdx + 1;
+      const pct = Math.round((inStageNum / 10) * 100);
+      const pBar = document.getElementById('mod-progress-bar');
+      if (pBar) pBar.style.width = `${pct}%`;
+    }
+
+    window.continueToNextModuleStar = function() {
+      playClick();
+      const mCard = document.getElementById('mod-star-milestone-card');
+      if (mCard) mCard.classList.add('hidden');
+      const optBox = document.getElementById('mod-q-options');
+      if (optBox) optBox.classList.remove('hidden');
+      activeModIndex++;
+      renderCurrentModuleQuestion();
+    };
+
     function renderCurrentModuleQuestion() {
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
       resetHelperAbacus('mod', true);
       resetHelperFingers(true);
-      document.getElementById('mod-q-num').innerText = activeModIndex + 1;
-      const pct = Math.round(((activeModIndex + 1) / 50) * 100);
-      document.getElementById('mod-progress-bar').style.width = `${pct}%`;
+      updateModule5StarsUI(activeModIndex);
+      const mCard = document.getElementById('mod-star-milestone-card');
+      if (mCard) mCard.classList.add('hidden');
+      const optBoxVis = document.getElementById('mod-q-options');
+      if (optBoxVis) optBoxVis.classList.remove('hidden');
       document.getElementById('mod-q-prompt').innerText = q.prompt;
       document.getElementById('mod-q-visual').innerHTML = q.visualHtml || '';
 
@@ -6084,6 +6317,8 @@
         if (streakBadge) streakBadge.innerText = `🔥 Berturut: ${activeModConsecutiveStreak}`;
 
         if (currentPlayer) {
+          const mLabel = getModuleTopicLabelForAnalytics(activeModId, activeMod3QuizCategory);
+          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, true);
           addPlayerReward(totalEarnedCoins, totalEarnedPts);
           if (!currentPlayer.modScores) currentPlayer.modScores = {};
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
@@ -6091,27 +6326,65 @@
             document.getElementById('mod-best-score').innerText = activeModSessionCorrect;
           }
         }
+        activeModConsecutiveWrong = 0;
       } else {
         playWrong();
         activeModConsecutiveStreak = 0;
+        activeModConsecutiveWrong++;
+        if (currentPlayer) {
+          const mLabel = getModuleTopicLabelForAnalytics(activeModId, activeMod3QuizCategory);
+          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, false);
+          savePlayerCloud();
+        }
         const streakBadge = document.getElementById('mod-q-streak-badge');
         if (streakBadge) streakBadge.innerText = '🔥 Berturut: 0';
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3 text-base font-black text-white';
-        const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>. (Rentetan berturut ditetapkan semula ke 0)`;
+
+        let autoHelperNote = '';
+        if (activeModConsecutiveWrong >= 2) {
+          const isJariTrack = JARI_TRACK_IDS.includes(activeModId);
+          if (isJariTrack) setHelperFingersVisibility(true);
+          else setHelperAbacusVisibility('mod', true);
+          autoHelperNote = `<br><span class="inline-block mt-1 bg-amber-200 text-amber-950 px-2 py-0.5 rounded-lg text-[11px]">💡 Bantuan ${isJariTrack ? 'Jari Kira' : 'Sempoa Kira'} dibuka automatik untuk bantu anda!</span>`;
+        }
+
+        const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>.${autoHelperNote}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
         fb.innerHTML = wrongHtml;
         fb.classList.remove('hidden');
-        showQuizInstantPopup(wrongHtml, 'wrong');
+        showQuizInstantPopup(`❌ Kurang tepat! Jawapan betul: <b>${q.answer}</b>`, 'wrong');
       }
       keepQuizBottomInView();
 
       setTimeout(() => {
-        if (activeModIndex < 49) {
+        const isStarCheckpoint = ((activeModIndex + 1) % 10 === 0) && activeModIndex < 49;
+        if (isStarCheckpoint) {
+          const completedStarNum = Math.floor((activeModIndex + 1) / 10);
+          playCheer();
+          triggerConfetti(55);
+          if (currentPlayer) addPlayerReward(3, 15);
+          const bar = document.getElementById('mod-5-stars-bar');
+          if (bar) {
+            bar.innerHTML = [1, 2, 3, 4, 5].map(s =>
+              s <= completedStarNum ? `<span class="text-lg">⭐</span>` : `<span class="text-base opacity-30">⭐</span>`
+            ).join('');
+          }
+          document.getElementById('mod-q-options')?.classList.add('hidden');
+          fb.classList.add('hidden');
+          const mCard = document.getElementById('mod-star-milestone-card');
+          if (mCard) {
+            document.getElementById('mod-milestone-stars-emoji').innerText = '⭐'.repeat(completedStarNum);
+            document.getElementById('mod-milestone-title').innerText = `🎉 Tahniah! Bintang ${completedStarNum}/5 Selesai!`;
+            document.getElementById('mod-milestone-desc').innerHTML = `Hebat! Anda terima bonus <b>+3 Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>! Sedia untuk Bintang ${completedStarNum + 1}?`;
+            mCard.classList.remove('hidden');
+          }
+          keepQuizBottomInView();
+        } else if (activeModIndex < 49) {
           activeModIndex++;
           renderCurrentModuleQuestion();
         } else {
-          triggerConfetti();
-          const doneHtml = `🏆 Tahniah! Anda tamatkan semua 50 soalan modul ini dengan skor ${activeModSessionCorrect}/50!`;
+          triggerConfetti(80);
+          const doneHtml = `🏆 Tahniah! Anda tamatkan semua 5 Bintang (50 soalan) dengan skor ${activeModSessionCorrect}/50!`;
           fb.className = 'rounded-2xl p-4 text-center text-xs font-black bg-amber-100 text-amber-900 border-2 border-amber-400';
           fb.innerHTML = doneHtml;
           fb.classList.remove('hidden');
@@ -6244,6 +6517,16 @@
 
     let simLeftState = [false, false, false, false, false];
     let simRightState = [false, false, false, false, false];
+    let simChallengeTarget = 27;
+
+    window.nextSimFingerChallenge = function(manualClick = false) {
+      if (manualClick) playClick();
+      let nextT = Math.floor(Math.random() * 98) + 1;
+      if (nextT === simChallengeTarget) nextT = (nextT % 98) + 1;
+      simChallengeTarget = nextT;
+      const el = document.getElementById('sim-challenge-target');
+      if (el) el.innerText = simChallengeTarget;
+    };
 
     function renderFingerSimulator() {
       const box = document.getElementById('sim-hands-container');
@@ -6259,8 +6542,22 @@
       };
       const lVal = calcHand(simLeftState, 10);
       const rVal = calcHand(simRightState, 1);
-      document.getElementById('sim-total-val').innerText = lVal + rVal;
+      const total = lVal + rVal;
+      document.getElementById('sim-total-val').innerText = total;
       document.getElementById('sim-breakdown').innerText = `Kiri (Puluh): ${lVal} + Kanan (Sa): ${rVal}`;
+
+      if (total === simChallengeTarget && total > 0) {
+        playCheer();
+        triggerConfetti(30);
+        if (currentPlayer) addPlayerReward(2, 10);
+        showQuizInstantPopup(`🎉 Tepat! Jari anda berjaya bentuk <b>${simChallengeTarget}</b>! (+2 Coin & +10 Markah)`, 'super_fast');
+        setTimeout(() => {
+          simLeftState = [false, false, false, false, false];
+          simRightState = [false, false, false, false, false];
+          window.nextSimFingerChallenge(false);
+          renderFingerSimulator();
+        }, 900);
+      }
     }
 
     window.toggleSimFinger = function(side, idx) {
@@ -6330,6 +6627,19 @@
       document.getElementById('abacus-total-val').innerText = total.toLocaleString();
       document.getElementById('abacus-breakdown').innerText =
         `Ribu: ${vals[0]} | Ratus: ${vals[1]} | Puluh: ${vals[2]} | Sa: ${vals[3]}`;
+
+      if (typeof window._abaChallengeTarget === 'undefined') window._abaChallengeTarget = 145;
+      if (total === window._abaChallengeTarget && total > 0) {
+        playCheer();
+        triggerConfetti(30);
+        if (currentPlayer) addPlayerReward(2, 10);
+        showQuizInstantPopup(`🎉 Tepat! Sempoa anda berjaya bentuk <b>${window._abaChallengeTarget.toLocaleString()}</b>! (+2 Coin & +10 Markah)`, 'super_fast');
+        setTimeout(() => {
+          abacusRods.forEach(r => { r.top = false; r.bot = 0; });
+          window.nextAbacusBoardChallenge(false);
+          renderInteractiveAbacus();
+        }, 900);
+      }
     }
 
     window.toggleAbacusTop = function(rIdx) {
@@ -6348,6 +6658,16 @@
       renderInteractiveAbacus();
     };
 
+    window.nextAbacusBoardChallenge = function(manualClick = false) {
+      if (manualClick) playClick();
+      const pools = [26, 48, 73, 125, 145, 260, 384, 519, 642, 875, 1250, 2460];
+      let cand = pools[Math.floor(Math.random() * pools.length)];
+      if (cand === window._abaChallengeTarget) cand = Math.floor(Math.random() * 890) + 110;
+      window._abaChallengeTarget = cand;
+      const el = document.getElementById('aba-challenge-target');
+      if (el) el.innerText = cand.toLocaleString();
+    };
+
     window.resetAbacusBoard = function() {
       playClick();
       abacusRods.forEach(r => { r.top = false; r.bot = 0; });
@@ -6355,8 +6675,109 @@
     };
 
     /* 9. STUDIO AVATAR 3D & KEDAI COIN (STACKABLE ACCESSORIES) */
+    window.toggleAccountSecrets = function() {
+      playClick();
+      const box = document.getElementById('acc-secrets-box');
+      const btn = document.getElementById('btn-toggle-acc-secrets');
+      if (!box || !btn) return;
+      const isHidden = box.classList.contains('hidden');
+      box.classList.toggle('hidden', !isHidden);
+      btn.innerText = isHidden ? '🙈 Sembunyi PIN' : '🔐 Tunjuk PIN';
+    };
+
+    function updateDailyMysteryBoxUI() {
+      if (!currentPlayer) return;
+      const todayKey = getTodayDateKey();
+      const claimedToday = currentPlayer.mysteryBoxDate === todayKey;
+      const btn = document.getElementById('btn-open-mystery-box');
+      const desc = document.getElementById('daily-mystery-box-desc');
+      const icon = document.getElementById('daily-mystery-box-icon');
+      if (btn) {
+        if (claimedToday) {
+          btn.disabled = true;
+          btn.className = 'bubbly-btn bg-emerald-100 text-emerald-800 border-2 border-emerald-400 px-3 py-2 text-[11px] font-black flex-shrink-0';
+          btn.innerText = '✅ Dibuka';
+        } else {
+          btn.disabled = false;
+          btn.className = 'bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0';
+          btn.innerText = '✨ Buka Peti!';
+        }
+      }
+      if (icon) {
+        icon.innerText = claimedToday ? '🎊' : '🎁';
+        icon.classList.toggle('animate-bounce', !claimedToday);
+      }
+      if (desc) {
+        desc.innerText = claimedToday
+          ? 'Anda sudah membuka Peti Misteri hari ini! Datang lagi esok untuk hadiah baharu.'
+          : 'Buka 1 peti kejutan percuma setiap hari untuk Coin atau Aksesori!';
+      }
+    }
+
+    window.openDailyMysteryGiftBox = function() {
+      if (!currentPlayer) return;
+      const todayKey = getTodayDateKey();
+      if (currentPlayer.mysteryBoxDate === todayKey) {
+        showAppToast('🎁 Peti Misteri hari ini sudah dibuka! Kembali lagi esok.');
+        return;
+      }
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      currentPlayer.mysteryBoxDate = todayKey;
+
+      // 35% chance to win an unowned cute/special item, otherwise win a surprise Coin Jackpot (5 to 15 Coins)!
+      const unownedPool = [
+        ...AVATAR_STUDIO_CATALOG.accessory,
+        ...AVATAR_STUDIO_CATALOG.headwear,
+        ...AVATAR_STUDIO_CATALOG.frame
+      ].filter(it => it.cost > 0 && it.cost <= 65 && (it.gender === cfg.gender || it.gender === 'unisex') && !currentPlayer.ownedAvatarItems.includes(it.id));
+
+      playCheer();
+      triggerConfetti(70);
+
+      if (unownedPool.length > 0 && Math.random() < 0.35) {
+        const wonItem = unownedPool[Math.floor(Math.random() * unownedPool.length)];
+        currentPlayer.ownedAvatarItems.push(wonItem.id);
+        addPlayerReward(3, 15);
+        showQuizInstantPopup(`🎁 KEJUTAN MISTERI! Anda menang item <b>"${wonItem.name}"</b> + <b>3 Coin</b> ${COIN_ICON_HTML}!`, 'combo');
+      } else {
+        const coinPrizes = [5, 8, 10, 12, 15];
+        const wonCoins = coinPrizes[Math.floor(Math.random() * coinPrizes.length)];
+        addPlayerReward(wonCoins, 15);
+        showQuizInstantPopup(`🎁 JACKPOT PETI MISTERI! Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo');
+      }
+      updateDailyMysteryBoxUI();
+      renderAvatarStudio();
+    };
+
+    window.shareArenaChampionCard = async function() {
+      playClick();
+      const playerName = currentPlayer ? currentPlayer.name : 'Juara Kira Pantas';
+      const modeTitle = document.getElementById('arena-room-mode-title')?.innerText || 'Arena Perlawanan Online';
+      const sumText = (document.getElementById('arena-result-summary')?.innerText || '').replace(/\s+/g, ' ').trim();
+      const shareText = `🏆 KAD JUARA JARI & ABAKUS PINTAR 🏆
+👤 Pemain: ${playerName}
+⚔️ Mod: ${modeTitle}
+🌟 ${sumText}
+Jom lawan kira pantas dengan saya!`;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: 'Kad Juara Jari & Abakus Pintar', text: shareText });
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        await navigator.clipboard.writeText(shareText);
+        showAppToast('📋 Kad Juara berjaya disalin! Tampal di WhatsApp atau kumpulan kelas anda.');
+      } catch (e) {
+        showAppToast('🏆 Tahniah! Kongsikan skor hebat anda dengan rakan-rakan!');
+      }
+    };
+
     function renderAvatarStudio() {
       if (!currentPlayer) return;
+      updateDailyMysteryBoxUI();
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
 
       const starEl = document.getElementById('studio-star-balance');
@@ -6836,6 +7257,14 @@
       currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + addPts;
       currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + addPts;
       currentPlayer.todayStars = (currentPlayer.todayStars || 0) + addStars;
+      if (addPts > 0) {
+        const curScr = ['modules', 'quiz', 'anzan', 'arena'].find(s => {
+          const el = document.getElementById(`screen-${s}`);
+          return el && !el.classList.contains('hidden');
+        });
+        if (curScr === 'modules') incrementDailyQuestProgress('q_mod', 1);
+        if (curScr === 'quiz' || curScr === 'anzan' || curScr === 'arena') incrementDailyQuestProgress('q_arena', 1);
+      }
       if (!isDeviceOnline || !db) {
         currentPlayer.pendingCloudSync = true;
         currentPlayer.offlineDeltaPoints = (currentPlayer.offlineDeltaPoints || 0) + addPts;
@@ -6843,6 +7272,33 @@
       }
       syncPlayerUI();
       savePlayerCloud();
+    }
+
+    function recordStudentQuestionAttempt(topicKey, topicLabel, isCorrect) {
+      if (!currentPlayer || currentPlayer.isGuest || isAdminAccountRecord(currentPlayer)) return;
+      const todayKey = getTodayDateKey();
+      if (!currentPlayer.analyticsStats || typeof currentPlayer.analyticsStats !== 'object') {
+        currentPlayer.analyticsStats = { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] };
+      }
+      const st = currentPlayer.analyticsStats;
+      if (!st.byTopic || typeof st.byTopic !== 'object') st.byTopic = {};
+      if (!Array.isArray(st.activeDays)) st.activeDays = [];
+
+      if (isCorrect) st.totalCorrect = (Number(st.totalCorrect) || 0) + 1;
+      else st.totalWrong = (Number(st.totalWrong) || 0) + 1;
+
+      const tKey = String(topicKey || 'general');
+      if (!st.byTopic[tKey]) {
+        st.byTopic[tKey] = { label: String(topicLabel || tKey), correct: 0, wrong: 0 };
+      }
+      st.byTopic[tKey].label = String(topicLabel || st.byTopic[tKey].label || tKey);
+      if (isCorrect) st.byTopic[tKey].correct = (Number(st.byTopic[tKey].correct) || 0) + 1;
+      else st.byTopic[tKey].wrong = (Number(st.byTopic[tKey].wrong) || 0) + 1;
+
+      if (!st.activeDays.includes(todayKey)) {
+        st.activeDays.push(todayKey);
+        if (st.activeDays.length > 30) st.activeDays = st.activeDays.slice(-30);
+      }
     }
 
     let activeScoreboardTab = 'today';
@@ -7180,6 +7636,7 @@
       if (accStarsEl) accStarsEl.innerText = stars;
       if (accPtsEl) accPtsEl.innerText = pts;
       if (accPinEl) accPinEl.innerText = currentPlayer.recoveryPin || '0000';
+      if (typeof updateDailyMysteryBoxUI === 'function') updateDailyMysteryBoxUI();
       const startBadge = document.getElementById('badge-start-here-modules');
       if (startBadge) {
         startBadge.classList.toggle('hidden', pts > 0 || isAdmin);
@@ -7187,7 +7644,154 @@
       if (currentPlayer.preferredLang && ['ms', 'en', 'zh', 'ar'].includes(currentPlayer.preferredLang)) {
         applyAppLanguageUI(currentPlayer.preferredLang);
       }
+      const guestBanner = document.getElementById('guest-save-banner');
+      if (guestBanner) guestBanner.classList.toggle('hidden', !currentPlayer.isGuest);
+      renderDailyQuestCard();
     }
+
+    function ensurePlayerDailyQuests() {
+      if (!currentPlayer) return null;
+      const todayKey = getTodayDateKey();
+      if (!currentPlayer.dailyQuests || currentPlayer.dailyQuests.dateKey !== todayKey) {
+        currentPlayer.dailyQuests = {
+          dateKey: todayKey,
+          q_mod: 0,
+          q_arena: 0,
+          q_tool: 0,
+          claimed: {}
+        };
+      }
+      if (!currentPlayer.dailyQuests.claimed) currentPlayer.dailyQuests.claimed = {};
+      return currentPlayer.dailyQuests;
+    }
+
+    function incrementDailyQuestProgress(questKey, step = 1) {
+      if (!currentPlayer) return;
+      const dq = ensurePlayerDailyQuests();
+      if (!dq) return;
+      const targets = { q_mod: 5, q_arena: 3, q_tool: 1 };
+      const maxT = targets[questKey] || 1;
+      const prev = dq[questKey] || 0;
+      dq[questKey] = Math.min(maxT, prev + step);
+      if (prev < maxT && dq[questKey] >= maxT) {
+        showAppToast('🌟 Misi Harian Selesai! Kembali ke Menu Utama untuk tuntut Coin!');
+      }
+      renderDailyQuestCard();
+    }
+
+    window.claimDailyQuestReward = function(questKey) {
+      if (!currentPlayer) return;
+      const dq = ensurePlayerDailyQuests();
+      const defs = {
+        q_mod:   { target: 5, reward: 5 },
+        q_arena: { target: 3, reward: 8 },
+        q_tool:  { target: 1, reward: 3 }
+      };
+      const cfg = defs[questKey];
+      if (!cfg || (dq[questKey] || 0) < cfg.target || dq.claimed[questKey]) return;
+      dq.claimed[questKey] = true;
+      playCheer();
+      triggerConfetti(35);
+      addPlayerReward(cfg.reward, 10);
+      showAppToast(`🎁 Tahniah! +${cfg.reward} Coin & +10 Markah Misi Harian dituntut!`);
+      renderDailyQuestCard();
+    };
+
+    function renderDailyQuestCard() {
+      const listEl = document.getElementById('daily-quest-list');
+      const badgeEl = document.getElementById('daily-quest-progress-badge');
+      if (!listEl || !currentPlayer) return;
+      const dq = ensurePlayerDailyQuests();
+      const items = [
+        { key: 'q_mod',   icon: '📚', label: 'Jawab 5 soalan Modul Belajar', target: 5, reward: 5 },
+        { key: 'q_arena', icon: '⚡', label: 'Jawab 3 soalan Cabaran / Anzan / Arena', target: 3, reward: 8 },
+        { key: 'q_tool',  icon: '🖐️', label: 'Cuba Simulator Jari atau Abakus', target: 1, reward: 3 }
+      ];
+      let doneCount = 0;
+      listEl.innerHTML = items.map(it => {
+        const cur = Math.min(it.target, dq[it.key] || 0);
+        const isDone = cur >= it.target;
+        const isClaimed = Boolean(dq.claimed[it.key]);
+        if (isDone) doneCount++;
+        let actionBtn = `<span class="text-[10px] font-black text-slate-500 bg-white px-2 py-1 rounded-lg border border-slate-200">${cur}/${it.target}</span>`;
+        if (isClaimed) {
+          actionBtn = `<span class="text-[10px] font-black text-emerald-800 bg-emerald-100 px-2 py-1 rounded-lg">✅ Ditebus</span>`;
+        } else if (isDone) {
+          actionBtn = `<button type="button" onclick="claimDailyQuestReward('${it.key}')" class="bubbly-btn bg-amber-400 text-amber-950 border border-amber-700 px-2.5 py-1 text-[10px] font-black animate-bounce">🎁 +${it.reward} ${COIN_ICON_HTML}</button>`;
+        }
+        return `
+          <div class="flex items-center justify-between gap-2 bg-white/90 border border-indigo-100 rounded-xl px-2.5 py-1.5">
+            <div class="min-w-0 flex items-center gap-1.5 font-bold text-slate-700 truncate">
+              <span>${it.icon}</span>
+              <span class="truncate">${it.label}</span>
+            </div>
+            <div class="flex-shrink-0">${actionBtn}</div>
+          </div>
+        `;
+      }).join('');
+      if (badgeEl) badgeEl.innerText = `${doneCount} / 3 Selesai`;
+    }
+
+    window.toggleMoreLoginOptions = function() {
+      playClick();
+      const drawer = document.getElementById('login-more-options-drawer');
+      if (drawer) drawer.classList.toggle('hidden');
+    };
+
+    window.startGuestDemoMode = function() {
+      playCheer();
+      const todayKey = getTodayDateKey();
+      const guestNum = Math.floor(Math.random() * 900) + 100;
+      currentPlayer = {
+        accountId: `guest_${Date.now()}`,
+        key: `guest_${Date.now()}`,
+        nameKey: `tetamu_${guestNum}`,
+        name: `Tetamu #${guestNum}`,
+        password: '',
+        recoveryPin: '0000',
+        preferredLang: currentAppLang || 'ms',
+        isGuest: true,
+        isAdmin: false,
+        role: 'student',
+        isParent: false,
+        linkedChildrenIds: [],
+        stars: 10,
+        totalPoints: 0,
+        todayPoints: 0,
+        todayStars: 10,
+        playSeconds: 0,
+        todayDateKey: todayKey,
+        todaySeconds: 0,
+        isOnline: false,
+        lastActiveAt: Date.now(),
+        currentActivityLabel: 'Mod Tetamu',
+        unlockedModules: [1, 'jari2', 2],
+        modScores: {},
+        avatarConfig: getDefaultAvatarConfig('boy'),
+        ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
+      };
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('app-header').classList.remove('hidden');
+      syncPlayerUI();
+      startPlayerSessionTimer();
+      navTo('home');
+      showAppToast('🎮 Selamat mencuba! Anda diberi 10 Coin permulaan percuma.');
+    };
+
+    window.promptUpgradeGuestToAccount = function() {
+      playClick();
+      const savedGuest = currentPlayer ? { ...currentPlayer } : null;
+      logoutPlayer();
+      if (savedGuest) {
+        window._pendingGuestUpgrade = savedGuest;
+        const errBox = document.getElementById('login-error-msg');
+        if (errBox) {
+          errBox.className = 'text-xs font-extrabold text-emerald-900 bg-emerald-50 border-2 border-emerald-400 rounded-xl p-2.5';
+          errBox.innerHTML = `✨ Taip <b>Nama</b> & <b>Kata Laluan</b> anda di atas, kemudian tekan <b>✨ Daftar Baru</b> untuk simpan <b>${savedGuest.stars || 0} Coin</b> & <b>${savedGuest.totalPoints || 0} Markah</b> anda!`;
+          errBox.classList.remove('hidden');
+        }
+      }
+    };
 
     function setPlayerCurrentActivity(activityText, syncImmediately = true) {
       if (!currentPlayer || isAdminAccountRecord(currentPlayer)) return;
@@ -7209,6 +7813,14 @@
       if (!currentPlayer) return;
       const docId = currentPlayer.accountId || currentPlayer.key;
       if (!docId) return;
+
+      /* Mod Tetamu (Guest): Simpan dalam sesi pelayar sahaja sehingga murid mendaftar nama */
+      if (currentPlayer.isGuest) {
+        try {
+          sessionStorage.setItem('kirapantas_guest_session_v1', JSON.stringify(currentPlayer));
+        } catch (e) {}
+        return;
+      }
 
       /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor / Firestore semasa ujian admin */
       if (isAdminAccountRecord(currentPlayer)) {
@@ -7287,6 +7899,7 @@
           lastPlayedActivity: currentPlayer.lastPlayedActivity || currentPlayer.currentActivityLabel || 'Menu Utama',
           lastPlayedAt: currentPlayer.lastPlayedAt || currentPlayer.lastActiveAt || Date.now(),
           activityDurations: currentPlayer.activityDurations || {},
+          analyticsStats: currentPlayer.analyticsStats || { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] },
           unlockedModules: currentPlayer.unlockedModules || [1, 2],
           modScores: currentPlayer.modScores || {},
           avatarConfig: currentPlayer.avatarConfig,
@@ -7776,6 +8389,7 @@
             lastPlayedActivity: existingAccount.lastPlayedActivity || existingAccount.currentActivityLabel || 'Menu Utama',
             lastPlayedAt: Number(existingAccount.lastPlayedAt) || Number(existingAccount.lastActiveAt) || Date.now(),
             activityDurations: existingAccount.activityDurations && typeof existingAccount.activityDurations === 'object' ? existingAccount.activityDurations : {},
+            analyticsStats: existingAccount.analyticsStats && typeof existingAccount.analyticsStats === 'object' ? existingAccount.analyticsStats : { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] },
             unlockedModules: isAdminUser
               ? [1, 2, 3, 4, 5, 6]
               : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
@@ -7846,8 +8460,8 @@
             role: isParentRole ? 'parent' : 'student',
             isParent: isParentRole,
             linkedChildrenIds: [],
-            stars: 0,
-            totalPoints: 0,
+            stars: window._pendingGuestUpgrade ? (Number(window._pendingGuestUpgrade.stars) || 0) : 0,
+            totalPoints: window._pendingGuestUpgrade ? (Number(window._pendingGuestUpgrade.totalPoints) || 0) : 0,
             todayPoints: 0,
             todayStars: 0,
             playSeconds: 0,
@@ -7866,15 +8480,25 @@
           await savePlayerCloud();
           playCheer();
 
-          /* Pelajar baharu dibawa ke skrin persediaan Avatar & No. PIN Pemulihan 4 digit dahulu */
           document.getElementById('screen-login').classList.add('hidden');
-          document.getElementById('app-header').classList.add('hidden');
-          const pinField = document.getElementById('setup-recovery-pin');
-          if (pinField) pinField.value = '';
-          const setupErr = document.getElementById('setup-error-msg');
-          if (setupErr) setupErr.classList.add('hidden');
-          renderNewStudentSetupPreview();
-          document.getElementById('screen-new-setup').classList.remove('hidden');
+          if (isParentRole) {
+            /* Ibu Bapa / Pengajar terus masuk ke Panel Pemantauan untuk pautkan atau cipta akaun anak */
+            document.getElementById('app-header').classList.remove('hidden');
+            syncPlayerUI();
+            startPlayerSessionTimer();
+            subscribePlayerQuickMessages();
+            showAppToast('👨‍👩‍👧‍👦 Selamat datang! Sila pautkan atau cipta akaun anak/murid anda di sini.');
+            navTo('parent');
+          } else {
+            /* Pelajar baharu dibawa ke skrin persediaan Avatar & No. PIN Pemulihan 4 digit dahulu */
+            document.getElementById('app-header').classList.add('hidden');
+            const pinField = document.getElementById('setup-recovery-pin');
+            if (pinField) pinField.value = '';
+            const setupErr = document.getElementById('setup-error-msg');
+            if (setupErr) setupErr.classList.add('hidden');
+            renderNewStudentSetupPreview();
+            document.getElementById('screen-new-setup').classList.remove('hidden');
+          }
         }
       } catch (err) {
         playWrong();
@@ -8081,6 +8705,22 @@
 
     window.logoutPlayer = async function() {
       playClick();
+      if (window._savedParentHandoffSession) {
+        openParentalGate(
+          'Kawalan Ibu Bapa: Sahkan jawapan dewasa untuk kembali ke Akaun Ibu Bapa:',
+          async () => {
+            await markPlayerOfflineCloud();
+            currentPlayer = { ...window._savedParentHandoffSession };
+            window._savedParentHandoffSession = null;
+            await savePlayerCloud();
+            syncPlayerUI();
+            subscribePlayerQuickMessages();
+            showAppToast('👨‍👩‍👧‍👦 Kembali ke Panel Ibu Bapa.');
+            navTo('parent');
+          }
+        );
+        return;
+      }
       await markPlayerOfflineCloud();
       if (activePlayTimer) {
         clearInterval(activePlayTimer);
@@ -8377,14 +9017,16 @@
         switchModulesTrack(activeModulesTrack, true);
       } else if (screenName === 'simulator') {
         setPlayerCurrentActivity('Simulator Jari (0–99)');
+        incrementDailyQuestProgress('q_tool', 1);
         renderFingerSimulator();
       } else if (screenName === 'abacus') {
         setPlayerCurrentActivity('Abakus 4-Tiang');
+        incrementDailyQuestProgress('q_tool', 1);
         renderInteractiveAbacus();
       } else if (screenName === 'quiz') {
         setPlayerCurrentActivity('Cabaran Kilat');
         hideHelperAbacusDefault('blitz');
-        generateNextBlitzQuestion();
+        resetBlitzLivesAndStart();
       } else if (screenName === 'rewards') {
         setPlayerCurrentActivity('Kedai & Studio Avatar');
         renderAvatarStudio();
@@ -8508,11 +9150,133 @@
       await loadParentChildrenDashboard();
     };
 
+    window.switchParentAddChildTab = function(tabKey) {
+      playClick();
+      const isCreate = tabKey === 'create';
+      const linkBtn = document.getElementById('tab-parent-add-link');
+      const createBtn = document.getElementById('tab-parent-add-create');
+      const linkPanel = document.getElementById('parent-subpanel-link');
+      const createPanel = document.getElementById('parent-subpanel-create');
+      if (linkBtn) {
+        linkBtn.className = !isCreate
+          ? 'bubbly-btn bg-teal-600 text-white border-2 border-teal-900 py-2 px-2 text-[11px] font-black'
+          : 'bubbly-btn bg-white text-teal-950 border-2 border-teal-300 py-2 px-2 text-[11px] font-black';
+      }
+      if (createBtn) {
+        createBtn.className = isCreate
+          ? 'bubbly-btn bg-emerald-600 text-white border-2 border-emerald-900 py-2 px-2 text-[11px] font-black'
+          : 'bubbly-btn bg-white text-teal-950 border-2 border-teal-300 py-2 px-2 text-[11px] font-black';
+      }
+      if (linkPanel) linkPanel.classList.toggle('hidden', isCreate);
+      if (createPanel) createPanel.classList.toggle('hidden', !isCreate);
+      document.getElementById('parent-link-feedback')?.classList.add('hidden');
+    };
+
+    window.handleParentCreateChildAccount = async function(e) {
+      e.preventDefault();
+      if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
+      playClick();
+      if (!isDeviceOnline) {
+        playWrong();
+        showParentLinkFeedback('🟠 Pendaftaran akaun baharu memerlukan sambungan internet.', false);
+        return;
+      }
+      const nameInp = document.getElementById('parent-create-child-name');
+      const passInp = document.getElementById('parent-create-child-pass');
+      const genderSel = document.getElementById('parent-create-child-gender');
+      const pinInp = document.getElementById('parent-create-child-pin');
+      const btn = document.getElementById('btn-parent-create-submit');
+
+      const childName = (nameInp?.value || '').trim();
+      const childPass = passInp?.value || '';
+      const childGender = genderSel?.value === 'girl' ? 'girl' : 'boy';
+      const childPin = (pinInp?.value || '1234').trim();
+
+      if (childName.length < 2 || childPass.length < 3 || !/^\d{4}$/.test(childPin)) {
+        playWrong();
+        showParentLinkFeedback('⚠️ Pastikan nama (min 2 huruf), kata laluan (min 3 aksara) dan PIN 4-digit lengkap.', false);
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Mencipta Akaun...';
+      }
+
+      try {
+        const existing = await findAccountByExactName(childName);
+        if (existing) {
+          playWrong();
+          showParentLinkFeedback(`⚠️ Nama "${existing.name}" sudah digunakan! Gunakan nama lain atau pautkan di tab sebelah.`, false);
+          return;
+        }
+
+        const newChildId = generatePermanentAccountId();
+        const todayKey = getTodayDateKey();
+        const childRecord = {
+          accountId: newChildId,
+          key: newChildId,
+          nameKey: normalizePlayerKey(childName),
+          name: childName,
+          password: childPass,
+          recoveryPin: childPin,
+          preferredLang: currentAppLang || 'ms',
+          isAdmin: false,
+          role: 'student',
+          isParent: false,
+          linkedChildrenIds: [],
+          stars: 10,
+          totalPoints: 0,
+          todayPoints: 0,
+          todayStars: 10,
+          playSeconds: 0,
+          todayDateKey: todayKey,
+          todaySeconds: 0,
+          isOnline: false,
+          lastActiveAt: Date.now(),
+          unlockedModules: [1, 'jari2', 2],
+          modScores: {},
+          avatarConfig: getDefaultAvatarConfig(childGender),
+          ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
+        };
+
+        inMemoryAccounts.set(newChildId, childRecord);
+        persistLocalAccountsToStorage();
+        if (db && fbUser) {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', newChildId), childRecord, { merge: true });
+        }
+
+        if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
+        currentPlayer.linkedChildrenIds.push(newChildId);
+        await savePlayerCloud();
+        syncPlayerUI();
+
+        playCheer();
+        triggerConfetti(50);
+        if (nameInp) nameInp.value = '';
+        if (passInp) passInp.value = '';
+        showParentLinkFeedback(`✅ Akaun "${childName}" berjaya dicipta (+10 Coin permulaan) & dipautkan!`, true);
+        await loadParentChildrenDashboard();
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = '✨ Cipta & Pautkan Akaun Anak Sekarang';
+        }
+      }
+    };
+
     window.parentGiftCoinsToChild = function(childId, childName, bonusCoins = 10) {
       if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
       playClick();
+      const todayKey = getTodayDateKey();
+      if (!currentPlayer.parentDailyGifted) currentPlayer.parentDailyGifted = {};
+      if (currentPlayer.parentDailyGifted[childId] === todayKey) {
+        playWrong();
+        showAppToast(`ℹ️ Anda sudah menghadiahkan +10 Coin kepada ${childName} hari ini. Cuba lagi esok!`);
+        return;
+      }
       openParentalGate(
-        `Pengesahan Ibu Bapa: Sahkan jawapan untuk menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName}:`,
+        `Pengesahan Ibu Bapa: Sahkan jawapan untuk menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName} (Had 1x sehari):`,
         () => executeParentGiftCoinsToChild(childId, childName, bonusCoins)
       );
     };
@@ -8563,9 +9327,130 @@
         } catch (e) {}
       }
 
+      if (!currentPlayer.parentDailyGifted) currentPlayer.parentDailyGifted = {};
+      currentPlayer.parentDailyGifted[childId] = todayKey;
+      await savePlayerCloud();
       showAppToast(`🎁 Tahniah! Anda telah menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName}!`);
       await loadParentChildrenDashboard();
     };
+
+    function getModuleTopicLabelForAnalytics(modId, subCat) {
+      const baseNames = {
+        1: '🖐️ Jari Tahap 1: Asas 0–99',
+        'jari2': '🖐️ Jari Tahap 2: Formula 5 & 10',
+        'jari3': '⚡ Jari Tahap 3: Silat Jari Kilat',
+        2: '🧮 Sempoa Tahap 1: Kenali Manik',
+        3: '🧮 Sempoa Tahap 2: Kawan 5 & 10',
+        4: '✖️ Sempoa Tahap 3: Darab & Bahagi',
+        5: '🧠 Sempoa Tahap 4: Anzan Minda',
+        6: '🏆 Sempoa Tahap 5: Master Juara'
+      };
+      const base = baseNames[modId] || `Modul ${modId}`;
+      if ((modId === 3 || modId === 'jari2') && subCat && subCat !== 'random') {
+        const subMap = { kecil: 'Kawan Kecil 5', besar: 'Kawan Besar 10', gabung: 'Formula Gabungan' };
+        return `${base} (${subMap[subCat] || subCat})`;
+      }
+      return base;
+    }
+
+    function buildChildAnalyticsHtml(child) {
+      const st = child.analyticsStats && typeof child.analyticsStats === 'object'
+        ? child.analyticsStats
+        : { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] };
+
+      const totC = Number(st.totalCorrect) || 0;
+      const totW = Number(st.totalWrong) || 0;
+      const totalAns = totC + totW;
+      const accPct = totalAns > 0 ? Math.round((totC / totalAns) * 100) : null;
+
+      // 7-Day Consistency Pills (6 days ago -> Today)
+      const activeSet = new Set(Array.isArray(st.activeDays) ? st.activeDays : []);
+      if (child.todayDateKey && ((Number(child.todaySeconds) || 0) > 0 || (Number(child.todayPoints) || 0) > 0)) {
+        activeSet.add(child.todayDateKey);
+      }
+      const dayNamesMs = ['Ahd', 'Isn', 'Sel', 'Rab', 'Kha', 'Jum', 'Sab'];
+      let activeDaysCount = 0;
+      const weekPills = [];
+      for (let offset = 6; offset >= 0; offset--) {
+        const d = new Date();
+        d.setDate(d.getDate() - offset);
+        const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const done = activeSet.has(k);
+        if (done) activeDaysCount++;
+        const dayLbl = offset === 0 ? 'Hari Ini' : dayNamesMs[d.getDay()];
+        weekPills.push(`
+          <div class="flex flex-col items-center gap-0.5 flex-1">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${done ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-200 text-slate-400'}">
+              ${done ? '✓' : '•'}
+            </div>
+            <span class="text-[8px] font-extrabold ${offset === 0 ? 'text-teal-900' : 'text-slate-500'}">${dayLbl}</span>
+          </div>
+        `);
+      }
+
+      // Topic Breakdown & Weakest Topic Detection
+      const topicEntries = Object.values(st.byTopic || {}).filter(t => (Number(t.correct) || 0) + (Number(t.wrong) || 0) > 0);
+      let weakestHtml = `<div class="text-[10px] font-bold text-slate-500 italic">Belum ada data jawapan direkodkan untuk sesi baharu ini.</div>`;
+
+      if (topicEntries.length > 0) {
+        const enriched = topicEntries.map(t => {
+          const c = Number(t.correct) || 0;
+          const w = Number(t.wrong) || 0;
+          const sum = c + w;
+          const pct = Math.round((c / sum) * 100);
+          return { label: t.label, c, w, sum, pct };
+        }).sort((a, b) => a.pct - b.pct);
+
+        const weakest = enriched[0];
+        const needFocus = weakest.pct < 75 && weakest.w >= 1;
+        const focusBanner = needFocus
+          ? `<div class="bg-rose-100 border border-rose-300 text-rose-900 rounded-lg px-2 py-1 text-[10px] font-black">⚠️ Perlu Latihan Fokus: ${escapeHtmlSafe(weakest.label)} (${weakest.pct}% tepat • ${weakest.w} salah)</div>`
+          : `<div class="bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-lg px-2 py-1 text-[10px] font-black">🌟 Penguasaan Cemerlang! Semua topik yang dicuba ≥75% tepat.</div>`;
+
+        const bars = enriched.slice(0, 4).map(t => {
+          const barCol = t.pct >= 80 ? 'bg-emerald-500' : (t.pct >= 60 ? 'bg-amber-500' : 'bg-rose-500');
+          return `
+            <div class="space-y-0.5">
+              <div class="flex items-center justify-between text-[9px] font-black text-slate-700">
+                <span class="truncate pr-2">${escapeHtmlSafe(t.label)}</span>
+                <span class="flex-shrink-0">${t.pct}% (${t.c}✓ / ${t.w}✗)</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full ${barCol}" style="width: ${t.pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        weakestHtml = `${focusBanner}<div class="space-y-1.5 pt-1">${bars}</div>`;
+      }
+
+      const accBadge = accPct !== null
+        ? `<span class="font-black px-2 py-0.5 rounded-full text-[10px] ${accPct >= 80 ? 'bg-emerald-100 text-emerald-900' : (accPct >= 60 ? 'bg-amber-100 text-amber-900' : 'bg-rose-100 text-rose-900')}">🎯 Ketepatan: ${accPct}% (${totC}✓ / ${totW}✗)</span>`
+        : `<span class="font-black px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-500">🎯 Ketepatan: -</span>`;
+
+      return `
+        <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-2.5 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span class="text-[10px] font-black text-indigo-950">📈 Analisis Ketepatan & Konsistensi</span>
+            ${accBadge}
+          </div>
+
+          <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
+            <div class="flex items-center justify-between text-[9px] font-black text-slate-600">
+              <span>📅 Konsistensi Latihan 7 Hari Terkini</span>
+              <span class="text-teal-800">${activeDaysCount}/7 Hari Aktif</span>
+            </div>
+            <div class="flex items-center justify-between gap-1 pt-0.5">${weekPills.join('')}</div>
+          </div>
+
+          <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
+            <div class="text-[9px] font-black text-slate-600">🎯 Prestasi & Kelemahan Mengikut Topik:</div>
+            ${weakestHtml}
+          </div>
+        </div>
+      `;
+    }
 
     window.loadParentChildrenDashboard = async function() {
       if (!currentPlayer) return;
@@ -8734,6 +9619,9 @@
             </div>
           </div>
 
+          <!-- Kad Analisis Ketepatan (%), Kelemahan Topik & Konsistensi 7 Hari -->
+          ${buildChildAnalyticsHtml(child)}
+
           <!-- Kotak Mod Terakhir & Pecahan Masa Setiap Mod -->
           <div class="bg-sky-50/90 border border-sky-200 rounded-xl p-2.5 space-y-1.5">
             <div class="flex items-center justify-between text-[10px]">
@@ -8749,9 +9637,12 @@
             <div class="flex flex-wrap gap-1">${stageBadges}</div>
           </div>
 
-          <div class="pt-1 flex items-center justify-between gap-2">
-            <button type="button" onclick="parentGiftCoinsToChild('${cid}', '${safeChildName}', 10)" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-3 text-[11px] font-black inline-flex items-center justify-center gap-1">
-              <span>🎁 Hadiahkan +10 Coin Semangat</span>
+          <div class="pt-1 grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="parentQuickSwitchToChild('${cid}')" class="bubbly-btn bg-sky-600 hover:bg-sky-700 text-white border border-sky-950 py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
+              <span>📲 Serah Peranti</span>
+            </button>
+            <button type="button" onclick="parentGiftCoinsToChild('${cid}', '${safeChildName}', 10)" class="bubbly-btn ${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[cid] === todayKey ? 'bg-slate-200 text-slate-500 border-slate-300' : 'bg-amber-400 hover:bg-amber-300 text-amber-950 border-amber-600'} border py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
+              <span>${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[cid] === todayKey ? '✅ +10 Coin Diberi' : '🎁 +10 Coin'}</span>
             </button>
           </div>
         `;
@@ -8761,6 +9652,54 @@
       if (sumPtsEl) sumPtsEl.innerText = String(totalPtsAll);
       if (sumStarsEl) sumStarsEl.innerText = String(totalStarsAll);
       if (sumTimeEl) sumTimeEl.innerText = formatDurationHHMM(totalTodaySecAll);
+    };
+
+    window.parentQuickSwitchToChild = async function(childId) {
+      if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
+      playClick();
+      loadLocalAccountsFromStorage();
+      let childObj = inMemoryAccounts.get(childId);
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', childId));
+            if (snap.exists()) childObj = snap.data();
+          }
+        } catch (e) {}
+      }
+      if (!childObj) {
+        showAppToast('⚠️ Akaun anak tidak ditemui.');
+        return;
+      }
+
+      // Simpan sesi Ibu Bapa sementara untuk kembali semula dengan Pengesahan Dewasa
+      window._savedParentHandoffSession = { ...currentPlayer };
+      await markPlayerOfflineCloud();
+
+      const todayKey = getTodayDateKey();
+      const permanentId = childObj.accountId || childObj.key || childId;
+      currentPlayer = {
+        ...childObj,
+        accountId: permanentId,
+        key: permanentId,
+        isAdmin: false,
+        role: 'student',
+        isParent: false,
+        todayDateKey: todayKey,
+        todaySeconds: childObj.todayDateKey === todayKey ? (Number(childObj.todaySeconds) || 0) : 0,
+        todayPoints: childObj.todayDateKey === todayKey ? (Number(childObj.todayPoints) || 0) : 0,
+        todayStars: childObj.todayDateKey === todayKey ? (Number(childObj.todayStars) || 0) : 0,
+        isOnline: true,
+        lastActiveAt: Date.now()
+      };
+      ensurePlayerAvatarConfig(currentPlayer);
+      await savePlayerCloud();
+      syncPlayerUI();
+      subscribePlayerQuickMessages();
+      playCheer();
+      showAppToast(`📲 Mod Anak Aktif: ${currentPlayer.name} sedia belajar!`);
+      navTo('home');
     };
 
     /* 10B. FUNGSI PANEL ADMIN (SENARAI PELAJAR, RESET PASSWORD & PADAM AKAUN) */
@@ -11882,10 +12821,15 @@
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🧠 Hebat Master Anzan (${elapsedSec.toFixed(1)}s)! Jawapan <b>${flashAnzanAnswer.toLocaleString()}</b> tepat!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqStr})</span>`;
         if (currentPlayer) {
+          recordStudentQuestionAttempt('anzan_flash', '⚡ Flash Anzan', true);
           addPlayerReward(coinsEarned, reward.total);
         }
       } else {
         playWrong();
+        if (currentPlayer) {
+          recordStudentQuestionAttempt('anzan_flash', '⚡ Flash Anzan', false);
+          savePlayerCloud();
+        }
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-900 border-2 border-rose-300';
         fb.innerHTML = `❌ Jawapan anda (${elapsedSec.toFixed(1)}s): ${isNaN(userVal) ? '-' : userVal.toLocaleString()}. Jumlah sebenar ialah <b>${flashAnzanAnswer.toLocaleString()}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqStr})</span>`;
       }
@@ -12338,10 +13282,15 @@
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-900 border-2 border-emerald-400';
         fb.innerHTML = `🎉 Tepat (${elapsedSec.toFixed(1)}s)! Pendengaran & kiraan minda anda sangat tajam (<b>${dictCorrectAnswer.toLocaleString()}</b>)!<br><span class="text-[11px] font-black text-emerald-800">+${reward.total} Markah (${reward.label}) & +${coinsEarned} Coin ${COIN_ICON_HTML}</span><br><span class="text-[10px] font-bold text-emerald-700">(${seqText})</span>`;
         if (currentPlayer) {
+          recordStudentQuestionAttempt('anzan_dict', '👂 Dikte Suara', true);
           addPlayerReward(coinsEarned, reward.total);
         }
       } else {
         playWrong();
+        if (currentPlayer) {
+          recordStudentQuestionAttempt('anzan_dict', '👂 Dikte Suara', false);
+          savePlayerCloud();
+        }
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-900 border-2 border-rose-300';
         fb.innerHTML = `❌ Jawapan anda (${elapsedSec.toFixed(1)}s): ${isNaN(userVal) ? '-' : userVal.toLocaleString()}. Jumlah sebenar ialah <b>${dictCorrectAnswer.toLocaleString()}</b>.<br><span class="text-[10px] font-bold text-rose-700">(${seqText})</span>`;
       }

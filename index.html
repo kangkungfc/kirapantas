@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.65
+            Versi 1.9.66
           </span>
         </div>
 
@@ -974,7 +974,7 @@
 
         <!-- Tab Kategori Kedai -->
         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 pt-1">
-          <button onclick="switchStudioTab('face')" id="tab-studio-face" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-amber-950 flex-shrink-0">🧑 Watak 3D</button>
+          <button onclick="switchStudioTab('face')" id="tab-studio-face" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-amber-950 flex-shrink-0">😊 Rupa Wajah</button>
           <button onclick="switchStudioTab('outfit')" id="tab-studio-outfit" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">👕 Baju & Kostum</button>
           <button onclick="switchStudioTab('hair')" id="tab-studio-hair" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">💇 Rambut</button>
           <button onclick="switchStudioTab('headwear')" id="tab-studio-headwear" class="studio-tab px-3 py-1.5 rounded-xl text-xs font-black bg-slate-100 text-slate-600 flex-shrink-0">🧕 Tudung/Topi</button>
@@ -2440,26 +2440,26 @@
 
     const AVATAR_STUDIO_CATALOG = {
       face: [
-        // Watak Lelaki (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
-        { id: 'boy_leo',    name: 'Aiman (Melayu Ceria)',     gender: 'boy',  cost: 0 },
-        { id: 'boy_adam',   name: 'Wei Ming (Cina Pintar)',   gender: 'boy',  cost: 0 },
-        { id: 'boy_zack',   name: 'Liam (Orang Putih)',       gender: 'boy',  cost: 0 },
-        { id: 'boy_danish', name: 'Malik (Afrika Tangkas)',   gender: 'boy',  cost: 0 },
-        { id: 'boy_amir',   name: 'Arjun (India Juara)',      gender: 'boy',  cost: 0 },
-        { id: 'boy_rayyan', name: 'Tariq (Arab Bangsawan)',   gender: 'boy',  cost: 0 },
-        { id: 'boy_harith', name: 'Kenji (Jepun Fokus)',      gender: 'boy',  cost: 0 },
-        { id: 'boy_kai',    name: 'Kai (Cyber Kaca Mata)',    gender: 'boy',  cost: 0 },
-        { id: 'boy_ryu',    name: 'Ryu (Legenda Naga)',       gender: 'boy',  cost: 0 },
-        // Watak Perempuan (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
-        { id: 'girl_hana',  name: 'Hana (Melayu Manis)',      gender: 'girl', cost: 0 },
-        { id: 'girl_sofia', name: 'Mei Ling (Cina Comel)',    gender: 'girl', cost: 0 },
-        { id: 'girl_maya',  name: 'Chloe (Orang Putih)',      gender: 'girl', cost: 0 },
-        { id: 'girl_aina',  name: 'Zara (Afrika Jelita)',     gender: 'girl', cost: 0 },
-        { id: 'girl_bella', name: 'Priya (India Anggun)',     gender: 'girl', cost: 0 },
-        { id: 'girl_nadia', name: 'Layla (Arab Menawan)',     gender: 'girl', cost: 0 },
-        { id: 'girl_alya',  name: 'Sakura (Jepun Ayu)',       gender: 'girl', cost: 0 },
-        { id: 'girl_luna',  name: 'Luna (Puteri Bintang)',    gender: 'girl', cost: 0 },
-        { id: 'girl_aurora',name: 'Aurora (Ratu Kristal)',    gender: 'girl', cost: 0 }
+        // Gaya Rupa Wajah Lelaki (Visual Kekal, Tanpa Nama Orang Lain)
+        { id: 'boy_leo',    name: 'Wajah Ceria',         gender: 'boy',  cost: 0 },
+        { id: 'boy_adam',   name: 'Wajah Pintar',        gender: 'boy',  cost: 0 },
+        { id: 'boy_zack',   name: 'Wajah Bintik Manis',  gender: 'boy',  cost: 0 },
+        { id: 'boy_danish', name: 'Wajah Tangkas',       gender: 'boy',  cost: 0 },
+        { id: 'boy_amir',   name: 'Wajah Juara',         gender: 'boy',  cost: 0 },
+        { id: 'boy_rayyan', name: 'Wajah Bangsawan',     gender: 'boy',  cost: 0 },
+        { id: 'boy_harith', name: 'Wajah Fokus',         gender: 'boy',  cost: 0 },
+        { id: 'boy_kai',    name: 'Wajah Cyber',         gender: 'boy',  cost: 0 },
+        { id: 'boy_ryu',    name: 'Wajah Legenda',       gender: 'boy',  cost: 0 },
+        // Gaya Rupa Wajah Perempuan (Visual Kekal, Tanpa Nama Orang Lain)
+        { id: 'girl_hana',  name: 'Wajah Manis',         gender: 'girl', cost: 0 },
+        { id: 'girl_sofia', name: 'Wajah Comel',         gender: 'girl', cost: 0 },
+        { id: 'girl_maya',  name: 'Wajah Bintik Manis',  gender: 'girl', cost: 0 },
+        { id: 'girl_aina',  name: 'Wajah Jelita',        gender: 'girl', cost: 0 },
+        { id: 'girl_bella', name: 'Wajah Anggun',        gender: 'girl', cost: 0 },
+        { id: 'girl_nadia', name: 'Wajah Menawan',       gender: 'girl', cost: 0 },
+        { id: 'girl_alya',  name: 'Wajah Ayu',           gender: 'girl', cost: 0 },
+        { id: 'girl_luna',  name: 'Wajah Bintang',       gender: 'girl', cost: 0 },
+        { id: 'girl_aurora',name: 'Wajah Kristal',       gender: 'girl', cost: 0 }
       ],
       outfit: [
         // Susunan Harga Berperingkat Mengikut Set Lengkap 5 Kategori
@@ -8164,11 +8164,11 @@ Jom lawan kira pantas dengan saya!`;
         const faceList = AVATAR_STUDIO_CATALOG.face.filter(f => f.gender === cfg.gender);
         const faceButtonsHtml = `
           <div class="w-full pt-1">
-            <div class="text-[10px] font-black text-slate-500 mb-1">Pilih Rupa Watak Anda:</div>
+            <div class="text-[10px] font-black text-slate-500 mb-1">Pilih Gaya Rupa Wajah Anda:</div>
             <div class="flex flex-wrap items-center justify-center gap-1">
               ${faceList.map(f => {
                 const isSel = cfg.face === f.id;
-                const shortLbl = f.name.split(' (')[0];
+                const shortLbl = f.name.replace(/^Wajah\s+/, '');
                 return `<button type="button" onclick="updateNewStudentAvatar('face', '${f.id}')" class="px-2 py-1 rounded-xl text-[10px] font-black border-2 ${isSel ? 'bg-sky-400 text-sky-950 border-sky-700' : 'bg-white text-slate-700 border-slate-200'}">${shortLbl}</button>`;
               }).join('')}
             </div>

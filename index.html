@@ -228,7 +228,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.52
+            Versi 1.9.53
           </span>
         </div>
 
@@ -1391,8 +1391,24 @@
               </select>
             </div>
 
-            <button type="button" onclick="createArenaDuelRoom()" class="w-full bubbly-btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-sm py-3 border-2 border-purple-950">
-              ➕ Cipta Bilik Baharu (Dapat Kod 4-Digit)
+            <!-- Pemilih Privasi Bilik: Terbuka (Open) vs Berpassword (Private 4-Digit) -->
+            <div class="space-y-1.5 pt-0.5">
+              <div class="text-[11px] font-black text-slate-700">🔐 Pilih Jenis Bilik:</div>
+              <div class="grid grid-cols-2 gap-1.5">
+                <button type="button" id="btn-room-privacy-open" onclick="selectArenaRoomPrivacy('open')" class="py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-emerald-600 text-white border-emerald-900 shadow-xs transition">
+                  🌐 Bilik Terbuka (Open)
+                </button>
+                <button type="button" id="btn-room-privacy-private" onclick="selectArenaRoomPrivacy('private')" class="py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-300 transition">
+                  🔒 Berpassword (Kod 4-Digit)
+                </button>
+              </div>
+              <div id="arena-room-privacy-hint" class="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-2.5 py-1.5">
+                🌐 Mana-mana kawan online boleh terus tekan <b>Masuk</b> pada senarai bilik di bawah tanpa perlu taip kod!
+              </div>
+            </div>
+
+            <button type="button" id="btn-create-arena-room" onclick="createArenaDuelRoom()" class="w-full bubbly-btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-sm py-3 border-2 border-purple-950">
+              ➕ Cipta Bilik Terbuka Sekarang
             </button>
 
             <div class="pt-2 border-t border-slate-200 space-y-1">
@@ -1450,8 +1466,28 @@
 
         <!-- Zon Lobi Menunggu Pemain & Mula Perlawanan -->
         <div id="arena-waiting-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center space-y-2.5">
-          <div class="text-3xl animate-bounce">⏳</div>
-          <div id="arena-waiting-text" class="text-xs sm:text-sm font-black text-amber-950">Beritahu Kod Bilik 4-digit di atas kepada kawan-kawan anda untuk masuk!</div>
+          <div class="flex items-center justify-center gap-1.5">
+            <span id="arena-room-privacy-pill" class="inline-block text-[10px] font-black bg-emerald-600 text-white px-3 py-0.5 rounded-full">🌐 Bilik Terbuka (Semua Boleh Masuk)</span>
+          </div>
+          <div id="arena-waiting-text" class="text-xs sm:text-sm font-black text-amber-950">Kawan-kawan boleh terus nampak bilik ini di lobi atau dijemput di bawah!</div>
+
+          <!-- Bar Kongsi Pantas & Jemput Rakan Dalam Aplikasi -->
+          <div id="arena-share-invite-panel" class="bg-white border-2 border-indigo-200 rounded-2xl p-2.5 text-left space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-black text-indigo-950">📣 Kongsi & Jemput Rakan Masuk Bilik:</span>
+              <button type="button" onclick="copyArenaRoomInvite()" class="bubbly-btn bg-indigo-600 hover:bg-indigo-700 text-white border border-indigo-900 px-2.5 py-1 text-[10px] font-black flex-shrink-0">
+                📋 Salin Kod & Pautan
+              </button>
+            </div>
+            <div class="flex gap-1.5">
+              <select id="arena-invite-friend-select" class="flex-1 px-2.5 py-1.5 rounded-xl border border-indigo-300 text-xs font-bold bg-indigo-50/50 focus:outline-none">
+                <option value="">-- Pilih rakan untuk jemput terus --</option>
+              </select>
+              <button type="button" onclick="sendDirectArenaInviteToFriend()" class="bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-900 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
+                📨 Jemput
+              </button>
+            </div>
+          </div>
 
           <!-- Pemilih Pasukan (Hanya untuk Mod Pertarungan Pasukan Merah vs Biru) -->
           <div id="arena-team-picker-box" class="hidden grid grid-cols-2 gap-2 pt-1">
@@ -7488,6 +7524,15 @@
             subscribePlayerQuickMessages();
           }
           navTo('home');
+          try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pendingRoom = (urlParams.get('room') || '').trim();
+            if (/^\d{4}$/.test(pendingRoom) && !isAdminUser) {
+              window.history.replaceState({}, document.title, window.location.pathname);
+              navTo('arena');
+              setTimeout(() => joinArenaRoomDirect(pendingRoom), 300);
+            }
+          } catch (e) {}
         } else {
           /* Mod DAFTAR BARU */
           if (!isDeviceOnline) {
@@ -9777,6 +9822,13 @@
       if (modal) modal.classList.add('hidden');
     };
 
+    window.acceptArenaInviteFromInbox = async function(roomCode) {
+      playClick();
+      closePlayerInboxModal();
+      navTo('arena');
+      await joinArenaRoomDirect(roomCode);
+    };
+
     function renderPlayerInboxList() {
       const listEl = document.getElementById('player-inbox-list');
       if (!listEl) return;
@@ -9814,8 +9866,15 @@
                 ↩️ Balas
               </button>
             </div>
-            <div class="text-xs font-extrabold text-indigo-950 bg-white rounded-xl px-3 py-2 border border-slate-200">
-              ${safeText}
+            <div class="text-xs font-extrabold text-indigo-950 bg-white rounded-xl px-3 py-2 border border-slate-200 space-y-2">
+              <div>${safeText}</div>
+              ${(() => {
+                const matchCode = m.roomCode || (String(m.text || '').match(/Kod Bilik:\s*(\d{4})/)?.[1] || '');
+                if (!matchCode) return '';
+                return `<button type="button" onclick="acceptArenaInviteFromInbox('${matchCode}')" class="w-full bubbly-btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border border-purple-950 py-2 px-3 text-[11px] font-black">
+                  ⚡ Terus Masuk Bilik (${matchCode}) Sekarang!
+                </button>`;
+              })()}
             </div>
           </div>
         `;
@@ -10100,14 +10159,28 @@
           const safeHost = (r.hostName || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
           const modeLabel = ARENA_MODE_LABELS[r.mode] || '🎓 Kuiz Kilat Serentak';
           const pCount = getRoomParticipantsArray(r).length;
+          const isPriv = Boolean(r.isPrivate);
+          if (isPriv) {
+            return `
+              <div class="flex items-center justify-between gap-2 bg-amber-50/90 border-2 border-amber-300 rounded-2xl p-2.5">
+                <div class="min-w-0">
+                  <div class="text-xs font-black text-slate-900 truncate">${safeHost} <span class="text-[9px] bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full">🔒 Berpassword</span> <span class="text-[10px] text-slate-600">(${pCount} Pemain)</span></div>
+                  <div class="text-[10px] font-bold text-amber-900 truncate">${modeLabel} • Perlukan Kod 4-Digit</div>
+                </div>
+                <button type="button" onclick="promptJoinPrivateRoom('${r.code}', '${safeHost.replace(/'/g, '')}')" class="bubbly-btn bg-amber-500 text-amber-950 border border-amber-800 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
+                  🔑 Masuk Kod
+                </button>
+              </div>
+            `;
+          }
           return `
             <div class="flex items-center justify-between gap-2 bg-emerald-50/80 border-2 border-emerald-200 rounded-2xl p-2.5">
               <div class="min-w-0">
-                <div class="text-xs font-black text-slate-900 truncate">${safeHost} • Kod: <span class="font-mono text-indigo-700">${r.code}</span> <span class="text-[10px] text-emerald-700">(${pCount} Pemain)</span></div>
+                <div class="text-xs font-black text-slate-900 truncate">${safeHost} <span class="text-[9px] bg-emerald-200 text-emerald-950 px-1.5 py-0.5 rounded-full">🌐 Terbuka</span> <span class="text-[10px] text-emerald-700">(${pCount} Pemain)</span></div>
                 <div class="text-[10px] font-bold text-emerald-800 truncate">${modeLabel}</div>
               </div>
               <button type="button" onclick="joinArenaRoomDirect('${r.code}')" class="bubbly-btn bg-emerald-600 text-white border border-emerald-900 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
-                ⚔️ Masuk!
+                ⚔️ Terus Masuk!
               </button>
             </div>
           `;
@@ -10133,6 +10206,144 @@
       } catch (e) {}
     };
 
+    let selectedArenaRoomPrivacy = 'open';
+
+    window.selectArenaRoomPrivacy = function(privacy) {
+      playClick();
+      selectedArenaRoomPrivacy = privacy === 'private' ? 'private' : 'open';
+      const openBtn = document.getElementById('btn-room-privacy-open');
+      const privBtn = document.getElementById('btn-room-privacy-private');
+      const hintEl = document.getElementById('arena-room-privacy-hint');
+      const createBtn = document.getElementById('btn-create-arena-room');
+
+      if (openBtn) {
+        openBtn.className = selectedArenaRoomPrivacy === 'open'
+          ? 'py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-emerald-600 text-white border-emerald-900 shadow-xs transition'
+          : 'py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-300 transition';
+      }
+      if (privBtn) {
+        privBtn.className = selectedArenaRoomPrivacy === 'private'
+          ? 'py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-amber-500 text-amber-950 border-amber-800 shadow-xs transition'
+          : 'py-2 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-300 transition';
+      }
+      if (hintEl) {
+        if (selectedArenaRoomPrivacy === 'open') {
+          hintEl.className = 'text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-2.5 py-1.5';
+          hintEl.innerHTML = '🌐 Mana-mana kawan online boleh terus tekan <b>Masuk</b> pada senarai bilik di bawah tanpa perlu taip kod!';
+        } else {
+          hintEl.className = 'text-[10px] font-bold text-amber-950 bg-amber-100/80 border border-amber-300 rounded-xl px-2.5 py-1.5';
+          hintEl.innerHTML = '🔒 Bilik dilindungi <b>Kod 4-Digit</b>. Hanya rakan yang menerima jemputan atau tahu kod 4-digit boleh masuk!';
+        }
+      }
+      if (createBtn) {
+        createBtn.innerText = selectedArenaRoomPrivacy === 'open'
+          ? '➕ Cipta Bilik Terbuka Sekarang'
+          : '🔒 Cipta Bilik Berpassword (Kod 4-Digit)';
+      }
+    };
+
+    window.copyArenaRoomInvite = async function() {
+      if (!activeArenaRoomId || !activeArenaRoomData) return;
+      playClick();
+      const modeName = ARENA_MODE_LABELS[activeArenaRoomData.mode] || 'Arena Kira Pantas';
+      const baseUrl = window.location.href.split('?')[0];
+      const shareUrl = `${baseUrl}?room=${activeArenaRoomId}`;
+      const inviteText = `⚔️ Jom lawan ${modeName} di Jari & Abakus Pintar!
+🔑 Kod Bilik: ${activeArenaRoomId}
+🔗 Pautan Terus: ${shareUrl}`;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(inviteText);
+          showAppToast(`📋 Kod Bilik ${activeArenaRoomId} & pautan telah disalin! Tampal di WhatsApp / Telegram untuk rakan.`);
+        } else {
+          showAppToast(`🔑 Kod Bilik Anda: ${activeArenaRoomId}`);
+        }
+      } catch (e) {
+        showAppToast(`🔑 Kod Bilik Anda: ${activeArenaRoomId}`);
+      }
+    };
+
+    async function populateArenaInviteFriendsDropdown() {
+      const sel = document.getElementById('arena-invite-friend-select');
+      if (!sel || !currentPlayer) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      loadLocalAccountsFromStorage();
+      const playersMap = new Map();
+      inMemoryAccounts.forEach((v, k) => {
+        if (!isAdminAccountRecord(v) && k !== myId) playersMap.set(k, v);
+      });
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            snaps.forEach(docSnap => {
+              const d = docSnap.data();
+              const id = d?.accountId || d?.key || docSnap.id;
+              if (d && !isAdminAccountRecord(d) && id !== myId) {
+                playersMap.set(id, d);
+              }
+            });
+          }
+        } catch (e) {}
+      }
+      const friendsArr = Array.from(playersMap.values()).sort((a, b) => {
+        const aOn = a.isOnline && (Date.now() - (a.lastActiveAt || 0) < 90000) ? 1 : 0;
+        const bOn = b.isOnline && (Date.now() - (b.lastActiveAt || 0) < 90000) ? 1 : 0;
+        if (bOn !== aOn) return bOn - aOn;
+        return String(a.name || '').localeCompare(String(b.name || ''));
+      });
+
+      const currentVal = sel.value;
+      sel.innerHTML = `<option value="">-- Pilih rakan (${friendsArr.length} pemain) --</option>` +
+        friendsArr.map(f => {
+          const fid = f.accountId || f.key;
+          const isOn = f.isOnline && (Date.now() - (f.lastActiveAt || 0) < 90000);
+          return `<option value="${escapeHtmlSafe(fid)}" data-fname="${escapeHtmlSafe(f.name || 'Rakan')}">${isOn ? '🟢' : '⚪'} ${escapeHtmlSafe(f.name || 'Rakan')}</option>`;
+        }).join('');
+      if (currentVal) sel.value = currentVal;
+    }
+
+    window.sendDirectArenaInviteToFriend = async function() {
+      if (!currentPlayer || !activeArenaRoomId || !activeArenaRoomData) return;
+      const sel = document.getElementById('arena-invite-friend-select');
+      const targetId = sel?.value || '';
+      if (!targetId) {
+        playWrong();
+        showAppToast('⚠️ Sila pilih nama rakan daripada senarai terlebih dahulu.');
+        return;
+      }
+      const targetName = sel.options[sel.selectedIndex]?.getAttribute('data-fname') || 'Rakan';
+      playCheer();
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const msgId = `qmsg_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const modeName = ARENA_MODE_LABELS[activeArenaRoomData.mode] || 'Arena Perlawanan';
+      const inviteMsg = {
+        id: msgId,
+        fromId: myId,
+        fromName: currentPlayer.name,
+        fromAvatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+        toId: targetId,
+        toName: targetName,
+        text: `⚔️ Jemputan Perlawanan ${modeName}! Kod Bilik: ${activeArenaRoomId}`,
+        roomCode: activeArenaRoomId,
+        isRead: false,
+        createdAt: Date.now()
+      };
+      const allLocal = loadLocalQuickMessages();
+      allLocal.unshift(inviteMsg);
+      saveLocalQuickMessages(allLocal);
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), inviteMsg);
+          }
+        } catch (e) {}
+      }
+      showAppToast(`📨 Jemputan masuk bilik (${activeArenaRoomId}) telah dihantar terus ke peti masuk ${targetName}!`);
+    };
+
     window.createArenaDuelRoom = async function(invitedOpponent = null) {
       if (!currentPlayer) return;
       playClick();
@@ -10140,11 +10351,13 @@
       const roomCode = String(Math.floor(1000 + Math.random() * 9000));
       const questions = generateArenaQuestionBank(diffKey, 35);
       const myId = currentPlayer.accountId || currentPlayer.key;
+      const isPrivateRoom = selectedArenaRoomPrivacy === 'private' && !invitedOpponent;
 
       const roomObj = {
         code: roomCode,
         mode: selectedArenaMode,
         difficulty: diffKey,
+        isPrivate: isPrivateRoom,
         status: 'waiting',
         createdAt: Date.now(),
         hostId: myId,
@@ -10212,6 +10425,16 @@
       navTo('arena');
       selectArenaSubmenu('kuiz_kilat');
       await createArenaDuelRoom({ id: targetId, name: targetName });
+    };
+
+    window.promptJoinPrivateRoom = function(roomCode, hostName) {
+      playClick();
+      const inp = document.getElementById('arena-join-code-input');
+      if (inp) {
+        inp.focus();
+        inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      showAppToast(`🔒 Bilik ${hostName} berpassword. Sila taip Kod 4-Digit yang dikongsi rakan anda di kotak di atas!`);
     };
 
     window.joinArenaRoomByCode = async function() {
@@ -10451,6 +10674,7 @@
       document.getElementById('arena-waiting-box').classList.remove('hidden');
 
       onArenaRoomUpdated(initialData);
+      populateArenaInviteFriendsDropdown();
 
       if (db && fbUser) {
         if (arenaRoomUnsubscribe) {
@@ -10479,11 +10703,26 @@
       const hostStartBtn = document.getElementById('btn-arena-host-start');
       if (hostStartBtn) hostStartBtn.classList.toggle('hidden', !isHost);
 
+      const privPill = document.getElementById('arena-room-privacy-pill');
+      if (privPill) {
+        if (room.isPrivate) {
+          privPill.className = 'inline-block text-[10px] font-black bg-amber-400 text-amber-950 border border-amber-700 px-3 py-0.5 rounded-full';
+          privPill.innerText = `🔒 Bilik Berpassword • Kod: ${room.code}`;
+        } else {
+          privPill.className = 'inline-block text-[10px] font-black bg-emerald-600 text-white px-3 py-0.5 rounded-full';
+          privPill.innerText = `🌐 Bilik Terbuka (Semua Kawan Boleh Terus Masuk)`;
+        }
+      }
+
       const waitTxt = document.getElementById('arena-waiting-text');
       if (waitTxt) {
-        waitTxt.innerText = isHost
-          ? 'Beritahu Kod Bilik 4-digit di atas kepada kawan-kawan anda. Tekan Mula apabila semua sudah masuk!'
-          : `Menunggu ${room.hostName || 'Tuan Rumah'} menekan butang Mula Perlawanan...`;
+        if (isHost) {
+          waitTxt.innerText = room.isPrivate
+            ? `Bilik berpassword sedia! Jemput rakan terus di bawah atau kongsi Kod ${room.code}.`
+            : 'Bilik terbuka sedia! Kawan boleh terus masuk dari lobi atau jemput di bawah.';
+        } else {
+          waitTxt.innerText = `Menunggu ${room.hostName || 'Tuan Rumah'} menekan butang Mula Perlawanan...`;
+        }
       }
 
       const teamPicker = document.getElementById('arena-team-picker-box');

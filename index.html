@@ -123,6 +123,8 @@
           <span class="hidden sm:inline">Anak</span>
           <span id="header-parent-children-badge" class="bg-amber-300 text-teal-950 text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
         </button>
+        <button id="btn-header-sound" onclick="toggleAppSoundEffects()" class="btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400" title="Kesan Bunyi On/Off">🔊</button>
+        <button id="btn-header-bgm" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300" title="Muzik Latar Adaptif On/Off">🎵</button>
         <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
           <span>💌</span>
           <span id="header-inbox-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow">0</span>
@@ -148,8 +150,10 @@
          ======================================================== -->
     <section id="screen-login" class="py-4 space-y-4">
       <div class="bubbly-card bg-white border-4 border-amber-400 p-6 text-center">
-        <!-- Pemilih Bahasa Laman Web (Disimpan Secara Kekal) -->
+        <!-- Pemilih Bahasa Laman Web & Kawalan Bunyi -->
         <div class="flex flex-wrap items-center justify-center gap-1.5 mb-4 pb-3 border-b border-amber-100">
+          <button type="button" onclick="toggleAppSoundEffects()" class="btn-sound-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-sky-100 text-sky-950 border-sky-400" title="Hidupkan / Matikan Kesan Bunyi">🔊 Bunyi</button>
+          <button type="button" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-slate-100 text-slate-600 border-slate-300" title="Muzik Latar Belakang Adaptif">🎵 Muzik: Off</button>
           <span id="login-lang-label" class="text-[11px] font-black text-amber-900 mr-1">🌐 Bahasa:</span>
           <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Melayu</button>
           <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
@@ -228,7 +232,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.55
+            Versi 1.9.56
           </span>
         </div>
 
@@ -2465,7 +2469,133 @@
     }
 
     let sharedAudioCtx = null;
+    const SOUND_PREF_KEY = 'kirapantas_sound_enabled_v1';
+    const BGM_PREF_KEY = 'kirapantas_bgm_enabled_v1';
+    let isAppSoundOn = localStorage.getItem(SOUND_PREF_KEY) !== 'false';
+    let isAppBgmOn = localStorage.getItem(BGM_PREF_KEY) === 'true';
+    let bgmLoopTimer = null;
+    let bgmStepIdx = 0;
+    let currentBgmScene = 'study'; // 'study' | 'arena' | 'muted_focus'
+
+    function updateAudioToggleButtonsUI() {
+      document.querySelectorAll('.btn-sound-toggle').forEach(btn => {
+        const isHeader = btn.id === 'btn-header-sound';
+        if (isAppSoundOn) {
+          btn.className = isHeader
+            ? 'btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400'
+            : 'btn-sound-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-sky-100 text-sky-950 border-sky-400';
+          btn.innerText = isHeader ? '🔊' : '🔊 Bunyi: On';
+        } else {
+          btn.className = isHeader
+            ? 'btn-sound-toggle bubbly-btn bg-slate-200 text-slate-500 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300'
+            : 'btn-sound-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-slate-200 text-slate-500 border-slate-300';
+          btn.innerText = isHeader ? '🔇' : '🔇 Bunyi: Off';
+        }
+      });
+
+      document.querySelectorAll('.btn-bgm-toggle').forEach(btn => {
+        const isHeader = btn.id === 'btn-header-bgm';
+        if (isAppBgmOn) {
+          btn.className = isHeader
+            ? 'btn-bgm-toggle bubbly-btn bg-amber-300 text-amber-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-600'
+            : 'btn-bgm-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-amber-300 text-amber-950 border-amber-600';
+          btn.innerText = isHeader ? '🎵' : '🎵 Muzik: On';
+        } else {
+          btn.className = isHeader
+            ? 'btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300'
+            : 'btn-bgm-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-slate-100 text-slate-600 border-slate-300';
+          btn.innerText = isHeader ? '🎵' : '🎵 Muzik: Off';
+        }
+      });
+    }
+
+    function playBgmNote(freq, duration = 0.28, gainVal = 0.022, wave = 'sine') {
+      if (!isAppBgmOn || !freq || currentBgmScene === 'muted_focus') return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+        const osc = sharedAudioCtx.createOscillator();
+        const gain = sharedAudioCtx.createGain();
+        osc.type = wave;
+        osc.frequency.setValueAtTime(freq, sharedAudioCtx.currentTime);
+        gain.gain.setValueAtTime(0.001, sharedAudioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(gainVal, sharedAudioCtx.currentTime + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, sharedAudioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(sharedAudioCtx.destination);
+        osc.start();
+        osc.stop(sharedAudioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function restartAdaptiveBgmLoop() {
+      if (bgmLoopTimer) {
+        clearInterval(bgmLoopTimer);
+        bgmLoopTimer = null;
+      }
+      if (!isAppBgmOn) return;
+
+      // Melodi Santai Lo-Fi / Marimba (Belajar & Kuiz) vs Melodi Ceria Arcade (Arena Online)
+      const studyNotes = [261.63, 329.63, 392.00, 329.63, 293.66, 349.23, 440.00, 349.23, 261.63, 392.00, 493.88, 392.00, 329.63, 293.66, 261.63, 0];
+      const arenaNotes = [392.00, 493.88, 587.33, 493.88, 523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.00, 698.46, 659.25, 587.33, 523.25, 587.33];
+      const tempoMs = currentBgmScene === 'arena' ? 320 : 560;
+
+      bgmLoopTimer = setInterval(() => {
+        if (!isAppBgmOn || document.hidden || currentBgmScene === 'muted_focus') return;
+        const seq = currentBgmScene === 'arena' ? arenaNotes : studyNotes;
+        const freq = seq[bgmStepIdx % seq.length];
+        bgmStepIdx++;
+        if (freq > 0) {
+          if (currentBgmScene === 'arena') {
+            playBgmNote(freq, 0.22, 0.024, 'triangle');
+          } else {
+            playBgmNote(freq, 0.45, 0.018, 'sine');
+          }
+        }
+      }, tempoMs);
+    }
+
+    function setAdaptiveBgmScene(sceneName) {
+      if (currentBgmScene === sceneName) return;
+      currentBgmScene = sceneName;
+      bgmStepIdx = 0;
+      if (isAppBgmOn) restartAdaptiveBgmLoop();
+    }
+
+    window.toggleAppSoundEffects = function() {
+      isAppSoundOn = !isAppSoundOn;
+      localStorage.setItem(SOUND_PREF_KEY, String(isAppSoundOn));
+      updateAudioToggleButtonsUI();
+      if (isAppSoundOn) {
+        playCheer();
+        showAppToast('🔊 Kesan bunyi dihidupkan!');
+      } else {
+        showAppToast('🔇 Kesan bunyi dimatikan (Mod Senyap).');
+      }
+    };
+
+    window.toggleAppBgmMusic = function() {
+      isAppBgmOn = !isAppBgmOn;
+      localStorage.setItem(BGM_PREF_KEY, String(isAppBgmOn));
+      updateAudioToggleButtonsUI();
+      if (isAppBgmOn) {
+        bgmStepIdx = 0;
+        restartAdaptiveBgmLoop();
+        const modeTxt = currentBgmScene === 'arena' ? 'Rentak Ceria Arena Online' : 'Melodi Tenang Fokus Belajar';
+        showAppToast(`🎵 Muzik latar belakang dihidupkan (${modeTxt})!`);
+      } else {
+        if (bgmLoopTimer) {
+          clearInterval(bgmLoopTimer);
+          bgmLoopTimer = null;
+        }
+        showAppToast('🎵 Muzik latar belakang dimatikan.');
+      }
+    };
+
     function playTone(freq = 520, type = 'sine', duration = 0.08, gainVal = 0.08) {
+      if (!isAppSoundOn) return;
       try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
@@ -2498,6 +2628,8 @@
       playTone(220, 'sawtooth', 0.15, 0.09);
       setTimeout(() => playTone(185, 'sawtooth', 0.2, 0.09), 120);
     }
+
+    setTimeout(() => updateAudioToggleButtonsUI(), 0);
 
     function triggerConfetti() {
       const canvas = document.getElementById('confetti-canvas');
@@ -8070,6 +8202,9 @@
 
     window.navTo = function(screenName) {
       playClick();
+      if (screenName === 'arena') setAdaptiveBgmScene('arena');
+      else if (screenName === 'anzan') setAdaptiveBgmScene('muted_focus');
+      else setAdaptiveBgmScene('study');
       ['home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena', 'parent'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');

@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.74
+            Versi 1.9.75
           </span>
         </div>
 
@@ -1275,6 +1275,21 @@
         <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2.5">
           💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.
         </p>
+      </div>
+
+      <!-- Kad Naik Taraf / Tukar Jenis Akaun (Pelajar <-> Ibu Bapa / Pengajar) -->
+      <div id="acc-role-upgrade-card" class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="text-sm font-black text-teal-950">👨‍👩‍👧‍👦 Naik Taraf ke Akaun Ibu Bapa / Pengajar</h3>
+          <span id="acc-current-role-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full">🎓 Akaun Pelajar</span>
+        </div>
+        <p id="acc-role-upgrade-desc" class="text-[11px] font-bold text-slate-600">
+          Sudah lama bermain dan ada banyak Coin serta Markah? Anda boleh menaik taraf akaun sedia ada ini kepada <b>Akaun Ibu Bapa / Pengajar</b> tanpa kehilangan walau 1 Coin, Markah, Avatar atau Tahap anda!
+        </p>
+        <div id="acc-role-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+        <button id="btn-upgrade-to-parent-acc" type="button" onclick="promptUpgradeCurrentAccountToParent()" class="w-full bubbly-btn bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black text-xs py-3 border-2 border-teal-900">
+          🚀 Naik Taraf Akaun Ini ke Ibu Bapa (Kekalkan Semua Coin & Markah)
+        </button>
       </div>
 
       <!-- Borang 1: Tukar Nama Pelajar -->
@@ -7779,6 +7794,39 @@ Jom lawan kira pantas dengan saya!`;
       if (typeof cb === 'function') cb();
     };
 
+    window.promptUpgradeCurrentAccountToParent = function() {
+      playClick();
+      if (!currentPlayer) return;
+      if (currentPlayer.isGuest) {
+        showAppToast('⚠️ Sila daftar akaun tetap terlebih dahulu sebelum menaik taraf.');
+        return;
+      }
+      if (currentPlayer.role === 'parent' || currentPlayer.isParent) {
+        navTo('parent');
+        return;
+      }
+      openParentalGate(
+        `Sahkan anda ialah Ibu Bapa / Penjaga untuk menaik taraf akaun "${currentPlayer.name}" (Semua Coin & Markah akan kekal):`,
+        async () => {
+          currentPlayer.role = 'parent';
+          currentPlayer.isParent = true;
+          if (!Array.isArray(currentPlayer.linkedChildrenIds)) {
+            currentPlayer.linkedChildrenIds = [];
+          }
+          await savePlayerCloud(true);
+          syncPlayerUI();
+          triggerConfetti(70);
+          const fb = document.getElementById('acc-role-feedback');
+          if (fb) {
+            fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-emerald-100 text-emerald-950 border border-emerald-300';
+            fb.innerHTML = `🎉 Tahniah <b>${escapeHtml(currentPlayer.name)}</b>! Akaun anda berjaya dinaik taraf kepada <b>Akaun Ibu Bapa / Pengajar</b>. Semua <b>${currentPlayer.stars || 0} Coin</b> & <b>${currentPlayer.totalPoints || 0} Markah</b> anda kekal 100%!`;
+            fb.classList.remove('hidden');
+          }
+          showAppToast('🎉 Akaun berjaya dinaik taraf ke Akaun Ibu Bapa!');
+        }
+      );
+    };
+
     function applyRegisterRoleUI(role) {
       selectedRegisterRole = role === 'parent' ? 'parent' : 'student';
       const sBtn = document.getElementById('btn-role-student');
@@ -7898,6 +7946,26 @@ Jom lawan kira pantas dengan saya!`;
       if (accStarsEl) accStarsEl.innerText = stars;
       if (accPtsEl) accPtsEl.innerText = pts;
       if (accPinEl) accPinEl.innerText = currentPlayer.recoveryPin || '0000';
+      const accRoleBadge = document.getElementById('acc-current-role-badge');
+      const accRoleDesc = document.getElementById('acc-role-upgrade-desc');
+      const btnUpgradeParent = document.getElementById('btn-upgrade-to-parent-acc');
+      const accRoleCard = document.getElementById('acc-role-upgrade-card');
+      if (accRoleCard) accRoleCard.classList.toggle('hidden', isAdmin || Boolean(currentPlayer.isGuest));
+      if (accRoleBadge && accRoleDesc && btnUpgradeParent) {
+        if (isParent) {
+          accRoleBadge.className = 'text-[10px] font-black bg-teal-100 text-teal-950 border border-teal-400 px-2.5 py-0.5 rounded-full';
+          accRoleBadge.innerText = '👨‍👩‍👧‍👦 Akaun Ibu Bapa / Pengajar';
+          accRoleDesc.innerHTML = '✅ Akaun anda sudah mempunyai akses penuh <b>Panel Pemantauan Anak</b> dan semua Coin, Markah serta Avatar anda kekal terpelihara.';
+          btnUpgradeParent.innerText = '👨‍👩‍👧‍👦 Buka Panel Pemantauan Anak Sekarang';
+          btnUpgradeParent.onclick = () => navTo('parent');
+        } else {
+          accRoleBadge.className = 'text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full';
+          accRoleBadge.innerText = '🎓 Akaun Pelajar';
+          accRoleDesc.innerHTML = 'Sudah lama bermain dan ada banyak Coin serta Markah? Anda boleh menaik taraf akaun sedia ada ini kepada <b>Akaun Ibu Bapa / Pengajar</b> tanpa kehilangan walau 1 Coin, Markah, Avatar atau Tahap anda!';
+          btnUpgradeParent.innerText = '🚀 Naik Taraf Akaun Ini ke Ibu Bapa (Kekalkan Semua Coin & Markah)';
+          btnUpgradeParent.onclick = () => promptUpgradeCurrentAccountToParent();
+        }
+      }
       if (typeof updateDailyMysteryBoxUI === 'function') updateDailyMysteryBoxUI();
       const startBadge = document.getElementById('badge-start-here-modules');
       if (startBadge) {

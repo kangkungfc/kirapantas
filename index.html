@@ -228,7 +228,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.53
+            Versi 1.9.55
           </span>
         </div>
 
@@ -1303,80 +1303,79 @@
             <p class="text-[11px] font-bold text-slate-500">Tekan salah satu permainan di bawah untuk baca cara main & mula berlumba!</p>
           </div>
 
-          <!-- 4 Kad Mod Teras Tanpa Pertindihan -->
+          <!-- 4 Kad Mod Teras dengan Kotak Penerangan Terus Di Bawah Butang Pilihan -->
           <div class="grid grid-cols-1 gap-2.5">
             <!-- Mod 1: Kuiz Kilat Serentak (10 Soalan) -->
-            <button type="button" onclick="selectArenaSubmenu('kuiz_kilat')" id="arena-sub-kuiz_kilat"
-              class="arena-sub-card w-full text-left p-3 rounded-2xl border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs transition">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-11 h-11 rounded-2xl bg-fuchsia-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🎓</div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-fuchsia-950">1. Kuiz Kilat Serentak (10 Soalan)</div>
-                    <div class="text-[11px] font-bold text-slate-600">Jawab 10 soalan sama. Lagi cepat awak tekan jawapan betul, lagi tinggi markah!</div>
+            <div class="space-y-1.5">
+              <button type="button" onclick="selectArenaSubmenu('kuiz_kilat')" id="arena-sub-kuiz_kilat"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-11 h-11 rounded-2xl bg-fuchsia-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🎓</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-fuchsia-950">1. Kuiz Kilat Serentak (10 Soalan)</div>
+                      <div class="text-[11px] font-bold text-slate-600">Jawab 10 soalan sama. Lagi cepat awak tekan jawapan betul, lagi tinggi markah!</div>
+                    </div>
                   </div>
+                  <span id="arena-check-kuiz_kilat" class="text-[10px] font-black bg-fuchsia-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
                 </div>
-                <span id="arena-check-kuiz_kilat" class="text-[10px] font-black bg-fuchsia-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-              </div>
-            </button>
+              </button>
+              <div id="arena-guide-slot-kuiz_kilat" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5"></div>
+            </div>
 
             <!-- Mod 2: Perlumbaan Maraton Grand Prix -->
-            <button type="button" onclick="selectArenaSubmenu('marathon_gp')" id="arena-sub-marathon_gp"
-              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🏎️</div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-emerald-950">2. Perlumbaan Maraton (20 Langkah + Turbo 🔥)</div>
-                    <div class="text-[11px] font-bold text-slate-600">Lumba gerakkan avatar ke garisan penamat! 5 betul berturut aktifkan Turbo Api!</div>
+            <div class="space-y-1.5">
+              <button type="button" onclick="selectArenaSubmenu('marathon_gp')" id="arena-sub-marathon_gp"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🏎️</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-emerald-950">2. Perlumbaan Maraton (20 Langkah + Turbo 🔥)</div>
+                      <div class="text-[11px] font-bold text-slate-600">Lumba gerakkan avatar ke garisan penamat! 5 betul berturut aktifkan Turbo Api!</div>
+                    </div>
                   </div>
+                  <span id="arena-check-marathon_gp" class="hidden text-[10px] font-black bg-emerald-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
                 </div>
-                <span id="arena-check-marathon_gp" class="hidden text-[10px] font-black bg-emerald-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-              </div>
-            </button>
+              </button>
+              <div id="arena-guide-slot-marathon_gp" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5"></div>
+            </div>
 
             <!-- Mod 3: Battle Royale: Flash Anzan (Sudden Death) -->
-            <button type="button" onclick="selectArenaSubmenu('royale_anzan')" id="arena-sub-royale_anzan"
-              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-11 h-11 rounded-2xl bg-amber-500 text-amber-950 flex items-center justify-center text-2xl flex-shrink-0">👑</div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-amber-950">3. Battle Royale: Flash Anzan (Kalah Mati)</div>
-                    <div class="text-[11px] font-bold text-slate-600">Kira nombor berkelip dalam minda! Tersalah kira terus terkeluar sampai tinggal 1 juara.</div>
+            <div class="space-y-1.5">
+              <button type="button" onclick="selectArenaSubmenu('royale_anzan')" id="arena-sub-royale_anzan"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500 text-amber-950 flex items-center justify-center text-2xl flex-shrink-0">👑</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-amber-950">3. Battle Royale: Flash Anzan (Kalah Mati)</div>
+                      <div class="text-[11px] font-bold text-slate-600">Kira nombor berkelip dalam minda! Tersalah kira terus terkeluar sampai tinggal 1 juara.</div>
+                    </div>
                   </div>
+                  <span id="arena-check-royale_anzan" class="hidden text-[10px] font-black bg-amber-500 text-amber-950 px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
                 </div>
-                <span id="arena-check-royale_anzan" class="hidden text-[10px] font-black bg-amber-500 text-amber-950 px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-              </div>
-            </button>
+              </button>
+              <div id="arena-guide-slot-royale_anzan" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5"></div>
+            </div>
 
             <!-- Mod 4: Pertarungan Pasukan (Merah vs Biru) -->
-            <button type="button" onclick="selectArenaSubmenu('team_tug')" id="arena-sub-team_tug"
-              class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-400 transition">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-r from-rose-500 to-sky-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🚩</div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-indigo-950">4. Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)</div>
-                    <div class="text-[11px] font-bold text-slate-600">Pilih pasukan & bekerjasama tarik tali kuasa selama 75 saat untuk menang beramai-ramai!</div>
+            <div class="space-y-1.5">
+              <button type="button" onclick="selectArenaSubmenu('team_tug')" id="arena-sub-team_tug"
+                class="arena-sub-card w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-400 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-r from-rose-500 to-sky-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🚩</div>
+                    <div>
+                      <div class="text-xs sm:text-sm font-black text-indigo-950">4. Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)</div>
+                      <div class="text-[11px] font-bold text-slate-600">Pilih pasukan & bekerjasama tarik tali kuasa selama 75 saat untuk menang beramai-ramai!</div>
+                    </div>
                   </div>
+                  <span id="arena-check-team_tug" class="hidden text-[10px] font-black bg-indigo-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
                 </div>
-                <span id="arena-check-team_tug" class="hidden text-[10px] font-black bg-indigo-600 text-white px-2.5 py-1 rounded-full flex-shrink-0">Dipilih</span>
-              </div>
-            </button>
-          </div>
-
-          <!-- Kotak Penerangan Mesra Kanak-Kanak (Berubah Secara Dinamik Mengikut Mod Dipilih) -->
-          <div id="arena-kid-guide-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5">
-            <div class="flex items-center gap-1.5 text-xs font-black text-amber-950">
-              <span>💡</span>
-              <span id="arena-kid-guide-title">Cara Main: Kuiz Kilat Serentak (10 Soalan)</span>
+              </button>
+              <div id="arena-guide-slot-team_tug" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-1.5"></div>
             </div>
-            <ul id="arena-kid-guide-steps" class="text-[11px] font-bold text-slate-700 space-y-1 pl-1">
-              <li>✅ Semua pemain akan dapat <b>10 soalan yang sama</b>.</li>
-              <li>⚡ Jawab dengan <b>betul & paling pantas</b> untuk dapat markah bonus!</li>
-              <li>🏆 Selepas 10 soalan, 3 pemain markah tertinggi naik ke pentas juara 🥇🥈🥉!</li>
-            </ul>
           </div>
 
           <!-- Tetapan Tahap Kesukaran & Butang Cipta / Sertai Bilik -->
@@ -8107,6 +8106,7 @@
         switchAnzanTab('flash');
       } else if (screenName === 'arena') {
         setPlayerCurrentActivity('Arena Perlawanan Online');
+        selectArenaSubmenu(selectedArenaMode || 'kuiz_kilat', true);
         showArenaLobbyView();
         if (!isDeviceOnline) {
           showAppToast('🟠 Mod Offline: Arena Perlawanan Online memerlukan sambungan internet. Anda masih boleh main Modul Belajar, Simulator & Anzan!');
@@ -9966,34 +9966,42 @@
 
     const ARENA_KID_GUIDES = {
       kuiz_kilat: {
+        playersBadge: '👥 2 – 30 Pemain (Individu)',
         title: 'Cara Main: Kuiz Kilat Serentak (10 Soalan)',
         steps: [
-          '✅ Semua pemain (2 hingga 30 orang) akan dapat <b>10 soalan yang sama</b>.',
+          '👥 <b>Jumlah Pemain:</b> 2 hingga 30 orang (1 lawan 1 atau satu kelas serentak).',
+          '✅ Semua pemain akan mendapat <b>10 soalan yang sama</b>.',
           '⚡ Jawab dengan <b>betul & paling pantas</b> untuk dapat markah bonus!',
           '🏆 Selepas 10 soalan, 3 pemain markah tertinggi naik ke pentas juara 🥇🥈🥉!'
         ]
       },
       marathon_gp: {
+        playersBadge: '👥 2 – 30 Pemain (Lumba Individu)',
         title: 'Cara Main: Perlumbaan Maraton (20 Langkah)',
         steps: [
-          '🏎️ Setiap jawapan betul gerakkan avatar awak <b>1 langkah ke hadapan</b> di trek lumba.',
+          '👥 <b>Jumlah Pemain:</b> 2 hingga 30 orang berlumba di trek yang sama.',
+          '🏎️ Setiap jawapan betul gerakkan avatar awak <b>1 langkah ke hadapan</b>.',
           '🔥 Jawab betul <b>5 kali berturut-turut</b> untuk aktifkan <b>Turbo Api</b> (lompat 2 langkah sekali gus)!',
           '🏁 Siapa sampai garisan <b>20 langkah</b> paling awal dialah Juara!'
         ]
       },
       royale_anzan: {
+        playersBadge: '👥 2 – 30 Pemain (Kalah Mati)',
         title: 'Cara Main: Battle Royale Flash Anzan (Kalah Mati)',
         steps: [
+          '👥 <b>Jumlah Pemain:</b> 2 hingga 30 orang (bertahan hingga tinggal 1 juara).',
           '👀 Perhatikan nombor yang berkelip di skrin dan kira jumlahnya dalam minda.',
           '⚡ Setiap pusingan kelipan nombor akan jadi <b>semakin laju</b>!',
           '👑 Sesiapa yang tersalah kira akan terkeluar. Pemain terakhir yang bertahan menang!'
         ]
       },
       team_tug: {
+        playersBadge: '👥 2 – 30 Pemain (2 Pasukan)',
         title: 'Cara Main: Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)',
         steps: [
-          '🤝 Pilih untuk masuk <b>Pasukan Merah 🔴</b> atau <b>Pasukan Biru 🔵</b> di bilik menunggu.',
-          '💪 Setiap jawapan betul akan menambah kuasa pasukan awak pada <b>Bar Tarik Tali</b> di atas!',
+          '👥 <b>Jumlah Pemain:</b> 2 hingga 30 orang (dibahagikan kepada Pasukan Merah 🔴 & Pasukan Biru 🔵).',
+          '🤝 Pilih pasukan anda di bilik menunggu sebelum perlawanan bermula.',
+          '💪 Setiap jawapan betul menambah kuasa pasukan pada <b>Bar Tarik Tali</b>!',
           '⏱️ Pasukan dengan markah tertinggi selepas <b>75 saat</b> menang beramai-ramai!'
         ]
       }
@@ -10015,8 +10023,8 @@
       } catch (e) {}
     }
 
-    window.selectArenaSubmenu = function(modeKey) {
-      playClick();
+    window.selectArenaSubmenu = function(modeKey, silent = false) {
+      if (!silent) playClick();
       selectedArenaMode = ARENA_MODE_LABELS[modeKey] ? modeKey : 'kuiz_kilat';
       const activeCardStyles = {
         kuiz_kilat:   'border-3 border-fuchsia-600 bg-fuchsia-50 shadow-xs',
@@ -10027,20 +10035,31 @@
       Object.keys(ARENA_MODE_LABELS).forEach(k => {
         const card = document.getElementById(`arena-sub-${k}`);
         const chk = document.getElementById(`arena-check-${k}`);
+        const slot = document.getElementById(`arena-guide-slot-${k}`);
         const isAct = k === selectedArenaMode;
         if (card) {
           card.className = `arena-sub-card w-full text-left p-3 rounded-2xl transition ${isAct ? activeCardStyles[k] : 'border-2 border-slate-200 bg-white'}`;
         }
         if (chk) chk.classList.toggle('hidden', !isAct);
+        if (slot) {
+          slot.classList.toggle('hidden', !isAct);
+          if (isAct && ARENA_KID_GUIDES[k]) {
+            const g = ARENA_KID_GUIDES[k];
+            slot.innerHTML = `
+              <div class="flex flex-wrap items-center justify-between gap-1.5">
+                <div class="flex items-center gap-1.5 text-xs font-black text-amber-950">
+                  <span>💡</span>
+                  <span>${g.title}</span>
+                </div>
+                <span class="text-[10px] font-black bg-amber-200 text-amber-950 border border-amber-400 px-2 py-0.5 rounded-full">${g.playersBadge}</span>
+              </div>
+              <ul class="text-[11px] font-bold text-slate-700 space-y-1 pl-1">
+                ${g.steps.map(s => `<li>${s}</li>`).join('')}
+              </ul>
+            `;
+          }
+        }
       });
-
-      const guide = ARENA_KID_GUIDES[selectedArenaMode];
-      const gTitle = document.getElementById('arena-kid-guide-title');
-      const gSteps = document.getElementById('arena-kid-guide-steps');
-      if (guide && gTitle && gSteps) {
-        gTitle.innerText = guide.title;
-        gSteps.innerHTML = guide.steps.map(s => `<li>${s}</li>`).join('');
-      }
     };
 
     function generateArenaQuestionBank(diffKey, count = 35) {
@@ -11020,7 +11039,13 @@
     function startArenaAnzanSuddenDeathRound() {
       if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
       arenaAnzanFlashing = true;
+      if (arenaLiveQTimerInterval) {
+        clearInterval(arenaLiveQTimerInterval);
+        arenaLiveQTimerInterval = null;
+      }
       document.getElementById('arena-options-grid').classList.add('hidden');
+      const visEl = document.getElementById('arena-q-visual');
+      if (visEl) visEl.innerHTML = '';
       const form = document.getElementById('arena-anzan-form');
       const fb = document.getElementById('arena-turn-feedback');
       form.classList.add('hidden');

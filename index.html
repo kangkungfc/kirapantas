@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.64
+            Versi 1.9.65
           </span>
         </div>
 
@@ -5812,7 +5812,6 @@
     let activeModIndex = 0;
     let activeModSessionCorrect = 0;
     let activeModConsecutiveStreak = 0;
-      activeModConsecutiveWrong = 0;
     let activeModConsecutiveWrong = 0;
 
     let helperFingerLeft = [false, false, false, false, false];
@@ -6111,6 +6110,7 @@
       activeModIndex = 0;
       activeModSessionCorrect = 0;
       activeModConsecutiveStreak = 0;
+      activeModConsecutiveWrong = 0;
 
       const isJariTrack = JARI_TRACK_IDS.includes(modId);
       const stepNumber = isJariTrack ? (JARI_TRACK_IDS.indexOf(modId) + 1) : (SEMPOA_TRACK_IDS.indexOf(modId) + 1);

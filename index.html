@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.67
+            Versi 1.9.74
           </span>
         </div>
 
@@ -2563,27 +2563,31 @@
         { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } }
       ],
       frame: [
-        // Bingkai Profil 3D Disusun Mengikut Harga & Padanan Set Rasmi
+        // Disusun rapi mengikut tahap eksklusif visual & kenaikan harga Coin
         { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
         { id: 'fr_rainbow',       name: 'Bulatan Pelangi Muzik', tier: 'Biasa',    cost: 20,  setTag: '🎧 Set Gaya Muzik', setApply: { frame: 'fr_rainbow', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
         { id: 'fr_starlight',     name: 'Bintang Sekolah',       tier: 'Comel',    cost: 35,  setTag: '🎒 Set Sekolah', setApply: { frame: 'fr_starlight', outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
         { id: 'fr_sakura',        name: 'Kelopak Sakura',        tier: 'Comel',    cost: 55,  setTag: '🌸 Set Sakura', setApply: { frame: 'fr_sakura', outfit: 'out_knit_bow' } },
         { id: 'fr_cat',           name: 'Paw & Ekor Kucing 3D',  tier: 'Comel',    cost: 65,  setTag: '🐱 Set Kucing Paw', setApply: { frame: 'fr_cat', headwear: 'hw_cat_ears', addAcc: ['acc_cat_tail'] } },
         { id: 'fr_bunny',         name: 'Paw & Ekor Arnab Kontot',tier: 'Istimewa', cost: 75, setTag: '🐰 Set Arnab Kontot', setApply: { frame: 'fr_bunny', headwear: 'hw_bunny_ears', addAcc: ['acc_bunny_tail'] } },
-        { id: 'fr_flower',        name: 'Kalungan Bunga 3D',     tier: 'Istimewa', cost: 95 },
-        { id: 'fr_wizard',        name: 'Lingkaran Bintang Sihir',tier: 'Istimewa', cost: 110,setTag: '🧙 Set Ahli Sihir', setApply: { frame: 'fr_wizard', outfit: 'out_wizard_robe', headwear: 'hw_wizard', addAcc: ['acc_wizard_wand'] } },
+        { id: 'fr_flower',        name: 'Kalungan Bunga 3D',     tier: 'Istimewa', cost: 90 },
+        { id: 'fr_wizard',        name: 'Lingkaran Bintang Sihir',tier: 'Istimewa', cost: 105,setTag: '🧙 Set Ahli Sihir', setApply: { frame: 'fr_wizard', outfit: 'out_wizard_robe', headwear: 'hw_wizard', addAcc: ['acc_wizard_wand'] } },
         { id: 'fr_candy',         name: 'Lilitan Candy 3D',      tier: 'Istimewa', cost: 120 },
-        { id: 'fr_roman',         name: 'Laurel Emas Diraja',    tier: 'Gah',      cost: 140, setTag: '👑 Set Diraja/Graduan', setApply: { frame: 'fr_roman', outfit: 'out_baju_melayu', headwear: 'hw_grad' } },
-        { id: 'fr_microscope',    name: 'Mikroskop Saintis 3D',  tier: 'Gah',      cost: 165, setTag: '🔬 Set Saintis', setApply: { frame: 'fr_microscope', outfit: 'out_lab_coat', headwear: 'hw_goggles_sci', addAcc: ['acc_glasses'] } },
-        { id: 'fr_ice',           name: 'Kristal Ais Tajam',     tier: 'Gah',      cost: 180 },
-        { id: 'fr_thorns',        name: 'Akar Duri Rimba',       tier: 'Gah',      cost: 195 },
-        { id: 'fr_fire',          name: 'Lingkaran Api Marak',   tier: 'Epik',     cost: 225, setTag: '🔥 Set Api Membara', setApply: { frame: 'fr_fire', outfit: 'out_fire_armor', hair: 'hair_fire_flame', headwear: 'hw_fire_crown', addAcc: ['acc_fire_glasses'] } },
-        { id: 'fr_neon',          name: 'Neon Kilat Cyber',      tier: 'Epik',     cost: 255, setTag: '⚡ Set Cyber Neon', setApply: { frame: 'fr_neon', outfit: 'out_cyber_armor', headwear: 'hw_cyber_visor' } },
+        { id: 'fr_ice',           name: 'Kristal Ais Tajam',     tier: 'Gah',      cost: 140 },
+        { id: 'fr_thorns',        name: 'Akar Duri Rimba',       tier: 'Gah',      cost: 155 },
+        { id: 'fr_roman',         name: 'Laurel Emas Diraja',    tier: 'Gah',      cost: 170, setTag: '👑 Set Diraja/Graduan', setApply: { frame: 'fr_roman', outfit: 'out_baju_melayu', headwear: 'hw_grad' } },
+        { id: 'fr_microscope',    name: 'Mikroskop Saintis 3D',  tier: 'Gah',      cost: 195, setTag: '🔬 Set Saintis', setApply: { frame: 'fr_microscope', outfit: 'out_lab_coat', headwear: 'hw_goggles_sci', addAcc: ['acc_glasses'] } },
+        { id: 'fr_neon',          name: 'Neon Kilat Cyber',      tier: 'Epik',     cost: 225, setTag: '⚡ Set Cyber Neon', setApply: { frame: 'fr_neon', outfit: 'out_cyber_armor', headwear: 'hw_cyber_visor' } },
+        { id: 'fr_fire',          name: 'Lingkaran Api Marak',   tier: 'Epik',     cost: 255, setTag: '🔥 Set Api Membara', setApply: { frame: 'fr_fire', outfit: 'out_fire_armor', hair: 'hair_fire_flame', headwear: 'hw_fire_crown', addAcc: ['acc_fire_glasses'] } },
         { id: 'fr_crown_gold',    name: 'Mahkota Putera 3D',     tier: 'Epik',     cost: 295, setTag: '🤴 Set Sut Putera', setApply: { frame: 'fr_crown_gold', outfit: 'out_prince_royal', headwear: 'hw_crown' } },
         { id: 'fr_gold_chain',    name: 'Rantai Emas Diraja',    tier: 'Epik',     cost: 330 },
         { id: 'fr_diamond_chain', name: 'Rantai Berlian Unicorn',tier: 'Legenda',  cost: 375, setTag: '🦄 Set Puteri Unicorn', setApply: { frame: 'fr_diamond_chain', outfit: 'out_princess_gown', headwear: 'hw_unicorn_horn', addAcc: ['acc_wings_angel'] } },
-        { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 415, setTag: '🌌 Set Galaksi', setApply: { frame: 'fr_galaxy', outfit: 'out_astronaut', headwear: 'hw_astro_visor' } },
-        { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Legenda',  cost: 450, setTag: '🐉 Set Maharaja Naga', setApply: { frame: 'fr_dragon', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
+        { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 420, setTag: '🌌 Set Galaksi', setApply: { frame: 'fr_galaxy', outfit: 'out_astronaut', headwear: 'hw_astro_visor' } },
+        { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Legenda',  cost: 480, setTag: '🐉 Set Maharaja Naga', setApply: { frame: 'fr_dragon', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } },
+        { id: 'fr_phoenix_mythic',name: 'Aura Phoenix Abadi',    tier: 'Mitos',    cost: 600 },
+        { id: 'fr_celestial_king',name: 'Takhta Suria & Bulan',  tier: 'Mitos',    cost: 800 },
+        { id: 'fr_infinity_prism',name: 'Prisma Infiniti Juara',  tier: 'Mitos',    cost: 1000 },
+        { id: 'fr_grandmaster',   name: 'Lambang Grandmaster Abakus', tier: 'Agung', cost: 1500 }
       ]
     };
 
@@ -3091,10 +3095,14 @@
       }
       if (frameId === 'fr_neon') {
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#06B6D4" stroke-width="5"/>
+          <!-- Tanduk & Bilah Kilat Cyber Terkeluar Kiri, Kanan & Atas -->
+          <polygon points="15,44 -4,34 11,49 -6,58 16,60" fill="#06B6D4" stroke="#E0F2FE" stroke-width="1"/>
+          <polygon points="85,44 104,34 89,49 106,58 84,60" fill="#06B6D4" stroke="#E0F2FE" stroke-width="1"/>
+          <polygon points="41,9 50,-4 59,9 50,14" fill="#22D3EE" stroke="#FFFFFF" stroke-width="1"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#06B6D4" stroke-width="5.5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-dasharray="10 5"/>
-          <polygon points="22,12 16,24 22,24 18,34 29,21 23,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
-          <polygon points="78,12 84,24 78,24 82,34 71,21 77,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.9"/>
+          <polygon points="22,10 14,24 21,24 16,35 30,21 23,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1"/>
+          <polygon points="78,10 86,24 79,24 84,35 70,21 77,21" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1"/>
         `;
       }
       if (frameId === 'fr_starlight') {
@@ -3189,22 +3197,54 @@
         `;
       }
       if (frameId === 'fr_microscope') {
+        const gearTeeth = [];
+        for (let i = 0; i < 16; i++) {
+          const ang = (i * 22.5) * Math.PI / 180;
+          const x1 = (50 + 41 * Math.cos(ang - 0.11)).toFixed(1);
+          const y1 = (50 + 41 * Math.sin(ang - 0.11)).toFixed(1);
+          const x2 = (50 + 48.5 * Math.cos(ang - 0.08)).toFixed(1);
+          const y2 = (50 + 48.5 * Math.sin(ang - 0.08)).toFixed(1);
+          const x3 = (50 + 48.5 * Math.cos(ang + 0.08)).toFixed(1);
+          const y3 = (50 + 48.5 * Math.sin(ang + 0.08)).toFixed(1);
+          const x4 = (50 + 41 * Math.cos(ang + 0.11)).toFixed(1);
+          const y4 = (50 + 41 * Math.sin(ang + 0.11)).toFixed(1);
+          gearTeeth.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4}" fill="#0284C7" stroke="#E0F2FE" stroke-width="0.8"/>`);
+        }
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#0284C7" stroke-width="5.5"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="8 4"/>
-          <!-- Mikroskop Saintis 3D Di Depan Bawah (Masuk ke dalam frame & sedikit terkeluar di bawah) -->
-          <g transform="translate(76, 80)">
-            <!-- Tapak Mikroskop -->
-            <rect x="-11" y="13" width="22" height="4.5" rx="2" fill="#1E293B" stroke="#FFFFFF" stroke-width="0.9"/>
-            <!-- Lengan Melengkung -->
-            <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#E2E8F0" stroke-width="3.6" stroke-linecap="round"/>
-            <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#0284C7" stroke-width="1.4" stroke-linecap="round"/>
-            <!-- Pentas Slaid -->
-            <rect x="-9" y="5" width="14" height="2.6" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="0.8"/>
-            <!-- Tiub Kanta & Kanta Mata -->
-            <rect x="-5.5" y="-12" width="5.5" height="13" rx="2" transform="rotate(-18 -2 -6)" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.1"/>
-            <rect x="-6.5" y="-15" width="7.5" height="3.2" rx="1.2" transform="rotate(-18 -2 -6)" fill="#0284C7"/>
-            <circle cx="7" cy="3" r="2.4" fill="#FACC15" stroke="#0F172A" stroke-width="0.8"/>
+          <!-- Roda Gear Teknologi & Orbit Atom Luar Bingkai -->
+          ${gearTeeth.join('')}
+          <ellipse cx="50" cy="50" rx="53" ry="18" transform="rotate(-28 50 50)" fill="none" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="6 4"/>
+          <ellipse cx="50" cy="50" rx="53" ry="18" transform="rotate(28 50 50)" fill="none" stroke="#22D3EE" stroke-width="1.6" stroke-dasharray="6 4"/>
+          <circle cx="50" cy="50" r="43" fill="none" stroke="#0369A1" stroke-width="6.5"/>
+          <circle cx="50" cy="50" r="43" fill="none" stroke="#7DD3FC" stroke-width="2.2" stroke-dasharray="8 4"/>
+
+          <!-- Kelalang Makmal Bercahaya Hijau-Biru Di Kiri Bawah (Terkeluar) -->
+          <g transform="translate(13, 81) rotate(-14)">
+            <polygon points="-5,-11 5,-11 11,9 -11,9" fill="#E0F2FE" stroke="#0369A1" stroke-width="1.3" stroke-linejoin="round"/>
+            <polygon points="-7.5,1 7.5,1 10,8 -10,8" fill="#10B981"/>
+            <rect x="-3" y="-17" width="6" height="6" rx="1" fill="#F8FAFC" stroke="#0369A1" stroke-width="1.2"/>
+            <circle cx="-2" cy="-21" r="2.2" fill="#34D399" stroke="#FFFFFF" stroke-width="0.7"/>
+            <circle cx="3" cy="-25" r="1.7" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.7"/>
+          </g>
+
+          <!-- Mikroskop Saintis 3D Besar Di Kanan Bawah (Terkeluar Jauh) -->
+          <g transform="translate(83, 77) scale(1.25)">
+            <rect x="-12" y="13" width="24" height="5" rx="2.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1"/>
+            <path d="M 5 13 C 12 7, 12 -4, 3 -8" fill="none" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 5 13 C 12 7, 12 -4, 3 -8" fill="none" stroke="#0284C7" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="-10" y="5" width="15" height="3" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="0.9"/>
+            <rect x="-6" y="-13" width="6" height="14" rx="2" transform="rotate(-18 -2 -6)" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.1"/>
+            <rect x="-7" y="-16.5" width="8" height="3.5" rx="1.2" transform="rotate(-18 -2 -6)" fill="#0284C7"/>
+            <circle cx="7.5" cy="3" r="2.6" fill="#FACC15" stroke="#0F172A" stroke-width="0.9"/>
+          </g>
+
+          <!-- Simbol Atom & Elektron Bersinar Di Puncak Atas -->
+          <g transform="translate(50, 5)">
+            <ellipse cx="0" cy="0" rx="13" ry="4.5" transform="rotate(-25)" fill="none" stroke="#38BDF8" stroke-width="1.5"/>
+            <ellipse cx="0" cy="0" rx="13" ry="4.5" transform="rotate(25)" fill="none" stroke="#FACC15" stroke-width="1.5"/>
+            <circle cx="0" cy="0" r="3.4" fill="#FACC15" stroke="#0369A1" stroke-width="1.1"/>
+            <circle cx="-11" cy="-4" r="1.8" fill="#38BDF8"/>
+            <circle cx="11" cy="-4" r="1.8" fill="#38BDF8"/>
           </g>
         `;
       }
@@ -3330,51 +3370,62 @@
       }
       if (frameId === 'fr_crown_gold') {
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="6"/>
-          <polygon points="28,11 34,-1 42,8 50,-2 58,8 66,-1 72,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
-          <circle cx="50" cy="6.5" r="2.6" fill="#E11D48"/>
-          <circle cx="38" cy="8" r="2" fill="#0284C7"/>
-          <circle cx="62" cy="8" r="2" fill="#0284C7"/>
-          <polygon points="5,50 11,45 11,55" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
-          <polygon points="95,50 89,45 89,55" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+          <!-- Sayap Kecil Emas Putera Di Kiri & Kanan -->
+          <polygon points="12,42 -4,35 6,49 -3,60 14,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+          <polygon points="88,42 104,35 94,49 103,60 86,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="6.5"/>
+          <polygon points="26,11 33,-3 41,7 50,-5 59,7 67,-3 74,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
+          <circle cx="50" cy="6" r="2.8" fill="#E11D48"/>
+          <circle cx="37" cy="8" r="2.2" fill="#0284C7"/>
+          <circle cx="63" cy="8" r="2.2" fill="#0284C7"/>
+          <polygon points="39,91 50,86 61,91 50,99" fill="#E11D48" stroke="#FACC15" stroke-width="1.3"/>
         `;
       }
       if (frameId === 'fr_gold_chain') {
         const links = [];
         for (let i = 0; i < 18; i++) {
           const ang = (i * 20) * Math.PI / 180;
-          const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
-          const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
+          const cx = (50 + 44 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 44 * Math.sin(ang)).toFixed(1);
           const deg = (i * 20 + 90).toFixed(0);
-          links.push(`<rect x="${cx - 4.8}" y="${cy - 2.8}" width="9.6" height="5.6" rx="2.8" transform="rotate(${deg} ${cx} ${cy})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>`);
+          links.push(`<rect x="${cx - 5.2}" y="${cy - 3}" width="10.4" height="6" rx="3" transform="rotate(${deg} ${cx} ${cy})" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>`);
         }
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#92400E" stroke-width="5.5"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#92400E" stroke-width="6"/>
           ${links.join('')}
-          <polygon points="33,10 39,0 45,7 50,-1 55,7 61,0 67,10" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+          <polygon points="31,10 38,-2 44,6 50,-4 56,6 62,-2 69,10" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
+          <!-- Medallion Emas Diraja Terkeluar Di Bawah -->
+          <circle cx="50" cy="94" r="7.5" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
+          <circle cx="50" cy="94" r="3.5" fill="#DC2626"/>
         `;
       }
       if (frameId === 'fr_dragon') {
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#DC2626" stroke-width="6"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="2.4" stroke-dasharray="9 4"/>
-          <polygon points="9,44 -2,28 13,33 5,18 20,29 17,47" fill="#F97316" stroke="#7F1D1D" stroke-width="1.2"/>
-          <polygon points="91,44 102,28 87,33 95,18 80,29 83,47" fill="#F97316" stroke="#7F1D1D" stroke-width="1.2"/>
-          <polygon points="41,10 50,-2 59,10" fill="#FACC15" stroke="#B45309" stroke-width="1.2"/>
+          <!-- Sayap Naga Berapi Besar Terkeluar Jauh Di Kiri & Kanan -->
+          <path d="M 14 58 L -11 46 L -3 38 L -14 24 L 4 28 L 1 13 L 18 29 Z" fill="#EA580C" stroke="#7F1D1D" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M 86 58 L 111 46 L 103 38 L 114 24 L 96 28 L 99 13 L 82 29 Z" fill="#EA580C" stroke="#7F1D1D" stroke-width="1.3" stroke-linejoin="round"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#DC2626" stroke-width="6.5"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FACC15" stroke-width="2.5" stroke-dasharray="9 4"/>
+          <!-- Tanduk Naga Emas Terkeluar Atas & Ekor Naga Bawah -->
+          <polygon points="33,12 27,-3 42,8 50,-5 58,8 73,-3 67,12" fill="#FACC15" stroke="#991B1B" stroke-width="1.3"/>
+          <polygon points="39,91 50,104 61,91" fill="#F97316" stroke="#7F1D1D" stroke-width="1.2"/>
         `;
       }
       if (frameId === 'fr_diamond_chain') {
         const gems = [];
         for (let i = 0; i < 16; i++) {
           const ang = (i * 22.5) * Math.PI / 180;
-          const cx = (50 + 44 * Math.cos(ang));
-          const cy = (50 + 44 * Math.sin(ang));
-          gems.push(`<polygon points="${cx.toFixed(1)},${(cy - 5.2).toFixed(1)} ${(cx + 5.2).toFixed(1)},${cy.toFixed(1)} ${cx.toFixed(1)},${(cy + 5.2).toFixed(1)} ${(cx - 5.2).toFixed(1)},${cy.toFixed(1)}" fill="${i % 2 === 0 ? '#E0F2FE' : '#38BDF8'}" stroke="#1E3A8A" stroke-width="1.2"/>`);
+          const cx = (50 + 44.5 * Math.cos(ang));
+          const cy = (50 + 44.5 * Math.sin(ang));
+          gems.push(`<polygon points="${cx.toFixed(1)},${(cy - 5.6).toFixed(1)} ${(cx + 5.6).toFixed(1)},${cy.toFixed(1)} ${cx.toFixed(1)},${(cy + 5.6).toFixed(1)} ${(cx - 5.6).toFixed(1)},${cy.toFixed(1)}" fill="${i % 2 === 0 ? '#E0F2FE' : '#38BDF8'}" stroke="#1E3A8A" stroke-width="1.2"/>`);
         }
         return `
+          <!-- Sayap Kristal Unicorn Terkeluar Di Sisi -->
+          <path d="M 12 40 L -9 28 L -2 44 L -10 56 L 13 60 Z" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.2"/>
+          <path d="M 88 40 L 109 28 L 102 44 L 110 56 L 87 60 Z" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.2"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1D4ED8" stroke-width="6"/>
           ${gems.join('')}
-          <polygon points="50,-2 58,6 50,15 42,6" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.5"/>
+          <polygon points="50,-6 60,5 50,16 40,5" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.6"/>
         `;
       }
       if (frameId === 'fr_galaxy') {
@@ -3383,15 +3434,134 @@
           const ang = (i * (360 / 14)) * Math.PI / 180;
           const cx = (50 + 44.5 * Math.cos(ang)).toFixed(1);
           const cy = (50 + 44.5 * Math.sin(ang)).toFixed(1);
-          stars.push(`<circle cx="${cx}" cy="${cy}" r="${i % 2 === 0 ? '4' : '2.6'}" fill="${i % 2 === 0 ? '#E879F9' : '#38BDF8'}" stroke="#FFFFFF" stroke-width="1.1"/>`);
+          stars.push(`<circle cx="${cx}" cy="${cy}" r="${i % 2 === 0 ? '4.2' : '2.8'}" fill="${i % 2 === 0 ? '#E879F9' : '#38BDF8'}" stroke="#FFFFFF" stroke-width="1.1"/>`);
         }
         return `
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#6D28D9" stroke-width="6"/>
+          <!-- Gelung Orbit Galaksi Terkeluar Melintasi Bingkai -->
+          <ellipse cx="50" cy="50" rx="56" ry="16" transform="rotate(-24 50 50)" fill="none" stroke="#E879F9" stroke-width="2" stroke-dasharray="8 4"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#6D28D9" stroke-width="6.5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#C084FC" stroke-width="2.2" stroke-dasharray="7 5"/>
           ${stars.join('')}
-          <circle cx="11" cy="24" r="5" fill="#F472B6" stroke="#FFFFFF" stroke-width="1.1"/>
-          <ellipse cx="11" cy="24" rx="8.5" ry="2.2" transform="rotate(-22 11 24)" fill="none" stroke="#FDE047" stroke-width="1.4"/>
-          <polygon points="50,-2 57,5.5 50,14 43,5.5" fill="#F0ABFC" stroke="#FFFFFF" stroke-width="1.3"/>
+          <!-- Planet Zuhal & Roket Angkasa Terkeluar -->
+          <circle cx="6" cy="24" r="6.5" fill="#F472B6" stroke="#FFFFFF" stroke-width="1.2"/>
+          <ellipse cx="6" cy="24" rx="11" ry="2.8" transform="rotate(-22 6 24)" fill="none" stroke="#FDE047" stroke-width="1.6"/>
+          <circle cx="94" cy="76" r="5.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.2"/>
+          <polygon points="50,-6 59,4 50,14 41,4" fill="#F0ABFC" stroke="#FFFFFF" stroke-width="1.4"/>
+        `;
+      }
+      if (frameId === 'fr_phoenix_mythic') {
+        return `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Api Phoenix Besar Terkeluar Jauh Di Kiri & Kanan -->
+            <path d="M 12 62 C -2 58, -14 48, -16 36 C -9 40, -4 41, 0 38 C -10 31, -15 20, -13 10 C -5 16, 1 20, 6 22 C 1 11, 2 2, 8 -4 C 13 6, 17 15, 19 25 L 15 55 Z"
+              fill="#EA580C" stroke="#FEF08A" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 13 56 C 2 52, -7 43, -9 33 C -3 35, 1 34, 4 31 C -3 25, -6 17, -4 10 C 3 15, 7 20, 11 26 L 14 50 Z"
+              fill="#FACC15"/>
+            <path d="M 88 62 C 102 58, 114 48, 116 36 C 109 40, 104 41, 100 38 C 110 31, 115 20, 113 10 C 105 16, 99 20, 94 22 C 99 11, 98 2, 92 -4 C 87 6, 83 15, 81 25 L 85 55 Z"
+              fill="#EA580C" stroke="#FEF08A" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 87 56 C 98 52, 107 43, 109 33 C 103 35, 99 34, 96 31 C 103 25, 106 17, 104 10 C 97 15, 93 20, 89 26 L 86 50 Z"
+              fill="#FACC15"/>
+            <!-- Lingkaran Bara Phoenix -->
+            <circle cx="50" cy="50" r="43" fill="none" stroke="#DC2626" stroke-width="6.5"/>
+            <circle cx="50" cy="50" r="43" fill="none" stroke="#FACC15" stroke-width="2.6" stroke-dasharray="10 4"/>
+            <!-- Jambul & Ekor Phoenix Terkeluar Atas & Bawah -->
+            <polygon points="34,11 41,-5 50,5 59,-5 66,11 50,15" fill="#FACC15" stroke="#B91C1C" stroke-width="1.3"/>
+            <polygon points="34,90 27,104 43,96 50,107 57,96 73,104 66,90" fill="#F97316" stroke="#FEF08A" stroke-width="1.2"/>
+          </g>
+        `;
+      }
+      if (frameId === 'fr_celestial_king') {
+        const sunRays = [];
+        for (let i = 0; i < 8; i++) {
+          const a = (i * 45) * Math.PI / 180;
+          const x1 = (4 + 10.5 * Math.cos(a)).toFixed(1);
+          const y1 = (44 + 10.5 * Math.sin(a)).toFixed(1);
+          const x2 = (4 + 15.5 * Math.cos(a)).toFixed(1);
+          const y2 = (44 + 15.5 * Math.sin(a)).toFixed(1);
+          sunRays.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#FACC15" stroke-width="2.2" stroke-linecap="round"/>`);
+        }
+        return `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Cakerawala Biru-Emas Terkeluar Di Sisi -->
+            <path d="M 14 34 L -12 22 L -4 37 L -15 44 L -3 52 L -11 66 L 15 62 Z" fill="#1E1B4B" stroke="#FACC15" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 86 34 L 112 22 L 104 37 L 115 44 L 103 52 L 111 66 L 85 62 Z" fill="#1E1B4B" stroke="#38BDF8" stroke-width="1.2" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="43.5" fill="none" stroke="#1E1B4B" stroke-width="7"/>
+            <circle cx="50" cy="50" r="43.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="3" stroke-dasharray="9 4"/>
+            <!-- Matahari Suria Bersinar Terkeluar Kiri -->
+            ${sunRays.join('')}
+            <circle cx="4" cy="44" r="9.5" fill="#FACC15" stroke="#B45309" stroke-width="1.4"/>
+            <circle cx="4" cy="44" r="5.5" fill="#FEF9C3"/>
+            <!-- Bulan Sabit & Bintang Terkeluar Kanan -->
+            <path d="M 99 33 A 11 11 0 1 0 99 55 A 8.2 8.2 0 1 1 99 33 Z" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.3"/>
+            <polygon points="103,44 105,47.5 109,48 106,50.5 106.8,54.5 103,52.5 99.2,54.5 100,50.5 97,48 101,47.5" fill="#FEF08A"/>
+            <!-- Mahkota Suria Besar Terkeluar Atas -->
+            <polygon points="28,11 36,-6 44,5 50,-8 56,5 64,-6 72,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
+            <circle cx="50" cy="5" r="3" fill="#38BDF8"/>
+            <!-- Riben Bintang Cakerawala Di Bawah -->
+            <polygon points="36,92 50,86 64,92 60,103 50,98 40,103" fill="#1E1B4B" stroke="#FACC15" stroke-width="1.3"/>
+          </g>
+        `;
+      }
+      if (frameId === 'fr_infinity_prism') {
+        const shards = [];
+        const prismCols = ['#F43F5E', '#F97316', '#FACC15', '#10B981', '#06B6D4', '#6366F1', '#D946EF'];
+        for (let i = 0; i < 12; i++) {
+          const ang = (i * 30) * Math.PI / 180;
+          const x1 = (50 + 41 * Math.cos(ang - 0.13)).toFixed(1);
+          const y1 = (50 + 41 * Math.sin(ang - 0.13)).toFixed(1);
+          const x2 = (50 + 56.5 * Math.cos(ang)).toFixed(1);
+          const y2 = (50 + 56.5 * Math.sin(ang)).toFixed(1);
+          const x3 = (50 + 41 * Math.cos(ang + 0.13)).toFixed(1);
+          const y3 = (50 + 41 * Math.sin(ang + 0.13)).toFixed(1);
+          shards.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${prismCols[i % prismCols.length]}" stroke="#FFFFFF" stroke-width="1.1"/>`);
+        }
+        return `
+          <g filter="url(#${uid}_glow)">
+            ${shards.join('')}
+            <circle cx="50" cy="50" r="43" fill="none" stroke="#FFFFFF" stroke-width="6.5"/>
+            <circle cx="50" cy="50" r="43" fill="none" stroke="#4F46E5" stroke-width="2.6" stroke-dasharray="7 4"/>
+            <!-- Hablur Kristal Besar 4 Penjuru Terkeluar -->
+            <polygon points="50,-8 61,5 50,17 39,5" fill="#E0F2FE" stroke="#4F46E5" stroke-width="1.5"/>
+            <polygon points="-7,50 6,39 17,50 6,61" fill="#F0ABFC" stroke="#7E22CE" stroke-width="1.4"/>
+            <polygon points="107,50 94,39 83,50 94,61" fill="#67E8F9" stroke="#0E7490" stroke-width="1.4"/>
+            <polygon points="50,107 60,95 50,84 40,95" fill="#FDE047" stroke="#B45309" stroke-width="1.4"/>
+          </g>
+        `;
+      }
+      if (frameId === 'fr_grandmaster') {
+        const beads = [];
+        for (let i = 0; i < 18; i++) {
+          const ang = (i * 20) * Math.PI / 180;
+          const cx = (50 + 44 * Math.cos(ang)).toFixed(1);
+          const cy = (50 + 44 * Math.sin(ang)).toFixed(1);
+          beads.push(`<ellipse cx="${cx}" cy="${cy}" rx="5.8" ry="3.8" transform="rotate(${i * 20 + 90} ${cx} ${cy})" fill="${i % 2 === 0 ? '#EF4444' : 'url(#${uid}_gold)'}" stroke="#451A03" stroke-width="1.1"/>`);
+        }
+        return `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Laurel Emas Agung Terkeluar Jauh Di Kiri & Kanan -->
+            <path d="M 12 68 C -6 62, -16 44, -14 24 C -7 30, -3 33, 2 33 C -6 22, -8 10, -3 0 C 3 9, 7 18, 10 27 L 15 62 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 88 68 C 106 62, 116 44, 114 24 C 107 30, 103 33, 98 33 C 106 22, 108 10, 103 0 C 97 9, 93 18, 90 27 L 85 62 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="43.5" fill="none" stroke="#78350F" stroke-width="7"/>
+            ${beads.join('')}
+            <!-- Mahkota Agung Grandmaster Terkeluar Tinggi Di Atas -->
+            <polygon points="22,12 30,-7 40,5 50,-9 60,5 70,-7 78,12" fill="url(#${uid}_gold)" stroke="#451A03" stroke-width="1.5"/>
+            <circle cx="50" cy="4" r="3.2" fill="#EF4444" stroke="#FFFFFF" stroke-width="0.8"/>
+            <circle cx="35" cy="6" r="2.2" fill="#38BDF8"/>
+            <circle cx="65" cy="6" r="2.2" fill="#38BDF8"/>
+            <!-- Lencana Sempoa Diraja Besar Terkeluar Di Bawah -->
+            <rect x="30" y="84" width="40" height="18" rx="4" fill="#78350F" stroke="#FACC15" stroke-width="1.6"/>
+            <rect x="33" y="87" width="34" height="12" rx="2" fill="#FEF3C7"/>
+            <line x1="33" y1="92" x2="67" y2="92" stroke="#451A03" stroke-width="1.6"/>
+            <line x1="41" y1="87" x2="41" y2="99" stroke="#92400E" stroke-width="1.3"/>
+            <line x1="50" y1="87" x2="50" y2="99" stroke="#92400E" stroke-width="1.3"/>
+            <line x1="59" y1="87" x2="59" y2="99" stroke="#92400E" stroke-width="1.3"/>
+            <circle cx="41" cy="89.5" r="2.1" fill="#EF4444"/>
+            <circle cx="50" cy="95.5" r="2.1" fill="#F59E0B"/>
+            <circle cx="59" cy="89.5" r="2.1" fill="#EF4444"/>
+            <circle cx="59" cy="95.5" r="2.1" fill="#F59E0B"/>
+          </g>
         `;
       }
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
@@ -4146,27 +4316,40 @@
       }
       if (accList.includes('acc_scarf_red')) {
         accLayer += `
-          <path d="M 35 73 Q 50 81 65 73 L 67 79 Q 50 87 33 79 Z" fill="#DC2626" filter="url(#${uid}_soft)"/>
-          <polygon points="55,78 63,78 66,95 57,93" fill="#B91C1C" filter="url(#${uid}_soft)"/>
+          <g filter="url(#${uid}_soft)">
+            <!-- Lilitan Skaf Naga Merah Tebal Di Sekeliling Leher (Tiada bahagian terpotong) -->
+            <path d="M 32 72 Q 50 83 68 72 L 70 80 Q 50 91 30 80 Z" fill="#DC2626" stroke="#7F1D1D" stroke-width="1.1" stroke-linejoin="round"/>
+            <path d="M 34 75.5 Q 50 84.5 66 75.5" fill="none" stroke="#FACC15" stroke-width="1.3" stroke-dasharray="3 2"/>
+            <!-- Simpulan & Hujung Skaf Berkibar Di Dada -->
+            <rect x="44" y="76.5" width="12" height="7" rx="3" fill="#B91C1C" stroke="#7F1D1D" stroke-width="1"/>
+            <polygon points="46,82 54,82 58,95 49,95" fill="#EF4444" stroke="#7F1D1D" stroke-width="1" stroke-linejoin="round"/>
+            <polygon points="43,82 49,82 46,93 39,92" fill="#B91C1C" stroke="#7F1D1D" stroke-width="0.9" stroke-linejoin="round"/>
+            <line x1="49" y1="93.5" x2="57.5" y2="93.5" stroke="#FACC15" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
         `;
       }
       if (accList.includes('acc_fire_glasses')) {
         accLayer += `
           <g filter="url(#${uid}_soft)">
-            <polygon points="26,48 31,37 38,42 45,38 48,49 41,54 31,53" fill="#DC2626" stroke="#FACC15" stroke-width="1.6"/>
-            <polygon points="74,48 69,37 62,42 55,38 52,49 59,54 69,53" fill="#DC2626" stroke="#FACC15" stroke-width="1.6"/>
-            <polygon points="32,48 36,42 42,48 37,51" fill="#FACC15"/>
-            <polygon points="68,48 64,42 58,48 63,51" fill="#FACC15"/>
-            <line x1="47" y1="45" x2="53" y2="45" stroke="#FACC15" stroke-width="2.6"/>
-          </g>
-        `;
-      }
-      if (accList.includes('acc_wizard_wand')) {
-        accLayer += `
-          <g filter="url(#${uid}_soft)">
-            <line x1="62" y1="97" x2="73" y2="79" stroke="#451A03" stroke-width="2.8" stroke-linecap="round"/>
-            <polygon points="73,74 74.6,77.6 78.5,78.1 75.7,80.8 76.4,84.7 73,82.8 69.6,84.7 70.3,80.8 67.5,78.1 71.4,77.6"
-              fill="#FACC15" stroke="#B45309" stroke-width="0.9"/>
+            <!-- Cermin Mata Api Berlidah Api Menyala Jelas (Merah -> Oren -> Kuning Terang) -->
+            <!-- Lidah Api Kiri -->
+            <path d="M 25 49 C 22 41, 25 33, 29 29 C 28 35, 32 37, 34 31 C 37 36, 40 34, 42 30 C 45 35, 48 41, 47 49 C 44 54, 30 55, 25 49 Z"
+              fill="#DC2626" stroke="#FACC15" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 28 49 C 27 43, 30 37, 33 34 C 34 39, 37 38, 39 34 C 42 38, 44 43, 43 49 C 40 52, 32 52, 28 49 Z"
+              fill="#F97316"/>
+            <ellipse cx="36.5" cy="47.5" rx="6.2" ry="4.2" fill="#FEF08A"/>
+            <ellipse cx="36.5" cy="48" rx="3.4" ry="2.2" fill="#FFFFFF" opacity="0.85"/>
+
+            <!-- Lidah Api Kanan -->
+            <path d="M 75 49 C 78 41, 75 33, 71 29 C 72 35, 68 37, 66 31 C 63 36, 60 34, 58 30 C 55 35, 52 41, 53 49 C 56 54, 70 55, 75 49 Z"
+              fill="#DC2626" stroke="#FACC15" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 72 49 C 73 43, 70 37, 67 34 C 66 39, 63 38, 61 34 C 58 38, 56 43, 57 49 C 60 52, 68 52, 72 49 Z"
+              fill="#F97316"/>
+            <ellipse cx="63.5" cy="47.5" rx="6.2" ry="4.2" fill="#FEF08A"/>
+            <ellipse cx="63.5" cy="48" rx="3.4" ry="2.2" fill="#FFFFFF" opacity="0.85"/>
+
+            <!-- Jambatan Hidung Api -->
+            <path d="M 46 46 Q 50 43 54 46" fill="none" stroke="#FACC15" stroke-width="2.6" stroke-linecap="round"/>
           </g>
         `;
       }
@@ -4182,10 +4365,18 @@
       }
       if (accList.includes('acc_medal_gold')) {
         accLayer += `
-          <polygon points="43,75 48,87 50,87 46,75" fill="#2563EB"/>
-          <polygon points="57,75 52,87 50,87 54,75" fill="#DC2626"/>
-          <circle cx="50" cy="89" r="5.5" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" filter="url(#${uid}_soft)"/>
-          <text x="50" y="91.5" text-anchor="middle" font-size="6.5" font-weight="900" fill="#78350F">1</text>
+          <g filter="url(#${uid}_soft)">
+            <!-- Riben V Penuh Dari Kolar Ke Tengah Dada -->
+            <polygon points="40,74 47.5,83 50,83 44.5,74" fill="#1D4ED8" stroke="#FFFFFF" stroke-width="0.6"/>
+            <polygon points="60,74 52.5,83 50,83 55.5,74" fill="#DC2626" stroke="#FFFFFF" stroke-width="0.6"/>
+            <!-- Gelung Penyambung Emas -->
+            <circle cx="50" cy="82.5" r="2.2" fill="none" stroke="#B45309" stroke-width="1.4"/>
+            <!-- Pingat Emas Besar Bercahaya (Jelas & Tidak Terpotong) -->
+            <circle cx="50" cy="89" r="6.8" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+            <circle cx="50" cy="89" r="4.9" fill="none" stroke="#FEF9C3" stroke-width="0.9"/>
+            <polygon points="50,84.8 51.3,87.4 54.2,87.8 52.1,89.8 52.6,92.6 50,91.3 47.4,92.6 47.9,89.8 45.8,87.8 48.7,87.4"
+              fill="#FFFBEB" stroke="#92400E" stroke-width="0.6"/>
+          </g>
         `;
       }
 
@@ -4360,6 +4551,32 @@
           </g>
           ${renderAvatarFrameOverlaySVG(cfg.frame, uid)}
           ${hatLayer}
+          ${accList.includes('acc_medal_gold') ? `
+            <g filter="url(#${uid}_soft)">
+              <polygon points="40,74 47.5,83 50,83 44.5,74" fill="#1D4ED8" stroke="#FFFFFF" stroke-width="0.6"/>
+              <polygon points="60,74 52.5,83 50,83 55.5,74" fill="#DC2626" stroke="#FFFFFF" stroke-width="0.6"/>
+              <circle cx="50" cy="82.5" r="2.2" fill="none" stroke="#B45309" stroke-width="1.4"/>
+              <circle cx="50" cy="89" r="6.8" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+              <circle cx="50" cy="89" r="4.9" fill="none" stroke="#FEF9C3" stroke-width="0.9"/>
+              <polygon points="50,84.8 51.3,87.4 54.2,87.8 52.1,89.8 52.6,92.6 50,91.3 47.4,92.6 47.9,89.8 45.8,87.8 48.7,87.4"
+                fill="#FFFBEB" stroke="#92400E" stroke-width="0.6"/>
+            </g>
+          ` : ''}
+          ${accList.includes('acc_wizard_wand') ? `
+            <g filter="url(#${uid}_glow)">
+              <!-- Batang Tongkat Sihir Di Sisi Kanan -->
+              <line x1="68" y1="95" x2="86" y2="66" stroke="#78350F" stroke-width="4.2" stroke-linecap="round"/>
+              <line x1="68" y1="95" x2="86" y2="66" stroke="#F59E0B" stroke-width="1.6" stroke-linecap="round"/>
+              <!-- Bintang Sihir Emas Besar Di Hujung Tongkat -->
+              <polygon points="86,55 89.2,61.6 96.5,62.6 91.2,67.7 92.5,75 86,71.5 79.5,75 80.8,67.7 75.5,62.6 82.8,61.6"
+                fill="#FACC15" stroke="#92400E" stroke-width="1.3" stroke-linejoin="round"/>
+              <circle cx="84.5" cy="63.5" r="2" fill="#FFFFFF" opacity="0.9"/>
+              <!-- Percikan Kilauan Sihir -->
+              <circle cx="74" cy="56" r="1.8" fill="#38BDF8"/>
+              <circle cx="96" cy="54" r="1.6" fill="#F472B6"/>
+              <circle cx="95" cy="76" r="1.5" fill="#FEF08A"/>
+            </g>
+          ` : ''}
         </svg>
       `;
     }
@@ -6730,26 +6947,61 @@
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
       currentPlayer.mysteryBoxDate = todayKey;
 
-      // 35% chance to win an unowned cute/special item, otherwise win a surprise Coin Jackpot (5 to 15 Coins)!
-      const unownedPool = [
-        ...AVATAR_STUDIO_CATALOG.accessory,
+      // Sistem Gacha Berperingkat: Item biasa sangat mudah dapat, item mahal (Epik & Legenda) sangat rare!
+      const allUnowned = [
+        ...AVATAR_STUDIO_CATALOG.outfit,
+        ...AVATAR_STUDIO_CATALOG.hair,
         ...AVATAR_STUDIO_CATALOG.headwear,
+        ...AVATAR_STUDIO_CATALOG.accessory,
         ...AVATAR_STUDIO_CATALOG.frame
-      ].filter(it => it.cost > 0 && it.cost <= 65 && (it.gender === cfg.gender || it.gender === 'unisex') && !currentPlayer.ownedAvatarItems.includes(it.id));
+      ].filter(it => it.cost > 0 && (it.gender === cfg.gender || it.gender === 'unisex') && !currentPlayer.ownedAvatarItems.includes(it.id));
+
+      // Susun pemberat (weight) mengikut harga & kelangkaan (rarity)
+      const getItemRarityInfo = (it) => {
+        if (it.cost <= 25) return { weight: 55, label: 'Biasa ⚪', badge: 'bg-slate-200 text-slate-800' };
+        if (it.cost <= 50) return { weight: 28, label: 'Comel 🟢', badge: 'bg-emerald-200 text-emerald-950' };
+        if (it.cost <= 95) return { weight: 12, label: 'Istimewa 🔵', badge: 'bg-sky-200 text-sky-950' };
+        if (it.cost <= 180) return { weight: 4, label: 'Epik (RARE) 🟣', badge: 'bg-purple-300 text-purple-950' };
+        return { weight: 1, label: 'LEGENDA (SUPER RARE!) 🌟', badge: 'bg-amber-300 text-amber-950' };
+      };
 
       playCheer();
       triggerConfetti(70);
 
-      if (unownedPool.length > 0 && Math.random() < 0.35) {
-        const wonItem = unownedPool[Math.floor(Math.random() * unownedPool.length)];
+      // 45% peluang menang item kedai (berdasarkan pemberat rarity), 55% peluang dapat Coin harian (lebih kerap 3-6 Coin, jackpot 12-15 Coin sangat rare)
+      if (allUnowned.length > 0 && Math.random() < 0.45) {
+        const weightedPool = allUnowned.map(it => ({ item: it, meta: getItemRarityInfo(it) }));
+        const totalWeight = weightedPool.reduce((sum, entry) => sum + entry.meta.weight, 0);
+        let roll = Math.random() * totalWeight;
+        let chosen = weightedPool[0];
+        for (const entry of weightedPool) {
+          roll -= entry.meta.weight;
+          if (roll <= 0) {
+            chosen = entry;
+            break;
+          }
+        }
+
+        const wonItem = chosen.item;
         currentPlayer.ownedAvatarItems.push(wonItem.id);
-        addPlayerReward(3, 15);
-        showQuizInstantPopup(`🎁 KEJUTAN MISTERI! Anda menang item <b>"${wonItem.name}"</b> + <b>3 Coin</b> ${COIN_ICON_HTML}!`, 'combo');
+        addPlayerReward(5, 15);
+        showQuizInstantPopup(
+          `🎁 KEJUTAN MISTERI [<span class="underline">${chosen.meta.label}</span>]!<br>Anda menang <b>"${wonItem.name}"</b> (Nilai ${wonItem.cost} Coin) + <b>5 Coin</b> ${COIN_ICON_HTML}!`,
+          'combo'
+        );
       } else {
-        const coinPrizes = [5, 8, 10, 12, 15];
-        const wonCoins = coinPrizes[Math.floor(Math.random() * coinPrizes.length)];
+        // Taburan Coin Harian Lumayan: 10 Coin (45%), 15 Coin (30%), 25 Coin (16%), 40 Coin (6%), 75 Coin Mega Jackpot (3%)
+        const rCoin = Math.random() * 100;
+        let wonCoins = 10;
+        let coinTierText = 'Hadiah Harian';
+        if (rCoin < 45) { wonCoins = 10; coinTierText = 'Hadiah Harian'; }
+        else if (rCoin < 75) { wonCoins = 15; coinTierText = 'Hadiah Ceria'; }
+        else if (rCoin < 91) { wonCoins = 25; coinTierText = 'Bonus Istimewa'; }
+        else if (rCoin < 97) { wonCoins = 40; coinTierText = 'Jackpot Epik!'; }
+        else { wonCoins = 75; coinTierText = 'MEGA JACKPOT LEGENDA! 🌟'; }
+
         addPlayerReward(wonCoins, 15);
-        showQuizInstantPopup(`🎁 JACKPOT PETI MISTERI! Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo');
+        showQuizInstantPopup(`🎁 ${coinTierText} Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo');
       }
       updateDailyMysteryBoxUI();
       renderAvatarStudio();
@@ -6889,13 +7141,15 @@ Jom lawan kira pantas dengan saya!`;
           Istimewa: 'bg-sky-50/50 border-sky-300',
           Gah:      'bg-amber-50/60 border-amber-300',
           Epik:     'bg-orange-50/70 border-orange-400',
-          Legenda:  'bg-gradient-to-b from-purple-50 to-amber-50 border-purple-400 shadow-xs'
+          Legenda:  'bg-gradient-to-b from-purple-50 to-amber-50 border-purple-400 shadow-xs',
+          Mitos:    'bg-gradient-to-b from-rose-100 via-amber-50 to-indigo-100 border-rose-500 shadow-sm',
+          Agung:    'bg-gradient-to-b from-amber-200 via-yellow-100 to-orange-200 border-amber-600 shadow-md'
         };
         const card = document.createElement('div');
-        card.className = `flex flex-col items-center justify-between rounded-2xl p-2 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : (tierCardStyles[item.tier] || 'bg-white border-slate-200')}`;
+        card.className = `flex flex-col items-center justify-between rounded-2xl p-2 pt-3 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : (tierCardStyles[item.tier] || 'bg-white border-slate-200')}`;
 
         const thumb = document.createElement('div');
-        thumb.className = 'w-16 h-16 rounded-2xl mb-1 relative flex items-center justify-center overflow-visible';
+        thumb.className = 'w-16 h-16 rounded-2xl my-1 relative flex items-center justify-center overflow-visible';
         thumb.innerHTML = renderRealisticAvatarSVG(previewCfg, 'w-full h-full');
         card.appendChild(thumb);
 
@@ -6906,7 +7160,9 @@ Jom lawan kira pantas dengan saya!`;
             Istimewa: 'bg-sky-100 text-sky-800',
             Gah: 'bg-amber-100 text-amber-900',
             Epik: 'bg-orange-100 text-orange-900',
-            Legenda: 'bg-purple-100 text-purple-900'
+            Legenda: 'bg-purple-100 text-purple-900',
+            Mitos: 'bg-gradient-to-r from-rose-600 to-indigo-600 text-white shadow-xs',
+            Agung: 'bg-gradient-to-r from-amber-600 to-red-700 text-amber-100 shadow-xs'
           };
           const tierEl = document.createElement('span');
           tierEl.className = `text-[9px] font-black px-2 py-0.5 rounded-full mb-0.5 ${tierColors[item.tier] || 'bg-slate-100 text-slate-600'}`;

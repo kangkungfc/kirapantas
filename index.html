@@ -109,6 +109,7 @@
             <span class="text-indigo-700 bg-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
             <span class="text-amber-700 bg-amber-100 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-0.5 sm:gap-1" title="Jumlah Coin"><span class="gold-coin-icon">$</span> <span id="header-star-count">0</span></span>
             <span class="hidden xs:inline-flex sm:inline-flex text-sky-700 bg-sky-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
+            <span id="header-network-badge" class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-full" title="Status Sambungan">🟢 Online</span>
           </div>
         </div>
       </div>
@@ -206,8 +207,11 @@
             </button>
           </div>
           <p id="login-footer-note" class="text-[11px] font-bold text-slate-400">Setiap nama pelajar adalah unik dan menyimpan tahap, skor serta avatar tersendiri.</p>
+          <div id="login-offline-banner" class="hidden w-full text-[11px] font-extrabold text-amber-950 bg-amber-100 border-2 border-amber-400 rounded-xl px-3 py-2">
+            🟠 <b>Mod Offline Aktif:</b> Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar &amp; berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
+          </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.47
+            Versi 1.9.48 (Offline-Ready)
           </span>
         </div>
 
@@ -1564,6 +1568,8 @@
     let fbLastError = '';
     let authReadyPromise = Promise.resolve(null);
     let scoreboardUnsubscribe = null;
+    let isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
+    let isCloudSyncInProgress = false;
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jari-abakus-pintar';
     const APP_LANG_STORAGE_KEY = 'kirapantas_selected_lang_v1';
     let currentAppLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || 'ms';
@@ -2090,7 +2096,7 @@
         }
       });
       persistLocalAccountsToStorage();
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -2128,7 +2134,6 @@
 
     const AVATAR_STUDIO_CATALOG = {
       face: [
-        // Watak Lelaki (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
         { id: 'boy_leo',    name: 'Aiman (Melayu Ceria)',     gender: 'boy',  cost: 0 },
         { id: 'boy_adam',   name: 'Wei Ming (Cina Pintar)',   gender: 'boy',  cost: 0 },
         { id: 'boy_zack',   name: 'Liam (Orang Putih)',       gender: 'boy',  cost: 0 },
@@ -2138,7 +2143,6 @@
         { id: 'boy_harith', name: 'Kenji (Jepun Fokus)',      gender: 'boy',  cost: 0 },
         { id: 'boy_kai',    name: 'Kai (Cyber Kaca Mata)',    gender: 'boy',  cost: 0 },
         { id: 'boy_ryu',    name: 'Ryu (Legenda Naga)',       gender: 'boy',  cost: 0 },
-        // Watak Perempuan (Semua Percuma - Pilih Identiti & Tona Kulit Semula Jadi)
         { id: 'girl_hana',  name: 'Hana (Melayu Manis)',      gender: 'girl', cost: 0 },
         { id: 'girl_sofia', name: 'Mei Ling (Cina Comel)',    gender: 'girl', cost: 0 },
         { id: 'girl_maya',  name: 'Chloe (Orang Putih)',      gender: 'girl', cost: 0 },
@@ -2150,7 +2154,6 @@
         { id: 'girl_aurora',name: 'Aurora (Ratu Kristal)',    gender: 'girl', cost: 0 }
       ],
       outfit: [
-        // Susunan Harga Berperingkat Mengikut Set Lengkap 5 Kategori
         { id: 'out_hoodie_amber',  name: 'Hoodie Kuning Ceria',   tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_crew_charcoal', name: 'Baju T-Shirt Kolar',    tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'out_polo_teal',     name: 'Baju Polo Hijau',       tier: 'Biasa',    gender: 'unisex', cost: 15 },
@@ -2185,7 +2188,6 @@
           setApply: { outfit: 'out_dragon_emperor', hair: 'hair_samurai', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon', 'acc_scarf_red'], frame: 'fr_dragon' } }
       ],
       hair: [
-        // Susunan Harga Rambut Mengikut Padanan Set
         { id: 'hair_quiff',      name: 'Jambul Gaya (Putera)',   tier: 'Biasa',    gender: 'boy',  cost: 0,  setTag: '🤴 Set Sut Putera', setApply: { hair: 'hair_quiff', outfit: 'out_prince_royal', headwear: 'hw_crown' } },
         { id: 'hair_wavy_girl',  name: 'Beralun Lembut',         tier: 'Biasa',    gender: 'girl', cost: 0 },
         { id: 'hair_neat',       name: 'Sikat Kemas (Sekolah)',  tier: 'Biasa',    gender: 'boy',  cost: 12, setTag: '🎒 Set Sekolah/Graduan', setApply: { hair: 'hair_neat', outfit: 'out_school_uniform' } },
@@ -2203,7 +2205,6 @@
         { id: 'hair_samurai',    name: 'Sanggul Maharaja Naga',  tier: 'Legenda',  gender: 'boy',  cost: 75, setTag: '🐉 Set Maharaja Naga', setApply: { hair: 'hair_samurai', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
       ],
       headwear: [
-        // Tudung, Topi, Cekak Haiwan & Tanduk Unicorn Mengikut Padanan Set
         { id: 'hw_none',           name: 'Tiada Penutup',        tier: 'Biasa',    gender: 'unisex', cost: 0 },
         { id: 'hw_tudung_pink',    name: 'Tudung Bawal Pink',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
         { id: 'hw_tudung_blue',    name: 'Tudung Bawal Biru',    tier: 'Biasa',    gender: 'girl',   cost: 12 },
@@ -2230,7 +2231,6 @@
         { id: 'hw_dragon_crest',   name: 'Mahkota Tanduk Naga',  tier: 'Legenda',  gender: 'unisex', cost: 150,setTag: '🐉 Set Maharaja Naga', setApply: { headwear: 'hw_dragon_crest', outfit: 'out_dragon_emperor', addAcc: ['acc_wings_dragon'], frame: 'fr_dragon' } }
       ],
       accessory: [
-        // Aksesori Stackable Mengikut Set
         { id: 'acc_glasses',       name: 'Cermin Mata Pintar',   tier: 'Biasa',    gender: 'unisex', slot: 'eyewear', cost: 15, setTag: '🔬 Set Saintis/Graduan', setApply: { addAcc: ['acc_glasses'], outfit: 'out_lab_coat' } },
         { id: 'acc_bowtie',        name: 'Tali Leher Putera',    tier: 'Biasa',    gender: 'boy',    slot: 'neck',    cost: 18, setTag: '🤴 Set Sut Putera', setApply: { addAcc: ['acc_bowtie'], outfit: 'out_prince_royal' } },
         { id: 'acc_ribbon',        name: 'Reben Merah Jambu',    tier: 'Biasa',    gender: 'girl',   slot: 'neck',    cost: 18, setTag: '🌸 Set Sakura', setApply: { addAcc: ['acc_ribbon'], outfit: 'out_knit_bow' } },
@@ -2251,7 +2251,6 @@
         { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } }
       ],
       frame: [
-        // Bingkai Profil 3D Disusun Mengikut Harga & Padanan Set Rasmi
         { id: 'fr_none',          name: 'Bingkai Asas',          tier: 'Biasa',    cost: 0 },
         { id: 'fr_rainbow',       name: 'Bulatan Pelangi Muzik', tier: 'Biasa',    cost: 20,  setTag: '🎧 Set Gaya Muzik', setApply: { frame: 'fr_rainbow', outfit: 'out_jacket_orange', addAcc: ['acc_headphones'] } },
         { id: 'fr_starlight',     name: 'Bintang Sekolah',       tier: 'Comel',    cost: 35,  setTag: '🎒 Set Sekolah', setApply: { frame: 'fr_starlight', outfit: 'out_school_uniform', addAcc: ['acc_backpack', 'acc_pin_star'] } },
@@ -2644,12 +2643,10 @@
       }
       if (frameId === 'fr_cat') {
         return `
-          <!-- Ekor Kucing Melengkung Di Belakang Bawah -->
           <path d="M 76 78 C 96 76, 104 54, 93 44 C 89 41, 85 45, 88 50 C 93 58, 86 69, 73 71 Z" fill="#1E293B" stroke="#F59E0B" stroke-width="1.3"/>
           <circle cx="91" cy="46" r="2.6" fill="#FDE68A"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-dasharray="7 5"/>
-          <!-- Paw Kucing Kiri -->
           <g transform="translate(10, 56) rotate(-18)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
             <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
@@ -2657,7 +2654,6 @@
             <circle cx="0" cy="-3.4" r="1.6" fill="#FB7185"/>
             <circle cx="4" cy="-2.2" r="1.6" fill="#FB7185"/>
           </g>
-          <!-- Paw Kucing Kanan -->
           <g transform="translate(90, 56) rotate(18)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
             <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
@@ -2669,7 +2665,6 @@
       }
       if (frameId === 'fr_bunny') {
         return `
-          <!-- Ekor Arnab Kontot Gebu Di Belakang Bawah -->
           <g transform="translate(82, 78)">
             <circle cx="0" cy="0" r="8.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.6"/>
             <circle cx="-3.5" cy="-3" r="4" fill="#FFFFFF"/>
@@ -2678,7 +2673,6 @@
           </g>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F472B6" stroke-width="5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="6 5"/>
-          <!-- Paw Arnab Kiri -->
           <g transform="translate(9, 54) rotate(-15)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
             <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
@@ -2686,7 +2680,6 @@
             <circle cx="0" cy="-3.4" r="1.5" fill="#F472B6"/>
             <circle cx="3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
           </g>
-          <!-- Paw Arnab Kanan -->
           <g transform="translate(91, 54) rotate(15)">
             <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
             <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
@@ -2710,16 +2703,11 @@
         return `
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#0284C7" stroke-width="5.5"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="8 4"/>
-          <!-- Mikroskop Saintis 3D Di Depan Bawah (Masuk ke dalam frame & sedikit terkeluar di bawah) -->
           <g transform="translate(76, 80)">
-            <!-- Tapak Mikroskop -->
             <rect x="-11" y="13" width="22" height="4.5" rx="2" fill="#1E293B" stroke="#FFFFFF" stroke-width="0.9"/>
-            <!-- Lengan Melengkung -->
             <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#E2E8F0" stroke-width="3.6" stroke-linecap="round"/>
             <path d="M 5 13 C 11 7, 11 -3, 3 -7" fill="none" stroke="#0284C7" stroke-width="1.4" stroke-linecap="round"/>
-            <!-- Pentas Slaid -->
             <rect x="-9" y="5" width="14" height="2.6" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="0.8"/>
-            <!-- Tiub Kanta & Kanta Mata -->
             <rect x="-5.5" y="-12" width="5.5" height="13" rx="2" transform="rotate(-18 -2 -6)" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.1"/>
             <rect x="-6.5" y="-15" width="7.5" height="3.2" rx="1.2" transform="rotate(-18 -2 -6)" fill="#0284C7"/>
             <circle cx="7" cy="3" r="2.4" fill="#FACC15" stroke="#0F172A" stroke-width="0.8"/>
@@ -2915,7 +2903,6 @@
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
     }
 
-    /* Penjana Watak 3D Pixar Pelbagai Bangsa, Sayap Luar Frame, Topi Kemas & Tudung Realistik */
     function renderRealisticAvatarSVG(cfgInput, sizeClass = "w-full h-full") {
       const cfg = sanitizeAvatarForGender({ ...(cfgInput || getDefaultAvatarConfig('boy')) });
       const hairPal = HAIR_COLOR_PALETTES[cfg.hairColor] || HAIR_COLOR_PALETTES.brown;
@@ -2928,27 +2915,26 @@
 
       const uid = 'px3d_' + Math.random().toString(36).slice(2, 8);
 
-      // 18 Watak Pelbagai Bangsa & Struktur Anatomi Wajah Unik (Melayu, Cina, Orang Putih, Afrika/Negro, India, Arab, Jepun, Cyber & Naga)
       const charSpecs = {
-        boy_leo:     { head: 'round',      iris: '#451A03', iris2: '#090D16', nose: 'button',  brow: 'thick',      mouth: 'smile',       eyeStyle: 'round',      blush: 0.24, defaultSkin: '#DDA175' }, // Melayu
-        boy_adam:    { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'slim',    brow: 'gentle',     mouth: 'gentle',      eyeStyle: 'monolid',    blush: 0.22, defaultSkin: '#FFE5D0' }, // Cina
-        boy_zack:    { head: 'square',     iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles_b',  eyeStyle: 'wide',       blush: 0.30, defaultSkin: '#FFE8D6' }, // Orang Putih
-        boy_danish:  { head: 'broad_jaw',  iris: '#3B0764', iris2: '#090D16', nose: 'afro_b',  brow: 'bold',       mouth: 'full_grin',   eyeStyle: 'confident',  blush: 0.18, defaultSkin: '#7C472A' }, // Afrika / Negro
-        boy_amir:    { head: 'oval',       iris: '#047857', iris2: '#022C22', nose: 'prominent',brow: 'thick',     mouth: 'grin',        eyeStyle: 'almond',     blush: 0.24, defaultSkin: '#B8784E' }, // India
-        boy_rayyan:  { head: 'heart',      iris: '#B45309', iris2: '#451A03', nose: 'prominent',brow: 'arab_bold', mouth: 'smirk',       eyeStyle: 'almond',     blush: 0.20, defaultSkin: '#E3B087' }, // Arab
-        boy_harith:  { head: 'slender',    iris: '#4F46E5', iris2: '#1E1B4B', nose: 'petite',  brow: 'soft',       mouth: 'poised',      eyeStyle: 'monolid',    blush: 0.26, defaultSkin: '#FDE4CF' }, // Jepun
-        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'slim',    brow: 'bold',       mouth: 'smirk',       eyeStyle: 'wide',       blush: 0.20, defaultSkin: '#F7C8A0' }, // Cyber
-        boy_ryu:     { head: 'square',     iris: '#EF4444', iris2: '#7F1D1D', nose: 'broad',   brow: 'bold',       mouth: 'grin',        eyeStyle: 'confident',  blush: 0.25, defaultSkin: '#DDA175' }, // Naga
+        boy_leo:     { head: 'round',      iris: '#451A03', iris2: '#090D16', nose: 'button',  brow: 'thick',      mouth: 'smile',       eyeStyle: 'round',      blush: 0.24, defaultSkin: '#DDA175' },
+        boy_adam:    { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'slim',    brow: 'gentle',     mouth: 'gentle',      eyeStyle: 'monolid',    blush: 0.22, defaultSkin: '#FFE5D0' },
+        boy_zack:    { head: 'square',     iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles_b',  eyeStyle: 'wide',       blush: 0.30, defaultSkin: '#FFE8D6' },
+        boy_danish:  { head: 'broad_jaw',  iris: '#3B0764', iris2: '#090D16', nose: 'afro_b',  brow: 'bold',       mouth: 'full_grin',   eyeStyle: 'confident',  blush: 0.18, defaultSkin: '#7C472A' },
+        boy_amir:    { head: 'oval',       iris: '#047857', iris2: '#022C22', nose: 'prominent',brow: 'thick',     mouth: 'grin',        eyeStyle: 'almond',     blush: 0.24, defaultSkin: '#B8784E' },
+        boy_rayyan:  { head: 'heart',      iris: '#B45309', iris2: '#451A03', nose: 'prominent',brow: 'arab_bold', mouth: 'smirk',       eyeStyle: 'almond',     blush: 0.20, defaultSkin: '#E3B087' },
+        boy_harith:  { head: 'slender',    iris: '#4F46E5', iris2: '#1E1B4B', nose: 'petite',  brow: 'soft',       mouth: 'poised',      eyeStyle: 'monolid',    blush: 0.26, defaultSkin: '#FDE4CF' },
+        boy_kai:     { head: 'heart',      iris: '#06B6D4', iris2: '#164E63', nose: 'slim',    brow: 'bold',       mouth: 'smirk',       eyeStyle: 'wide',       blush: 0.20, defaultSkin: '#F7C8A0' },
+        boy_ryu:     { head: 'square',     iris: '#EF4444', iris2: '#7F1D1D', nose: 'broad',   brow: 'bold',       mouth: 'grin',        eyeStyle: 'confident',  blush: 0.25, defaultSkin: '#DDA175' },
 
-        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',    brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'doll',       blush: 0.44, defaultSkin: '#DDA175' }, // Melayu
-        girl_sofia:  { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'petite',  brow: 'gentle',     mouth: 'pixar_sweet', eyeStyle: 'monolid',    blush: 0.46, defaultSkin: '#FFE5D0' }, // Cina
-        girl_maya:   { head: 'heart',      iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles',    eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE8D6' }, // Orang Putih
-        girl_aina:   { head: 'broad_jaw',  iris: '#581C87', iris2: '#090D16', nose: 'afro_g',  brow: 'arched',     mouth: 'full_sweet',  eyeStyle: 'almond',     blush: 0.34, defaultSkin: '#7C472A' }, // Afrika / Negro
-        girl_bella:  { head: 'pixar_doll', iris: '#047857', iris2: '#022C22', nose: 'slim_g',  brow: 'arched',     mouth: 'india_bindi', eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#B8784E' }, // India
-        girl_nadia:  { head: 'slender',    iris: '#B45309', iris2: '#451A03', nose: 'slim_g',  brow: 'arab_arch',  mouth: 'pixar_sweet', eyeStyle: 'almond',     blush: 0.44, defaultSkin: '#E3B087' }, // Arab
-        girl_alya:   { head: 'round_girl', iris: '#DB2777', iris2: '#500724', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'monolid',    blush: 0.50, defaultSkin: '#FDE4CF' }, // Jepun
-        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#F7C8A0' }, // Luna
-        girl_aurora: { head: 'pixar_doll', iris: '#06B6D4', iris2: '#0C4A6E', nose: 'cute',    brow: 'arched',     mouth: 'open_smile',  eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE5D0' }  // Aurora
+        girl_hana:   { head: 'pixar_doll', iris: '#451A03', iris2: '#0F0702', nose: 'cute',    brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'doll',       blush: 0.44, defaultSkin: '#DDA175' },
+        girl_sofia:  { head: 'soft_oval',  iris: '#1E293B', iris2: '#020617', nose: 'petite',  brow: 'gentle',     mouth: 'pixar_sweet', eyeStyle: 'monolid',    blush: 0.46, defaultSkin: '#FFE5D0' },
+        girl_maya:   { head: 'heart',      iris: '#0284C7', iris2: '#0C4A6E', nose: 'pointed', brow: 'arched',     mouth: 'freckles',    eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE8D6' },
+        girl_aina:   { head: 'broad_jaw',  iris: '#581C87', iris2: '#090D16', nose: 'afro_g',  brow: 'arched',     mouth: 'full_sweet',  eyeStyle: 'almond',     blush: 0.34, defaultSkin: '#7C472A' },
+        girl_bella:  { head: 'pixar_doll', iris: '#047857', iris2: '#022C22', nose: 'slim_g',  brow: 'arched',     mouth: 'india_bindi', eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#B8784E' },
+        girl_nadia:  { head: 'slender',    iris: '#B45309', iris2: '#451A03', nose: 'slim_g',  brow: 'arab_arch',  mouth: 'pixar_sweet', eyeStyle: 'almond',     blush: 0.44, defaultSkin: '#E3B087' },
+        girl_alya:   { head: 'round_girl', iris: '#DB2777', iris2: '#500724', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'monolid',    blush: 0.50, defaultSkin: '#FDE4CF' },
+        girl_luna:   { head: 'soft_oval',  iris: '#7C3AED', iris2: '#3B0764', nose: 'petite',  brow: 'pixar_soft', mouth: 'pixar_cute',  eyeStyle: 'almond',     blush: 0.42, defaultSkin: '#F7C8A0' },
+        girl_aurora: { head: 'pixar_doll', iris: '#06B6D4', iris2: '#0C4A6E', nose: 'cute',    brow: 'arched',     mouth: 'open_smile',  eyeStyle: 'doll',       blush: 0.48, defaultSkin: '#FFE5D0' }
       };
       const spec = charSpecs[charId] || (isGirl ? charSpecs.girl_hana : charSpecs.boy_leo);
       const skin = spec.defaultSkin || '#DDA175';
@@ -3035,7 +3021,6 @@
         </defs>
       `;
 
-      // SAYAP & EKOR LUAR FRAME 3D (Sayap Unicorn, Sayap Naga, Ekor Kucing & Ekor Arnab Kontot)
       let outerBackWingsLayer = '';
       if (accList.includes('acc_cat_tail')) {
         outerBackWingsLayer += `
@@ -3059,23 +3044,17 @@
       if (accList.includes('acc_wings_angel')) {
         outerBackWingsLayer += `
           <g filter="url(#${uid}_shadow)">
-            <!-- SAYAP UNICORN KIRI (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
             <path d="M 18 52 C 12 30, -2 12, -16 8 C -19 14, -14 21, -7 25 C -16 23, -21 28, -18 34 C -10 35, -4 36, 2 37 C -14 37, -18 43, -14 48 C -7 48, -1 47, 5 47 C -10 49, -13 55, -8 59 C -1 58, 5 56, 10 55 C -2 59, -4 65, 2 67 C 9 65, 14 61, 18 58 Z"
               fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- Lapisan Bulu Tengah Biru-Perak -->
             <path d="M 17 51 C 12 35, 1 22, -9 18 C -10 23, -5 28, 2 31 C -6 31, -9 35, -6 39 C 1 39, 6 40, 11 41 C -2 42, -5 46, -1 49 C 5 49, 11 49, 16 50 Z"
               fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
-            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
             <path d="M 17 50 C 14 39, 7 31, 0 29 C 0 34, 4 38, 9 40 C 3 41, 2 44, 5 47 C 9 47, 13 48, 17 50 Z"
               fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
 
-            <!-- SAYAP UNICORN KANAN (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
             <path d="M 82 52 C 88 30, 102 12, 116 8 C 119 14, 114 21, 107 25 C 116 23, 121 28, 118 34 C 110 35, 104 36, 98 37 C 114 37, 118 43, 114 48 C 107 48, 101 47, 95 47 C 110 49, 113 55, 108 59 C 101 58, 95 56, 90 55 C 102 59, 104 65, 98 67 C 91 65, 86 61, 82 58 Z"
               fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- Lapisan Bulu Tengah Biru-Perak -->
             <path d="M 83 51 C 88 35, 99 22, 109 18 C 110 23, 105 28, 98 31 C 106 31, 109 35, 106 39 C 99 39, 94 40, 89 41 C 102 42, 105 46, 101 49 C 95 49, 89 49, 84 50 Z"
               fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
-            <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
             <path d="M 83 50 C 86 39, 93 31, 100 29 C 100 34, 96 38, 91 40 C 97 41, 98 44, 95 47 C 91 47, 87 48, 83 50 Z"
               fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
           </g>
@@ -3084,26 +3063,21 @@
       if (accList.includes('acc_wings_dragon')) {
         outerBackWingsLayer += `
           <g filter="url(#${uid}_shadow)">
-            <!-- Sayap Naga Kiri (Membran Berapi + Tulang & Cakar Emas) -->
             <path d="M 18 66 Q 6 61 -4 68 Q -4 56 -14 57 Q -10 43 -18 35 Q -8 24 -12 12 Q 2 18 11 26 L 19 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
             <path d="M 16 61 Q 7 58 -1 62 Q 0 53 -9 53 Q -5 43 -12 36 Q -4 27 -7 19 Q 3 23 10 30 L 17 44 Z" fill="#EA580C"/>
             <path d="M 15 56 Q 8 54 3 57 Q 4 50 -3 49 Q 0 42 -5 37 Q 1 31 0 26 L 14 45 Z" fill="#FACC15" opacity="0.72"/>
-            <!-- Tulang Sayap & Cakar Naga Kiri -->
             <path d="M 18 45 Q 3 27 -12 12 M 17 49 Q 0 41 -18 35 M 17 54 Q 1 54 -14 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
             <polygon points="-12,12 -16,7 -9,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
 
-            <!-- Sayap Naga Kanan (Membran Berapi + Tulang & Cakar Emas) -->
             <path d="M 82 66 Q 94 61 104 68 Q 104 56 114 57 Q 110 43 118 35 Q 108 24 112 12 Q 98 18 89 26 L 81 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
             <path d="M 84 61 Q 93 58 101 62 Q 100 53 109 53 Q 105 43 112 36 Q 104 27 107 19 Q 97 23 90 30 L 83 44 Z" fill="#EA580C"/>
             <path d="M 85 56 Q 92 54 97 57 Q 96 50 103 49 Q 100 42 105 37 Q 99 31 100 26 L 86 45 Z" fill="#FACC15" opacity="0.72"/>
-            <!-- Tulang Sayap & Cakar Naga Kanan -->
             <path d="M 82 45 Q 97 27 112 12 M 83 49 Q 100 41 118 35 M 83 54 Q 99 54 114 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
             <polygon points="112,12 116,7 109,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
           </g>
         `;
       }
 
-      // Lapisan Rambut Belakang / Tudung Luar
       let backHairLayer = '';
       if (hasTudung) {
         backHairLayer = `
@@ -3141,7 +3115,6 @@
         }
       }
 
-      // Beg Galas Sekolah 3D (Kelihatan jelas di kiri & kanan bahu di belakang badan!)
       let backAccLayer = '';
       if (accList.includes('acc_backpack')) {
         backAccLayer += `
@@ -3153,7 +3126,6 @@
         `;
       }
 
-      // 16 Jenis Pakaian
       let outfitDetail = '';
       if (outfitId === 'out_crew_charcoal') {
         outfitDetail = `
@@ -3291,7 +3263,6 @@
         `;
       }
 
-      // Bentuk Kepala Berbeza (Termasuk Rahang Kuat / Broad Jaw, Tirus / Slender, Bulat / Round, dll.)
       const headShapes = {
         round:      'M 24 45 C 24 20, 76 20, 76 45 C 76 64, 63 72, 50 72 C 37 72, 24 64, 24 45 Z',
         oval:       'M 25.5 44 C 25.5 19, 74.5 19, 74.5 44 C 74.5 64, 61.5 73.5, 50 73.5 C 38.5 73.5, 25.5 64, 25.5 44 Z',
@@ -3305,7 +3276,6 @@
       };
       const headPath = headShapes[spec.head] || headShapes.round;
 
-      // Hidung Berbeza Mengikut Rupa Bangsa (Mancung/Pointed, Lebar Afrika/Afro, Kecil Cina/Petite, Butang Melayu/Button)
       let noseSvg = '';
       if (spec.nose === 'afro_b' || spec.nose === 'afro_g') {
         const w = spec.nose === 'afro_b' ? 5.2 : 4.4;
@@ -3346,10 +3316,8 @@
         ${noseSvg}
       `;
 
-      // Bentuk Mata Pelbagai Bangsa (Sepet/Monolid Cina & Jepun, Bundar/Doll, Badam/Almond India & Arab, Luas/Wide Orang Putih)
       let pixarEyes = '';
       if (spec.eyeStyle === 'monolid') {
-        // Mata Sepet / Almond Asia Timur (Cina & Jepun) yang comel & jelas
         pixarEyes = `
           <ellipse cx="37.5" cy="47.5" rx="6.6" ry="4.4" fill="#FFFFFF" filter="url(#${uid}_soft)"/>
           <circle cx="37.8" cy="47.7" r="3.9" fill="url(#${uid}_iris)"/>
@@ -3422,7 +3390,6 @@
         `;
       }
 
-      // Bentuk Bibir & Ciri Khas (Bibir Penuh Afrika, Bintik Pipi Orang Putih, Bindi India, Senyuman Manis)
       let mouthSvg = '';
       if (spec.mouth === 'full_grin') {
         mouthSvg = `
@@ -3494,11 +3461,9 @@
 
       const expressionLayer = `${browSvg}${pixarEyes}${girlLashes}${mouthSvg}`;
 
-      // Rambut Depan (Disesuaikan secara automatik apabila memakai topi supaya tiada rambut terkeluar di atas topi!)
       let frontHairLayer = '';
       if (!hasTudung) {
         if (hasFullCap) {
-          // Hanya tunjukkan anak rambut (bangs) kemas di bawah garis topi supaya mengikut bentuk kepala
           frontHairLayer = `
             <path d="M 24.5 41 C 27 32, 73 32, 75.5 41 C 66 34, 54 34, 50 37.5 C 46 34, 34 34, 24.5 41 Z" fill="url(#${uid}_hair)"/>
           `;
@@ -3530,18 +3495,6 @@
               <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
               <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
               <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-            `;
-          } else if (cfg.hair === 'hair_wizard_wave') {
-            frontHairLayer = `
-              <path d="M 21 46 C 18 22, 34 14, 50 14 C 66 14, 82 22, 79 46 C 72 33, 58 32, 50 37 C 42 32, 28 33, 21 46 Z" fill="#4C1D95" stroke="#FACC15" stroke-width="1" filter="url(#${uid}_shadow)"/>
-              <circle cx="38" cy="24" r="1.6" fill="#FACC15"/>
-              <circle cx="62" cy="24" r="1.6" fill="#FACC15"/>
-            `;
-          } else if (cfg.hair === 'hair_fire_flame') {
-            frontHairLayer = `
-              <path d="M 22 44 C 17 28, 25 14, 34 9 C 33 17, 39 20, 43 11 C 46 4, 53 3, 56 12 C 60 19, 65 15, 66 9 C 75 15, 83 28, 78 44 C 69 32, 31 32, 22 44 Z"
-                fill="#EA580C" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
-              <path d="M 32 34 C 34 22, 45 16, 50 10 C 55 16, 66 22, 68 34 C 58 29, 42 29, 32 34 Z" fill="#FACC15"/>
             `;
           } else if (cfg.hair === 'hair_wizard_wave') {
             frontHairLayer = `
@@ -3593,7 +3546,6 @@
         }
       }
 
-      // Lapisan Tudung Lengkap & Kemas
       const tudungFrontLayer = hasTudung ? `
         <path d="M 24 38 C 25 22, 75 22, 76 38 C 68 31, 32 31, 24 38 Z" fill="${tudungDark}"/>
         <path d="M 18 46 C 18 13, 82 13, 82 46 C 82 70, 72 88, 50 96 C 28 88, 18 70, 18 46 Z
@@ -3701,7 +3653,6 @@
         `;
       }
 
-      // Lapisan Topi & Hiasan Kepala (Direka mengikut bentuk kepala asal tanpa rambut terkeluar)
       let hatLayer = '';
       if (cfg.headwear === 'hw_cap_red') {
         hatLayer = `
@@ -3823,10 +3774,8 @@
       } else if (cfg.headwear === 'hw_unicorn_horn') {
         hatLayer = `
           <g filter="url(#${uid}_glow)">
-            <!-- Halo Cahaya Lembut -->
             <ellipse cx="50" cy="15" rx="21" ry="5.5" fill="none" stroke="#FEF9C3" stroke-width="3.5" opacity="0.88"/>
             <ellipse cx="50" cy="15" rx="21" ry="5.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="2"/>
-            <!-- Tanduk Unicorn Berlingkar Emas-Pelangi Di Tengah Dahi -->
             <polygon points="44.5,27 50,3 55.5,27" fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="1.2" stroke-linejoin="round"/>
             <line x1="46" y1="22" x2="54" y2="20" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
             <line x1="47.2" y1="16" x2="52.8" y2="14.5" stroke="#F472B6" stroke-width="1.4" stroke-linecap="round"/>
@@ -3836,7 +3785,6 @@
           </g>
         `;
       } else if (cfg.headwear === 'hw_halo') {
-        // Halo Cahaya Suci Legenda: Lingkaran cahaya emas bersinar terapung jelas di atas kepala + kilauan bintang!
         hatLayer = `
           <g filter="url(#${uid}_glow)">
             <ellipse cx="50" cy="11" rx="22" ry="6.2" fill="none" stroke="#FEF9C3" stroke-width="5.5" opacity="0.9"/>
@@ -4040,7 +3988,6 @@
         border: 'border-pink-800',
         renderGuide: () => `
           <div class="space-y-3">
-            <!-- Papan Cerita & Simulator Interaktif Formula Rahsia -->
             <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
               <div class="flex items-center justify-between gap-2">
                 <div class="font-black text-amber-950 text-xs flex items-center gap-1.5">
@@ -4049,7 +3996,6 @@
                 <span class="text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">Klik formula di bawah!</span>
               </div>
 
-              <!-- 4 Tab Kategori Comel -->
               <div class="grid grid-cols-4 gap-1">
                 <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Geng 5</button>
                 <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Geng 10</button>
@@ -4057,10 +4003,8 @@
                 <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Kuiz Mini</button>
               </div>
 
-              <!-- Kandungan Tab Dinamik -->
               <div id="m3-tab-content"></div>
 
-              <!-- Pentas Demo Visual Manik Sempoa Langkah-Demi-Langkah -->
               <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm">
                 <div class="inline-block bg-rose-100 text-rose-900 text-[10px] font-black px-2.5 py-0.5 rounded-full">Contoh Interaktif: Kawan Kecil Tambah (+4 = +5 - 1)</div>
                 <div class="text-sm font-black text-slate-800">Kira <span class="text-rose-600">3 + 4</span> pada Sempoa:</div>
@@ -4266,7 +4210,6 @@
       `;
     };
 
-    /* Pangkalan Data Lengkap Infografik & Contoh Interaktif Tahap 3 */
     const MOD3_FORMULAS = {
       kecil: {
         title: '✋ Geng Lima (Kawan Kecil — Kombinasi 5)',
@@ -4524,7 +4467,6 @@
       }
     };
 
-    /* 5. PENJANA 50 SOALAN INTENSIF SETIAP TAHAP (300 SOALAN) + KOCOK RAWAK */
     function shuffleArray(arr) {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
@@ -4583,7 +4525,6 @@
 
       const generatePass = (allowFallback) => {
         if (modId === 1) {
-          /* TAHAP 1: Penjanaan Dinamik Tanpa Had (Bacaan 10 Jari 1-99, Tambah/Tolak Terus & Rantaian 3-Nombor) */
           const fingerTargets = shuffleArray(Array.from({ length: 99 }, (_, k) => k + 1));
           for (const target of fingerTargets) {
             if (bank.length >= 18) break;
@@ -4640,7 +4581,6 @@
             }
           }
         } else if (modId === 2) {
-          /* TAHAP 2: 9,989 Kombinasi Sempoa 2-4 Tiang & Operasi Manik Terus */
           let guard = 0;
           while (bank.length < 26 && guard < 3000) {
             guard++;
@@ -4690,7 +4630,6 @@
             }
           }
         } else if (modId === 'jari3') {
-          /* LALUAN JARI TAHAP 3: Silat Jari Kilat (Rantaian 3-4 Nombor 0 - 99 Menggunakan Jari Sahaja) */
           let guard = 0;
           while (bank.length < 25 && guard < 4000) {
             guard++;
@@ -4727,9 +4666,6 @@
             }
           }
         } else if (modId === 3 || modId === 'jari2') {
-          const isJariFormula = modId === 'jari2';
-          const ctxWord = isJariFormula ? 'Jari' : 'Sempoa';
-          /* Penjanaan Dinamik 2-Nombor & Rantaian 3-Nombor bagi Kawan Kecil, Kawan Besar, Gabungan & Random */
           const genKecil = (targetCount) => {
             const basePatterns = [
               [1, 4, '+'], [2, 3, '+'], [2, 4, '+'], [3, 2, '+'], [3, 3, '+'], [3, 4, '+'],
@@ -4747,7 +4683,6 @@
               if (mid < 0 || mid > 99) continue;
 
               if (g % 3 === 0) {
-                // Variasi rantaian 3 nombor (Kawan Kecil + langkah susulan)
                 const c = (Math.floor(Math.random() * 3) + 1) * 10;
                 if (mid + c <= 99) {
                   const ans = mid + c;
@@ -4859,7 +4794,6 @@
             genGabung(50);
           }
         } else if (modId === 4) {
-          /* TAHAP 4: Puluhan Ribu Kombinasi Darab & Bahagi Kilat */
           let guard = 0;
           while (bank.length < 16 && guard < 2000) {
             guard++;
@@ -4910,7 +4844,6 @@
             }, allowFallback);
           }
         } else if (modId === 5) {
-          /* TAHAP 5: Sempoa Minda 3-Tiang & Rantaian Anzan 3-4 Nombor Tanpa Had */
           let guard = 0;
           while (bank.length < 14 && guard < 2000) {
             guard++;
@@ -4951,7 +4884,6 @@
             }
           }
         } else {
-          /* TAHAP 6: Puluhan Ribu Kombinasi Pertandingan (3-4 Digit, Perpuluhan, Negatif & Darab Kompleks) */
           let guard = 0;
           while (bank.length < 13 && guard < 2500) {
             guard++;
@@ -5005,14 +4937,11 @@
         }
       };
 
-      /* Pusingan 1: Jana 50 soalan yang langsung tidak bertindih dengan 150 soalan terkini */
       generatePass(false);
-      /* Pusingan 2 (sandaran jika ruang kombinasi kecil hampir habis): lengkapkan baki hingga 50 */
       if (bank.length < 50) {
         generatePass(true);
       }
 
-      /* Simpan tandatangan soalan baharu ke dalam memori anti-ulang (had 150 soalan terkini) */
       bank.forEach(item => {
         if (item._sig) {
           historySet.add(item._sig);
@@ -5036,7 +4965,6 @@
       const diff = document.getElementById('blitz-difficulty')?.value || 'jari_all';
       const fb = document.getElementById('blitz-feedback');
       if (fb) fb.classList.add('hidden');
-      /* Kekalkan pilihan pelajar (terbuka atau tertutup) apabila beralih ke soalan Cabaran Kilat seterusnya */
       resetHelperAbacus('blitz', true);
 
       let qText = '';
@@ -5328,11 +5256,6 @@
       const valEl = document.getElementById('mod-helper-finger-val');
       if (!board) return;
 
-      const buildHand = (side, arr) => {
-        const svg = renderRealisticHandSVG(side, arr, false, 'w-full max-w-[125px] h-auto');
-        return svg.replace(/<g /g, (m, offset) => m);
-      };
-
       const renderClickableHand = (handSide, fingerState) => {
         const isLeft = handSide === 'left';
         const labels = isLeft ? ['50', '10', '10', '10', '10'] : ['5', '1', '1', '1', '1'];
@@ -5531,7 +5454,6 @@
 
       window.toggleModuleGuideNote(true);
 
-      // Untuk Laluan Jari: sembunyikan Sempoa dan tunjukkan butang Jari Kira; untuk Laluan Sempoa: buka Sempoa bagi Tahap 2-4
       const fingerBtn = document.getElementById('mod-finger-toggle-btn');
       const abacusBtn = document.getElementById('mod-helper-toggle-btn');
       if (isJariTrack) {
@@ -6026,7 +5948,6 @@
           if (activeStudioTab === 'face') {
             delete previewCfg.skin;
           }
-          // Jika pratonton di tab Rambut semasa bertudung, tunjukkan gaya rambut itu tanpa tudung pada kad pratonton
           if (activeStudioTab === 'hair' && previewCfg.headwear && previewCfg.headwear.startsWith('hw_tudung')) {
             previewCfg.headwear = 'hw_none';
           }
@@ -6190,7 +6111,6 @@
         };
         if (faceDefaultSkins[itemId]) cfg.skin = faceDefaultSkins[itemId];
       }
-      // Jika pemain memilih gaya rambut semasa bertudung, tanggalkan tudung secara automatik supaya gaya rambut kelihatan!
       if (category === 'hair' && cfg.headwear && cfg.headwear.startsWith('hw_tudung')) {
         cfg.headwear = 'hw_none';
       }
@@ -6301,7 +6221,7 @@
       savePlayerCloud();
     };
 
-    /* 10. SISTEM AKAUN KEKAL (accountId), TUKAR NAMA/PASSWORD, RESET & PAPAN SKOR */
+    /* 10. SISTEM AKAUN KEKAL (accountId), MOD OFFLINE & AUTO-SYNC */
     const LOCAL_DB_STORAGE_KEY = 'jari_abakus_players_db_v1';
     const inMemoryAccounts = new Map();
 
@@ -6397,10 +6317,17 @@
         currentPlayer.todayPoints = 0;
         currentPlayer.todayStars = 0;
       }
-      currentPlayer.stars = (currentPlayer.stars || 0) + (starsEarned || 0);
-      currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + (pointsEarned || 0);
-      currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + (pointsEarned || 0);
-      currentPlayer.todayStars = (currentPlayer.todayStars || 0) + (starsEarned || 0);
+      const addStars = starsEarned || 0;
+      const addPts = pointsEarned || 0;
+      currentPlayer.stars = (currentPlayer.stars || 0) + addStars;
+      currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + addPts;
+      currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + addPts;
+      currentPlayer.todayStars = (currentPlayer.todayStars || 0) + addStars;
+      if (!isDeviceOnline || !db) {
+        currentPlayer.pendingCloudSync = true;
+        currentPlayer.offlineDeltaPoints = (currentPlayer.offlineDeltaPoints || 0) + addPts;
+        currentPlayer.offlineDeltaStars = (currentPlayer.offlineDeltaStars || 0) + addStars;
+      }
       syncPlayerUI();
       savePlayerCloud();
     }
@@ -6408,7 +6335,7 @@
     let activeScoreboardTab = 'today';
     let lastScoreboardPlayers = [];
     const SB_REACTIONS_STORAGE_KEY = 'kirapantas_sb_reactions_v1';
-    let scoreboardReactionsMap = {}; // { targetPlayerId: { like: [voterId...], love: [voterId...], fire: [voterId...] } }
+    let scoreboardReactionsMap = {};
     let scoreboardReactionsUnsubscribe = null;
 
     function loadLocalScoreboardReactions() {
@@ -6471,7 +6398,7 @@
       saveLocalScoreboardReactions(scoreboardReactionsMap);
       renderScoreboardList(lastScoreboardPlayers);
 
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -6521,7 +6448,6 @@
       return `${day}/${mon} ${hh}:${mm}`;
     }
 
-    /* Cari akaun sedia ada berdasarkan nama tepat (menyokong kedua-dua akaun lama & baharu) */
     async function findAccountByExactName(exactName) {
       const targetNameKey = normalizePlayerKey(exactName);
       loadLocalAccountsFromStorage();
@@ -6533,11 +6459,10 @@
         }
       });
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
-            /* 1. Semak terus dokumen lama jika wujud */
             const directSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', targetNameKey));
             if (directSnap.exists()) {
               const d = directSnap.data();
@@ -6548,7 +6473,6 @@
               persistLocalAccountsToStorage();
               return d;
             }
-            /* 2. Imbas koleksi players untuk akaun yang telah ditukar nama (accountId kekal) */
             const allSnaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
             allSnaps.forEach((docSnap) => {
               const d = docSnap.data();
@@ -6646,6 +6570,7 @@
       if (currentPlayer.preferredLang && ['ms', 'en', 'zh', 'ar'].includes(currentPlayer.preferredLang)) {
         applyAppLanguageUI(currentPlayer.preferredLang);
       }
+      updateNetworkStatusUI();
     }
 
     function setPlayerCurrentActivity(activityText, syncImmediately = true) {
@@ -6664,7 +6589,6 @@
       const docId = currentPlayer.accountId || currentPlayer.key;
       if (!docId) return;
 
-      /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor / Firestore semasa ujian admin */
       if (isAdminAccountRecord(currentPlayer)) {
         try {
           localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify({
@@ -6699,10 +6623,22 @@
       inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
       persistLocalAccountsToStorage();
 
-      if (!db) return;
+      if (!isDeviceOnline || !db) {
+        currentPlayer.pendingCloudSync = true;
+        inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
+        persistLocalAccountsToStorage();
+        updateNetworkStatusUI();
+        return;
+      }
       try {
         await authReadyPromise;
-        if (!fbUser) return;
+        if (!fbUser) {
+          currentPlayer.pendingCloudSync = true;
+          inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
+          persistLocalAccountsToStorage();
+          updateNetworkStatusUI();
+          return;
+        }
         const playerRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', docId);
         await setDoc(playerRef, {
           accountId: docId,
@@ -6729,11 +6665,170 @@
           ownedAvatarItems: currentPlayer.ownedAvatarItems || [],
           updatedAt: currentPlayer.updatedAt
         });
+        currentPlayer.pendingCloudSync = false;
+        currentPlayer.offlineDeltaPoints = 0;
+        currentPlayer.offlineDeltaStars = 0;
+        inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
+        persistLocalAccountsToStorage();
+        updateNetworkStatusUI();
       } catch (err) {
         fbLastError = err?.code || 'write-error';
-        console.warn('Gagal menyegerak rekod akaun:', err);
+        currentPlayer.pendingCloudSync = true;
+        inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
+        persistLocalAccountsToStorage();
+        updateNetworkStatusUI();
       }
     }
+
+    function updateNetworkStatusUI() {
+      isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
+      const loginBanner = document.getElementById('login-offline-banner');
+      if (loginBanner) loginBanner.classList.toggle('hidden', isDeviceOnline);
+
+      const badge = document.getElementById('header-network-badge');
+      if (!badge) return;
+      const hasPending = Boolean(currentPlayer && currentPlayer.pendingCloudSync);
+      if (!isDeviceOnline) {
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400 px-1.5 py-0.5 rounded-full';
+        badge.innerText = hasPending ? '🟠 Offline (Menunggu Sync)' : '🟠 Mod Offline';
+        badge.title = 'Tiada internet. Markah & pembelian disimpan di peranti dan akan dimuat naik automatik bila online.';
+      } else if (hasPending || isCloudSyncInProgress) {
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-400 px-1.5 py-0.5 rounded-full animate-pulse';
+        badge.innerText = '🔄 Memuat Naik...';
+      } else {
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-full';
+        badge.innerText = '🟢 Online';
+        badge.title = 'Tersambung ke awan';
+      }
+    }
+
+    async function syncPendingOfflineAccountsToCloud(showToastOnComplete = true) {
+      updateNetworkStatusUI();
+      if (!isDeviceOnline || !db || isCloudSyncInProgress) return;
+      isCloudSyncInProgress = true;
+      updateNetworkStatusUI();
+      try {
+        if (!fbUser && auth) {
+          try { await signInAnonymously(auth); } catch (e) {}
+        }
+        await authReadyPromise;
+        if (!fbUser) return;
+
+        loadLocalAccountsFromStorage();
+        let syncedCount = 0;
+
+        for (const [accId, accData] of inMemoryAccounts.entries()) {
+          if (isAdminAccountRecord(accData)) continue;
+          if (!accData.pendingCloudSync) continue;
+
+          const pRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', accId);
+          let mergedRecord = { ...accData };
+          try {
+            const remoteSnap = await getDoc(pRef);
+            if (remoteSnap.exists()) {
+              const r = remoteSnap.data();
+              const deltaPts = Number(accData.offlineDeltaPoints) || 0;
+              const deltaStars = Number(accData.offlineDeltaStars) || 0;
+              const mergedTotalPts = Math.max(Number(accData.totalPoints) || 0, (Number(r.totalPoints) || 0) + deltaPts);
+              const mergedStars = Math.max(Number(accData.stars) || 0, (Number(r.stars) || 0) + deltaStars);
+              const mergedOwned = Array.from(new Set([...(Array.isArray(r.ownedAvatarItems) ? r.ownedAvatarItems : []), ...(Array.isArray(accData.ownedAvatarItems) ? accData.ownedAvatarItems : [])]));
+              const mergedUnlocked = Array.from(new Set([...(Array.isArray(r.unlockedModules) ? r.unlockedModules : [1, 2]), ...(Array.isArray(accData.unlockedModules) ? accData.unlockedModules : [1, 2])]));
+              const mergedModScores = { ...(r.modScores || {}) };
+              if (accData.modScores && typeof accData.modScores === 'object') {
+                Object.entries(accData.modScores).forEach(([mKey, mVal]) => {
+                  mergedModScores[mKey] = Math.max(Number(mergedModScores[mKey]) || 0, Number(mVal) || 0);
+                });
+              }
+              const todayKey = getTodayDateKey();
+              const mergedTodayPts = accData.todayDateKey === todayKey
+                ? Math.max(Number(accData.todayPoints) || 0, (r.todayDateKey === todayKey ? (Number(r.todayPoints) || 0) : 0) + deltaPts)
+                : (r.todayDateKey === todayKey ? (Number(r.todayPoints) || 0) : 0);
+              const mergedTodayStars = accData.todayDateKey === todayKey
+                ? Math.max(Number(accData.todayStars) || 0, (r.todayDateKey === todayKey ? (Number(r.todayStars) || 0) : 0) + deltaStars)
+                : (r.todayDateKey === todayKey ? (Number(r.todayStars) || 0) : 0);
+              const mergedTodaySec = accData.todayDateKey === todayKey
+                ? Math.max(Number(accData.todaySeconds) || 0, (r.todayDateKey === todayKey ? (Number(r.todaySeconds) || 0) : 0))
+                : (r.todayDateKey === todayKey ? (Number(r.todaySeconds) || 0) : 0);
+
+              mergedRecord = {
+                ...r,
+                ...accData,
+                stars: mergedStars,
+                totalPoints: mergedTotalPts,
+                todayPoints: mergedTodayPts,
+                todayStars: mergedTodayStars,
+                todaySeconds: mergedTodaySec,
+                playSeconds: Math.max(Number(accData.playSeconds) || 0, Number(r.playSeconds) || 0),
+                ownedAvatarItems: mergedOwned,
+                unlockedModules: mergedUnlocked,
+                modScores: mergedModScores
+              };
+            }
+          } catch (mergeErr) {}
+
+          await setDoc(pRef, {
+            accountId: accId,
+            key: accId,
+            nameKey: normalizePlayerKey(mergedRecord.name),
+            name: mergedRecord.name,
+            password: mergedRecord.password,
+            recoveryPin: mergedRecord.recoveryPin || '0000',
+            preferredLang: mergedRecord.preferredLang || currentAppLang,
+            isAdmin: false,
+            stars: mergedRecord.stars || 0,
+            totalPoints: mergedRecord.totalPoints || 0,
+            todayPoints: mergedRecord.todayPoints || 0,
+            todayStars: mergedRecord.todayStars || 0,
+            playSeconds: mergedRecord.playSeconds || 0,
+            todayDateKey: mergedRecord.todayDateKey || getTodayDateKey(),
+            todaySeconds: mergedRecord.todaySeconds || 0,
+            isOnline: currentPlayer && currentPlayer.accountId === accId,
+            lastActiveAt: Date.now(),
+            currentActivityLabel: mergedRecord.currentActivityLabel || 'Menu Utama',
+            unlockedModules: mergedRecord.unlockedModules || [1, 2],
+            modScores: mergedRecord.modScores || {},
+            avatarConfig: mergedRecord.avatarConfig,
+            ownedAvatarItems: mergedRecord.ownedAvatarItems || [],
+            updatedAt: Date.now()
+          });
+
+          mergedRecord.pendingCloudSync = false;
+          mergedRecord.offlineDeltaPoints = 0;
+          mergedRecord.offlineDeltaStars = 0;
+          inMemoryAccounts.set(accId, mergedRecord);
+          if (currentPlayer && currentPlayer.accountId === accId) {
+            Object.assign(currentPlayer, mergedRecord);
+            syncPlayerUI();
+          }
+          syncedCount++;
+        }
+
+        persistLocalAccountsToStorage();
+        if (syncedCount > 0 && showToastOnComplete) {
+          playCheer();
+          showAppToast('✅ Sambungan pulih! Semua markah, coin & pembelian offline telah dimuat naik ke awan!');
+        }
+      } catch (err) {
+        console.warn('Segerak offline tertangguh:', err);
+      } finally {
+        isCloudSyncInProgress = false;
+        updateNetworkStatusUI();
+      }
+    }
+
+    window.addEventListener('online', () => {
+      isDeviceOnline = true;
+      updateNetworkStatusUI();
+      syncPendingOfflineAccountsToCloud(true);
+    });
+
+    window.addEventListener('offline', () => {
+      isDeviceOnline = false;
+      updateNetworkStatusUI();
+      showAppToast('🟠 Sambungan internet terputus. Mod Offline aktif — semua markah & pembelian disimpan di peranti.');
+    });
+
+    setTimeout(() => { updateNetworkStatusUI(); }, 300);
 
     async function markPlayerOfflineCloud() {
       if (!currentPlayer || isAdminAccountRecord(currentPlayer)) return;
@@ -6743,7 +6838,7 @@
       currentPlayer.lastActiveAt = Date.now();
       inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
       persistLocalAccountsToStorage();
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -6760,16 +6855,6 @@
     window.addEventListener('beforeunload', () => {
       markPlayerOfflineCloud();
     });
-
-    window.fillAdminLoginHint = function() {
-      playClick();
-      const nameInp = document.getElementById('input-player-name');
-      const passInp = document.getElementById('input-player-pass');
-      if (nameInp) nameInp.value = ADMIN_DEFAULT_NAME;
-      if (passInp) passInp.value = '';
-      if (passInp) passInp.focus();
-      showAppToast('Masukkan kata laluan Admin (lalai: admin123) untuk masuk ke Panel Kawalan.');
-    };
 
     function startPlayerSessionTimer() {
       if (activePlayTimer) clearInterval(activePlayTimer);
@@ -6995,7 +7080,9 @@
         if (mode === 'login') {
           if (!existingAccount) {
             playWrong();
-            errBox.innerHTML = `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
+            errBox.innerHTML = !isDeviceOnline
+              ? `🟠 <b>Mod Offline:</b> Akaun <b>"${displayName}"</b> belum pernah log masuk di peranti ini. Sila sambung internet untuk log masuk kali pertama.`
+              : `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
             errBox.classList.remove('hidden');
             return;
           }
@@ -7006,7 +7093,6 @@
             return;
           }
 
-          /* Akaun LAMA berjaya log masuk -> terus ke Menu Utama */
           const permanentId = existingAccount.accountId || existingAccount.key || generatePermanentAccountId();
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
@@ -7033,6 +7119,9 @@
             isOnline: true,
             lastActiveAt: Date.now(),
             currentActivityLabel: existingAccount.currentActivityLabel || 'Menu Utama',
+            pendingCloudSync: Boolean(existingAccount.pendingCloudSync),
+            offlineDeltaPoints: Number(existingAccount.offlineDeltaPoints) || 0,
+            offlineDeltaStars: Number(existingAccount.offlineDeltaStars) || 0,
             unlockedModules: isAdminUser
               ? [1, 2, 3, 4, 5, 6]
               : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
@@ -7050,10 +7139,15 @@
           applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
           await savePlayerCloud();
+          if (isDeviceOnline && currentPlayer.pendingCloudSync) {
+            await syncPendingOfflineAccountsToCloud(true);
+          }
           playCheer();
           showAppToast(isAdminUser
             ? '🛡️ Selamat datang Admin! Semua 6 Tahap dibuka & Panel Admin sedia digunakan.'
-            : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`);
+            : (!isDeviceOnline
+              ? `🟠 Selamat kembali, ${currentPlayer.name} (Mod Offline)! Markah & pembelian akan dimuat naik bila online.`
+              : `Selamat kembali, ${currentPlayer.name}! Tahap, skor & avatar anda telah dipulihkan.`));
 
           document.getElementById('screen-login').classList.add('hidden');
           document.getElementById('app-header').classList.remove('hidden');
@@ -7066,7 +7160,12 @@
           }
           navTo('home');
         } else {
-          /* Mod DAFTAR BARU */
+          if (!isDeviceOnline) {
+            playWrong();
+            errBox.innerHTML = `🟠 <b>Mod Offline:</b> Pendaftaran akaun baharu memerlukan internet supaya nama tidak bertindih di papan skor. Jika sudah ada akaun di peranti ini, sila tekan <b>🔑 Log Masuk</b>.`;
+            errBox.classList.remove('hidden');
+            return;
+          }
           if (existingAccount) {
             playWrong();
             errBox.innerHTML = `⚠️ Nama <b>"${existingAccount.name}"</b> sudah wujud! Jika ini akaun lama anda, sila tekan butang biru <b>🔑 Log Masuk</b>. Jika murid baharu, guna nama unik yang lain.`;
@@ -7104,7 +7203,6 @@
           await savePlayerCloud();
           playCheer();
 
-          /* Pelajar baharu dibawa ke skrin persediaan Avatar & No. PIN Pemulihan 4 digit dahulu */
           document.getElementById('screen-login').classList.add('hidden');
           document.getElementById('app-header').classList.add('hidden');
           const pinField = document.getElementById('setup-recovery-pin');
@@ -7130,7 +7228,6 @@
       }
     };
 
-    /* Tetapkan Semula Kata Laluan Terlupa (Guna PIN Pemulihan 4-Digit atau Kod Guru GURU2026) */
     window.handleResetForgottenPassword = async function(e) {
       e.preventDefault();
       playClick();
@@ -7169,11 +7266,12 @@
         targetAcc.key = docId;
         targetAcc.password = newPass;
         targetAcc.updatedAt = Date.now();
+        targetAcc.pendingCloudSync = !isDeviceOnline;
 
         inMemoryAccounts.set(docId, targetAcc);
         persistLocalAccountsToStorage();
 
-        if (db) {
+        if (db && isDeviceOnline) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId), targetAcc);
@@ -7198,7 +7296,6 @@
       }
     };
 
-    /* Tukar Nama Pelajar Tanpa Mengubah ID Akaun & Pencapaian */
     window.handleChangeAccountName = async function(e) {
       e.preventDefault();
       if (!currentPlayer) return;
@@ -7261,7 +7358,6 @@
       }
     };
 
-    /* Tukar Kata Laluan Baharu & PIN Pemulihan 4-Digit */
     window.handleChangeAccountPassword = async function(e) {
       e.preventDefault();
       if (!currentPlayer) return;
@@ -7337,6 +7433,7 @@
         playerMessagesUnsubscribe = null;
       }
       currentPlayer = null;
+      updateNetworkStatusUI();
       document.getElementById('app-header').classList.add('hidden');
       ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
@@ -7490,12 +7587,12 @@
       await purgeAdminFromCloudScoreboard();
       loadLocalAccountsFromStorage();
 
-      if (!db) {
+      if (!isDeviceOnline || !db) {
         if (statusEl) {
-          statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800';
-          statusEl.innerText = `🔴 Ralat Firebase (${fbLastError || 'offline'})`;
+          statusEl.className = 'inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400';
+          statusEl.innerText = '🟠 Mod Offline — Memaparkan Rekod Tersimpan Di Peranti';
         }
-        if (fixBox) fixBox.classList.remove('hidden');
+        if (fixBox) fixBox.classList.add('hidden');
         renderScoreboardList(Array.from(inMemoryAccounts.values()));
         return;
       }
@@ -7630,6 +7727,9 @@
       } else if (screenName === 'arena') {
         setPlayerCurrentActivity('Arena Perlawanan Online');
         showArenaLobbyView();
+        if (!isDeviceOnline) {
+          showAppToast('🟠 Mod Offline: Arena Perlawanan Online memerlukan sambungan internet. Anda masih boleh main Modul Belajar, Simulator & Anzan!');
+        }
         subscribeOpenArenaRooms();
       } else if (screenName === 'admin') {
         if (!currentPlayer || !currentPlayer.isAdmin) {
@@ -7667,7 +7767,7 @@
         }
       });
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -7685,9 +7785,7 @@
             });
             persistLocalAccountsToStorage();
           }
-        } catch (err) {
-          console.warn('Admin gagal baca awan:', err);
-        }
+        } catch (err) {}
       }
 
       adminCachedStudents = Array.from(merged.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
@@ -7767,7 +7865,7 @@
         inMemoryAccounts.set(studentId, target);
         persistLocalAccountsToStorage();
 
-        if (db) {
+        if (db && isDeviceOnline) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId), target);
@@ -7783,11 +7881,6 @@
         filterAdminStudentList();
       } catch (err) {
         playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = '❌ Gagal menetapkan semula kata laluan pelajar.';
-          fb.classList.remove('hidden');
-        }
       }
     };
 
@@ -7811,7 +7904,6 @@
       const fb = document.getElementById('admin-action-feedback');
 
       try {
-        /* 1. Padam semua entri sepadan dalam memori tempatan & localStorage */
         const targetNameKey = target && target.name ? normalizePlayerKey(target.name) : '';
         const idsToDelete = new Set([studentId]);
         if (target) {
@@ -7829,30 +7921,28 @@
         });
         persistLocalAccountsToStorage();
 
-        /* 2. Padam semua dokumen sepadan dalam Firebase Firestore */
-        if (db) {
+        if (db && isDeviceOnline) {
           await authReadyPromise;
-          if (!fbUser) {
-            throw new Error('Sambungan Firebase belum disahkan (auth-failed).');
+          if (fbUser) {
+            const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+            const snap = await getDocs(playersCol);
+            const deleteJobs = [];
+            snap.forEach((docSnap) => {
+              const d = docSnap.data() || {};
+              if (
+                idsToDelete.has(docSnap.id) ||
+                idsToDelete.has(d.accountId) ||
+                idsToDelete.has(d.key) ||
+                (target && d.name === target.name)
+              ) {
+                deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)));
+              }
+            });
+            idsToDelete.forEach((docId) => {
+              deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId)));
+            });
+            await Promise.all(deleteJobs);
           }
-          const playersCol = collection(db, 'artifacts', appId, 'public', 'data', 'players');
-          const snap = await getDocs(playersCol);
-          const deleteJobs = [];
-          snap.forEach((docSnap) => {
-            const d = docSnap.data() || {};
-            if (
-              idsToDelete.has(docSnap.id) ||
-              idsToDelete.has(d.accountId) ||
-              idsToDelete.has(d.key) ||
-              (target && d.name === target.name)
-            ) {
-              deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)));
-            }
-          });
-          idsToDelete.forEach((docId) => {
-            deleteJobs.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId)));
-          });
-          await Promise.all(deleteJobs);
         }
 
         adminPendingDeleteId = null;
@@ -7860,18 +7950,12 @@
         playCheer();
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya daripada awan & peranti.`;
+          fb.innerText = `🗑️ Akaun "${deletedName}" telah dipadam sepenuhnya.`;
           fb.classList.remove('hidden');
         }
         filterAdminStudentList();
       } catch (err) {
-        console.error('Ralat padam akaun Firestore:', err);
         playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = `❌ Gagal memadam akaun di awan (${err?.code || err?.message || 'permission-denied'}). Semak Firestore Rules agar membenarkan operasi delete.`;
-          fb.classList.remove('hidden');
-        }
       }
     };
 
@@ -7996,7 +8080,7 @@
         localList.unshift(ticketObj);
         saveLocalSupportTickets(localList.slice(0, 100));
 
-        if (db) {
+        if (db && isDeviceOnline) {
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId), ticketObj);
@@ -8014,11 +8098,6 @@
         if (!isLoginCtx) checkStudentSupportReplies('account');
       } catch (err) {
         playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-amber-100 text-amber-950 border border-amber-300';
-          fb.innerText = '⚠️ Laporan disimpan pada peranti ini (sambungan awan terhad).';
-          fb.classList.remove('hidden');
-        }
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -8072,12 +8151,9 @@
         const aDone = a.status === 'resolved';
         const bDone = b.status === 'resolved';
         if (aDone !== bDone) return aDone ? 1 : -1;
-
         const aRead = Boolean(a.isRead);
         const bRead = Boolean(b.isRead);
-        if (!aDone && !bDone && aRead !== bRead) {
-          return aRead ? 1 : -1;
-        }
+        if (!aDone && !bDone && aRead !== bRead) return aRead ? 1 : -1;
         return (b.createdAt || 0) - (a.createdAt || 0);
       });
     }
@@ -8091,7 +8167,7 @@
         }
       });
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8106,9 +8182,7 @@
             });
             saveLocalSupportTickets(Array.from(merged.values()));
           }
-        } catch (err) {
-          console.warn('Gagal muat tiket aduan awan:', err);
-        }
+        } catch (err) {}
       }
 
       adminCachedTickets = sortAdminTicketsPriority(Array.from(merged.values()));
@@ -8167,7 +8241,7 @@
       const merged = new Map();
       loadLocalSupportTickets().forEach(t => { if (t && t.id) merged.set(t.id, t); });
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8244,7 +8318,7 @@
           target.readAt = Date.now();
           saveLocalSupportTickets(adminCachedTickets);
           updateAdminNotificationBadges();
-          if (db) {
+          if (db && isDeviceOnline) {
             try {
               await authReadyPromise;
               if (fbUser) {
@@ -8295,7 +8369,6 @@
 
         return `
           <div class="rounded-2xl border-2 overflow-hidden transition ${cardBg}">
-            <!-- Ringkasan Aduan (Klik untuk Buka & Baca Aduan Penuh) -->
             <div onclick="toggleAdminTicketExpand('${t.id}')" class="p-3 cursor-pointer select-none flex items-start justify-between gap-2 hover:bg-black/[0.02]">
               <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex flex-wrap items-center gap-1.5">
@@ -8311,7 +8384,6 @@
               </div>
             </div>
 
-            <!-- Kandungan Penuh & Tindakan (Hanya Terbuka Selepas Admin Tekan Aduan) -->
             ${isExpanded ? `
               <div class="px-3 pb-3 pt-2 border-t border-slate-200/90 space-y-2.5 bg-white/60">
                 <div class="space-y-1">
@@ -8325,7 +8397,6 @@
                   </div>
                 ` : ''}
 
-                <!-- Borang Balas Mesej (Tidak Automatik Tandakan Selesai) -->
                 <div class="space-y-1">
                   <label class="block text-[10px] font-black text-indigo-950">💬 Balas Mesej kepada ${safeName}:</label>
                   <div class="flex gap-1.5">
@@ -8336,7 +8407,6 @@
                   </div>
                 </div>
 
-                <!-- Butang Kawalan Status Selesai / Belum Selesai, Reset Password & Padam Kekal -->
                 <div class="flex flex-wrap gap-1.5 pt-1.5 border-t border-slate-200">
                   <button type="button" onclick="adminToggleTicketStatus('${t.id}')" class="flex-1 bubbly-btn ${isResolved ? 'bg-amber-100 text-amber-950 border border-amber-400' : 'bg-emerald-500 text-white border border-emerald-700'} py-2 px-2.5 text-[11px] font-black">
                     ${isResolved ? '🔄 Tandakan Belum Selesai' : '✅ Tandakan Selesai'}
@@ -8373,7 +8443,7 @@
       target.isRead = true;
       saveLocalSupportTickets(adminCachedTickets);
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8383,12 +8453,6 @@
       }
 
       playCheer();
-      const fb = document.getElementById('admin-action-feedback');
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
-        fb.innerText = `💬 Balasan kepada "${target.playerName}" telah dihantar! (Status kekal: ${target.status === 'resolved' ? 'Selesai' : 'Belum Selesai'})`;
-        fb.classList.remove('hidden');
-      }
       updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
@@ -8408,7 +8472,7 @@
       }
       saveLocalSupportTickets(adminCachedTickets);
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8418,14 +8482,6 @@
       }
 
       playCheer();
-      const fb = document.getElementById('admin-action-feedback');
-      if (fb) {
-        fb.className = `text-xs font-extrabold rounded-xl p-2.5 text-center ${nextResolved ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-amber-100 text-amber-950 border border-amber-300'}`;
-        fb.innerText = nextResolved
-          ? `✅ Aduan daripada "${target.playerName}" telah dilabelkan SELESAI.`
-          : `🔄 Aduan daripada "${target.playerName}" dibuka semula sebagai BELUM SELESAI.`;
-        fb.classList.remove('hidden');
-      }
       updateAdminNotificationBadges();
       renderAdminTicketsList();
     };
@@ -8439,12 +8495,6 @@
       );
       if (!matchedStudent) {
         playWrong();
-        const fb = document.getElementById('admin-action-feedback');
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = `❌ Akaun pelajar "${ticket.playerName}" tidak ditemui dalam senarai pelajar berdaftar.`;
-          fb.classList.remove('hidden');
-        }
         return;
       }
       await adminResetStudentPassword(matchedStudent.accountId || matchedStudent.key);
@@ -8452,41 +8502,25 @@
 
     window.adminDeleteSupportTicket = async function(ticketId) {
       playClick();
-      const target = adminCachedTickets.find(t => t.id === ticketId);
-      const senderName = target ? target.playerName : 'Pelajar';
-      const fb = document.getElementById('admin-action-feedback');
-
       try {
-        if (db) {
+        if (db && isDeviceOnline) {
           await authReadyPromise;
-          if (!fbUser) throw new Error('Sambungan Firebase belum disahkan.');
-          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
+          if (fbUser) {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'support_tickets', ticketId));
+          }
         }
-
         expandedAdminTicketIds.delete(ticketId);
         adminCachedTickets = adminCachedTickets.filter(t => t.id !== ticketId);
         saveLocalSupportTickets(adminCachedTickets);
         updateAdminNotificationBadges();
         renderAdminTicketsList();
-
         playCheer();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
-          fb.innerText = `🗑️ Aduan daripada "${senderName}" telah dipadam sepenuhnya daripada sistem.`;
-          fb.classList.remove('hidden');
-        }
       } catch (err) {
-        console.error('Gagal padam aduan:', err);
         playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = `❌ Gagal memadam aduan di awan (${err?.code || err?.message || 'permission-denied'}).`;
-          fb.classList.remove('hidden');
-        }
       }
     };
 
-    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN (PILIHAN A - SAFE QUICK-CHAT) */
+    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN */
     const PLAYER_MSGS_STORAGE_KEY = 'kirapantas_player_quick_msgs_v1';
     let playerMessagesUnsubscribe = null;
     let cachedPlayerInbox = [];
@@ -8523,7 +8557,7 @@
 
     async function loadQuickChatPresetsCloud() {
       SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
-      if (!db) return SAFE_QUICK_CHAT_PRESETS;
+      if (!db || !isDeviceOnline) return SAFE_QUICK_CHAT_PRESETS;
       try {
         await authReadyPromise;
         if (!fbUser) return SAFE_QUICK_CHAT_PRESETS;
@@ -8544,7 +8578,7 @@
       SAFE_QUICK_CHAT_PRESETS = newList;
       saveLocalQuickChatPresets(newList);
       renderAdminQuickChatPresetsList();
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
       try {
         await authReadyPromise;
         if (!fbUser) return;
@@ -8589,85 +8623,49 @@
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
       const inp = document.getElementById('admin-new-preset-input');
-      const fb = document.getElementById('admin-action-feedback');
       const rawText = (inp?.value || '').trim();
       if (rawText.length < 2) {
         playWrong();
         return;
       }
-
       const newItem = {
         id: `qc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
         text: rawText
       };
-      const updated = [...SAFE_QUICK_CHAT_PRESETS, newItem];
-      await saveQuickChatPresetsCloud(updated);
+      await saveQuickChatPresetsCloud([...SAFE_QUICK_CHAT_PRESETS, newItem]);
       if (inp) inp.value = '';
       playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `✅ Ayat ucapan baharu berjaya ditambah!`;
-        fb.classList.remove('hidden');
-      }
     };
 
     window.adminSaveEditedQuickChatPreset = async function(presetId) {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
       const inp = document.getElementById(`admin-preset-edit-${presetId}`);
-      const fb = document.getElementById('admin-action-feedback');
       const newText = (inp?.value || '').trim();
       if (newText.length < 2) {
         playWrong();
-        showAppToast('Ayat ucapan mestilah sekurang-kurangnya 2 aksara.');
         return;
       }
-
-      const updated = SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it);
-      await saveQuickChatPresetsCloud(updated);
+      await saveQuickChatPresetsCloud(SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it));
       playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `💾 Perubahan ayat ucapan telah disimpan!`;
-        fb.classList.remove('hidden');
-      }
     };
 
     window.adminDeleteQuickChatPreset = async function(presetId) {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
-      const fb = document.getElementById('admin-action-feedback');
       if (SAFE_QUICK_CHAT_PRESETS.length <= 1) {
         playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = `⚠️ Sekurang-kurangnya 1 ayat ucapan mesti dikekalkan untuk pemain.`;
-          fb.classList.remove('hidden');
-        }
         return;
       }
-
-      const updated = SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId);
-      await saveQuickChatPresetsCloud(updated);
+      await saveQuickChatPresetsCloud(SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId));
       playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
-        fb.innerText = `🗑️ Ayat ucapan telah dipadam daripada senarai.`;
-        fb.classList.remove('hidden');
-      }
     };
 
     window.adminResetQuickChatPresetsDefault = async function() {
       if (!currentPlayer || !currentPlayer.isAdmin) return;
       playClick();
-      const fb = document.getElementById('admin-action-feedback');
       await saveQuickChatPresetsCloud([...DEFAULT_QUICK_CHAT_PRESETS]);
       playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
-        fb.innerText = `🔄 Senarai ayat ucapan telah dikembalikan kepada 6 ayat lalai.`;
-        fb.classList.remove('hidden');
-      }
     };
 
     let cachedPlayerSent = [];
@@ -8722,7 +8720,7 @@
       inMemoryAccounts.forEach(addPlayer);
       lastScoreboardPlayers.forEach(addPlayer);
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8757,7 +8755,7 @@
       };
 
       applyFilteredLists(loadLocalQuickMessages());
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
 
       try {
         await authReadyPromise;
@@ -8896,7 +8894,7 @@
       cachedPlayerInbox.forEach(m => { m.isRead = true; });
       updateQuickChatBadges();
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8928,6 +8926,11 @@
 
     window.sendSafeQuickMessage = async function(presetId) {
       if (!currentPlayer) return;
+      if (!isDeviceOnline) {
+        playWrong();
+        showAppToast('🟠 Mod Offline: Mesej rakan hanya boleh dihantar apabila tersambung ke internet.');
+        return;
+      }
       if (!quickChatRecipient) {
         playWrong();
         showAppToast('⚠️ Sila pilih rakan penerima mesej terlebih dahulu.');
@@ -8968,7 +8971,7 @@
       showAppToast(`📨 Ucapan dihantar kepada ${recipientName}!`);
       await switchPlayerMsgTab('sent');
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -8981,6 +8984,9 @@
     window.openPlayerInboxModal = async function(defaultTab = 'inbox') {
       if (!currentPlayer || currentPlayer.isAdmin) return;
       playClick();
+      if (!isDeviceOnline) {
+        showAppToast('🟠 Mod Offline: Mesej & ucapan rakan memerlukan sambungan internet.');
+      }
       const modal = document.getElementById('player-inbox-modal');
       if (modal) modal.classList.remove('hidden');
       await subscribePlayerQuickMessages();
@@ -9089,7 +9095,7 @@
       }).join('');
     }
 
-    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (4 MOD TERAS MESRA KANAK-KANAK: 2–30 PEMAIN) */
+    /* 10E. ENJIN ARENA PERLAWANAN ONLINE REAL-TIME (4 MOD TERAS) */
     const ARENA_LOCAL_ROOMS_KEY = 'kirapantas_arena_rooms_v3';
     let selectedArenaMode = 'kuiz_kilat';
     let activeArenaRoomId = null;
@@ -9331,7 +9337,7 @@
       };
 
       renderRooms(Object.values(loadLocalArenaRooms()));
-      if (!db) return;
+      if (!db || !isDeviceOnline) return;
 
       try {
         await authReadyPromise;
@@ -9387,7 +9393,7 @@
       localRooms[roomCode] = roomObj;
       saveLocalArenaRooms(localRooms);
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -9412,7 +9418,7 @@
         const allLocal = loadLocalQuickMessages();
         allLocal.unshift(inviteMsg);
         saveLocalQuickMessages(allLocal);
-        if (db && fbUser) {
+        if (db && fbUser && isDeviceOnline) {
           try {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), inviteMsg);
           } catch (e) {}
@@ -9445,7 +9451,7 @@
       playClick();
       let roomData = loadLocalArenaRooms()[roomCode] || null;
 
-      if (db) {
+      if (db && isDeviceOnline) {
         try {
           await authReadyPromise;
           if (fbUser) {
@@ -9498,7 +9504,7 @@
       localRooms[roomCode] = roomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser) {
+      if (db && fbUser && isDeviceOnline) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), roomData);
         } catch (e) {}
@@ -9514,7 +9520,7 @@
       if (activeArenaRoomData.participants && activeArenaRoomData.participants[myId]) {
         activeArenaRoomData.participants[myId].team = teamColor === 'blue' ? 'blue' : 'red';
         onArenaRoomUpdated(activeArenaRoomData);
-        if (db && fbUser) {
+        if (db && fbUser && isDeviceOnline) {
           try {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
               participants: { [myId]: activeArenaRoomData.participants[myId] }
@@ -9556,7 +9562,7 @@
       localRooms[activeArenaRoomId] = activeArenaRoomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser) {
+      if (db && fbUser && isDeviceOnline) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), activeArenaRoomData);
         } catch (e) {}
@@ -9582,7 +9588,7 @@
       localRooms[activeArenaRoomId] = activeArenaRoomData;
       saveLocalArenaRooms(localRooms);
 
-      if (db && fbUser) {
+      if (db && fbUser && isDeviceOnline) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
             status: 'playing',
@@ -9668,7 +9674,7 @@
 
       onArenaRoomUpdated(initialData);
 
-      if (db && fbUser) {
+      if (db && fbUser && isDeviceOnline) {
         if (arenaRoomUnsubscribe) {
           arenaRoomUnsubscribe();
           arenaRoomUnsubscribe = null;
@@ -9826,7 +9832,7 @@
 
       onArenaRoomUpdated(activeArenaRoomData);
 
-      if (db && fbUser) {
+      if (db && fbUser && isDeviceOnline) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
             participants: { [myId]: me }
@@ -10135,7 +10141,6 @@
         `;
       };
 
-      // Susunan Podium Klasik: Kiri = Tempat 2, Tengah = Tempat 1 (Paling Tinggi), Kanan = Tempat 3
       stageEl.innerHTML = [
         buildPodiumColumn(p2, 2),
         buildPodiumColumn(p1, 1),
@@ -10169,10 +10174,8 @@
         return (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0);
       });
 
-      // Papar Pentas Podium 1, 2, 3 dengan Avatar 3D Pemain yang Menang
       renderArenaVisualPodium(plist, myId, isTeamMode);
 
-      // Papar pemain ke-4 dan ke bawah (jika ramai pemain)
       const podiumEl = document.getElementById('arena-podium-list');
       if (podiumEl) {
         const restPlayers = plist.slice(3, 10);
@@ -10204,8 +10207,6 @@
       const isPvpMatch = humanPlayers.length >= 2;
       const avgSec = arenaCorrectCount > 0 ? (arenaTotalAnswerSec / arenaCorrectCount) : 0;
       const inMatchScore = myPlayerObj.score || 0;
-
-      // Nisbah kelayakan berdasarkan bilangan soalan dijawab betul (minimum 5 jawapan betul untuk ganjaran penuh)
       const completionRatio = Math.min(1, arenaCorrectCount / 5);
 
       let rankPtsBonus = 0;
@@ -10250,9 +10251,7 @@
         rankHeadline = `Kedudukan #${Math.max(1, myRankIdx + 1)}`;
       }
 
-      // Bonus +1 Coin jika purata jawapan pantas (< 4.0s) dan sekurang-kurangnya 5 soalan betul
       const speedCoinExtra = (arenaCorrectCount >= 5 && avgSec > 0 && avgSec < 4.0) ? 1 : 0;
-
       const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus);
       const finalTotalCoins = arenaCorrectCount === 0
         ? 0
@@ -10275,7 +10274,6 @@
             <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> + Bonus Podium: <b>+${rankPtsBonus}</b> = <b>+${finalTotalPoints} Markah</b></div>
             <div class="pt-1 text-xs font-black text-emerald-300">
               Ganjaran Coin Diterima: +${finalTotalCoins} Coin ${COIN_ICON_HTML}
-              <span class="block text-[10px] font-bold text-amber-200/90">(${Math.round(baseMatchCoinCap * completionRatio)} Coin Kedudukan & Tahap${speedCoinExtra > 0 ? ' + 1 Coin Pantas' : ''})</span>
             </div>
           </div>
         `;
@@ -10284,7 +10282,7 @@
         addPlayerReward(finalTotalCoins, finalTotalPoints);
       }
 
-      if (db && fbUser && activeArenaRoomId) {
+      if (db && fbUser && activeArenaRoomId && isDeviceOnline) {
         try {
           setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), { status: 'finished' }, { merge: true });
         } catch (e) {}
@@ -10309,7 +10307,7 @@
         const localRooms = loadLocalArenaRooms();
         delete localRooms[activeArenaRoomId];
         saveLocalArenaRooms(localRooms);
-        if (db && fbUser) {
+        if (db && fbUser && isDeviceOnline) {
           try {
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId));
           } catch (e) {}
@@ -10332,6 +10330,7 @@
       navTo('home');
     };
 
+    /* 11. AKADEMI MASTER ANZAN (FLASH ANZAN, PECUT & DIKTE SUARA) */
     let flashAnzanBasePoints = 12;
     let flashAnswerStartTime = 0;
     let flashAnswerTimerInterval = null;
@@ -10556,7 +10555,7 @@
       fb.classList.remove('hidden');
     };
 
-    /* 12. PECUT BENTUK JARI & MANIK SEMPOA (MUSCLE MEMORY: +3 MARKAH, 0 COIN) */
+    /* 12. PECUT BENTUK JARI & MANIK SEMPOA */
     let drillTarget = 47;
     let drillSolvedCount = 0;
     let drillLocked = false;
@@ -10743,7 +10742,7 @@
         const ones = drillTarget % 10;
         if (fb) {
           fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
-          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Kiri (Puluh) = ${tens} + Kanan (Sa) = ${ones}. (Tiada markah diberikan — tekan "Tukar Nombor" untuk soalan baharu!)`;
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Kiri (Puluh) = ${tens} + Kanan (Sa) = ${ones}.`;
           fb.classList.remove('hidden');
         }
       } else {
@@ -10758,7 +10757,7 @@
         renderDrillInteractiveStage();
         if (fb) {
           fb.className = 'rounded-2xl p-2.5 text-center text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-400';
-          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Ratus = ${dHundreds}, Puluh = ${dTens}, Sa = ${dOnes}. (Tiada markah diberikan — tekan "Tukar Nombor" untuk soalan baharu!)`;
+          fb.innerText = `💡 Contoh Jawapan ${drillTarget}: Ratus = ${dHundreds}, Puluh = ${dTens}, Sa = ${dOnes}.`;
           fb.classList.remove('hidden');
         }
       }
@@ -10790,7 +10789,8 @@
       if (targetEl) targetEl.innerText = drillTarget;
       resetDrillStage(true);
     };
-    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA: MELAYU, ENGLISH, MANDARIN, ARAB) */
+
+    /* 13. DIKTE KIRAAN SUARA (LISTENING ANZAN — 4 BAHASA) */
     let dictCorrectAnswer = 0;
     let dictSequenceList = [];
 

@@ -228,7 +228,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.51
+            Versi 1.9.52
           </span>
         </div>
 
@@ -6487,6 +6487,15 @@
       return `${hours} jam ${mins} min`;
     }
 
+    function escapeHtmlSafe(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function getTodayDateKey() {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -8287,8 +8296,17 @@
 
       if (listEl) listEl.innerHTML = '';
 
+      // Peta tambahan mengikut key & nameKey supaya pautan lama/baharu sentiasa dijumpai
+      const byKeyMap = new Map();
+      cloudMap.forEach((v, k) => {
+        byKeyMap.set(k, v);
+        if (v.key) byKeyMap.set(String(v.key), v);
+        if (v.accountId) byKeyMap.set(String(v.accountId), v);
+        if (v.nameKey) byKeyMap.set(String(v.nameKey), v);
+      });
+
       linkedIds.forEach(cid => {
-        const child = cloudMap.get(cid);
+        const child = cloudMap.get(cid) || byKeyMap.get(String(cid));
         if (!child) {
           const missCard = document.createElement('div');
           missCard.className = 'bg-rose-50 border-2 border-rose-200 rounded-2xl p-3 flex items-center justify-between text-xs';

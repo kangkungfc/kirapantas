@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.66
+            Versi 1.9.67
           </span>
         </div>
 
@@ -4009,9 +4009,15 @@
             `;
           } else if (cfg.hair === 'hair_samurai') {
             frontHairLayer = `
-              <circle cx="50" cy="11" r="8" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
-              <rect x="44" y="16" width="12" height="3.2" rx="1.6" fill="#EF4444"/>
-              <path d="M 23 43 C 22 20, 78 20, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <!-- Sanggul Kemas Melekat Rapat Di Puncak Kepala + Cucuk Sanggul Emas Maharaja -->
+              <ellipse cx="50" cy="19.5" rx="9.2" ry="7.2" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 44 18 Q 50 14.5 56 18" fill="none" stroke="${hairPal.shine}" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+              <line x1="36.5" y1="24" x2="63.5" y2="24" stroke="url(#${uid}_gold)" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="36" cy="24" r="2.2" fill="#EF4444" stroke="#FACC15" stroke-width="0.9"/>
+              <circle cx="64" cy="24" r="2.2" fill="#EF4444" stroke="#FACC15" stroke-width="0.9"/>
+              <rect x="43.5" y="22.5" width="13" height="3.6" rx="1.8" fill="#DC2626" stroke="#FACC15" stroke-width="0.8"/>
+              <path d="M 23 43 C 22 21, 78 21, 77 43 C 70 32, 30 32, 23 43 Z" fill="url(#${uid}_hair)" filter="url(#${uid}_shadow)"/>
+              <path d="M 35 28 Q 50 24.5 65 28" fill="none" stroke="${hairPal.shine}" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
             `;
           } else if (cfg.hair === 'hair_wizard_wave') {
             frontHairLayer = `

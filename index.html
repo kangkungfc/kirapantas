@@ -228,7 +228,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.50
+            Versi 1.9.51
           </span>
         </div>
 
@@ -1625,6 +1625,28 @@
         <div id="pmsg-panel-sent" class="hidden space-y-2">
           <div id="player-sent-list" class="space-y-2 max-h-[55vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
         </div>
+      </div>
+    </div>
+    <!-- MODAL GERBANG PENGESAHAN DEWASA (PARENTAL GATE ANTI-KANAK-KANAK) -->
+    <div id="parental-gate-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3">
+      <div class="bubbly-card bg-white border-4 border-teal-500 w-full max-w-sm p-5 space-y-3 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center text-3xl border-2 border-teal-400">🔐</div>
+        <div>
+          <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 mb-1">Kawalan Keselamatan Ibu Bapa</span>
+          <h3 class="text-base font-bold text-slate-900">Pengesahan Dewasa Diperlukan</h3>
+          <p id="parental-gate-desc" class="text-[11px] font-bold text-slate-500 mt-0.5">Sila jawab soalan pengesahan ini untuk membuktikan anda ialah Ibu Bapa / Penjaga:</p>
+        </div>
+        <div class="bg-teal-50 border-2 border-teal-300 rounded-2xl p-3">
+          <div id="parental-gate-question" class="text-xl font-black text-teal-950">14 × 6 + 19 = ?</div>
+        </div>
+        <form onsubmit="submitParentalGateAnswer(event)" class="space-y-2.5">
+          <input id="parental-gate-input" type="number" inputmode="numeric" required placeholder="Taip jawapan di sini..." class="w-full px-4 py-2.5 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-black text-center text-base bg-white" />
+          <div id="parental-gate-error" class="hidden text-xs font-extrabold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2"></div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button type="button" onclick="closeParentalGateModal()" class="bubbly-btn bg-slate-100 text-slate-700 border-2 border-slate-300 py-2.5 text-xs font-black">✖️ Batal</button>
+            <button type="submit" class="bubbly-btn bg-teal-600 text-white border-2 border-teal-900 py-2.5 text-xs font-black">✅ Sahkan Dewasa</button>
+          </div>
+        </form>
       </div>
     </div>
   </main>
@@ -6658,8 +6680,59 @@
       return found;
     }
 
-    window.selectRegisterAccountRole = function(role) {
+    let parentalGateExpectedAns = 0;
+    let parentalGateOnSuccess = null;
+
+    function openParentalGate(descText, onSuccessFn) {
+      const a = Math.floor(Math.random() * 8) + 12; // 12 - 19
+      const b = Math.floor(Math.random() * 5) + 6;  // 6 - 10
+      const c = Math.floor(Math.random() * 25) + 14; // 14 - 38
+      const useSub = Math.random() > 0.5;
+      parentalGateExpectedAns = useSub ? (a * b - c) : (a * b + c);
+      parentalGateOnSuccess = onSuccessFn;
+
+      const modal = document.getElementById('parental-gate-modal');
+      const qEl = document.getElementById('parental-gate-question');
+      const descEl = document.getElementById('parental-gate-desc');
+      const inpEl = document.getElementById('parental-gate-input');
+      const errEl = document.getElementById('parental-gate-error');
+      if (descEl && descText) descEl.innerText = descText;
+      if (qEl) qEl.innerText = `${a} × ${b} ${useSub ? '-' : '+'} ${c} = ?`;
+      if (inpEl) inpEl.value = '';
+      if (errEl) errEl.classList.add('hidden');
+      if (modal) modal.classList.remove('hidden');
+      setTimeout(() => inpEl?.focus(), 80);
+    }
+
+    window.closeParentalGateModal = function() {
       playClick();
+      const modal = document.getElementById('parental-gate-modal');
+      if (modal) modal.classList.add('hidden');
+      parentalGateOnSuccess = null;
+    };
+
+    window.submitParentalGateAnswer = function(e) {
+      e.preventDefault();
+      const inpEl = document.getElementById('parental-gate-input');
+      const errEl = document.getElementById('parental-gate-error');
+      const userVal = Number(inpEl?.value);
+      if (!Number.isFinite(userVal) || userVal !== parentalGateExpectedAns) {
+        playWrong();
+        if (errEl) {
+          errEl.innerText = '❌ Jawapan pengesahan dewasa tidak tepat. Hanya Ibu Bapa / Penjaga dibenarkan meneruskan.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+      playCheer();
+      const cb = parentalGateOnSuccess;
+      const modal = document.getElementById('parental-gate-modal');
+      if (modal) modal.classList.add('hidden');
+      parentalGateOnSuccess = null;
+      if (typeof cb === 'function') cb();
+    };
+
+    function applyRegisterRoleUI(role) {
       selectedRegisterRole = role === 'parent' ? 'parent' : 'student';
       const sBtn = document.getElementById('btn-role-student');
       const pBtn = document.getElementById('btn-role-parent');
@@ -6676,9 +6749,24 @@
       }
       if (hint) {
         hint.innerText = selectedRegisterRole === 'parent'
-          ? '👨‍👩‍👧‍👦 Ibu Bapa boleh memautkan & memantau semua akaun anak di samping bermain bersama!'
+          ? '✅ Disahkan Dewasa: Ibu Bapa boleh pantau semua akaun anak & bermain bersama!'
           : '🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.';
       }
+    }
+
+    window.selectRegisterAccountRole = function(role) {
+      playClick();
+      if (role === 'parent') {
+        openParentalGate(
+          'Pengesahan Dewasa: Jawab soalan ini untuk membuka pendaftaran Akaun Ibu Bapa:',
+          () => {
+            applyRegisterRoleUI('parent');
+            showAppToast('✅ Pengesahan dewasa berjaya! Anda kini boleh mendaftar Akaun Ibu Bapa.');
+          }
+        );
+        return;
+      }
+      applyRegisterRoleUI('student');
     };
 
     window.togglePasswordVisibility = function() {
@@ -6776,8 +6864,13 @@
       if (!currentPlayer || isAdminAccountRecord(currentPlayer)) return;
       const cleanLabel = String(activityText || '').trim();
       if (!cleanLabel) return;
+      if (!currentPlayer.activityDurations || typeof currentPlayer.activityDurations !== 'object') {
+        currentPlayer.activityDurations = {};
+      }
       const changed = currentPlayer.currentActivityLabel !== cleanLabel;
       currentPlayer.currentActivityLabel = cleanLabel;
+      currentPlayer.lastPlayedActivity = cleanLabel;
+      currentPlayer.lastPlayedAt = Date.now();
       if (syncImmediately && changed) {
         savePlayerCloud();
       }
@@ -6862,6 +6955,9 @@
           isOnline: true,
           lastActiveAt: currentPlayer.lastActiveAt,
           currentActivityLabel: currentPlayer.currentActivityLabel,
+          lastPlayedActivity: currentPlayer.lastPlayedActivity || currentPlayer.currentActivityLabel || 'Menu Utama',
+          lastPlayedAt: currentPlayer.lastPlayedAt || currentPlayer.lastActiveAt || Date.now(),
+          activityDurations: currentPlayer.activityDurations || {},
           unlockedModules: currentPlayer.unlockedModules || [1, 2],
           modScores: currentPlayer.modScores || {},
           avatarConfig: currentPlayer.avatarConfig,
@@ -6992,6 +7088,9 @@
             isOnline: currentPlayer && currentPlayer.accountId === accId,
             lastActiveAt: Date.now(),
             currentActivityLabel: mergedRecord.currentActivityLabel || 'Menu Utama',
+            lastPlayedActivity: mergedRecord.lastPlayedActivity || mergedRecord.currentActivityLabel || 'Menu Utama',
+            lastPlayedAt: mergedRecord.lastPlayedAt || Date.now(),
+            activityDurations: mergedRecord.activityDurations || {},
             unlockedModules: mergedRecord.unlockedModules || [1, 2],
             modScores: mergedRecord.modScores || {},
             avatarConfig: mergedRecord.avatarConfig,
@@ -7088,6 +7187,13 @@
         currentPlayer.todaySeconds = (currentPlayer.todaySeconds || 0) + 1;
         currentPlayer.isOnline = true;
         currentPlayer.lastActiveAt = Date.now();
+        const actName = currentPlayer.currentActivityLabel || 'Menu Utama';
+        if (!currentPlayer.activityDurations || typeof currentPlayer.activityDurations !== 'object') {
+          currentPlayer.activityDurations = {};
+        }
+        currentPlayer.activityDurations[actName] = (Number(currentPlayer.activityDurations[actName]) || 0) + 1;
+        currentPlayer.lastPlayedActivity = actName;
+        currentPlayer.lastPlayedAt = Date.now();
         const hTime = document.getElementById('header-timer-display');
         if (hTime) hTime.innerText = formatDurationMMSS(currentPlayer.playSeconds);
         if (currentPlayer.playSeconds % 15 === 0) {
@@ -7338,6 +7444,9 @@
             isOnline: true,
             lastActiveAt: Date.now(),
             currentActivityLabel: existingAccount.currentActivityLabel || 'Menu Utama',
+            lastPlayedActivity: existingAccount.lastPlayedActivity || existingAccount.currentActivityLabel || 'Menu Utama',
+            lastPlayedAt: Number(existingAccount.lastPlayedAt) || Number(existingAccount.lastActiveAt) || Date.now(),
+            activityDurations: existingAccount.activityDurations && typeof existingAccount.activityDurations === 'object' ? existingAccount.activityDurations : {},
             unlockedModules: isAdminUser
               ? [1, 2, 3, 4, 5, 6]
               : (Array.isArray(existingAccount.unlockedModules) && existingAccount.unlockedModules.length
@@ -7653,7 +7762,7 @@
       }
       currentPlayer = null;
       document.getElementById('app-header').classList.add('hidden');
-      ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena'].forEach(s => {
+      ['new-setup', 'first-mission', 'home', 'modules', 'simulator', 'abacus', 'quiz', 'rewards', 'scoreboard', 'anzan', 'account', 'admin', 'arena', 'parent'].forEach(s => {
         const el = document.getElementById(`screen-${s}`);
         if (el) el.classList.add('hidden');
       });
@@ -8057,7 +8166,16 @@
       await loadParentChildrenDashboard();
     };
 
-    window.parentGiftCoinsToChild = async function(childId, childName, bonusCoins = 10) {
+    window.parentGiftCoinsToChild = function(childId, childName, bonusCoins = 10) {
+      if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
+      playClick();
+      openParentalGate(
+        `Pengesahan Ibu Bapa: Sahkan jawapan untuk menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName}:`,
+        () => executeParentGiftCoinsToChild(childId, childName, bonusCoins)
+      );
+    };
+
+    async function executeParentGiftCoinsToChild(childId, childName, bonusCoins = 10) {
       if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
       playCheer();
       triggerConfetti();
@@ -8209,6 +8327,27 @@
           return `<span class="px-2 py-0.5 rounded-lg border text-[10px] font-black ${doneCls}">${st.label}: ${sc}/50</span>`;
         }).join('');
 
+        const actDurations = child.activityDurations && typeof child.activityDurations === 'object' ? child.activityDurations : {};
+        const lastModeName = child.lastPlayedActivity || child.currentActivityLabel || 'Menu Utama';
+        const lastModeSec = Number(actDurations[lastModeName]) || 0;
+        const lastSeenTs = Number(child.lastPlayedAt) || Number(child.lastActiveAt) || 0;
+        const lastSeenStr = lastSeenTs > 0
+          ? new Date(lastSeenTs).toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })
+          : '-';
+
+        const sortedModes = Object.entries(actDurations)
+          .filter(([lbl, sec]) => Number(sec) > 0 && lbl !== 'Menu Utama')
+          .sort((a, b) => Number(b[1]) - Number(a[1]));
+
+        const modeBreakdownHtml = sortedModes.length > 0
+          ? sortedModes.map(([lbl, sec]) => `
+              <div class="flex items-center justify-between bg-white border border-sky-200 rounded-lg px-2 py-1 text-[10px]">
+                <span class="font-bold text-slate-700 truncate pr-2">• ${escapeHtmlSafe(lbl)}</span>
+                <span class="font-black text-sky-900 flex-shrink-0">⏱️ ${formatDurationMMSS(Number(sec))}</span>
+              </div>
+            `).join('')
+          : `<div class="text-[10px] font-bold text-slate-400 italic">Belum ada rekod masa terperinci bagi mod latihan.</div>`;
+
         const safeChildName = String(child.name || 'Anak').replace(/'/g, "\\'");
         const card = document.createElement('div');
         card.className = 'bg-gradient-to-br from-white to-teal-50/40 border-2 border-teal-300 rounded-2xl p-3.5 space-y-2.5 shadow-xs';
@@ -8223,7 +8362,7 @@
                     ${isOnlineNow ? '🟢 Aktif Sekarang' : '⚪ Offline'}
                   </span>
                 </div>
-                <div class="text-[10px] font-bold text-indigo-700 truncate">📍 Aktiviti: ${escapeHtmlSafe(child.currentActivityLabel || 'Menu Utama')}</div>
+                <div class="text-[10px] font-bold text-indigo-700 truncate">🕹️ Terakhir Main: <b>${escapeHtmlSafe(lastModeName)}</b> (${lastSeenStr})</div>
               </div>
             </div>
             <button type="button" onclick="parentUnlinkChild('${cid}', '${safeChildName}')" class="text-[10px] font-black text-slate-400 hover:text-rose-600 px-2 py-1" title="Buang pautan anak">✖️</button>
@@ -8239,9 +8378,19 @@
               <div class="font-black text-amber-900 inline-flex items-center gap-1">${COIN_ICON_HTML} ${cStars}</div>
             </div>
             <div class="bg-white border border-sky-200 rounded-xl p-2">
-              <div class="text-[9px] font-bold text-slate-500">Masa Belajar</div>
+              <div class="text-[9px] font-bold text-slate-500">Jumlah Masa</div>
               <div class="font-black text-sky-900">⏱️ ${formatDurationHHMM(cTotalSec)}</div>
             </div>
+          </div>
+
+          <!-- Kotak Mod Terakhir & Pecahan Masa Setiap Mod -->
+          <div class="bg-sky-50/90 border border-sky-200 rounded-xl p-2.5 space-y-1.5">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="font-black text-sky-950">⏱️ Masa di Mod Terakhir (${escapeHtmlSafe(lastModeName)}):</span>
+              <span class="font-black bg-sky-200 text-sky-950 px-2 py-0.5 rounded-full">${formatDurationMMSS(lastModeSec)}</span>
+            </div>
+            <div class="text-[10px] font-black text-slate-600 pt-0.5">📋 Pecahan Masa Mengikut Tahap & Mod:</div>
+            <div class="space-y-1 max-h-28 overflow-y-auto pr-0.5">${modeBreakdownHtml}</div>
           </div>
 
           <div class="space-y-1">

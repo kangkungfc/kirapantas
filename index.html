@@ -320,7 +320,7 @@
             🟠 Mod Offline Aktif: Akaun sedia ada di peranti ini masih boleh log masuk & belajar.
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.91 • Penguncian Tahap Berperingkat, Logo Lutsinar, Header Kemas & Avatar Jelas
+            Versi 1.9.95 • Nota Sempoa Interaktif Beranimasi (Asas v1.9.95)
           </span>
         </div>
 
@@ -5647,8 +5647,306 @@
       window.previewMod3Formula(tabKey, 'add', 0, true);
     };
 
+    window._mod3StepState = {
+      tabKey: 'kecil',
+      opType: 'add',
+      idx: 0,
+      stepIdx: 0,
+      steps: [],
+      autoTimer: null
+    };
+
+    window.buildMod3FormulaSteps = function(tabKey, opType, item) {
+      const steps = [];
+      const startVal = item.start;
+      const endVal = item.end;
+      const startTens = Math.floor(startVal / 10);
+      const startOnes = startVal % 10;
+
+      // Parse formula operations from item.f, e.g. "+4 = +5 - 1", "+9 = +10 - 1", "+6 = +10 - 5 + 1", "-6 = -10 + 5 - 1"
+      const rhs = (item.f.split('=')[1] || '').trim();
+      const tokens = rhs.match(/[+-]\s*\d+/g) || [];
+
+      steps.push({
+        val: startVal,
+        label: `Langkah 1: Nilai Mula (${startVal})`,
+        desc: `Sediakan nilai mula <b>${startVal}</b> pada sempoa sebelum menggerakkan jari.`,
+        highlightRods: [],
+        arrows: [],
+        badge: 'MULA',
+        badgeColor: 'bg-slate-200 text-slate-800'
+      });
+
+      let curVal = startVal;
+      tokens.forEach((tok, i) => {
+        const delta = parseInt(tok.replace(/\s+/g, ''), 10);
+        const prevVal = curVal;
+        curVal += delta;
+        const absD = Math.abs(delta);
+        const isTen = absD >= 10;
+        const rodIdx = isTen ? 0 : 1; // 0 = Puluh, 1 = Sa (in 2-rod view)
+        const rodName = isTen ? 'Tiang Puluh' : 'Tiang Sa';
+        const isHeaven = absD === 5;
+
+        // Determine physical bead direction on abacus
+        // +10 => Puluh earth bead UP; -10 => Puluh earth bead DOWN
+        // +5 => Sa heaven bead DOWN; -5 => Sa heaven bead UP
+        // +1..+4 => Sa earth beads UP; -1..-4 => Sa earth beads DOWN
+        let dir = 'up';
+        let moveText = '';
+        if (delta === 10) { dir = 'up'; moveText = 'Naikkan 1 manik bawah (+10) di Tiang Puluh ⬆️'; }
+        else if (delta === -10) { dir = 'down'; moveText = 'Turunkan 1 manik bawah (-10) di Tiang Puluh ⬇️'; }
+        else if (delta === 5) { dir = 'down'; moveText = 'Turunkan Manik Syurga (+5) di Tiang Sa ⬇️'; }
+        else if (delta === -5) { dir = 'up'; moveText = 'Naikkan Manik Syurga (-5) di Tiang Sa ⬆️'; }
+        else if (delta > 0) { dir = 'up'; moveText = `Naikkan ${absD} manik bawah (+${absD}) di Tiang Sa ⬆️`; }
+        else { dir = 'down'; moveText = `Turunkan ${absD} manik bawah (-${absD}) di Tiang Sa ⬇️`; }
+
+        const isLast = (i === tokens.length - 1);
+        steps.push({
+          val: curVal,
+          prevVal: prevVal,
+          delta: delta,
+          label: `Langkah ${i + 2}: ${delta > 0 ? '+' + delta : delta} (${rodName})`,
+          desc: `${moveText} → Nilai menjadi <b>${curVal}</b>${isLast ? ' (Jawapan Akhir!)' : ''}`,
+          highlightRods: [rodIdx],
+          arrows: [{ rodIdx, dir, isHeaven, delta }],
+          badge: isLast ? 'HASIL AKHIR' : `GERAKAN ${i + 1}`,
+          badgeColor: isLast ? 'bg-emerald-500 text-white' : 'bg-amber-400 text-amber-950'
+        });
+      });
+
+      return steps;
+    };
+
+    window.renderAnimatedAbacusStepSVG = function(stepObj) {
+      const val = Math.max(0, Math.min(99, Number(stepObj.val) || 0));
+      const digits = [Math.floor(val / 10) % 10, val % 10];
+      const labels = ['Puluh', 'Sa'];
+      const w = 2 * 56 + 28; // 140
+
+      const drawBead = (cx, cy, isActive, isHeaven, isHighlighted) => {
+        const fill = isHighlighted
+          ? (isHeaven ? '#DC2626' : '#EA580C')
+          : (isHeaven ? (isActive ? '#EF4444' : '#FCA5A5') : (isActive ? '#F59E0B' : '#FDE68A'));
+        const stroke = isHighlighted ? '#FEF08A' : (isHeaven ? '#7F1D1D' : '#78350F');
+        const sw = isHighlighted ? '2.4' : '1.6';
+        return `
+          <g style="transform: translateY(${cy}px); transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);">
+            <polygon points="${cx - 17},0 ${cx - 8},-6 ${cx + 8},-6 ${cx + 17},0 ${cx + 8},6 ${cx - 8},6"
+              fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+            <line x1="${cx - 13}" y1="0" x2="${cx + 13}" y2="0" stroke="#451A03" stroke-width="0.9" opacity="0.4"/>
+            <ellipse cx="${cx - 4}" cy="-2.4" rx="5" ry="1.4" fill="#FFFFFF" opacity="0.6"/>
+          </g>
+        `;
+      };
+
+      let rodsSvg = '';
+      for (let colIdx = 0; colIdx < 2; colIdx++) {
+        const cx = 42 + colIdx * 56;
+        const d = digits[colIdx];
+        const topActive = d >= 5;
+        const botCount = d % 5;
+        const topY = topActive ? 41 : 22;
+
+        const arrowInfo = (stepObj.arrows || []).find(a => a.rodIdx === colIdx);
+        const topHighlighted = Boolean(arrowInfo && arrowInfo.isHeaven);
+        const botHighlighted = Boolean(arrowInfo && !arrowInfo.isHeaven);
+
+        let botBeads = '';
+        for (let b = 0; b < 4; b++) {
+          const isUp = b < botCount;
+          const by = isUp ? (64 + b * 13) : (81 + b * 13);
+          const hlThis = botHighlighted && ((arrowInfo.delta > 0 && isUp && b >= botCount - arrowInfo.delta) || (arrowInfo.delta < 0 && !isUp && b < botCount + Math.abs(arrowInfo.delta)));
+          botBeads += drawBead(cx, by, isUp, false, hlThis);
+        }
+
+        let arrowSvg = '';
+        if (arrowInfo) {
+          const ay = arrowInfo.isHeaven ? 31 : 73;
+          const isUp = arrowInfo.dir === 'up';
+          const badgeTxt = arrowInfo.delta > 0 ? `+${arrowInfo.delta}` : `${arrowInfo.delta}`;
+          arrowSvg = `
+            <g>
+              <rect x="${cx + 18}" y="${ay - 11}" width="22" height="22" rx="6" fill="#BE123C" stroke="#FFFFFF" stroke-width="1.4"/>
+              <text x="${cx + 29}" y="${ay - 1}" text-anchor="middle" font-size="8.5" font-weight="900" fill="#FFFFFF">${badgeTxt}</text>
+              <text x="${cx + 29}" y="${ay + 8}" text-anchor="middle" font-size="9" font-weight="900" fill="#FEF08A">${isUp ? '▲' : '▼'}</text>
+            </g>
+          `;
+        }
+
+        rodsSvg += `
+          <line x1="${cx}" y1="14" x2="${cx}" y2="134" stroke="#92400E" stroke-width="3.6"/>
+          ${drawBead(cx, topY, topActive, true, topHighlighted)}
+          ${botBeads}
+          ${arrowSvg}
+          <text x="${cx}" y="147" text-anchor="middle" font-size="10" font-weight="900" fill="#FEF3C7">${labels[colIdx]}</text>
+        `;
+      }
+
+      return `
+        <svg viewBox="0 0 ${w + 18} 154" class="w-44 h-44 mx-auto select-none">
+          <rect x="4" y="4" width="${w + 10}" height="146" rx="14" fill="#78350F" stroke="#451A03" stroke-width="3"/>
+          <rect x="12" y="14" width="${w - 6}" height="120" rx="8" fill="#FFFBEB"/>
+          ${rodsSvg}
+          <rect x="10" y="51" width="${w - 2}" height="7" rx="2.5" fill="#451A03"/>
+        </svg>
+      `;
+    };
+
+    window.stopMod3AutoPlay = function() {
+      if (window._mod3StepState && window._mod3StepState.autoTimer) {
+        clearInterval(window._mod3StepState.autoTimer);
+        window._mod3StepState.autoTimer = null;
+      }
+      const autoBtn = document.getElementById('m3-btn-autoplay');
+      if (autoBtn) {
+        autoBtn.innerHTML = '▶ Main Auto';
+        autoBtn.classList.remove('bg-rose-600', 'text-white');
+        autoBtn.classList.add('bg-indigo-100', 'text-indigo-900', 'border-indigo-300');
+      }
+    };
+
+    window.toggleMod3AutoPlay = function() {
+      playClick();
+      const st = window._mod3StepState;
+      if (!st || !st.steps.length) return;
+      if (st.autoTimer) {
+        stopMod3AutoPlay();
+        return;
+      }
+      if (st.stepIdx >= st.steps.length - 1) {
+        st.stepIdx = 0;
+        renderMod3StepStage(true);
+      }
+      const autoBtn = document.getElementById('m3-btn-autoplay');
+      if (autoBtn) {
+        autoBtn.innerHTML = '⏸ Henti';
+        autoBtn.classList.remove('bg-indigo-100', 'text-indigo-900', 'border-indigo-300');
+        autoBtn.classList.add('bg-rose-600', 'text-white');
+      }
+      st.autoTimer = setInterval(() => {
+        if (st.stepIdx < st.steps.length - 1) {
+          st.stepIdx++;
+          playClick();
+          renderMod3StepStage(true);
+        } else {
+          stopMod3AutoPlay();
+        }
+      }, 1350);
+    };
+
+    window.stepMod3FormulaSlide = function(dir) {
+      stopMod3AutoPlay();
+      const st = window._mod3StepState;
+      if (!st || !st.steps.length) return;
+      const nextIdx = st.stepIdx + dir;
+      if (nextIdx >= 0 && nextIdx < st.steps.length) {
+        playClick();
+        st.stepIdx = nextIdx;
+        renderMod3StepStage(true);
+      }
+    };
+
+    window.goToMod3FormulaStep = function(targetStep) {
+      stopMod3AutoPlay();
+      const st = window._mod3StepState;
+      if (!st || !st.steps.length) return;
+      if (targetStep >= 0 && targetStep < st.steps.length) {
+        playClick();
+        st.stepIdx = targetStep;
+        renderMod3StepStage(true);
+      }
+    };
+
+    window.renderMod3StepStage = function(animateBeads = false) {
+      const st = window._mod3StepState;
+      const cat = MOD3_FORMULAS[st.tabKey];
+      const stageEl = document.getElementById('m3-visual-stage');
+      if (!cat || !stageEl) return;
+      const item = cat[st.opType][st.idx];
+      if (!item || !st.steps.length) return;
+
+      const curStep = st.steps[st.stepIdx] || st.steps[0];
+      const prevStep = (animateBeads && st.stepIdx > 0) ? st.steps[st.stepIdx - 1] : curStep;
+      const totalSteps = st.steps.length;
+      const isFirst = st.stepIdx === 0;
+      const isLast = st.stepIdx === totalSteps - 1;
+
+      const stepDotsHtml = st.steps.map((s, i) => `
+        <button type="button" onclick="goToMod3FormulaStep(${i})"
+          class="px-2 py-0.5 rounded-full text-[10px] font-black transition ${i === st.stepIdx ? 'bg-indigo-600 text-white shadow-sm scale-105' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+          ${i + 1}
+        </button>
+      `).join('');
+
+      stageEl.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-1.5">
+          <span class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula: ${item.f}</span>
+          <div class="flex items-center gap-1">
+            <span class="text-[10px] font-black text-slate-500 mr-0.5">Langkah:</span>
+            ${stepDotsHtml}
+          </div>
+        </div>
+
+        <div class="text-sm sm:text-base font-black text-slate-800">
+          Contoh Kiraan: <span class="text-indigo-700">${item.ex}</span>
+        </div>
+
+        <div class="bg-gradient-to-b from-amber-50/70 to-white rounded-2xl p-3 border-2 ${isLast ? 'border-emerald-400' : 'border-amber-300'} space-y-2 shadow-inner">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${curStep.badgeColor}">${curStep.badge}</span>
+            <span class="text-xs font-black text-slate-700">Nilai Sempoa: <span class="text-base text-indigo-700">${curStep.val}</span></span>
+          </div>
+
+          <div id="m3-abacus-anim-box" class="py-1 flex justify-center">
+            ${renderAnimatedAbacusStepSVG(animateBeads ? prevStep : curStep)}
+          </div>
+
+          <div class="bg-white rounded-xl p-2 border border-slate-200 text-xs font-bold text-slate-800 leading-snug">
+            ${curStep.desc}
+          </div>
+        </div>
+
+        <!-- Bar Kawalan Slaid & Animasi Ikut Kelajuan Murid -->
+        <div class="grid grid-cols-4 gap-1.5 pt-0.5">
+          <button type="button" onclick="stepMod3FormulaSlide(-1)" ${isFirst ? 'disabled' : ''}
+            class="bubbly-btn py-2 px-1.5 text-[11px] font-black border-2 ${isFirst ? 'bg-slate-100 text-slate-400 border-slate-200 opacity-60 cursor-not-allowed' : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'}">
+            ⬅ Sebelum
+          </button>
+          <button type="button" onclick="goToMod3FormulaStep(0)"
+            class="bubbly-btn py-2 px-1.5 text-[11px] font-black bg-amber-100 text-amber-950 border-2 border-amber-300 hover:bg-amber-200">
+            ↺ Mula
+          </button>
+          <button id="m3-btn-autoplay" type="button" onclick="toggleMod3AutoPlay()"
+            class="bubbly-btn py-2 px-1.5 text-[11px] font-black bg-indigo-100 text-indigo-900 border-2 border-indigo-300 hover:bg-indigo-200">
+            ▶ Main Auto
+          </button>
+          <button type="button" onclick="stepMod3FormulaSlide(1)" ${isLast ? 'disabled' : ''}
+            class="bubbly-btn py-2 px-1.5 text-[11px] font-black border-2 ${isLast ? 'bg-emerald-100 text-emerald-700 border-emerald-300 opacity-75 cursor-not-allowed' : 'bg-emerald-500 text-white border-emerald-700 hover:bg-emerald-600'}">
+            ${isLast ? 'Selesai ✓' : 'Seterusnya ➔'}
+          </button>
+        </div>
+
+        <p class="text-[11px] font-bold text-slate-700 bg-amber-50/80 rounded-xl p-2 border border-amber-200 text-left">
+          💡 <b>Cara Ingat:</b> ${item.tip}
+        </p>
+      `;
+
+      if (animateBeads && prevStep !== curStep) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const box = document.getElementById('m3-abacus-anim-box');
+            if (box) {
+              box.innerHTML = renderAnimatedAbacusStepSVG(curStep);
+            }
+          });
+        });
+      }
+    };
+
     window.previewMod3Formula = function(tabKey, opType, idx, silent = false) {
       if (!silent) playClick();
+      stopMod3AutoPlay();
       const cat = MOD3_FORMULAS[tabKey];
       const stageEl = document.getElementById('m3-visual-stage');
       if (!cat || !stageEl) return;
@@ -5699,25 +5997,15 @@
         return;
       }
 
-      stageEl.innerHTML = `
-        <div class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula Dipilih: ${item.f}</div>
-        <div class="text-sm font-black text-slate-800">Contoh Kiraan: <span class="text-indigo-700">${item.ex}</span></div>
-        <div class="grid grid-cols-3 gap-1.5 items-center text-center">
-          <div class="bg-slate-50 rounded-xl p-1.5 border border-slate-200">
-            <div class="text-[9px] font-black text-slate-500 mb-1">1. Mula (${item.start})</div>
-            ${renderAbacusQuestionSVG(item.start, 2).replace('w-48 h-36', 'w-24 h-24')}
-          </div>
-          <div class="bg-amber-50 rounded-xl p-1.5 border border-amber-300">
-            <div class="text-[9px] font-black text-amber-800 mb-1">2. Gerakan Jari</div>
-            <div class="text-[11px] font-black text-rose-700 py-6 leading-snug">${item.action}</div>
-          </div>
-          <div class="bg-emerald-50 rounded-xl p-1.5 border border-emerald-300">
-            <div class="text-[9px] font-black text-emerald-800 mb-1">3. Hasil (${item.end})</div>
-            ${renderAbacusQuestionSVG(item.end, 2).replace('w-48 h-36', 'w-24 h-24')}
-          </div>
-        </div>
-        <p class="text-[11px] font-bold text-slate-700 bg-amber-50/70 rounded-xl p-2 border border-amber-200">💡 <b>Cara Ingat:</b> ${item.tip}</p>
-      `;
+      window._mod3StepState = {
+        tabKey,
+        opType,
+        idx,
+        stepIdx: 0,
+        steps: buildMod3FormulaSteps(tabKey, opType, item),
+        autoTimer: null
+      };
+      renderMod3StepStage(false);
     };
 
     window.renderMod3FriendMiniGame = function() {

@@ -382,7 +382,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.85 • Baik Pulih Butang Daftar/Log Masuk & Susunan Baris Bahasa
+            Versi 1.9.86 • Perlindungan Anti-Spam 5 Lapisan & Kawalan Peti Masuk
           </span>
         </div>
 
@@ -1970,13 +1970,25 @@
           </button>
         </div>
 
-        <!-- PANEL 1: PETI MASUK (TERIMA MESEJ) -->
+        <!-- PANEL 1: PETI MASUK (TERIMA MESEJ + MOD FOKUS & BERSIHKAN PETI MASUK) -->
         <div id="pmsg-panel-inbox" class="space-y-2">
-          <div id="player-inbox-list" class="space-y-2 max-h-[55vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+          <div class="flex items-center justify-between gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5">
+            <button type="button" id="btn-toggle-inbox-dnd" onclick="togglePlayerFocusMuteAll()" class="text-[10px] font-black px-2.5 py-1 rounded-lg border bg-emerald-100 text-emerald-900 border-emerald-300 transition">
+              🔔 Terima Mesej: On
+            </button>
+            <button type="button" onclick="clearAllMyInboxMessages()" class="text-[10px] font-black px-2.5 py-1 rounded-lg border bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-300 transition">
+              🗑️ Bersihkan Peti Masuk
+            </button>
+          </div>
+          <div id="player-inbox-list" class="space-y-2 max-h-[50vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
         </div>
 
-        <!-- PANEL 2: HANTAR MESEJ (PILIH PENERIMA & AYAT UCAPAN) -->
+        <!-- PANEL 2: HANTAR MESEJ (PILIH PENERIMA, KUOTA HARIAN & COOLDOWN ANTI-SPAM) -->
         <div id="pmsg-panel-send" class="hidden space-y-2.5">
+          <div class="flex items-center justify-between gap-2 bg-amber-50 border border-amber-300 rounded-xl px-2.5 py-1.5 text-[10px] font-black text-amber-950">
+            <span id="qc-daily-quota-badge">📨 Kuota Hari Ini: 0 / 20</span>
+            <span id="qc-cooldown-status-badge" class="text-emerald-700">✅ Sedia Dihantar</span>
+          </div>
           <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-2.5 space-y-2">
             <label class="block text-[10px] font-black text-sky-950 uppercase tracking-wide">👤 Pilih Rakan Penerima Mesej:</label>
             <input id="qc-recipient-search" type="text" oninput="renderQuickChatRecipientSelector()" placeholder="🔍 Cari nama rakan..." class="w-full px-3 py-1.5 rounded-xl border border-sky-300 text-xs font-bold bg-white focus:outline-none" />
@@ -1991,8 +2003,8 @@
           </div>
 
           <div class="space-y-1">
-            <div class="text-[10px] font-black text-slate-600">💬 Tekan ucapan untuk terus hantar:</div>
-            <div id="qc-presets-list" class="grid grid-cols-1 gap-1.5 max-h-[36vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+            <div class="text-[10px] font-black text-slate-600">💬 Tekan ucapan untuk terus hantar (Had 3 berturut / 15s jeda):</div>
+            <div id="qc-presets-list" class="grid grid-cols-1 gap-1.5 max-h-[34vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
           </div>
         </div>
 
@@ -11783,12 +11795,196 @@ Jom lawan kira pantas dengan saya!`;
       }
     };
 
-    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN (PILIHAN A - SAFE QUICK-CHAT) */
+    /* 10D. SISTEM MESEJ PANTAS SELAMAT ANTARA PEMAIN + PERLINDUNGAN ANTI-SPAM 5 LAPISAN */
     const PLAYER_MSGS_STORAGE_KEY = 'kirapantas_player_quick_msgs_v1';
+    const PLAYER_MUTED_SENDERS_KEY = 'kirapantas_muted_senders_v1';
+    const PLAYER_FOCUS_DND_KEY = 'kirapantas_inbox_focus_dnd_v1';
+    const QC_COOLDOWN_MS = 15000;          // Lapisan 1A: 15 saat jeda antara mesej
+    const QC_MAX_CONSECUTIVE_SAME = 3;     // Lapisan 1B: Maksimum 3 mesej berturut-turut kepada rakan sama
+    const QC_DAILY_MESSAGE_LIMIT = 20;     // Lapisan 2: Kuota maksimum 20 mesej sehari
+    const QC_MAX_INBOX_KEEP = 40;          // Lapisan 5: Had simpanan 40 mesej terkini bagi setiap pelajar
+
     let playerMessagesUnsubscribe = null;
     let cachedPlayerInbox = [];
     let quickChatRecipient = null;
     let lastQuickChatSentAt = 0;
+    let qcCooldownTimerHandle = null;
+
+    function getMyMutedSendersList() {
+      if (!currentPlayer) return [];
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      try {
+        const raw = localStorage.getItem(`${PLAYER_MUTED_SENDERS_KEY}_${myId}`);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      } catch (e) { return []; }
+    }
+
+    function saveMyMutedSendersList(arr) {
+      if (!currentPlayer) return;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      try {
+        localStorage.setItem(`${PLAYER_MUTED_SENDERS_KEY}_${myId}`, JSON.stringify(Array.from(new Set(arr))));
+      } catch (e) {}
+    }
+
+    function isPlayerFocusMuteAllActive() {
+      if (!currentPlayer) return false;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      return localStorage.getItem(`${PLAYER_FOCUS_DND_KEY}_${myId}`) === 'true';
+    }
+
+    function updateFocusMuteAllButtonUI() {
+      const btn = document.getElementById('btn-toggle-inbox-dnd');
+      if (!btn) return;
+      const isMuted = isPlayerFocusMuteAllActive();
+      if (isMuted) {
+        btn.className = 'text-[10px] font-black px-2.5 py-1 rounded-lg border bg-amber-200 text-amber-950 border-amber-500 transition';
+        btn.innerText = '🔕 Mod Fokus: Senyap';
+      } else {
+        btn.className = 'text-[10px] font-black px-2.5 py-1 rounded-lg border bg-emerald-100 text-emerald-900 border-emerald-300 transition';
+        btn.innerText = '🔔 Terima Mesej: On';
+      }
+    }
+
+    window.togglePlayerFocusMuteAll = function() {
+      if (!currentPlayer) return;
+      playClick();
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const nextVal = !isPlayerFocusMuteAllActive();
+      localStorage.setItem(`${PLAYER_FOCUS_DND_KEY}_${myId}`, String(nextVal));
+      updateFocusMuteAllButtonUI();
+      updateQuickChatBadges();
+      renderPlayerInboxList();
+      showAppToast(nextVal
+        ? '🔕 Mod Fokus diaktifkan: Peti masuk disenyapkan sementara.'
+        : '🔔 Penerimaan mesej diaktifkan semula!');
+    };
+
+    window.toggleMuteSpecificSender = function(senderId, senderName) {
+      if (!currentPlayer || !senderId) return;
+      playClick();
+      const list = getMyMutedSendersList();
+      const idx = list.indexOf(senderId);
+      if (idx >= 0) {
+        list.splice(idx, 1);
+        saveMyMutedSendersList(list);
+        showAppToast(`🔔 Mesej daripada ${senderName} telah dinyahsenyap.`);
+      } else {
+        list.push(senderId);
+        saveMyMutedSendersList(list);
+        showAppToast(`🔇 ${senderName} telah disenyapkan. Mesej daripada rakan ini disorokkan.`);
+      }
+      updateQuickChatBadges();
+      renderPlayerInboxList();
+    };
+
+    window.clearAllMyInboxMessages = async function() {
+      if (!currentPlayer) return;
+      playClick();
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const myMessages = cachedPlayerInbox.filter(m => m && m.toId === myId);
+      if (myMessages.length === 0) {
+        showAppToast('📭 Peti masuk anda sudah kosong.');
+        return;
+      }
+
+      const remainingLocal = loadLocalQuickMessages().filter(m => m && m.toId !== myId);
+      saveLocalQuickMessages(remainingLocal);
+      cachedPlayerInbox = [];
+      updateQuickChatBadges();
+      renderPlayerInboxList();
+      showAppToast(`🗑️ ${myMessages.length} mesej dalam peti masuk telah dibersihkan!`);
+
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await Promise.all(myMessages.map(m =>
+              deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', m.id)).catch(() => {})
+            ));
+          }
+        } catch (e) {}
+      }
+    };
+
+    function getMyDailySentCount() {
+      if (!currentPlayer) return 0;
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const todayKey = getTodayDateKey();
+      const startOfDay = new Date(todayKey + 'T00:00:00').getTime();
+      const allMsgs = loadLocalQuickMessages();
+      const seenIds = new Set();
+      let count = 0;
+      [...cachedPlayerSent, ...allMsgs].forEach(m => {
+        if (!m || !m.id || seenIds.has(m.id)) return;
+        seenIds.add(m.id);
+        if (m.fromId === myId && (m.createdAt || 0) >= startOfDay) count++;
+      });
+      return count;
+    }
+
+    function updateQuickChatSpamStatusUI() {
+      const quotaBadge = document.getElementById('qc-daily-quota-badge');
+      const cdBadge = document.getElementById('qc-cooldown-status-badge');
+      const sentToday = getMyDailySentCount();
+      if (quotaBadge) {
+        quotaBadge.innerText = `📨 Kuota Hari Ini: ${sentToday} / ${QC_DAILY_MESSAGE_LIMIT}`;
+        quotaBadge.className = sentToday >= QC_DAILY_MESSAGE_LIMIT ? 'text-rose-700 font-black' : 'text-amber-950 font-black';
+      }
+      if (cdBadge) {
+        const remMs = QC_COOLDOWN_MS - (Date.now() - lastQuickChatSentAt);
+        if (remMs > 0) {
+          const remSec = Math.ceil(remMs / 1000);
+          cdBadge.className = 'text-rose-700 font-black';
+          cdBadge.innerText = `⏳ Tunggu ${remSec}s...`;
+        } else if (sentToday >= QC_DAILY_MESSAGE_LIMIT) {
+          cdBadge.className = 'text-rose-700 font-black';
+          cdBadge.innerText = '🚫 Kuota Penuh';
+        } else {
+          cdBadge.className = 'text-emerald-700 font-black';
+          cdBadge.innerText = '✅ Sedia Dihantar';
+        }
+      }
+    }
+
+    function startQuickChatCooldownTicker() {
+      if (qcCooldownTimerHandle) clearInterval(qcCooldownTimerHandle);
+      updateQuickChatSpamStatusUI();
+      qcCooldownTimerHandle = setInterval(() => {
+        const modal = document.getElementById('player-inbox-modal');
+        if (!modal || modal.classList.contains('hidden')) {
+          clearInterval(qcCooldownTimerHandle);
+          qcCooldownTimerHandle = null;
+          return;
+        }
+        updateQuickChatSpamStatusUI();
+      }, 500);
+    }
+
+    async function enforceInboxAutoTrim(recipientId) {
+      if (!recipientId) return;
+      const allLocal = loadLocalQuickMessages();
+      const recipientMsgs = allLocal
+        .filter(m => m && m.toId === recipientId)
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      if (recipientMsgs.length > QC_MAX_INBOX_KEEP) {
+        const overflow = recipientMsgs.slice(QC_MAX_INBOX_KEEP);
+        const overflowIds = new Set(overflow.map(m => m.id));
+        saveLocalQuickMessages(allLocal.filter(m => !overflowIds.has(m.id)));
+        if (db && isDeviceOnline) {
+          try {
+            await authReadyPromise;
+            if (fbUser) {
+              await Promise.all(overflow.map(m =>
+                deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', m.id)).catch(() => {})
+              ));
+            }
+          } catch (e) {}
+        }
+      }
+    }
 
     const QUICK_CHAT_PRESETS_STORAGE_KEY = 'kirapantas_quick_chat_presets_v1';
     const DEFAULT_QUICK_CHAT_PRESETS = [
@@ -11819,157 +12015,18 @@ Jom lawan kira pantas dengan saya!`;
     let SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
 
     async function loadQuickChatPresetsCloud() {
-      SAFE_QUICK_CHAT_PRESETS = loadLocalQuickChatPresets();
       if (!db) return SAFE_QUICK_CHAT_PRESETS;
       try {
         await authReadyPromise;
         if (!fbUser) return SAFE_QUICK_CHAT_PRESETS;
         const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'app_settings', 'quick_chat_presets'));
-        if (snap.exists()) {
-          const data = snap.data();
-          if (Array.isArray(data.items) && data.items.length > 0) {
-            SAFE_QUICK_CHAT_PRESETS = data.items;
-            saveLocalQuickChatPresets(SAFE_QUICK_CHAT_PRESETS);
-          }
+        if (snap.exists() && Array.isArray(snap.data()?.presets) && snap.data().presets.length > 0) {
+          SAFE_QUICK_CHAT_PRESETS = snap.data().presets;
+          saveLocalQuickChatPresets(SAFE_QUICK_CHAT_PRESETS);
         }
       } catch (e) {}
-      renderAdminQuickChatPresetsList();
       return SAFE_QUICK_CHAT_PRESETS;
     }
-
-    async function saveQuickChatPresetsCloud(newList) {
-      SAFE_QUICK_CHAT_PRESETS = newList;
-      saveLocalQuickChatPresets(newList);
-      renderAdminQuickChatPresetsList();
-      if (!db) return;
-      try {
-        await authReadyPromise;
-        if (!fbUser) return;
-        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'app_settings', 'quick_chat_presets'), {
-          items: newList,
-          updatedAt: Date.now()
-        });
-      } catch (e) {}
-    }
-
-    function renderAdminQuickChatPresetsList() {
-      const listEl = document.getElementById('admin-presets-list');
-      if (!listEl) return;
-      if (!SAFE_QUICK_CHAT_PRESETS || SAFE_QUICK_CHAT_PRESETS.length === 0) {
-        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-5">Tiada ayat ucapan. Sila tambah ayat baharu di atas.</div>`;
-        return;
-      }
-
-      listEl.innerHTML = SAFE_QUICK_CHAT_PRESETS.map((item, idx) => {
-        const safeText = (item.text || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return `
-          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-2.5 space-y-2">
-            <div class="flex items-center gap-1.5">
-              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-900 text-[10px] font-black flex items-center justify-center flex-shrink-0">${idx + 1}</span>
-              <input id="admin-preset-edit-${item.id}" type="text" maxlength="90" value="${safeText}" class="flex-1 px-2.5 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:border-sky-500 focus:outline-none" />
-            </div>
-            <div class="flex items-center justify-end gap-1.5">
-              <button type="button" onclick="adminSaveEditedQuickChatPreset('${item.id}')" class="bubbly-btn bg-emerald-500 hover:bg-emerald-600 text-white border border-emerald-800 px-3 py-1 text-[10px] font-black">
-                💾 Simpan Ubah
-              </button>
-              <button type="button" onclick="adminDeleteQuickChatPreset('${item.id}')" class="bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 px-3 py-1 text-[10px] font-black">
-                🗑️ Padam
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    window.adminAddQuickChatPreset = async function(e) {
-      e.preventDefault();
-      if (!currentPlayer || !currentPlayer.isAdmin) return;
-      playClick();
-      const inp = document.getElementById('admin-new-preset-input');
-      const fb = document.getElementById('admin-action-feedback');
-      const rawText = (inp?.value || '').trim();
-      if (rawText.length < 2) {
-        playWrong();
-        return;
-      }
-
-      const newItem = {
-        id: `qc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
-        text: rawText
-      };
-      const updated = [...SAFE_QUICK_CHAT_PRESETS, newItem];
-      await saveQuickChatPresetsCloud(updated);
-      if (inp) inp.value = '';
-      playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `✅ Ayat ucapan baharu berjaya ditambah!`;
-        fb.classList.remove('hidden');
-      }
-    };
-
-    window.adminSaveEditedQuickChatPreset = async function(presetId) {
-      if (!currentPlayer || !currentPlayer.isAdmin) return;
-      playClick();
-      const inp = document.getElementById(`admin-preset-edit-${presetId}`);
-      const fb = document.getElementById('admin-action-feedback');
-      const newText = (inp?.value || '').trim();
-      if (newText.length < 2) {
-        playWrong();
-        showAppToast('Ayat ucapan mestilah sekurang-kurangnya 2 aksara.');
-        return;
-      }
-
-      const updated = SAFE_QUICK_CHAT_PRESETS.map(it => it.id === presetId ? { ...it, text: newText } : it);
-      await saveQuickChatPresetsCloud(updated);
-      playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `💾 Perubahan ayat ucapan telah disimpan!`;
-        fb.classList.remove('hidden');
-      }
-    };
-
-    window.adminDeleteQuickChatPreset = async function(presetId) {
-      if (!currentPlayer || !currentPlayer.isAdmin) return;
-      playClick();
-      const fb = document.getElementById('admin-action-feedback');
-      if (SAFE_QUICK_CHAT_PRESETS.length <= 1) {
-        playWrong();
-        if (fb) {
-          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
-          fb.innerText = `⚠️ Sekurang-kurangnya 1 ayat ucapan mesti dikekalkan untuk pemain.`;
-          fb.classList.remove('hidden');
-        }
-        return;
-      }
-
-      const updated = SAFE_QUICK_CHAT_PRESETS.filter(it => it.id !== presetId);
-      await saveQuickChatPresetsCloud(updated);
-      playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-950 border border-rose-300';
-        fb.innerText = `🗑️ Ayat ucapan telah dipadam daripada senarai.`;
-        fb.classList.remove('hidden');
-      }
-    };
-
-    window.adminResetQuickChatPresetsDefault = async function() {
-      if (!currentPlayer || !currentPlayer.isAdmin) return;
-      playClick();
-      const fb = document.getElementById('admin-action-feedback');
-      await saveQuickChatPresetsCloud([...DEFAULT_QUICK_CHAT_PRESETS]);
-      playCheer();
-      if (fb) {
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-indigo-100 text-indigo-950 border border-indigo-300';
-        fb.innerText = `🔄 Senarai ayat ucapan telah dikembalikan kepada 6 ayat lalai.`;
-        fb.classList.remove('hidden');
-      }
-    };
-
-    let cachedPlayerSent = [];
-    let allKnownPlayersForChat = [];
-    let activePlayerMsgTab = 'inbox';
 
     function loadLocalQuickMessages() {
       try {
@@ -11990,7 +12047,11 @@ Jom lawan kira pantas dengan saya!`;
     function updateQuickChatBadges() {
       if (!currentPlayer || currentPlayer.isAdmin) return;
       const myId = currentPlayer.accountId || currentPlayer.key;
-      const unread = cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead).length;
+      const mutedIds = getMyMutedSendersList();
+      const isFocusMuted = isPlayerFocusMuteAllActive();
+      const unread = isFocusMuted
+        ? 0
+        : cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead && !mutedIds.includes(m.fromId)).length;
 
       ['header-inbox-badge', 'home-inbox-badge', 'sb-inbox-badge', 'modal-inbox-tab-badge'].forEach(elId => {
         const el = document.getElementById(elId);
@@ -12046,10 +12107,12 @@ Jom lawan kira pantas dengan saya!`;
       const applyFilteredLists = (allArr) => {
         cachedPlayerInbox = allArr
           .filter(m => m && m.toId === myId)
-          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+          .slice(0, QC_MAX_INBOX_KEEP);
         cachedPlayerSent = allArr
           .filter(m => m && m.fromId === myId)
-          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+          .slice(0, QC_MAX_INBOX_KEEP);
         updateQuickChatBadges();
       };
 
@@ -12108,9 +12171,11 @@ Jom lawan kira pantas dengan saya!`;
       });
 
       if (activePlayerMsgTab === 'inbox') {
+        updateFocusMuteAllButtonUI();
         renderPlayerInboxList();
         await markMyInboxAsRead();
       } else if (activePlayerMsgTab === 'send') {
+        startQuickChatCooldownTicker();
         await Promise.all([loadQuickChatPresetsCloud(), refreshKnownPlayersForChat()]);
         if (!quickChatRecipient && allKnownPlayersForChat.length > 0) {
           quickChatRecipient = allKnownPlayersForChat[0];
@@ -12182,15 +12247,16 @@ Jom lawan kira pantas dengan saya!`;
     async function markMyInboxAsRead() {
       if (!currentPlayer || currentPlayer.isAdmin) return;
       const myId = currentPlayer.accountId || currentPlayer.key;
-      const unreadItems = cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead);
+      const mutedIds = getMyMutedSendersList();
+      const unreadItems = cachedPlayerInbox.filter(m => m.toId === myId && !m.isRead && !mutedIds.includes(m.fromId));
       if (unreadItems.length === 0) return;
 
       const allLocal = loadLocalQuickMessages();
       allLocal.forEach(m => {
-        if (m.toId === myId && !m.isRead) m.isRead = true;
+        if (m.toId === myId && !m.isRead && !mutedIds.includes(m.fromId)) m.isRead = true;
       });
       saveLocalQuickMessages(allLocal);
-      cachedPlayerInbox.forEach(m => { m.isRead = true; });
+      cachedPlayerInbox.forEach(m => { if (!mutedIds.includes(m.fromId)) m.isRead = true; });
       updateQuickChatBadges();
 
       if (db) {
@@ -12230,26 +12296,74 @@ Jom lawan kira pantas dengan saya!`;
         showAppToast('⚠️ Sila pilih rakan penerima mesej terlebih dahulu.');
         return;
       }
-      const now = Date.now();
-      if (now - lastQuickChatSentAt < 3000) {
-        playWrong();
-        showAppToast('⏳ Tunggu 3 saat sebelum menghantar mesej seterusnya.');
-        return;
-      }
       const preset = SAFE_QUICK_CHAT_PRESETS.find(p => p.id === presetId);
       if (!preset) return;
+
+      const now = Date.now();
+      const myId = currentPlayer.accountId || currentPlayer.key;
+      const targetId = quickChatRecipient.id;
+      const recipientName = quickChatRecipient.name;
+
+      // LAPISAN 1A: Had Masa Bertenang (15 Saat Cooldown)
+      const elapsed = now - lastQuickChatSentAt;
+      if (elapsed < QC_COOLDOWN_MS) {
+        const waitSec = Math.ceil((QC_COOLDOWN_MS - elapsed) / 1000);
+        playWrong();
+        showAppToast(`⏳ Sila tunggu ${waitSec} saat sebelum menghantar ucapan seterusnya.`);
+        updateQuickChatSpamStatusUI();
+        return;
+      }
+
+      // LAPISAN 2: Kuota Harian (Maksimum 20 Mesej Sehari)
+      const sentToday = getMyDailySentCount();
+      if (sentToday >= QC_DAILY_MESSAGE_LIMIT) {
+        playWrong();
+        showAppToast(`🌟 Kuota ucapan harian anda (${QC_DAILY_MESSAGE_LIMIT}/${QC_DAILY_MESSAGE_LIMIT}) telah penuh! Sambung esok ya.`);
+        updateQuickChatSpamStatusUI();
+        return;
+      }
+
+      // LAPISAN 1B & 3: Sekat Spam Berturut-turut (>3 mesej tanpa balasan) & Ayat Berulang Sama
+      const allConversation = [...cachedPlayerInbox, ...cachedPlayerSent, ...loadLocalQuickMessages()]
+        .filter(m => m && ((m.fromId === myId && m.toId === targetId) || (m.fromId === targetId && m.toId === myId)))
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      let consecutiveToTarget = 0;
+      const recentMyTextsToTarget = [];
+      const seenConvIds = new Set();
+      for (const m of allConversation) {
+        if (seenConvIds.has(m.id)) continue;
+        seenConvIds.add(m.id);
+        if (m.fromId === myId && m.toId === targetId) {
+          consecutiveToTarget++;
+          recentMyTextsToTarget.push(m.text);
+        } else {
+          break; // Rakan sudah membalas, reset kiraan berturut-turut
+        }
+      }
+
+      if (consecutiveToTarget >= QC_MAX_CONSECUTIVE_SAME) {
+        playWrong();
+        showAppToast(`🛡️ Anda sudah menghantar ${QC_MAX_CONSECUTIVE_SAME} mesej berturut-turut kepada ${recipientName}. Tunggu rakan membalas dahulu ya!`);
+        return;
+      }
+
+      if (recentMyTextsToTarget.includes(preset.text)) {
+        playWrong();
+        showAppToast(`⚠️ Anda baru sahaja menghantar ucapan yang sama kepada ${recipientName}. Pilih ucapan lain ya!`);
+        return;
+      }
 
       lastQuickChatSentAt = now;
       playCheer();
 
-      const recipientName = quickChatRecipient.name;
       const msgId = `qmsg_${now}_${Math.random().toString(36).slice(2, 6)}`;
       const msgObj = {
         id: msgId,
-        fromId: currentPlayer.accountId || currentPlayer.key,
+        fromId: myId,
         fromName: currentPlayer.name,
         fromAvatar: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
-        toId: quickChatRecipient.id,
+        toId: targetId,
         toName: recipientName,
         toAvatar: quickChatRecipient.avatarConfig || getDefaultAvatarConfig('boy'),
         text: preset.text,
@@ -12261,8 +12375,9 @@ Jom lawan kira pantas dengan saya!`;
       allLocal.unshift(msgObj);
       saveLocalQuickMessages(allLocal);
       cachedPlayerSent.unshift(msgObj);
+      updateQuickChatSpamStatusUI();
 
-      showAppToast(`📨 Ucapan dihantar kepada ${recipientName}!`);
+      showAppToast(`📨 Ucapan dihantar kepada ${recipientName}! (${sentToday + 1}/${QC_DAILY_MESSAGE_LIMIT} hari ini)`);
       await switchPlayerMsgTab('sent');
 
       if (db) {
@@ -12270,6 +12385,7 @@ Jom lawan kira pantas dengan saya!`;
           await authReadyPromise;
           if (fbUser) {
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'player_messages', msgId), msgObj);
+            await enforceInboxAutoTrim(targetId);
           }
         } catch (e) {}
       }
@@ -12289,6 +12405,10 @@ Jom lawan kira pantas dengan saya!`;
 
     window.closePlayerInboxModal = function() {
       playClick();
+      if (qcCooldownTimerHandle) {
+        clearInterval(qcCooldownTimerHandle);
+        qcCooldownTimerHandle = null;
+      }
       const modal = document.getElementById('player-inbox-modal');
       if (modal) modal.classList.add('hidden');
     };
@@ -12304,10 +12424,13 @@ Jom lawan kira pantas dengan saya!`;
       const listEl = document.getElementById('player-inbox-list');
       if (!listEl) return;
 
-      if (cachedPlayerInbox.length === 0) {
+      const mutedIds = getMyMutedSendersList();
+      const visibleInbox = cachedPlayerInbox.filter(m => !mutedIds.includes(m.fromId));
+
+      if (visibleInbox.length === 0) {
         listEl.innerHTML = `
           <div class="text-center text-xs font-bold text-slate-400 py-8 space-y-2">
-            <div>Belum ada mesej masuk daripada rakan.</div>
+            <div>${mutedIds.length > 0 ? 'Tiada mesej baharu (mesej daripada rakan yang disenyapkan telah disorokkan).' : 'Belum ada mesej masuk daripada rakan.'}</div>
             <button type="button" onclick="switchPlayerMsgTab('send')" class="bubbly-btn bg-sky-500 text-white border border-sky-800 px-3.5 py-2 text-xs font-black">
               📤 Hantar Mesej Pertama Sekarang
             </button>
@@ -12316,9 +12439,10 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
 
-      listEl.innerHTML = cachedPlayerInbox.slice(0, 40).map(m => {
+      listEl.innerHTML = visibleInbox.slice(0, QC_MAX_INBOX_KEEP).map(m => {
         const safeFrom = (m.fromName || 'Rakan').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeText = (m.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeFromId = (m.fromId || '').replace(/'/g, '');
         const avSvg = renderRealisticAvatarSVG(m.fromAvatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
         const timeStr = m.createdAt ? formatLastActiveText(m.createdAt, false) : 'Baru sebentar tadi';
 
@@ -12332,10 +12456,16 @@ Jom lawan kira pantas dengan saya!`;
                   <div class="text-[9px] font-bold text-slate-400">🕒 ${timeStr}</div>
                 </div>
               </div>
-              <button type="button" onclick="openQuickChatSendModal('${(m.fromId || '').replace(/'/g, '')}')"
-                class="bubbly-btn bg-emerald-500 text-white border border-emerald-800 px-2.5 py-1 text-[10px] font-black flex-shrink-0">
-                ↩️ Balas
-              </button>
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <button type="button" onclick="toggleMuteSpecificSender('${safeFromId}', '${safeFrom}')" title="Senyapkan mesej daripada rakan ini"
+                  class="bubbly-btn bg-slate-200 hover:bg-rose-100 text-slate-700 hover:text-rose-800 border border-slate-300 px-2 py-1 text-[10px] font-black">
+                  🔇 Senyap
+                </button>
+                <button type="button" onclick="openQuickChatSendModal('${safeFromId}')"
+                  class="bubbly-btn bg-emerald-500 text-white border border-emerald-800 px-2.5 py-1 text-[10px] font-black">
+                  ↩️ Balas
+                </button>
+              </div>
             </div>
             <div class="text-xs font-extrabold text-indigo-950 bg-white rounded-xl px-3 py-2 border border-slate-200 space-y-2">
               <div>${safeText}</div>
@@ -12368,7 +12498,7 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
 
-      listEl.innerHTML = cachedPlayerSent.slice(0, 40).map(m => {
+      listEl.innerHTML = cachedPlayerSent.slice(0, QC_MAX_INBOX_KEEP).map(m => {
         const safeTo = (m.toName || 'Rakan').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeText = (m.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const avSvg = renderRealisticAvatarSVG(m.toAvatar || getDefaultAvatarConfig('boy'), 'w-full h-full');
@@ -12804,6 +12934,14 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
       const targetName = sel.options[sel.selectedIndex]?.getAttribute('data-fname') || 'Rakan';
+      const nowInv = Date.now();
+      if (nowInv - lastQuickChatSentAt < QC_COOLDOWN_MS) {
+        const waitSec = Math.ceil((QC_COOLDOWN_MS - (nowInv - lastQuickChatSentAt)) / 1000);
+        playWrong();
+        showAppToast(`⏳ Sila tunggu ${waitSec} saat sebelum menghantar jemputan seterusnya.`);
+        return;
+      }
+      lastQuickChatSentAt = nowInv;
       playCheer();
       const myId = currentPlayer.accountId || currentPlayer.key;
       const msgId = `qmsg_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;

@@ -139,39 +139,44 @@
   <div id="quiz-reward-burst-layer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
   <!-- Bar Atas Pemain (Disembunyikan sebelum Log Masuk) -->
-  <header id="app-header" class="hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 px-2 sm:px-3 py-1.5 sm:py-2 shadow-sm">
-    <div class="max-w-xl mx-auto flex items-center justify-between gap-1.5 sm:gap-2">
-      <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-        <div id="header-avatar-box" onclick="navTo('rewards')" class="w-9 h-9 sm:w-11 sm:h-11 rounded-full flex-shrink-0 cursor-pointer relative"></div>
-        <div class="min-w-0">
-          <div id="header-player-name" class="text-[11px] sm:text-xs font-black text-slate-800 truncate">Pelajar</div>
-          <div class="flex flex-wrap items-center gap-1 text-[10px] sm:text-[11px] font-extrabold">
-            <span class="text-indigo-700 bg-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Jumlah Markah">🏅 <span id="header-points-count">0</span></span>
-            <span class="text-amber-700 bg-amber-100 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-0.5 sm:gap-1" title="Jumlah Coin"><span class="gold-coin-icon">$</span> <span id="header-star-count">0</span></span>
-            <span class="hidden xs:inline-flex sm:inline-flex text-sky-700 bg-sky-100 px-1.5 sm:px-2 py-0.5 rounded-full" title="Masa Bermain">⏱️ <span id="header-timer-display">00:00</span></span>
-            <span id="header-network-badge" class="inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300" title="Status Sambungan">🟢 Online</span>
-          </div>
+  <header id="app-header" class="hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 px-2.5 sm:px-4 py-2 shadow-sm">
+    <div class="max-w-xl mx-auto flex items-center justify-between gap-2">
+      <!-- Kiri: Jenama KiraKilat & Status Sambungan Sahaja (Tiada Duplikasi Avatar/Nama/Coin) -->
+      <div class="flex items-center gap-2 min-w-0 flex-shrink-0">
+        <button type="button" onclick="navTo('home')" class="font-display font-black text-base sm:text-lg tracking-tight text-amber-500 hover:opacity-85 transition flex items-center gap-0.5" title="Kembali ke Menu Utama">
+          <span>Kira<span class="text-sky-600">Kilat</span></span>
+        </button>
+        <span id="header-network-badge" class="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 whitespace-nowrap" title="Status Sambungan">🟢 Online</span>
+        <!-- Elemen tersembunyi untuk keserasian skrip kemas kini UI -->
+        <div class="hidden" aria-hidden="true">
+          <div id="header-avatar-box"></div>
+          <span id="header-player-name">Pelajar</span>
+          <span id="header-points-count">0</span>
+          <span id="header-star-count">0</span>
+          <span id="header-timer-display">00:00</span>
         </div>
       </div>
-      <div class="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
-        <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
+
+      <!-- Kanan: Butang Kawalan Kemas & Mudah Ditekan -->
+      <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+        <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
           <span>🛡️</span>
           <span id="header-admin-notif-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-900 text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
-        <button id="btn-header-parent" onclick="navTo('parent')" class="hidden relative bubbly-btn bg-teal-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-teal-900 inline-flex items-center gap-0.5 sm:gap-1" title="Panel Pemantauan Anak">
+        <button id="btn-header-parent" onclick="navTo('parent')" class="hidden relative bubbly-btn bg-teal-600 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-teal-900 inline-flex items-center gap-1" title="Panel Pemantauan Anak">
           <span>👨‍👩‍👧‍👦</span>
           <span class="hidden sm:inline">Anak</span>
           <span id="header-parent-children-badge" class="bg-amber-300 text-teal-950 text-[9px] font-black px-1 py-0.2 rounded-full">0</span>
         </button>
-        <button id="btn-header-sound" onclick="toggleAppSoundEffects()" class="btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400" title="Kesan Bunyi On/Off">🔊</button>
-        <button id="btn-header-bgm" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300" title="Muzik Latar Adaptif On/Off">🎵</button>
-        <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
+        <button id="btn-header-sound" onclick="toggleAppSoundEffects()" class="btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400" title="Kesan Bunyi On/Off">🔊</button>
+        <button id="btn-header-bgm" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300" title="Muzik Latar Adaptif On/Off">🎵</button>
+        <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
           <span>💌</span>
           <span id="header-inbox-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
-        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
-        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
-        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
+        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400 inline-flex items-center gap-1" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
+        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700 inline-flex items-center gap-1" title="Papan Skor">🏆 <span class="hidden sm:inline">Skor</span></button>
+        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -315,7 +320,7 @@
             🟠 Mod Offline Aktif: Akaun sedia ada di peranti ini masih boleh log masuk & belajar.
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.88 • Logo Lutsinar Saiz Gah & Skrin Log Masuk 1-Halaman Padat
+            Versi 1.9.90 • Logo Lutsinar, Pembetulan Log Masuk, Header Kemas & Avatar Jelas
           </span>
         </div>
 
@@ -3971,7 +3976,8 @@
       const charId = cfg.face || (isGirl ? 'girl_hana' : 'boy_leo');
       const outfitId = cfg.outfit || (isGirl ? 'out_crew_charcoal' : 'out_hoodie_amber');
 
-      const uid = 'px3d_' + Math.random().toString(36).slice(2, 8);
+      window._px3dCounter = (window._px3dCounter || 0) + 1;
+      const uid = 'px3d_' + window._px3dCounter + '_' + Math.random().toString(36).slice(2, 6);
 
       // 18 Watak Pelbagai Bangsa & Struktur Anatomi Wajah Unik (Melayu, Cina, Orang Putih, Afrika/Negro, India, Arab, Jepun, Cyber & Naga)
       const charSpecs = {
@@ -4977,7 +4983,7 @@
       }
 
       return `
-        <svg viewBox="0 0 100 100" class="${sizeClass} block overflow-visible">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="${sizeClass} block overflow-visible">
           ${defs3D}
           <clipPath id="${uid}_clip">
             <circle cx="50" cy="50" r="41"/>
@@ -8580,7 +8586,6 @@ Jom lawan kira pantas dengan saya!`;
     function syncPlayerUI() {
       if (!currentPlayer) return;
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
-      const avatarSvg = renderRealisticAvatarSVG(cfg, 'w-full h-full');
       const isAdmin = Boolean(currentPlayer.isAdmin);
 
       const isParent = currentPlayer.role === 'parent' || Boolean(currentPlayer.isParent);
@@ -8603,9 +8608,9 @@ Jom lawan kira pantas dengan saya!`;
       const hAvatar = document.getElementById('header-avatar-box');
       const mAvatar = document.getElementById('home-avatar-box');
       const aAvatar = document.getElementById('acc-avatar-box');
-      if (hAvatar) hAvatar.innerHTML = avatarSvg;
-      if (mAvatar) mAvatar.innerHTML = avatarSvg;
-      if (aAvatar) aAvatar.innerHTML = avatarSvg;
+      if (hAvatar) hAvatar.innerHTML = '';
+      if (mAvatar) mAvatar.innerHTML = renderRealisticAvatarSVG(cfg, 'w-full h-full');
+      if (aAvatar) aAvatar.innerHTML = renderRealisticAvatarSVG(cfg, 'w-full h-full');
 
       const hName = document.getElementById('header-player-name');
       const mName = document.getElementById('home-player-name');

@@ -269,7 +269,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.75
+            Versi 1.9.76
           </span>
         </div>
 
@@ -3582,6 +3582,218 @@
       return `<circle cx="50" cy="50" r="41" fill="none" stroke="#FBBF24" stroke-width="2.5"/>`;
     }
 
+    /* Penjana Paparan Penuh Baju & Kostum Pada Patung Mannequin (Khusus Tab Baju & Kostum Di Kedai) */
+    function renderOutfitMannequinShowcaseSVG(outfitId, gender = 'boy') {
+      const isGirl = gender === 'girl';
+      const uid = 'mnq_' + Math.random().toString(36).slice(2, 8);
+      const palettes = {
+        out_hoodie_amber:  ['#FDE047', '#F59E0B', '#B45309', '#FFFFFF'],
+        out_crew_charcoal: ['#4B5563', '#27272A', '#09090B', '#F8FAFC'],
+        out_polo_teal:     ['#2DD4BF', '#0D9488', '#115E59', '#CCFBF1'],
+        out_sweater_navy:  ['#60A5FA', '#2563EB', '#1E3A8A', '#E0F2FE'],
+        out_school_uniform:['#FFFFFF', '#E2E8F0', '#94A3B8', '#1E3A8A'],
+        out_jacket_orange: ['#FB923C', '#EA580C', '#7C2D12', '#1E293B'],
+        out_baju_melayu:   ['#34D399', '#059669', '#064E3B', '#FACC15'],
+        out_baju_kurung:   ['#F472B6', '#DB2777', '#831843', '#FEF08A'],
+        out_knit_bow:      ['#93C5FD', '#3B82F6', '#1D4ED8', '#FFFFFF'],
+        out_blazer_slate:  ['#64748B', '#334155', '#0F172A', '#F8FAFC'],
+        out_lab_coat:      ['#FFFFFF', '#F1F5F9', '#CBD5E1', '#0284C7'],
+        out_astronaut:     ['#F8FAFC', '#E2E8F0', '#94A3B8', '#F97316'],
+        out_prince_royal:  ['#3B82F6', '#1D4ED8', '#1E3A8A', '#FACC15'],
+        out_princess_gown: ['#F9A8D4', '#EC4899', '#9D174D', '#FEF08A'],
+        out_fire_armor:    ['#F97316', '#DC2626', '#7F1D1D', '#FEF08A'],
+        out_cyber_armor:   ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
+        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A']
+      };
+      const op = palettes[outfitId] || palettes.out_hoodie_amber;
+
+      let bodyDetails = '';
+      if (outfitId === 'out_hoodie_amber') {
+        bodyDetails = `
+          <path d="M 33 25 L 50 56 L 67 25 Z" fill="#FFFFFF"/>
+          <line x1="43" y1="36" x2="43" y2="54" stroke="#B45309" stroke-width="2" stroke-linecap="round"/>
+          <line x1="57" y1="36" x2="57" y2="54" stroke="#B45309" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 34 65 L 66 65 L 68 82 L 32 82 Z" fill="#D97706" opacity="0.5"/>
+          <rect x="28" y="84" width="44" height="6" rx="2" fill="#B45309"/>
+        `;
+      } else if (outfitId === 'out_crew_charcoal') {
+        bodyDetails = `
+          <path d="M 38 23 Q 50 36 62 23" fill="none" stroke="#F8FAFC" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="50,42 53,48 59,49 54.5,53.5 55.5,59.5 50,56.5 44.5,59.5 45.5,53.5 41,49 47,48" fill="#FACC15"/>
+        `;
+      } else if (outfitId === 'out_polo_teal') {
+        bodyDetails = `
+          <polygon points="36,23 50,34 41,40" fill="#CCFBF1" stroke="#115E59" stroke-width="1.2"/>
+          <polygon points="64,23 50,34 59,40" fill="#CCFBF1" stroke="#115E59" stroke-width="1.2"/>
+          <rect x="48" y="33" width="4" height="20" rx="1.5" fill="#115E59"/>
+          <circle cx="50" cy="39" r="1.4" fill="#FFFFFF"/>
+          <circle cx="50" cy="47" r="1.4" fill="#FFFFFF"/>
+        `;
+      } else if (outfitId === 'out_sweater_navy') {
+        bodyDetails = `
+          <path d="M 35 23 L 50 43 L 65 23" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M 28 58 L 39 49 L 50 58 L 61 49 L 72 58" fill="none" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 28 70 L 39 61 L 50 70 L 61 61 L 72 70" fill="none" stroke="#FACC15" stroke-width="2.2" stroke-linecap="round"/>
+        `;
+      } else if (outfitId === 'out_school_uniform') {
+        bodyDetails = `
+          <polygon points="36,23 50,35 42,41" fill="#FFFFFF" stroke="#64748B" stroke-width="1.1"/>
+          <polygon points="64,23 50,35 58,41" fill="#FFFFFF" stroke="#64748B" stroke-width="1.1"/>
+          <polygon points="47,34 53,34 55,66 50,72 45,66" fill="#1D4ED8"/>
+          <rect x="57" y="45" width="11" height="12" rx="2" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+          <rect x="28" y="75" width="44" height="15" rx="2" fill="#1E3A8A"/>
+        `;
+      } else if (outfitId === 'out_jacket_orange') {
+        bodyDetails = `
+          <path d="M 38 24 L 50 88 L 62 24 Z" fill="#1E293B"/>
+          <line x1="50" y1="30" x2="50" y2="88" stroke="#FACC15" stroke-width="2"/>
+          <line x1="16" y1="36" x2="12" y2="66" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="84" y1="36" x2="88" y2="66" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+        `;
+      } else if (outfitId === 'out_baju_melayu') {
+        bodyDetails = `
+          <rect x="41" y="20" width="18" height="7" rx="3" fill="#059669" stroke="#FACC15" stroke-width="1.2"/>
+          <line x1="50" y1="27" x2="50" y2="56" stroke="#064E3B" stroke-width="2"/>
+          <circle cx="50" cy="33" r="1.8" fill="#FACC15"/>
+          <circle cx="50" cy="41" r="1.8" fill="#FACC15"/>
+          <circle cx="50" cy="49" r="1.8" fill="#FACC15"/>
+          <!-- Kain Sampin Songket Emas -->
+          <rect x="27" y="57" width="46" height="24" rx="2" fill="#FACC15" stroke="#B45309" stroke-width="1.2"/>
+          <path d="M 30 64 L 70 64 M 30 72 L 70 72" stroke="#064E3B" stroke-width="1.5" stroke-dasharray="4 3"/>
+        `;
+      } else if (outfitId === 'out_baju_kurung') {
+        bodyDetails = `
+          <path d="M 41 23 Q 50 35 59 23" fill="none" stroke="#FEF08A" stroke-width="2.5"/>
+          <circle cx="50" cy="34" r="3" fill="url(#${uid}_gold)"/>
+          <circle cx="50" cy="43" r="2.4" fill="url(#${uid}_gold)"/>
+          <circle cx="50" cy="51" r="2.4" fill="url(#${uid}_gold)"/>
+          <path d="M 27 63 Q 50 57 73 63" fill="none" stroke="#FEF08A" stroke-width="2" stroke-dasharray="3 2"/>
+          <path d="M 25 82 Q 50 76 75 82" fill="none" stroke="#FEF08A" stroke-width="2.2" stroke-dasharray="3 2"/>
+        `;
+      } else if (outfitId === 'out_knit_bow') {
+        bodyDetails = `
+          <ellipse cx="42" cy="27" rx="8" ry="4" fill="#FFFFFF"/>
+          <ellipse cx="58" cy="27" rx="8" ry="4" fill="#FFFFFF"/>
+          <polygon points="50,33 41,28 41,38" fill="#F43F5E"/>
+          <polygon points="50,33 59,28 59,38" fill="#F43F5E"/>
+          <circle cx="50" cy="33" r="3" fill="#FDA4AF"/>
+          <path d="M 27 62 L 73 62 L 77 90 L 23 90 Z" fill="#F472B6"/>
+        `;
+      } else if (outfitId === 'out_wizard_robe') {
+        bodyDetails = `
+          <polygon points="34,24 50,52 66,24 60,24 50,42 40,24" fill="#FACC15"/>
+          <rect x="27" y="56" width="46" height="6" fill="#FACC15"/>
+          <circle cx="50" cy="59" r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1"/>
+          <polygon points="38,72 40,76 44,76.5 41,79 41.8,83 38,81 34.2,83 35,79 32,76.5 36,76" fill="#FACC15"/>
+          <polygon points="62,70 64,74 68,74.5 65,77 65.8,81 62,79 58.2,81 59,77 56,74.5 60,74" fill="#FACC15"/>
+        `;
+      } else if (outfitId === 'out_blazer_slate') {
+        bodyDetails = `
+          <polygon points="37,24 50,62 63,24" fill="#FFFFFF"/>
+          <polygon points="48,30 52,30 53,54 50,58 47,54" fill="#DC2626"/>
+          <circle cx="50" cy="66" r="2" fill="#FACC15"/>
+          <circle cx="50" cy="74" r="2" fill="#FACC15"/>
+        `;
+      } else if (outfitId === 'out_lab_coat') {
+        bodyDetails = `
+          <polygon points="38,24 50,64 62,24" fill="#0284C7"/>
+          <line x1="50" y1="64" x2="50" y2="90" stroke="#94A3B8" stroke-width="1.6"/>
+          <rect x="57" y="44" width="11" height="12" rx="2" fill="#E0F2FE" stroke="#0284C7" stroke-width="1"/>
+          <rect x="61" y="40" width="2.5" height="6" fill="#EF4444"/>
+          <rect x="65" y="41" width="2.5" height="5" fill="#10B981"/>
+        `;
+      } else if (outfitId === 'out_astronaut') {
+        bodyDetails = `
+          <ellipse cx="50" cy="24" rx="16" ry="4.5" fill="#94A3B8" stroke="#475569" stroke-width="1.4"/>
+          <rect x="39" y="36" width="22" height="16" rx="3" fill="#1E293B" stroke="#F97316" stroke-width="1.5"/>
+          <circle cx="44" cy="44" r="2.8" fill="#EF4444"/>
+          <circle cx="50" cy="44" r="2.8" fill="#FACC15"/>
+          <circle cx="56" cy="44" r="2.8" fill="#38BDF8"/>
+          <rect x="28" y="62" width="44" height="6" rx="2" fill="#F97316"/>
+        `;
+      } else if (outfitId === 'out_prince_royal') {
+        bodyDetails = `
+          <polygon points="30,26 72,68 65,73 26,33" fill="#DC2626" stroke="#FACC15" stroke-width="1.2"/>
+          <rect x="48" y="24" width="4" height="65" fill="url(#${uid}_gold)"/>
+          <ellipse cx="22" cy="28" rx="8" ry="4" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+          <ellipse cx="78" cy="28" rx="8" ry="4" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+          <rect x="27" y="64" width="46" height="6" fill="url(#${uid}_gold)"/>
+        `;
+      } else if (outfitId === 'out_princess_gown') {
+        bodyDetails = `
+          <path d="M 32 25 Q 50 38 68 25" fill="none" stroke="#FEF08A" stroke-width="3"/>
+          <polygon points="50,36 53,42 59,43 54.5,47.5 55.5,53.5 50,50.5 44.5,53.5 45.5,47.5 41,43 47,42" fill="#FEF08A"/>
+          <path d="M 24 62 Q 50 74 76 62 L 80 91 L 20 91 Z" fill="#F472B6" stroke="#FEF08A" stroke-width="1.4"/>
+        `;
+      } else if (outfitId === 'out_fire_armor') {
+        bodyDetails = `
+          <!-- Perisai Api: Tanduk Bahu Api, Plat Dada Berapi & Teras Magma -->
+          <polygon points="16,32 26,16 33,31" fill="#F97316" stroke="#FACC15" stroke-width="1.2"/>
+          <polygon points="84,32 74,16 67,31" fill="#F97316" stroke="#FACC15" stroke-width="1.2"/>
+          <polygon points="34,26 50,58 66,26" fill="#F97316" stroke="#FEF08A" stroke-width="1.3"/>
+          <polygon points="50,34 56,43 50,52 44,43" fill="#FEF08A" stroke="#DC2626" stroke-width="1.2"/>
+          <polygon points="29,63 50,74 71,63 67,88 33,88" fill="#7F1D1D" stroke="#FACC15" stroke-width="1.2"/>
+        `;
+      } else if (outfitId === 'out_cyber_armor') {
+        bodyDetails = `
+          <!-- Perisai Cyber Neon: Plat Robotik, Litar Cyan & Teras Kuasa -->
+          <polygon points="15,32 27,20 34,34 20,40" fill="#06B6D4" stroke="#E0F2FE" stroke-width="1.1"/>
+          <polygon points="85,32 73,20 66,34 80,40" fill="#06B6D4" stroke="#E0F2FE" stroke-width="1.1"/>
+          <polygon points="36,26 43,58 57,58 64,26" fill="#1E293B" stroke="#22D3EE" stroke-width="1.4"/>
+          <polygon points="50,34 58,42 50,50 42,42" fill="#22D3EE" stroke="#FFFFFF" stroke-width="1.2"/>
+          <line x1="30" y1="68" x2="70" y2="68" stroke="#22D3EE" stroke-width="2.5"/>
+          <line x1="34" y1="78" x2="66" y2="78" stroke="#38BDF8" stroke-width="2"/>
+        `;
+      } else if (outfitId === 'out_dragon_emperor') {
+        bodyDetails = `
+          <!-- Jubah Maharaja Naga: Bahu Sisik Naga, Selempang Emas & Medallion Naga -->
+          <path d="M 15 34 Q 25 18 36 28 L 31 39 Q 21 35 15 34 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1"/>
+          <path d="M 85 34 Q 75 18 64 28 L 69 39 Q 79 35 85 34 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.1"/>
+          <polygon points="31,24 50,58 43,63 24,30" fill="url(#${uid}_gold)"/>
+          <polygon points="69,24 50,58 57,63 76,30" fill="url(#${uid}_gold)"/>
+          <circle cx="50" cy="45" r="9" fill="url(#${uid}_gold)" stroke="#450A0A" stroke-width="1.4"/>
+          <path d="M 45 46 Q 50 38 55 46 Q 50 51 45 46 Z" fill="#DC2626"/>
+          <rect x="27" y="62" width="46" height="7" fill="url(#${uid}_gold)"/>
+          <path d="M 32 76 Q 50 70 68 76 M 30 84 Q 50 78 70 84" fill="none" stroke="#FACC15" stroke-width="1.8" stroke-dasharray="4 2"/>
+        `;
+      }
+
+      const skirtOrPants = (isGirl || ['out_princess_gown', 'out_baju_kurung', 'out_knit_bow'].includes(outfitId))
+        ? `M 28 24 L 72 24 L 80 90 L 20 90 Z`
+        : `M 28 24 L 72 24 L 74 90 L 53 90 L 50 68 L 47 90 L 26 90 Z`;
+
+      return `
+        <svg viewBox="0 0 100 100" class="w-full h-full block overflow-visible">
+          <defs>
+            <linearGradient id="${uid}_bg" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#F8FAFC"/>
+              <stop offset="100%" stop-color="#E2E8F0"/>
+            </linearGradient>
+            <linearGradient id="${uid}_body" x1="15%" y1="0%" x2="85%" y2="100%">
+              <stop offset="0%" stop-color="${op[0]}"/>
+              <stop offset="55%" stop-color="${op[1]}"/>
+              <stop offset="100%" stop-color="${op[2]}"/>
+            </linearGradient>
+            <linearGradient id="${uid}_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FEF08A"/>
+              <stop offset="50%" stop-color="#FACC15"/>
+              <stop offset="100%" stop-color="#B45309"/>
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="92" height="92" rx="18" fill="url(#${uid}_bg)" stroke="#CBD5E1" stroke-width="1.5"/>
+          <!-- Penyangkut / Leher Mannequin -->
+          <path d="M 45 12 Q 50 6 55 12" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round"/>
+          <rect x="44" y="13" width="12" height="11" rx="4" fill="#CBD5E1"/>
+          <!-- Lengan Kiri & Kanan Penuh -->
+          <path d="M 29 25 L 12 44 L 18 52 L 30 39 Z" fill="url(#${uid}_body)" stroke="#334155" stroke-width="0.8"/>
+          <path d="M 71 25 L 88 44 L 82 52 L 70 39 Z" fill="url(#${uid}_body)" stroke="#334155" stroke-width="0.8"/>
+          <!-- Badan Utama Penuh -->
+          <path d="${skirtOrPants}" fill="url(#${uid}_body)" stroke="#334155" stroke-width="0.9" stroke-linejoin="round"/>
+          ${bodyDetails}
+        </svg>
+      `;
+    }
+
     /* Penjana Watak 3D Pixar Pelbagai Bangsa, Sayap Luar Frame, Topi Kemas & Tudung Realistik */
     function renderRealisticAvatarSVG(cfgInput, sizeClass = "w-full h-full") {
       const cfg = sanitizeAvatarForGender({ ...(cfgInput || getDefaultAvatarConfig('boy')) });
@@ -3820,12 +4032,29 @@
         `;
       }
 
-      // 16 Jenis Pakaian
+      // 18 Jenis Pakaian & Kostum Unik (Setiap Kostum Berbeza Bentuk & Perincian)
       let outfitDetail = '';
       if (outfitId === 'out_crew_charcoal') {
         outfitDetail = `
           <path d="M 23 100 C 25 81, 36 75.5, 50 75.5 C 64 75.5, 75 81, 77 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
           <path d="M 41 75.5 Q 50 84.5 59 75.5 L 56.5 74 Q 50 81 43.5 74 Z" fill="#F8FAFC" filter="url(#${uid}_soft)"/>
+          <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_polo_teal') {
+        outfitDetail = `
+          <path d="M 22 100 C 24 81, 35 75, 50 75 C 65 75, 76 81, 78 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <polygon points="41,75 50,82 44,86" fill="#CCFBF1" stroke="#115E59" stroke-width="0.9"/>
+          <polygon points="59,75 50,82 56,86" fill="#CCFBF1" stroke="#115E59" stroke-width="0.9"/>
+          <rect x="48.5" y="81" width="3" height="12" rx="1" fill="#115E59"/>
+          <circle cx="50" cy="84" r="1.1" fill="#FFFFFF"/>
+          <circle cx="50" cy="89" r="1.1" fill="#FFFFFF"/>
+          <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_sweater_navy') {
+        outfitDetail = `
+          <path d="M 21 100 C 23 80, 34 74.5, 50 74.5 C 66 74.5, 77 80, 79 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
+          <path d="M 38 75 L 50 88 L 62 75 L 59 74 L 50 83.5 L 41 74 Z" fill="#FFFFFF"/>
+          <path d="M 26 91 L 34 86 L 42 91 L 50 86 L 58 91 L 66 86 L 74 91" fill="none" stroke="#93C5FD" stroke-width="2.2" stroke-linecap="round"/>
           <rect x="44.5" y="64" width="11" height="14" rx="5.5" fill="url(#${uid}_skin)"/>
         `;
       } else if (outfitId === 'out_knit_bow') {
@@ -3892,13 +4121,51 @@
           <circle cx="50" cy="89" r="3" fill="#38BDF8" stroke="#FACC15" stroke-width="1"/>
           <rect x="44" y="64" width="12" height="14" rx="6" fill="url(#${uid}_skin)"/>
         `;
-      } else if (outfitId === 'out_prince_royal' || outfitId === 'out_dragon_emperor' || outfitId === 'out_cyber_armor' || outfitId === 'out_fire_armor') {
+      } else if (outfitId === 'out_prince_royal') {
         outfitDetail = `
+          <!-- Sut Putera Diraja: Selempang Satin Merah, Butang Emas & Epaulet Rambu -->
           <path d="M 19 100 C 21 81, 34 75, 50 75 C 66 75, 79 81, 81 100 Z" fill="url(#${uid}_outfit)" filter="url(#${uid}_shadow)"/>
-          <path d="M 42 75 L 50 98 L 58 75 Z" fill="${op[3]}" opacity="0.9"/>
-          <rect x="48.5" y="75" width="3" height="24" fill="url(#${uid}_gold)"/>
-          <ellipse cx="27" cy="82" rx="6" ry="3" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
-          <ellipse cx="73" cy="82" rx="6" ry="3" fill="url(#${uid}_gold)" filter="url(#${uid}_soft)"/>
+          <polygon points="31,77 70,98 63,100 26,82" fill="#DC2626" stroke="#FACC15" stroke-width="1"/>
+          <rect x="48.5" y="76" width="3" height="23" fill="url(#${uid}_gold)"/>
+          <circle cx="50" cy="82" r="1.6" fill="#FEF08A"/>
+          <circle cx="50" cy="89" r="1.6" fill="#FEF08A"/>
+          <ellipse cx="26" cy="80" rx="6.5" ry="3.2" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.8"/>
+          <ellipse cx="74" cy="80" rx="6.5" ry="3.2" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.8"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_fire_armor') {
+        outfitDetail = `
+          <!-- Sut Perisai Api: Kolar Api Tinggi Tajam, Plat Dada Berapi & Teras Magma -->
+          <path d="M 16 100 L 18 78 L 28 71 L 38 77 L 62 77 L 72 71 L 82 78 L 84 100 Z" fill="#991B1B" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+          <polygon points="34,77 50,97 66,77 58,76 50,88 42,76" fill="#F97316" stroke="#FEF08A" stroke-width="1"/>
+          <polygon points="50,82 54,88 50,94 46,88" fill="#FEF08A" stroke="#DC2626" stroke-width="1"/>
+          <polygon points="18,80 28,72 32,83 20,87" fill="#EA580C" stroke="#FACC15" stroke-width="1"/>
+          <polygon points="82,80 72,72 68,83 80,87" fill="#EA580C" stroke="#FACC15" stroke-width="1"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_cyber_armor') {
+        outfitDetail = `
+          <!-- Perisai Cyber Neon: Plat Robotik Sudut Tajam, Garis Litar Cyan & Reaktor Dada -->
+          <path d="M 17 100 L 20 79 L 33 74 L 67 74 L 80 79 L 83 100 Z" fill="#0F172A" stroke="#22D3EE" stroke-width="1.4" filter="url(#${uid}_shadow)"/>
+          <polygon points="37,75 43,96 57,96 63,75" fill="#1E293B" stroke="#38BDF8" stroke-width="1.1"/>
+          <polygon points="50,80 56,85 50,91 44,85" fill="#22D3EE" stroke="#FFFFFF" stroke-width="1"/>
+          <line x1="23" y1="86" x2="38" y2="86" stroke="#22D3EE" stroke-width="1.8"/>
+          <line x1="62" y1="86" x2="77" y2="86" stroke="#22D3EE" stroke-width="1.8"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_dragon_emperor') {
+        outfitDetail = `
+          <!-- Jubah Maharaja Naga: Jubah Berlapis Emas-Merah, Kolar Naga Tinggi & Lambang Naga Emas -->
+          <path d="M 16 100 C 18 79, 31 73, 50 73 C 69 73, 82 79, 84 100 Z" fill="#7F1D1D" stroke="#FACC15" stroke-width="1.4" filter="url(#${uid}_shadow)"/>
+          <!-- Selendang & Kolar Naga Emas Menyilang -->
+          <polygon points="31,74 50,95 43,99 24,79" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
+          <polygon points="69,74 50,95 57,99 76,79" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
+          <!-- Medallion Naga Emas Besar Di Dada -->
+          <circle cx="50" cy="87" r="6.5" fill="url(#${uid}_gold)" stroke="#450A0A" stroke-width="1.2"/>
+          <path d="M 47 88 Q 50 82 53 88 Q 50 91 47 88 Z" fill="#DC2626"/>
+          <!-- Pelindung Bahu Sisik Naga -->
+          <path d="M 18 82 Q 25 73 34 79 L 30 86 Q 22 83 18 82 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
+          <path d="M 82 82 Q 75 73 66 79 L 70 86 Q 78 83 82 82 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
           <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
         `;
       } else if (outfitId === 'out_princess_gown') {
@@ -6244,7 +6511,7 @@
       setTimeout(() => badge.remove(), 1200);
     }
 
-    function showQuizInstantPopup(htmlMsg, variant = 'success', customHeaderHtml = '') {
+    function showQuizInstantPopup(htmlMsg, variant = 'success', customHeaderHtml = '', customDurationMs = 0) {
       const pop = document.getElementById('quiz-instant-popup');
       if (!pop) return;
       if (quizPopupTimer) clearTimeout(quizPopupTimer);
@@ -6258,12 +6525,15 @@
         success:    'bg-emerald-600 text-white border-emerald-900',
         wrong:      'bg-rose-600 text-white border-rose-950'
       };
-      pop.className = `animate-bonus-pop fixed bottom-4 left-1/2 z-50 max-w-md w-[94%] rounded-3xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 pointer-events-none ${styles[variant] || styles.success}`;
+      const isMysteryOrSpecial = customDurationMs >= 3000;
+      const posClass = isMysteryOrSpecial ? 'top-16' : 'bottom-4';
+      const hideMs = customDurationMs > 0 ? customDurationMs : (variant === 'combo' ? 2200 : 1650);
+      pop.className = `animate-bonus-pop fixed ${posClass} left-1/2 z-50 max-w-md w-[94%] rounded-3xl p-4 text-center text-xs sm:text-sm font-black shadow-2xl border-3 pointer-events-none ${styles[variant] || styles.success}`;
       pop.innerHTML = customHeaderHtml ? `<div class="mb-1">${customHeaderHtml}</div><div>${htmlMsg}</div>` : htmlMsg;
       pop.classList.remove('hidden');
       quizPopupTimer = setTimeout(() => {
         pop.classList.add('hidden');
-      }, variant === 'combo' ? 1650 : 1350);
+      }, hideMs);
     }
 
     function keepQuizBottomInView() {
@@ -7000,9 +7270,12 @@
         const wonItem = chosen.item;
         currentPlayer.ownedAvatarItems.push(wonItem.id);
         addPlayerReward(5, 15);
+        currentPlayer.lastMysteryPrizeText = `Menang "${wonItem.name}" (${chosen.meta.label}) + 5 Coin!`;
         showQuizInstantPopup(
           `🎁 KEJUTAN MISTERI [<span class="underline">${chosen.meta.label}</span>]!<br>Anda menang <b>"${wonItem.name}"</b> (Nilai ${wonItem.cost} Coin) + <b>5 Coin</b> ${COIN_ICON_HTML}!`,
-          'combo'
+          'combo',
+          '',
+          5200
         );
       } else {
         // Taburan Coin Harian Lumayan: 10 Coin (45%), 15 Coin (30%), 25 Coin (16%), 40 Coin (6%), 75 Coin Mega Jackpot (3%)
@@ -7016,7 +7289,8 @@
         else { wonCoins = 75; coinTierText = 'MEGA JACKPOT LEGENDA! 🌟'; }
 
         addPlayerReward(wonCoins, 15);
-        showQuizInstantPopup(`🎁 ${coinTierText} Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo');
+        currentPlayer.lastMysteryPrizeText = `${coinTierText}: +${wonCoins} Coin & +15 Markah!`;
+        showQuizInstantPopup(`🎁 ${coinTierText}<br>Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo', '', 5000);
       }
       updateDailyMysteryBoxUI();
       renderAvatarStudio();
@@ -7164,8 +7438,13 @@ Jom lawan kira pantas dengan saya!`;
         card.className = `flex flex-col items-center justify-between rounded-2xl p-2 pt-3 border-2 transition ${isEquipped ? 'bg-emerald-50 border-emerald-500 shadow-sm' : (tierCardStyles[item.tier] || 'bg-white border-slate-200')}`;
 
         const thumb = document.createElement('div');
-        thumb.className = 'w-16 h-16 rounded-2xl my-1 relative flex items-center justify-center overflow-visible';
-        thumb.innerHTML = renderRealisticAvatarSVG(previewCfg, 'w-full h-full');
+        if (activeStudioTab === 'outfit') {
+          thumb.className = 'w-20 h-20 rounded-2xl my-1 relative flex items-center justify-center overflow-visible';
+          thumb.innerHTML = renderOutfitMannequinShowcaseSVG(item.id, cfg.gender);
+        } else {
+          thumb.className = 'w-16 h-16 rounded-2xl my-1 relative flex items-center justify-center overflow-visible';
+          thumb.innerHTML = renderRealisticAvatarSVG(previewCfg, 'w-full h-full');
+        }
         card.appendChild(thumb);
 
         if (item.tier) {
@@ -7459,21 +7738,21 @@ Jom lawan kira pantas dengan saya!`;
 
     loadLocalAccountsFromStorage();
 
-    function showAppToast(msg) {
+    function showAppToast(msg, durationMs = 4500) {
       let box = document.getElementById('app-toast-modal');
       if (!box) {
         box = document.createElement('div');
         box.id = 'app-toast-modal';
-        box.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 z-50 max-w-sm w-[92%] bg-slate-900 text-white text-xs font-black px-4 py-3 rounded-2xl shadow-xl border-2 border-amber-400 text-center transition-opacity duration-200';
         document.body.appendChild(box);
       }
-      box.innerText = msg;
+      box.className = 'fixed top-16 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] bg-slate-900/95 text-white text-xs sm:text-sm font-black px-4 py-3.5 rounded-2xl shadow-2xl border-3 border-amber-400 text-center transition-all duration-200';
+      box.innerHTML = `<div class="leading-snug">${msg}</div>`;
       box.classList.remove('hidden', 'opacity-0');
       clearTimeout(box._t);
       box._t = setTimeout(() => {
         box.classList.add('opacity-0');
-        setTimeout(() => box.classList.add('hidden'), 220);
-      }, 3000);
+        setTimeout(() => box.classList.add('hidden'), 250);
+      }, durationMs);
     }
 
     function normalizePlayerKey(rawName) {

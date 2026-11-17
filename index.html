@@ -88,6 +88,27 @@
     .animate-reward-burst {
       animation: floatRewardBurst 1.15s ease-out forwards;
     }
+    /* Penyesuaian Responsif Skrin Telefon Bimbit (320px - 430px) */
+    select {
+      max-width: 100%;
+      min-width: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    input, textarea, button {
+      max-width: 100%;
+    }
+    @media (max-width: 390px) {
+      .bubbly-card {
+        border-radius: 1.35rem;
+      }
+      select {
+        font-size: 11px !important;
+        padding-left: 0.5rem !important;
+        padding-right: 1.5rem !important;
+      }
+    }
     .gold-coin-icon {
       display: inline-flex;
       align-items: center;
@@ -132,25 +153,25 @@
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-        <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
+      <div class="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
+        <button id="btn-header-admin" onclick="openAdminPanelWithAlerts()" class="hidden relative bubbly-btn bg-rose-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-900" title="Panel kawalan admin">
           <span>🛡️</span>
           <span id="header-admin-notif-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-300 text-amber-950 border-2 border-rose-900 text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
-        <button id="btn-header-parent" onclick="navTo('parent')" class="hidden relative bubbly-btn bg-teal-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-teal-900 inline-flex items-center gap-1" title="Panel Pemantauan Anak">
+        <button id="btn-header-parent" onclick="navTo('parent')" class="hidden relative bubbly-btn bg-teal-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-teal-900 inline-flex items-center gap-0.5 sm:gap-1" title="Panel Pemantauan Anak">
           <span>👨‍👩‍👧‍👦</span>
           <span class="hidden sm:inline">Anak</span>
-          <span id="header-parent-children-badge" class="bg-amber-300 text-teal-950 text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
+          <span id="header-parent-children-badge" class="bg-amber-300 text-teal-950 text-[9px] font-black px-1 py-0.2 rounded-full">0</span>
         </button>
-        <button id="btn-header-sound" onclick="toggleAppSoundEffects()" class="btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400" title="Kesan Bunyi On/Off">🔊</button>
-        <button id="btn-header-bgm" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300" title="Muzik Latar Adaptif On/Off">🎵</button>
-        <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
+        <button id="btn-header-sound" onclick="toggleAppSoundEffects()" class="btn-sound-toggle bubbly-btn bg-sky-100 text-sky-950 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-sky-400" title="Kesan Bunyi On/Off">🔊</button>
+        <button id="btn-header-bgm" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle bubbly-btn bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-slate-300" title="Muzik Latar Adaptif On/Off">🎵</button>
+        <button id="btn-header-inbox" onclick="openPlayerInboxModal()" class="relative bubbly-btn bg-emerald-100 text-emerald-950 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-emerald-400" title="Peti Ucapan Rakan">
           <span>💌</span>
           <span id="header-inbox-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
-        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
-        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
-        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
+        <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
+        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700">🏆 <span class="hidden sm:inline">Skor</span></button>
+        <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -269,7 +290,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.76
+            Versi 1.9.79
           </span>
         </div>
 
@@ -467,23 +488,26 @@
       </div>
 
       <!-- Kad Profil & Avatar 3D -->
-      <div class="bubbly-card bg-white border-4 border-amber-300 p-4 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3 min-w-0">
-          <div id="home-avatar-box" onclick="navTo('rewards')" class="w-16 h-16 rounded-2xl flex-shrink-0 cursor-pointer relative"></div>
-          <div class="min-w-0">
-            <div id="home-welcome-tag" class="text-[11px] font-extrabold text-amber-600 uppercase tracking-wide">Selamat Datang!</div>
-            <h2 id="home-player-name" class="text-lg font-bold text-slate-800 truncate">Pelajar</h2>
-            <div class="flex flex-wrap items-center gap-1.5 mt-1">
-              <span class="text-[11px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
-              <span class="text-[11px] font-black bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-lg">🏅 <span id="home-points-count">0</span> Markah</span>
+      <div class="bubbly-card bg-white border-4 border-amber-300 p-3.5 sm:p-4 flex items-center justify-between gap-2 sm:gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+          <div id="home-avatar-box" onclick="navTo('rewards')" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex-shrink-0 cursor-pointer relative"></div>
+          <div class="min-w-0 flex-1">
+            <div id="home-welcome-tag" class="text-[10px] sm:text-[11px] font-extrabold text-amber-600 uppercase tracking-wide">Selamat Datang!</div>
+            <h2 id="home-player-name" class="text-base sm:text-lg font-bold text-slate-800 truncate">Pelajar</h2>
+            <div class="flex flex-wrap items-center gap-1 mt-1">
+              <span class="text-[10px] sm:text-[11px] font-black bg-amber-100 text-amber-800 px-1.5 sm:px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
+              <span class="text-[10px] sm:text-[11px] font-black bg-indigo-100 text-indigo-800 px-1.5 sm:px-2 py-0.5 rounded-lg">🏅 <span id="home-points-count">0</span></span>
             </div>
           </div>
         </div>
-        <div class="flex flex-col gap-1.5 flex-shrink-0">
-          <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[11px] font-black px-3 py-2 border-2 border-rose-700">
+        <div class="flex flex-col gap-1 flex-shrink-0">
+          <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-rose-700 whitespace-nowrap">
             🎨 Avatar & Kedai
           </button>
-          <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-950 text-[11px] font-black px-3 py-1.5 border-2 border-amber-400">
+          <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-600 whitespace-nowrap">
+            📅 Hadiah 7-Hari
+          </button>
+          <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-400 whitespace-nowrap">
             ⚙️ Urus Akaun
           </button>
         </div>
@@ -615,6 +639,20 @@
         <h2 id="mod-screen-heading" class="text-lg font-bold text-slate-800">📚 Modul Jari & Sempoa</h2>
       </div>
 
+      <!-- Peti Hadiah Misteri Harian (Di dalam Modul Belajar) -->
+      <div id="modules-mystery-box-card" class="bubbly-card bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 border-4 border-amber-500 p-3.5 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="daily-mystery-box-icon" class="w-12 h-12 rounded-2xl bg-white/80 flex items-center justify-center text-3xl shadow-sm flex-shrink-0 animate-bounce">🎁</div>
+          <div class="min-w-0">
+            <div class="text-xs font-black text-amber-950">🎁 Peti Hadiah Misteri Harian</div>
+            <div id="daily-mystery-box-desc" class="text-[10px] font-bold text-amber-900">Buka 1 peti kejutan percuma setiap hari semasa belajar untuk Coin atau Aksesori!</div>
+          </div>
+        </div>
+        <button type="button" id="btn-open-mystery-box" onclick="openDailyMysteryGiftBox()" class="bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0">
+          ✨ Buka Peti!
+        </button>
+      </div>
+
       <!-- Pemilih Laluan Belajar: Laluan Jari (Tanpa Sempoa) vs Laluan Sempoa -->
       <div id="modules-track-switcher" class="grid grid-cols-2 gap-2">
         <button type="button" onclick="switchModulesTrack('jari')" id="track-btn-jari" class="bubbly-btn bg-sky-600 text-white border-2 border-sky-900 py-3 px-2 text-xs font-black">
@@ -669,17 +707,17 @@
 
         <!-- Kad Nota Infografik (Boleh Lipat / Collapsible) -->
         <div id="mod-guide-card" class="bubbly-card bg-white border-4 border-sky-300 p-3.5 space-y-2.5">
-          <div class="flex items-center justify-between gap-2">
-            <div class="min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div class="min-w-0 flex-1">
               <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-0.5">Sasaran Umur</div>
-              <h3 id="mod-guide-title" class="text-base sm:text-lg font-bold text-slate-800 truncate">Tajuk Tahap</h3>
+              <h3 id="mod-guide-title" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">Tajuk Tahap</h3>
               <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
             </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
+            <div class="flex items-center gap-1.5 flex-shrink-0 self-end sm:self-center">
               <button type="button" id="btn-read-mod-guide" onclick="speakModuleGuideNote()" class="bubbly-btn bg-amber-300 hover:bg-amber-400 border-2 border-amber-600 px-2.5 py-1.5 text-[11px] font-black text-amber-950 flex-shrink-0" title="Dengar penerangan nota dibacakan">
                 🔊 Dengar
               </button>
-              <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-3 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
+              <button type="button" id="btn-toggle-mod-guide" onclick="toggleModuleGuideNote()" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 px-2.5 py-1.5 text-[11px] font-black text-sky-950 flex-shrink-0">
                 🔼 Tutup Nota
               </button>
             </div>
@@ -742,16 +780,16 @@
 
           <!-- Alat Bantu Kira Interaktif: Jari (Untuk Laluan Jari) & Sempoa (Untuk Laluan Sempoa) -->
           <div class="space-y-2">
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
               <div class="flex flex-wrap items-center gap-1.5">
-                <button type="button" onclick="toggleHelperFingers()" id="mod-finger-toggle-btn" class="bubbly-btn bg-emerald-100 border-2 border-emerald-400 px-3 py-1.5 text-[11px] font-black text-emerald-950 flex items-center gap-1.5 flex-shrink-0">
+                <button type="button" onclick="toggleHelperFingers()" id="mod-finger-toggle-btn" class="bubbly-btn bg-emerald-100 border-2 border-emerald-400 px-2.5 py-1.5 text-[11px] font-black text-emerald-950 flex items-center gap-1 flex-shrink-0">
                   <span>🖐️</span> <span id="mod-finger-toggle-label">Buka Jari Kira</span>
                 </button>
-                <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5 flex-shrink-0">
+                <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-2.5 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1 flex-shrink-0">
                   <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
                 </button>
               </div>
-              <span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-right">Praktis gerakkan jari untuk memori otot!</span>
+              <span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-left sm:text-right">Praktis gerakkan jari untuk memori otot!</span>
             </div>
 
             <!-- Simulator Jari Bantu Kira (0 - 99) -->
@@ -876,12 +914,12 @@
             <span class="text-xs font-black bg-amber-400 text-amber-950 px-2.5 py-1 rounded-xl">🔥 <span id="blitz-streak">0</span></span>
             <span class="text-[10px] font-black bg-indigo-100 text-indigo-900 px-2 py-1 rounded-xl">🏆 Rekod: <span id="blitz-best-score">0</span></span>
           </div>
-          <select id="blitz-difficulty" onchange="resetBlitzLivesAndStart()" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1 text-purple-900">
-            <option value="jari_all" selected>🖐️ Jari Sahaja (Asas + Kawan 5/10 + Gabungan)</option>
+          <select id="blitz-difficulty" onchange="resetBlitzLivesAndStart()" class="w-full sm:w-auto sm:flex-1 min-w-0 text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-900">
+            <option value="jari_all" selected>🖐️ Jari Sahaja (Asas & Formula)</option>
             <option value="basic">🖐️ Jari Asas Terus (0 - 99)</option>
-            <option value="friends">🖐️ Jari Formula Kawan 5, 10 & Gabungan</option>
+            <option value="friends">🖐️ Jari Formula 5, 10 & Gabungan</option>
             <option value="all">🧮 Campur Semua (Jari & Sempoa)</option>
-            <option value="twodigit">🧮 Sempoa Dua Digit (10-99)</option>
+            <option value="twodigit">🧮 Sempoa Dua Digit (10 - 99)</option>
             <option value="hundreds">🧮 Sempoa Ratus & Ribu (>99)</option>
           </select>
         </div>
@@ -934,20 +972,6 @@
       <div class="flex items-center justify-between">
         <button onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
         <div class="text-xs font-black bg-amber-400 text-amber-950 px-3 py-1.5 rounded-full border-2 border-amber-600 inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> Coin Anda: <span id="studio-star-balance">0</span></div>
-      </div>
-
-      <!-- Peti Hadiah Misteri Harian (Daily Mystery Gift Box) -->
-      <div class="bubbly-card bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 border-4 border-amber-500 p-3.5 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <div id="daily-mystery-box-icon" class="w-12 h-12 rounded-2xl bg-white/80 flex items-center justify-center text-3xl shadow-sm flex-shrink-0 animate-bounce">🎁</div>
-          <div class="min-w-0">
-            <div class="text-xs font-black text-amber-950">🎁 Peti Hadiah Misteri Harian</div>
-            <div id="daily-mystery-box-desc" class="text-[10px] font-bold text-amber-900">Buka 1 peti kejutan percuma setiap hari untuk Coin atau Aksesori!</div>
-          </div>
-        </div>
-        <button type="button" id="btn-open-mystery-box" onclick="openDailyMysteryGiftBox()" class="bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0">
-          ✨ Buka Peti!
-        </button>
       </div>
 
       <!-- Pratonton Avatar 3D -->
@@ -1122,12 +1146,12 @@
 
       <!-- 2. LATIHAN PECUT JARI & MANIK (MEMORI OTOT / MUSCLE MEMORY) -->
       <div id="anzan-panel-drill" class="hidden bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-3">
-        <div class="flex items-center justify-between gap-2">
-          <div>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="min-w-0">
             <div class="text-sm font-black text-emerald-950">🎯 Pecut Bentuk Jari & Sempoa</div>
             <p class="text-[11px] font-bold text-slate-500">Latih memori otot: bentukkan nombor sasaran sendiri (+3 Markah, 0 Coin)!</p>
           </div>
-          <select id="drill-mode-select" onchange="startNewSpeedDrill()" class="text-xs font-black bg-emerald-50 border-2 border-emerald-300 rounded-xl px-2.5 py-1.5 text-emerald-950">
+          <select id="drill-mode-select" onchange="startNewSpeedDrill()" class="w-full sm:w-auto min-w-0 text-xs font-black bg-emerald-50 border-2 border-emerald-300 rounded-xl px-2.5 py-1.5 text-emerald-950 flex-shrink-0">
             <option value="finger">🖐️ Mod Jari (0-99)</option>
             <option value="abacus">🧮 Mod Sempoa (0-999)</option>
           </select>
@@ -1534,13 +1558,13 @@
 
           <!-- Tetapan Tahap Kesukaran & Butang Cipta / Sertai Bilik -->
           <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-2.5">
-            <div class="flex items-center justify-between gap-2">
-              <label class="text-xs font-black text-slate-700">🎯 Pilih Tahap Soalan:</label>
-              <select id="arena-difficulty-select" class="text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-1.5 text-purple-950">
-                <option value="lvl1">🖐️ Jari Asas Terus 0–99 (0.7x • Maks 2–6 Coin)</option>
-                <option value="jari_all" selected>🖐️ Jari Formula 5/10 & Gabungan (1.0x • Maks 3–8 Coin)</option>
-                <option value="lvl23">🧮 Sempoa & Kawan 5/10 (1.25x • Maks 4–10 Coin)</option>
-                <option value="lvl45">🚀 Darab/Bahagi & Rantaian (1.5x • Maks 5–12 Coin)</option>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
+              <label for="arena-difficulty-select" class="text-xs font-black text-slate-700 flex-shrink-0">🎯 Pilih Tahap Soalan:</label>
+              <select id="arena-difficulty-select" class="w-full sm:flex-1 min-w-0 text-xs font-black bg-white border-2 border-purple-300 rounded-xl px-2.5 py-2 text-purple-950">
+                <option value="lvl1">🖐️ Jari Asas 0–99 (0.7x • 2–6 Coin)</option>
+                <option value="jari_all" selected>🖐️ Jari Formula 5/10 (1.0x • 3–8 Coin)</option>
+                <option value="lvl23">🧮 Sempoa & Kawan 5/10 (1.25x • 4–10 Coin)</option>
+                <option value="lvl45">🚀 Darab/Bahagi & Rantaian (1.5x • 5–12 Coin)</option>
               </select>
             </div>
 
@@ -1567,8 +1591,8 @@
             <div class="pt-2 border-t border-slate-200 space-y-1">
               <div class="text-[10px] font-black text-slate-500">Sudah ada kod bilik daripada kawan atau cikgu? Masukkan di sini:</div>
               <div class="flex gap-1.5">
-                <input id="arena-join-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="Taip 4 Nombor (cth: 4829)" class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
-                <button type="button" onclick="joinArenaRoomByCode()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-4 py-2 text-xs font-black">
+                <input id="arena-join-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="Kod 4-Digit (cth: 4829)" class="flex-1 min-w-0 px-2.5 py-2 rounded-xl border-2 border-indigo-300 text-xs font-black text-center tracking-wider bg-white focus:outline-none" />
+                <button type="button" onclick="joinArenaRoomByCode()" class="bubbly-btn bg-indigo-600 text-white border-2 border-indigo-900 px-3.5 py-2 text-xs font-black flex-shrink-0">
                   🚪 Masuk
                 </button>
               </div>
@@ -1633,8 +1657,8 @@
               </button>
             </div>
             <div class="flex gap-1.5">
-              <select id="arena-invite-friend-select" class="flex-1 px-2.5 py-1.5 rounded-xl border border-indigo-300 text-xs font-bold bg-indigo-50/50 focus:outline-none">
-                <option value="">-- Pilih rakan untuk jemput terus --</option>
+              <select id="arena-invite-friend-select" class="flex-1 min-w-0 px-2.5 py-1.5 rounded-xl border border-indigo-300 text-xs font-bold bg-indigo-50/50 focus:outline-none">
+                <option value="">-- Pilih rakan untuk jemput --</option>
               </select>
               <button type="button" onclick="sendDirectArenaInviteToFriend()" class="bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-900 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
                 📨 Jemput
@@ -1850,6 +1874,29 @@
         </div>
       </div>
     </div>
+    <!-- POP-UP HADIAH LOG MASUK HARIAN 7-HARI (DAILY LOGIN STREAK) -->
+    <div id="daily-login-reward-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3">
+      <div class="bubbly-card bg-gradient-to-b from-sky-900 via-indigo-950 to-slate-900 text-white border-4 border-amber-400 w-full max-w-sm p-4 sm:p-5 space-y-3.5 text-center relative shadow-2xl">
+        <button type="button" onclick="closeDailyLoginRewardModal()" class="absolute top-3 right-3 text-xs font-black bg-white/15 hover:bg-white/25 text-white px-2.5 py-1 rounded-xl">✖️</button>
+
+        <div class="space-y-1 pt-1">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-rose-500 to-amber-400 flex items-center justify-center text-4xl shadow-lg border-2 border-amber-200 animate-bounce">🎁</div>
+          <h3 class="text-xl font-bold text-amber-300 tracking-wide">Hadiah Harian</h3>
+          <div class="inline-block bg-white/15 border border-white/20 rounded-full px-3 py-1 text-[11px] font-extrabold text-sky-100">
+            Datang setiap hari untuk ganjaran lebih besar!
+          </div>
+          <div id="daily-login-streak-sub" class="text-[11px] font-black text-emerald-300 pt-0.5">🔥 Rekod Log Masuk Berturut-turut: Hari 1 / 7</div>
+        </div>
+
+        <!-- Grid 7 Hari (Hari 1-6 dalam 3x2 + Hari 7 Kotak Istimewa Penuh di Bawah) -->
+        <div id="daily-login-days-grid" class="grid grid-cols-3 gap-2"></div>
+
+        <button type="button" id="btn-claim-daily-login" onclick="claimDailyLoginStreakReward()" class="w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black text-sm sm:text-base py-3 border-2 border-amber-700 shadow-lg">
+          Ambil +5 <span class="gold-coin-icon">$</span>
+        </button>
+      </div>
+    </div>
+
     <!-- MODAL GERBANG PENGESAHAN DEWASA (PARENTAL GATE ANTI-KANAK-KANAK) -->
     <div id="parental-gate-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3">
       <div class="bubbly-card bg-white border-4 border-teal-500 w-full max-w-sm p-5 space-y-3 text-center">
@@ -6627,6 +6674,7 @@
       const meta = MODULES_META[modId];
       document.getElementById('modules-menu-grid').classList.add('hidden');
       document.getElementById('modules-track-switcher')?.classList.add('hidden');
+      document.getElementById('modules-mystery-box-card')?.classList.add('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
       if (pCard) pCard.classList.add('hidden');
       document.getElementById('module-detail-view').classList.remove('hidden');
@@ -6685,6 +6733,7 @@
       playClick();
       document.getElementById('module-detail-view').classList.add('hidden');
       document.getElementById('modules-track-switcher')?.classList.remove('hidden');
+      document.getElementById('modules-mystery-box-card')?.classList.remove('hidden');
       const pCard = document.getElementById('parent-daily-guide-card');
       if (pCard) pCard.classList.remove('hidden');
       document.getElementById('modules-menu-grid').classList.remove('hidden');
@@ -7193,6 +7242,194 @@
       btn.innerText = isHidden ? '🙈 Sembunyi PIN' : '🔐 Tunjuk PIN';
     };
 
+    const DAILY_LOGIN_REWARDS_7 = [
+      { day: 1, coins: 5,  specialItem: false, label: '+5' },
+      { day: 2, coins: 5,  specialItem: false, label: '+5' },
+      { day: 3, coins: 10, specialItem: false, label: '+10' },
+      { day: 4, coins: 10, specialItem: false, label: '+10' },
+      { day: 5, coins: 15, specialItem: false, label: '+15' },
+      { day: 6, coins: 15, specialItem: false, label: '+15' },
+      { day: 7, coins: 35, specialItem: true,  label: '+35 & Item Istimewa!' }
+    ];
+
+    function getYesterdayDateKey() {
+      const d = new Date(Date.now() - 86400000);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function ensureDailyLoginStreakState() {
+      if (!currentPlayer) return { streakDay: 1, lastClaimDate: '', claimedToday: false };
+      if (!currentPlayer.dailyLoginStreak || typeof currentPlayer.dailyLoginStreak !== 'object') {
+        currentPlayer.dailyLoginStreak = { streakDay: 1, lastClaimDate: '' };
+      }
+      const st = currentPlayer.dailyLoginStreak;
+      const todayKey = getTodayDateKey();
+      const yesterdayKey = getYesterdayDateKey();
+
+      if (st.lastClaimDate === todayKey) {
+        return { streakDay: Math.max(1, Math.min(7, st.streakDay || 1)), lastClaimDate: st.lastClaimDate, claimedToday: true };
+      }
+
+      if (st.lastClaimDate === yesterdayKey) {
+        const nextDay = ((st.streakDay || 1) % 7) + 1;
+        return { streakDay: nextDay, lastClaimDate: st.lastClaimDate, claimedToday: false };
+      }
+
+      // Jika hari pertama atau terputus lebih daripada 1 hari -> mula semula Hari 1
+      return { streakDay: 1, lastClaimDate: st.lastClaimDate || '', claimedToday: false };
+    }
+
+    window.openDailyLoginRewardModal = function(autoTrigger = false) {
+      if (!currentPlayer || currentPlayer.isGuest) return;
+      const info = ensureDailyLoginStreakState();
+      if (autoTrigger && info.claimedToday) return;
+
+      const gridEl = document.getElementById('daily-login-days-grid');
+      const subEl = document.getElementById('daily-login-streak-sub');
+      const claimBtn = document.getElementById('btn-claim-daily-login');
+      const modal = document.getElementById('daily-login-reward-modal');
+      if (!gridEl || !modal) return;
+
+      if (subEl) {
+        subEl.innerText = info.claimedToday
+          ? `✅ Hadiah Hari ${info.streakDay} Sudah Ditebus! Datang Esok untuk Hari ${(info.streakDay % 7) + 1}`
+          : `🔥 Log Masuk Berturut-turut: Hari ${info.streakDay} / 7`;
+      }
+
+      gridEl.innerHTML = DAILY_LOGIN_REWARDS_7.map(item => {
+        const isCurrent = item.day === info.streakDay;
+        const isPastClaimed = info.claimedToday
+          ? (item.day <= info.streakDay)
+          : (item.day < info.streakDay);
+
+        if (item.day === 7) {
+          let cardCls = 'col-span-3 rounded-2xl p-2.5 border-2 flex items-center justify-center gap-2.5 transition ';
+          if (isCurrent && !info.claimedToday) {
+            cardCls += 'bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 text-amber-950 border-white shadow-lg scale-[1.02]';
+          } else if (isPastClaimed) {
+            cardCls += 'bg-emerald-900/60 text-emerald-200 border-emerald-400/60';
+          } else {
+            cardCls += 'bg-white/10 text-amber-200 border-amber-400/40';
+          }
+          return `
+            <div class="${cardCls}">
+              <span class="text-xs font-black">Hari 7</span>
+              <span class="text-2xl">🎁</span>
+              <div class="text-left leading-tight">
+                <div class="text-xs sm:text-sm font-black inline-flex items-center gap-1">+${item.coins} ${COIN_ICON_HTML} + Item Istimewa!</div>
+                <div class="text-[9px] font-bold opacity-85">${isPastClaimed ? '✅ Selesai ditebus' : 'Ganjaran Khas 7 Hari Berturut-turut'}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        let boxCls = 'rounded-2xl p-2 border-2 flex flex-col items-center justify-center gap-0.5 transition ';
+        if (isCurrent && !info.claimedToday) {
+          boxCls += 'bg-gradient-to-b from-amber-200 to-amber-300 text-amber-950 border-white shadow-md scale-[1.03]';
+        } else if (isPastClaimed) {
+          boxCls += 'bg-emerald-900/60 text-emerald-200 border-emerald-400/60';
+        } else {
+          boxCls += 'bg-white/10 text-slate-200 border-white/15';
+        }
+
+        return `
+          <div class="${boxCls}">
+            <span class="text-[10px] font-extrabold opacity-90">Hari ${item.day}</span>
+            <div class="my-0.5 text-lg">${isPastClaimed ? '✅' : COIN_ICON_HTML}</div>
+            <span class="text-xs font-black">+${item.coins}</span>
+          </div>
+        `;
+      }).join('');
+
+      if (claimBtn) {
+        const curReward = DAILY_LOGIN_REWARDS_7[info.streakDay - 1] || DAILY_LOGIN_REWARDS_7[0];
+        if (info.claimedToday) {
+          claimBtn.disabled = true;
+          claimBtn.className = 'w-full bubbly-btn bg-emerald-600 text-white font-black text-xs sm:text-sm py-3 border-2 border-emerald-900 opacity-90';
+          claimBtn.innerText = '✅ Hadiah Hari Ini Sudah Diambil (Kembali Esok!)';
+        } else {
+          claimBtn.disabled = false;
+          claimBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-black text-sm sm:text-base py-3 border-2 border-amber-700 shadow-lg animate-pulse';
+          claimBtn.innerHTML = curReward.specialItem
+            ? `🎁 Ambil +${curReward.coins} ${COIN_ICON_HTML} + Item Istimewa!`
+            : `Ambil +${curReward.coins} ${COIN_ICON_HTML}`;
+        }
+      }
+
+      modal.classList.remove('hidden');
+    };
+
+    window.closeDailyLoginRewardModal = function() {
+      playClick();
+      const modal = document.getElementById('daily-login-reward-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.claimDailyLoginStreakReward = function() {
+      if (!currentPlayer) return;
+      const info = ensureDailyLoginStreakState();
+      if (info.claimedToday) {
+        closeDailyLoginRewardModal();
+        return;
+      }
+
+      const todayKey = getTodayDateKey();
+      const rewardObj = DAILY_LOGIN_REWARDS_7[info.streakDay - 1] || DAILY_LOGIN_REWARDS_7[0];
+      currentPlayer.dailyLoginStreak = {
+        streakDay: info.streakDay,
+        lastClaimDate: todayKey
+      };
+
+      playCheer();
+      triggerConfetti(info.streakDay === 7 ? 95 : 45);
+
+      if (rewardObj.specialItem) {
+        const cfg = ensurePlayerAvatarConfig(currentPlayer);
+        // Pilih item sederhana-mahal (40 - 95 Coin) yang belum dimiliki pelajar
+        const midTierUnowned = [
+          ...AVATAR_STUDIO_CATALOG.outfit,
+          ...AVATAR_STUDIO_CATALOG.hair,
+          ...AVATAR_STUDIO_CATALOG.headwear,
+          ...AVATAR_STUDIO_CATALOG.accessory,
+          ...AVATAR_STUDIO_CATALOG.frame
+        ].filter(it => it.cost >= 35 && it.cost <= 95 && (it.gender === cfg.gender || it.gender === 'unisex') && !currentPlayer.ownedAvatarItems.includes(it.id));
+
+        if (midTierUnowned.length > 0) {
+          const picked = midTierUnowned[Math.floor(Math.random() * midTierUnowned.length)];
+          currentPlayer.ownedAvatarItems.push(picked.id);
+          addPlayerReward(rewardObj.coins, 25);
+          showQuizInstantPopup(
+            `🏆 GANJARAN HARI KE-7 BERTURUT-TURUT!<br>Anda dapat <b>+${rewardObj.coins} Coin</b> ${COIN_ICON_HTML} + Item Istimewa <b>"${picked.name}"</b> (Nilai ${picked.cost} Coin)!`,
+            'combo',
+            '',
+            5500
+          );
+        } else {
+          // Jika semua item sederhana sudah dimiliki, beri +35 + 50 = +85 Coin!
+          const totalBonus = rewardObj.coins + 50;
+          addPlayerReward(totalBonus, 25);
+          showQuizInstantPopup(
+            `🏆 GANJARAN HARI KE-7 BERTURUT-TURUT!<br>Semua item sudah dimiliki — anda dapat <b>+${totalBonus} Coin</b> ${COIN_ICON_HTML}!`,
+            'combo',
+            '',
+            5200
+          );
+        }
+      } else {
+        addPlayerReward(rewardObj.coins, 10);
+        showQuizInstantPopup(
+          `🎉 HADIAH LOG MASUK HARI ${info.streakDay}!<br>Anda menerima <b>+${rewardObj.coins} Coin</b> ${COIN_ICON_HTML} & <b>+10 Markah</b>!`,
+          'fast',
+          '',
+          3600
+        );
+      }
+
+      syncPlayerUI();
+      await savePlayerCloud();
+      openDailyLoginRewardModal(false);
+    };
+
     function updateDailyMysteryBoxUI() {
       if (!currentPlayer) return;
       const todayKey = getTodayDateKey();
@@ -7222,15 +7459,17 @@
       }
     }
 
-    window.openDailyMysteryGiftBox = function() {
+    window.openDailyMysteryGiftBox = async function() {
       if (!currentPlayer) return;
       const todayKey = getTodayDateKey();
       if (currentPlayer.mysteryBoxDate === todayKey) {
+        updateDailyMysteryBoxUI();
         showAppToast('🎁 Peti Misteri hari ini sudah dibuka! Kembali lagi esok.');
         return;
       }
       const cfg = ensurePlayerAvatarConfig(currentPlayer);
       currentPlayer.mysteryBoxDate = todayKey;
+      updateDailyMysteryBoxUI();
 
       // Sistem Gacha Berperingkat: Item biasa sangat mudah dapat, item mahal (Epik & Legenda) sangat rare!
       const allUnowned = [
@@ -7294,6 +7533,7 @@
       }
       updateDailyMysteryBoxUI();
       renderAvatarStudio();
+      await savePlayerCloud();
     };
 
     window.shareArenaChampionCard = async function() {
@@ -8209,6 +8449,13 @@ Jom lawan kira pantas dengan saya!`;
       const hPts = document.getElementById('header-points-count');
       const hStars = document.getElementById('header-star-count');
       const mStars = document.getElementById('home-star-count');
+      const dailyLoginBtn = document.getElementById('btn-home-daily-login');
+      if (dailyLoginBtn) {
+        const stInfo = ensureDailyLoginStreakState();
+        dailyLoginBtn.innerText = stInfo.claimedToday
+          ? `✅ Log Hari ${stInfo.streakDay}/7`
+          : `🎁 Tuntut Hari ${stInfo.streakDay}`;
+      }
       const mPts = document.getElementById('home-points-count');
       const hTime = document.getElementById('header-timer-display');
       if (hPts) hPts.innerText = pts;
@@ -8439,7 +8686,11 @@ Jom lawan kira pantas dengan saya!`;
             password: currentPlayer.password,
             recoveryPin: currentPlayer.recoveryPin || '2026',
             preferredLang: currentPlayer.preferredLang || currentAppLang,
-            avatarConfig: currentPlayer.avatarConfig
+            avatarConfig: currentPlayer.avatarConfig,
+            mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
+            lastMysteryPrizeText: currentPlayer.lastMysteryPrizeText || '',
+            dailyLoginStreak: currentPlayer.dailyLoginStreak || { streakDay: 1, lastClaimDate: '' },
+            dailyQuests: currentPlayer.dailyQuests || null
           }));
         } catch (e) {}
         await purgeAdminFromCloudScoreboard();
@@ -8513,6 +8764,10 @@ Jom lawan kira pantas dengan saya!`;
           modScores: currentPlayer.modScores || {},
           avatarConfig: currentPlayer.avatarConfig,
           ownedAvatarItems: currentPlayer.ownedAvatarItems || [],
+          mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
+          lastMysteryPrizeText: currentPlayer.lastMysteryPrizeText || '',
+          dailyLoginStreak: currentPlayer.dailyLoginStreak || { streakDay: 1, lastClaimDate: '' },
+          dailyQuests: currentPlayer.dailyQuests || null,
           updatedAt: currentPlayer.updatedAt
         });
         currentPlayer.pendingCloudSync = false;
@@ -8890,6 +9145,7 @@ Jom lawan kira pantas dengan saya!`;
       playClick();
       document.getElementById('screen-first-mission').classList.add('hidden');
       navTo('home');
+      setTimeout(() => openDailyLoginRewardModal(true), 400);
     };
 
     window.handlePlayerAuthAction = async function(mode) {
@@ -8946,7 +9202,11 @@ Jom lawan kira pantas dengan saya!`;
             unlockedModules: [1, 2, 3, 4, 5, 6],
             modScores: {},
             avatarConfig: (savedAdmin && savedAdmin.avatarConfig) || getDefaultAvatarConfig('boy'),
-            ownedAvatarItems: ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky']
+            ownedAvatarItems: ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky'],
+            mysteryBoxDate: (savedAdmin && savedAdmin.mysteryBoxDate) || '',
+            lastMysteryPrizeText: (savedAdmin && savedAdmin.lastMysteryPrizeText) || '',
+            dailyLoginStreak: (savedAdmin && savedAdmin.dailyLoginStreak) || { streakDay: 1, lastClaimDate: '' },
+            dailyQuests: (savedAdmin && savedAdmin.dailyQuests) || null
           };
           await purgeAdminFromCloudScoreboard();
         }
@@ -9010,7 +9270,15 @@ Jom lawan kira pantas dengan saya!`;
             avatarConfig: existingAccount.avatarConfig || getDefaultAvatarConfig('boy'),
             ownedAvatarItems: Array.isArray(existingAccount.ownedAvatarItems)
               ? existingAccount.ownedAvatarItems
-              : ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky']
+              : ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky'],
+            mysteryBoxDate: existingAccount.mysteryBoxDate || '',
+            lastMysteryPrizeText: existingAccount.lastMysteryPrizeText || '',
+            dailyLoginStreak: (existingAccount.dailyLoginStreak && typeof existingAccount.dailyLoginStreak === 'object')
+              ? existingAccount.dailyLoginStreak
+              : { streakDay: 1, lastClaimDate: '' },
+            dailyQuests: (existingAccount.dailyQuests && typeof existingAccount.dailyQuests === 'object')
+              ? existingAccount.dailyQuests
+              : null
           };
           localStorage.setItem(APP_LANG_STORAGE_KEY, keptLang);
           applyAppLanguageUI(keptLang);
@@ -9031,6 +9299,9 @@ Jom lawan kira pantas dengan saya!`;
             subscribePlayerQuickMessages();
           }
           navTo('home');
+          if (!isAdminUser) {
+            setTimeout(() => openDailyLoginRewardModal(true), 450);
+          }
           try {
             const urlParams = new URLSearchParams(window.location.search);
             const pendingRoom = (urlParams.get('room') || '').trim();
@@ -9622,7 +9893,9 @@ Jom lawan kira pantas dengan saya!`;
         const pCard = document.getElementById('parent-daily-guide-card');
         if (pCard) pCard.classList.remove('hidden');
         document.getElementById('modules-track-switcher')?.classList.remove('hidden');
+        document.getElementById('modules-mystery-box-card')?.classList.remove('hidden');
         document.getElementById('modules-menu-grid').classList.remove('hidden');
+        updateDailyMysteryBoxUI();
         switchModulesTrack(activeModulesTrack, true);
       } else if (screenName === 'simulator') {
         setPlayerCurrentActivity('Simulator Jari (0–99)');

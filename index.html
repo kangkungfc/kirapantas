@@ -320,7 +320,7 @@
             🟠 Mod Offline Aktif: Akaun sedia ada di peranti ini masih boleh log masuk & belajar.
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.90 • Logo Lutsinar, Pembetulan Log Masuk, Header Kemas & Avatar Jelas
+            Versi 1.9.91 • Penguncian Tahap Berperingkat, Logo Lutsinar, Header Kemas & Avatar Jelas
           </span>
         </div>
 
@@ -2568,18 +2568,78 @@
     let flashAnzanAnswer = 0;
     let flashAnzanHistory = [];
 
+    const MODULE_UNLOCK_PASS_SCORE = 35; // Minimum 35/50 pada tahap sebelumnya untuk buka tahap seterusnya
     const MODULE_UNLOCK_REQ = {
       1: 0,
-      'jari2': 0,
-      'jari3': 20,
+      'jari2': 15,
+      'jari3': 30,
       2: 0,
       3: 15,
       4: 35,
       5: 60,
       6: 90
     };
+    const MODULE_PREREQUISITES = {
+      1: null,
+      'jari2': 1,
+      'jari3': 'jari2',
+      2: null,
+      3: 2,
+      4: 3,
+      5: 4,
+      6: 5
+    };
     const JARI_TRACK_IDS = [1, 'jari2', 'jari3'];
     const SEMPOA_TRACK_IDS = [2, 3, 4, 5, 6];
+
+    function getModuleTrackLabel(modId) {
+      if (JARI_TRACK_IDS.includes(modId)) {
+        return `Jari Tahap ${JARI_TRACK_IDS.indexOf(modId) + 1}`;
+      }
+      if (SEMPOA_TRACK_IDS.includes(modId)) {
+        return `Sempoa Tahap ${SEMPOA_TRACK_IDS.indexOf(modId) + 1}`;
+      }
+      return `Tahap ${modId}`;
+    }
+
+    function isModuleUnlockedForPlayer(player, modId) {
+      if (!player) return false;
+      if (Boolean(player.isAdmin)) return true;
+      const prereqId = MODULE_PREREQUISITES[modId];
+      if (!prereqId) return true; // Tahap 1 Jari (1) & Tahap 1 Sempoa (2) sentiasa terbuka
+      const scores = player.modScores || {};
+      const prevScore = Number(scores[prereqId] || 0);
+      if (prevScore >= MODULE_UNLOCK_PASS_SCORE) return true;
+      // Juga sokong pembukaan manual melalui Kedai Coin jika cukup syiling & prasyarat atau tebusan khas
+      if (Array.isArray(player.unlockedModules) && player.unlockedModules.includes(modId)) {
+        // Pastikan tahap yang memang asal terbuka dari awal sahaja (1 & 2) dikira automatik;
+        // tahap lanjutan hanya kekal terbuka jika sudah melepasi skor prasyarat ATAU ditebus secara sah
+        if (modId === 1 || modId === 2) return true;
+        if (Array.isArray(player.redeemedModules) && player.redeemedModules.includes(modId)) return true;
+      }
+      return false;
+    }
+
+    function evaluateAndUnlockNextModules(player) {
+      if (!player) return [];
+      const baseUnlocked = [1, 2];
+      const redeemed = Array.isArray(player.redeemedModules) ? player.redeemedModules : [];
+      const computedUnlocked = new Set([...baseUnlocked, ...redeemed]);
+      const prevUnlocked = Array.isArray(player.unlockedModules) ? player.unlockedModules : [];
+      const newlyUnlocked = [];
+
+      Object.keys(MODULE_PREREQUISITES).forEach((k) => {
+        const modId = isNaN(Number(k)) ? k : Number(k);
+        if (isModuleUnlockedForPlayer(player, modId)) {
+          computedUnlocked.add(modId);
+          if (!prevUnlocked.includes(modId) && modId !== 1 && modId !== 2) {
+            newlyUnlocked.push(modId);
+          }
+        }
+      });
+      player.unlockedModules = Array.from(computedUnlocked);
+      return newlyUnlocked;
+    }
 
     const HAIR_COLOR_PALETTES = {
       brown:  { light: '#8B5A2B', mid: '#5C3620', dark: '#3A2010', shine: '#D2A679' },
@@ -6521,26 +6581,25 @@
       const trackIds = activeModulesTrack === 'sempoa' ? SEMPOA_TRACK_IDS : JARI_TRACK_IDS;
       const trackPrefix = activeModulesTrack === 'sempoa' ? 'Sempoa Tahap' : 'Jari Tahap';
 
+      evaluateAndUnlockNextModules(currentPlayer);
+
       trackIds.forEach((m, idx) => {
         const meta = MODULES_META[m];
-        const req = MODULE_UNLOCK_REQ[m] ?? 0;
-        const unlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= req;
-        if (unlocked && !currentPlayer.unlockedModules.includes(m)) {
-          currentPlayer.unlockedModules.push(m);
-        }
+        const prereqId = MODULE_PREREQUISITES[m];
+        const prereqLabel = prereqId ? getModuleTrackLabel(prereqId) : '';
+        const unlocked = isModuleUnlockedForPlayer(currentPlayer, m);
         const best = (currentPlayer.modScores && currentPlayer.modScores[m]) || 0;
         const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
         const displayStep = idx + 1;
 
         const card = document.createElement('button');
-        card.className = `bubbly-card bg-gradient-to-r ${meta.bgGradient} border-4 ${meta.border} p-4 text-left text-white flex items-center justify-between gap-3 ${unlocked ? '' : 'opacity-85'}`;
+        card.className = `bubbly-card bg-gradient-to-r ${meta.bgGradient} border-4 ${meta.border} p-4 text-left text-white flex items-center justify-between gap-3 ${unlocked ? '' : 'opacity-80 grayscale-[20%]'}`;
         card.onclick = () => {
           if (unlocked) {
             openModuleDetail(m);
           } else {
             playWrong();
-            navTo('rewards');
-            switchStudioTab('modules');
+            showAppToast(`🔒 Terkunci! Capai sekurang-kurangnya ${MODULE_UNLOCK_PASS_SCORE}/50 pada ${prereqLabel} dahulu.`);
           }
         };
 
@@ -6550,15 +6609,15 @@
             <div class="min-w-0 space-y-0.5">
               <div class="flex flex-wrap items-center gap-1.5">
                 <span class="inline-block bg-white text-slate-900 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black uppercase tracking-wide shadow-sm">${trackPrefix} ${displayStep}</span>
-                ${(m === 1 || m === 'jari2') && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ LATIHAN JARI</span>' : ''}
-                ${!unlocked ? `<span class="inline-flex items-center gap-1 bg-black/30 text-white px-2 py-0.5 rounded-lg text-[10px] font-black">${t.needWord} ${req} ${COIN_ICON_HTML}</span>` : ''}
+                ${(m === 1 || m === 2) && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ MULA DI SINI</span>' : ''}
+                ${!unlocked ? `<span class="inline-flex items-center gap-1 bg-black/40 text-amber-200 px-2 py-0.5 rounded-lg text-[10px] font-black">🔒 Lulus ${prereqLabel} (${MODULE_UNLOCK_PASS_SCORE}/50)</span>` : ''}
               </div>
               <div class="text-sm sm:text-base font-extrabold text-white drop-shadow-sm truncate">${meta.title}</div>
-              <div class="text-[11px] font-bold text-white/95 truncate">${unlocked ? meta.ageGroup : meta.subtitle}</div>
+              <div class="text-[11px] font-bold text-white/95 truncate">${unlocked ? meta.ageGroup : `Selesaikan ${prereqLabel} dahulu untuk buka tahap ini`}</div>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
-            <span class="inline-flex items-center gap-1 bg-black/30 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ${COIN_ICON_HTML}` : t.lockedWord}</span>
+            <span class="inline-flex items-center gap-1 bg-black/30 px-2.5 py-1 rounded-xl text-xs font-black">${unlocked ? `${best}/50 ${COIN_ICON_HTML}` : `🔒 ${t.lockedWord}`}</span>
           </div>
         `;
         grid.appendChild(card);
@@ -6792,6 +6851,14 @@
       activeModConsecutiveStreak = 0;
       activeModConsecutiveWrong = 0;
 
+      if (!isModuleUnlockedForPlayer(currentPlayer, modId)) {
+        const prereqId = MODULE_PREREQUISITES[modId];
+        const prereqLabel = prereqId ? getModuleTrackLabel(prereqId) : 'Tahap Asas';
+        playWrong();
+        showAppToast(`🔒 Tahap ini masih terkunci! Capai ${MODULE_UNLOCK_PASS_SCORE}/50 pada ${prereqLabel} terlebih dahulu.`);
+        navTo('modules');
+        return;
+      }
       const isJariTrack = JARI_TRACK_IDS.includes(modId);
       const stepNumber = isJariTrack ? (JARI_TRACK_IDS.indexOf(modId) + 1) : (SEMPOA_TRACK_IDS.indexOf(modId) + 1);
       const badgeLabel = isJariTrack ? `🖐️ Jari Tahap ${stepNumber}` : `🧮 Sempoa Tahap ${stepNumber}`;
@@ -7006,6 +7073,13 @@
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
             currentPlayer.modScores[activeModId] = activeModSessionCorrect;
             document.getElementById('mod-best-score').innerText = activeModSessionCorrect;
+            const newlyUnlockedMods = evaluateAndUnlockNextModules(currentPlayer);
+            if (newlyUnlockedMods.length > 0) {
+              const unlockedNames = newlyUnlockedMods.map(id => getModuleTrackLabel(id)).join(', ');
+              playCheer();
+              triggerConfetti();
+              showAppToast(`🎉 Tahniah! Anda berjaya membuka kunci ${unlockedNames}!`);
+            }
           }
         }
         activeModConsecutiveWrong = 0;
@@ -7725,10 +7799,13 @@ Jom lawan kira pantas dengan saya!`;
 
       if (activeStudioTab === 'modules') {
         container.className = 'grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-0.5';
-        const unlockableList = ['jari3', 3, 4, 5, 6];
+        evaluateAndUnlockNextModules(currentPlayer);
+        const unlockableList = ['jari2', 'jari3', 3, 4, 5, 6];
         for (const m of unlockableList) {
           const meta = MODULES_META[m];
-          const isUnlocked = Boolean(currentPlayer.isAdmin) || currentPlayer.unlockedModules.includes(m) || (currentPlayer.stars || 0) >= MODULE_UNLOCK_REQ[m];
+          const isUnlocked = isModuleUnlockedForPlayer(currentPlayer, m);
+          const prereqId = MODULE_PREREQUISITES[m];
+          const prereqLabel = prereqId ? getModuleTrackLabel(prereqId) : 'Asas';
           const req = MODULE_UNLOCK_REQ[m];
           const row = document.createElement('div');
           row.className = 'flex items-center justify-between bg-amber-50/70 border-2 border-amber-200 rounded-2xl p-2.5';
@@ -7738,8 +7815,8 @@ Jom lawan kira pantas dengan saya!`;
           leftInfo.innerHTML = `
             <span class="text-xl">${meta.icon}</span>
             <div>
-              <div class="text-xs font-black text-slate-800">Tahap ${m}: ${meta.shortTitle}</div>
-              <div class="text-[10px] font-bold text-slate-500">Syarat: ${req} Coin ${COIN_ICON_HTML}</div>
+              <div class="text-xs font-black text-slate-800">${getModuleTrackLabel(m)}: ${meta.shortTitle}</div>
+              <div class="text-[10px] font-bold text-slate-500">Lulus ${prereqLabel} (${MODULE_UNLOCK_PASS_SCORE}/50) atau Tebus ${req} Coin ${COIN_ICON_HTML}</div>
             </div>
           `;
           row.appendChild(leftInfo);
@@ -8058,6 +8135,10 @@ Jom lawan kira pantas dengan saya!`;
       }
       playCheer();
       triggerConfetti();
+      if (!Array.isArray(currentPlayer.redeemedModules)) currentPlayer.redeemedModules = [];
+      if (!currentPlayer.redeemedModules.includes(modNum)) {
+        currentPlayer.redeemedModules.push(modNum);
+      }
       if (!currentPlayer.unlockedModules.includes(modNum)) {
         currentPlayer.unlockedModules.push(modNum);
       }
@@ -8673,8 +8754,9 @@ Jom lawan kira pantas dengan saya!`;
         xpFillEl.style.width = `${pct}%`;
       }
 
-      // Kesan tahap paling sesuai untuk disambung oleh pelajar
-      const unlockedArr = Array.isArray(currentPlayer.unlockedModules) ? currentPlayer.unlockedModules : [1, 'jari2', 2];
+      // Kesan tahap paling sesuai untuk disambung oleh pelajar (mengikut penguncian berperingkat)
+      evaluateAndUnlockNextModules(currentPlayer);
+      const unlockedArr = Array.isArray(currentPlayer.unlockedModules) ? currentPlayer.unlockedModules : [1, 2];
       let recModId = 1;
       for (const id of allTrackIds) {
         if (unlockedArr.includes(id) && (modScoresMap[id] || 0) < 50) {
@@ -8894,7 +8976,7 @@ Jom lawan kira pantas dengan saya!`;
         isOnline: false,
         lastActiveAt: Date.now(),
         currentActivityLabel: `Kelas Cikgu #${code}`,
-        unlockedModules: [1, 'jari2', 2],
+        unlockedModules: [1, 2],
         modScores: {},
         avatarConfig: getDefaultAvatarConfig('boy'),
         ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
@@ -8937,7 +9019,7 @@ Jom lawan kira pantas dengan saya!`;
         isOnline: false,
         lastActiveAt: Date.now(),
         currentActivityLabel: 'Mod Tetamu',
-        unlockedModules: [1, 'jari2', 2],
+        unlockedModules: [1, 2],
         modScores: {},
         avatarConfig: getDefaultAvatarConfig('boy'),
         ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
@@ -10431,7 +10513,7 @@ Jom lawan kira pantas dengan saya!`;
           todaySeconds: 0,
           isOnline: false,
           lastActiveAt: Date.now(),
-          unlockedModules: [1, 'jari2', 2],
+          unlockedModules: [1, 2],
           modScores: {},
           avatarConfig: getDefaultAvatarConfig(childGender),
           ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']

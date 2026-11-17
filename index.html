@@ -290,7 +290,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.79
+            Versi 1.9.80
           </span>
         </div>
 
@@ -7365,7 +7365,7 @@
       if (modal) modal.classList.add('hidden');
     };
 
-    window.claimDailyLoginStreakReward = function() {
+    window.claimDailyLoginStreakReward = async function() {
       if (!currentPlayer) return;
       const info = ensureDailyLoginStreakState();
       if (info.claimedToday) {

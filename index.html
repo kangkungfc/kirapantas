@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#FDE047" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>Jari & Abakus Pintar - Belajar Kira Pantas</title>
+  <title>KiraKilat — Akademi Kira Pantas Jari & Sempoa</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -190,53 +190,141 @@
          ======================================================== -->
     <section id="screen-login" class="py-4 space-y-4">
       <div class="bubbly-card bg-white border-4 border-amber-400 p-6 text-center">
-        <!-- Pemilih Bahasa Laman Web & Kawalan Bunyi -->
-        <div class="flex flex-wrap items-center justify-center gap-1.5 mb-4 pb-3 border-b border-amber-100">
-          <button type="button" onclick="toggleAppSoundEffects()" class="btn-sound-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-sky-100 text-sky-950 border-sky-400" title="Hidupkan / Matikan Kesan Bunyi">🔊 Bunyi</button>
-          <button type="button" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-slate-100 text-slate-600 border-slate-300" title="Muzik Latar Belakang Adaptif">🎵 Muzik: Off</button>
-          <span id="login-lang-label" class="text-[11px] font-black text-amber-900 mr-1">🌐 Bahasa:</span>
-          <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Melayu</button>
-          <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
-          <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文</button>
-          <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية</button>
+        <!-- Baris 1: Kawalan Bunyi & Muzik Sahaja | Baris 2: Pilihan Bahasa Laman Web -->
+        <div class="mb-4 pb-3 border-b border-amber-100 space-y-2">
+          <!-- Baris 1: Butang Bunyi & Muzik sahaja -->
+          <div class="flex items-center justify-center gap-2">
+            <button type="button" onclick="toggleAppSoundEffects()" class="btn-sound-toggle px-3 py-1.5 rounded-xl text-[11px] font-black border-2 bg-sky-100 text-sky-950 border-sky-400" title="Hidupkan / Matikan Kesan Bunyi">🔊 Bunyi: On</button>
+            <button type="button" onclick="toggleAppBgmMusic()" class="btn-bgm-toggle px-3 py-1.5 rounded-xl text-[11px] font-black border-2 bg-slate-100 text-slate-600 border-slate-300" title="Muzik Latar Belakang Adaptif">🎵 Muzik: Off</button>
+          </div>
+          <!-- Baris 2: Semua Pilihan Bahasa -->
+          <div class="flex flex-wrap items-center justify-center gap-1.5">
+            <span id="login-lang-label" class="text-[11px] font-black text-amber-900 mr-0.5">🌐 Bahasa:</span>
+            <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Melayu</button>
+            <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
+            <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文</button>
+            <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn px-2.5 py-1 rounded-xl text-[11px] font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية</button>
+          </div>
         </div>
 
-        <div class="w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center border-4 border-white shadow-lg animate-float">
-          <svg viewBox="0 0 100 100" class="w-16 h-16">
-            <rect x="14" y="16" width="72" height="68" rx="10" fill="#78350F" stroke="#451A03" stroke-width="4"/>
-            <rect x="21" y="23" width="58" height="54" rx="5" fill="#FEF3C7"/>
-            <line x1="35" y1="23" x2="35" y2="77" stroke="#92400E" stroke-width="3"/>
-            <line x1="50" y1="23" x2="50" y2="77" stroke="#92400E" stroke-width="3"/>
-            <line x1="65" y1="23" x2="65" y2="77" stroke="#92400E" stroke-width="3"/>
-            <rect x="18" y="40" width="64" height="5" fill="#451A03"/>
-            <ellipse cx="35" cy="34" rx="6" ry="4" fill="#EF4444"/>
-            <ellipse cx="50" cy="29" rx="6" ry="4" fill="#EF4444"/>
-            <ellipse cx="65" cy="34" rx="6" ry="4" fill="#EF4444"/>
-            <ellipse cx="35" cy="51" rx="6" ry="4" fill="#F59E0B"/>
-            <ellipse cx="50" cy="51" rx="6" ry="4" fill="#F59E0B"/>
-            <ellipse cx="50" cy="60" rx="6" ry="4" fill="#F59E0B"/>
-            <ellipse cx="65" cy="51" rx="6" ry="4" fill="#F59E0B"/>
+        <div onclick="playSonicLogo()" title="Klik untuk dengar bunyi rasmi KiraKilat!" class="cursor-pointer w-28 h-28 mx-auto mb-2.5 rounded-3xl bg-gradient-to-br from-amber-300 via-yellow-300 to-orange-400 flex items-center justify-center border-4 border-white shadow-xl animate-float relative">
+          <!-- Maskot Rasmi KiraKilat: Kiki si Panda Pintar + Manik Soroban Berlian & Kilat -->
+          <svg viewBox="0 0 120 120" class="w-24 h-24 overflow-visible">
+            <defs>
+              <linearGradient id="kkGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FEF08A"/>
+                <stop offset="50%" stop-color="#FACC15"/>
+                <stop offset="100%" stop-color="#D97706"/>
+              </linearGradient>
+              <radialGradient id="kkFace" cx="45%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="80%" stop-color="#F8FAFC"/>
+                <stop offset="100%" stop-color="#E2E8F0"/>
+              </radialGradient>
+            </defs>
+            <!-- Aura Kilat Belakang -->
+            <polygon points="98,10 86,32 95,32 89,48 108,26 98,26" fill="#FACC15" stroke="#B45309" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Telinga Panda -->
+            <circle cx="32" cy="30" r="13" fill="#1E293B"/>
+            <circle cx="32" cy="30" r="6" fill="#475569"/>
+            <circle cx="88" cy="30" r="13" fill="#1E293B"/>
+            <circle cx="88" cy="30" r="6" fill="#475569"/>
+            <!-- Kepala Panda Kiki -->
+            <ellipse cx="60" cy="54" rx="34" ry="30" fill="url(#kkFace)" stroke="#1E293B" stroke-width="3"/>
+            <!-- Tompok Mata Panda -->
+            <ellipse cx="46" cy="52" rx="10" ry="8.5" transform="rotate(-14 46 52)" fill="#1E293B"/>
+            <ellipse cx="74" cy="52" rx="10" ry="8.5" transform="rotate(14 74 52)" fill="#1E293B"/>
+            <!-- Mata Bercahaya -->
+            <circle cx="46.5" cy="51.5" r="4.2" fill="#FFFFFF"/>
+            <circle cx="47.2" cy="51.5" r="2.2" fill="#0F172A"/>
+            <circle cx="45.8" cy="50.2" r="1.2" fill="#FFFFFF"/>
+            <circle cx="73.5" cy="51.5" r="4.2" fill="#FFFFFF"/>
+            <circle cx="72.8" cy="51.5" r="2.2" fill="#0F172A"/>
+            <circle cx="74.2" cy="50.2" r="1.2" fill="#FFFFFF"/>
+            <!-- Cermin Mata Pintar Biru -->
+            <circle cx="46" cy="52" r="11.5" fill="none" stroke="#0284C7" stroke-width="2.6"/>
+            <circle cx="74" cy="52" r="11.5" fill="none" stroke="#0284C7" stroke-width="2.6"/>
+            <line x1="57.5" y1="51.5" x2="62.5" y2="51.5" stroke="#0284C7" stroke-width="2.6"/>
+            <!-- Pipi Merah Jambu & Hidung -->
+            <ellipse cx="36" cy="61" rx="5" ry="3" fill="#FDA4AF" opacity="0.85"/>
+            <ellipse cx="84" cy="61" rx="5" ry="3" fill="#FDA4AF" opacity="0.85"/>
+            <ellipse cx="60" cy="60" rx="4.5" ry="3" fill="#1E293B"/>
+            <path d="M 53 66 Q 60 72 67 66" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Lencana Manik Soroban Emas di Dada -->
+            <rect x="33" y="79" width="54" height="31" rx="7" fill="#78350F" stroke="#451A03" stroke-width="2.5"/>
+            <rect x="37" y="83" width="46" height="23" rx="4" fill="#FEF3C7"/>
+            <line x1="48" y1="83" x2="48" y2="106" stroke="#92400E" stroke-width="2"/>
+            <line x1="60" y1="83" x2="60" y2="106" stroke="#92400E" stroke-width="2"/>
+            <line x1="72" y1="83" x2="72" y2="106" stroke="#92400E" stroke-width="2"/>
+            <rect x="36" y="91" width="48" height="3.2" fill="#451A03"/>
+            <polygon points="48,84 53,87.5 48,91 43,87.5" fill="#EF4444"/>
+            <polygon points="60,94.5 65,98 60,101.5 55,98" fill="url(#kkGold)" stroke="#92400E" stroke-width="0.8"/>
+            <polygon points="72,84 77,87.5 72,91 67,87.5" fill="#EF4444"/>
           </svg>
         </div>
-        <h1 id="login-app-title" class="text-2xl sm:text-3xl font-bold text-amber-900">Jari & Abakus Pintar</h1>
-        <p id="login-app-subtitle" class="text-xs sm:text-sm font-bold text-slate-500 mt-1 mb-5">Platform Belajar Kira Pantas Chisanbop & Soroban</p>
+        <div class="inline-flex items-center gap-1 bg-amber-100 border border-amber-300 text-amber-900 text-[10px] font-black px-3 py-0.5 rounded-full mb-1">
+          <span>⚡ EDTECH KIRA PANTAS NO. 1</span>
+        </div>
+        <h1 id="login-app-title" class="text-3xl sm:text-4xl font-bold tracking-tight text-amber-950">Kira<span class="text-sky-600">Kilat</span></h1>
+        <p id="login-app-subtitle" class="text-xs sm:text-sm font-bold text-slate-600 mt-0.5 mb-3">Akademi Kira Pantas 10 Jari & Sempoa Pintar</p>
 
-        <!-- Butang Cuba Main Terus 1-Klik (Mod Tetamu / Guest) -->
-        <div class="mb-4">
-          <button type="button" onclick="startGuestDemoMode()" class="w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 text-amber-950 font-black text-sm sm:text-base py-3.5 px-4 border-3 border-amber-700 shadow-lg flex items-center justify-center gap-2">
-            <span class="text-xl">🎮</span>
-            <span>Cuba Main Sekarang (Tanpa Daftar)</span>
+        <!-- Bar Lencana Kepercayaan Ibu Bapa, Guru & Pusat Tuisyen -->
+        <div class="flex flex-wrap items-center justify-center gap-1.5 mb-4">
+          <span class="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-300 text-emerald-900 text-[10px] font-black px-2.5 py-1 rounded-full">
+            ✅ Silibus 6 Tahap
+          </span>
+          <span class="inline-flex items-center gap-1 bg-sky-50 border border-sky-300 text-sky-900 text-[10px] font-black px-2.5 py-1 rounded-full">
+            🛡️ Selamat & Bebas Iklan
+          </span>
+          <span class="inline-flex items-center gap-1 bg-purple-50 border border-purple-300 text-purple-900 text-[10px] font-black px-2.5 py-1 rounded-full">
+            📊 Pantauan Ibu Bapa & Guru
+          </span>
+        </div>
+
+        <!-- Butang Pantas 1-Klik: Cuba Main Terus & Masuk Kelas Cikgu (Kod 4-Digit) -->
+        <div class="mb-4 space-y-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button type="button" onclick="startGuestDemoMode()" class="w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 text-amber-950 font-black text-xs sm:text-sm py-3 px-3 border-3 border-amber-700 shadow-md flex items-center justify-center gap-1.5">
+              <span class="text-lg">🎮</span>
+              <span>Cuba Main Terus</span>
+            </button>
+            <button type="button" onclick="toggleTeacherClassCodeDrawer()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs sm:text-sm py-3 px-3 border-3 border-teal-900 shadow-md flex items-center justify-center gap-1.5">
+              <span class="text-lg">🏫</span>
+              <span>Kod Kelas Cikgu</span>
+            </button>
+          </div>
+          <p class="text-[10px] font-bold text-slate-500">Murid sekolah/tuisyen boleh terus masuk sesi langsung cikgu guna <b>Kod 4-Digit</b>!</p>
+
+          <!-- Laci Pantas Masuk Kelas Cikgu (Kod 4-Digit Tanpa Daftar) -->
+          <div id="teacher-class-code-drawer" class="hidden text-left bg-teal-50 border-2 border-teal-400 rounded-2xl p-3.5 space-y-2.5 shadow-inner">
+            <div class="flex items-center justify-between">
+              <div class="text-xs font-black text-teal-950">🏫 Sertai Kelas Langsung Cikgu / Tuisyen</div>
+              <button type="button" onclick="toggleTeacherClassCodeDrawer(false)" class="text-[11px] font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
+            </div>
+            <p class="text-[10px] font-bold text-teal-900">Taip nama anda dan <b>4 nombor Kod Kelas</b> yang dipaparkan oleh guru di papan putih:</p>
+            <form onsubmit="joinTeacherClassDirectFromLogin(event)" class="space-y-2">
+              <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                <input id="class-join-student-name" type="text" required minlength="2" maxlength="20" placeholder="Nama Murid (cth: Aiman)" class="sm:col-span-3 px-3 py-2.5 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-bold text-xs bg-white" />
+                <input id="class-join-room-code" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="Kod 4-Digit" class="sm:col-span-2 px-3 py-2.5 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-black text-center text-sm tracking-widest bg-white" />
+              </div>
+              <button type="submit" class="w-full bubbly-btn bg-teal-600 hover:bg-teal-700 text-white font-black text-xs py-2.5 border-2 border-teal-950">
+                🚀 Masuk Bilik Kelas Cikgu Sekarang
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab Mod: Log Masuk vs Daftar Baru (Supaya Murid Lama Tidak Keliru) -->
+        <div class="bg-slate-100 p-1 rounded-2xl border-2 border-slate-200 grid grid-cols-2 gap-1 mb-3.5">
+          <button type="button" id="tab-auth-login" onclick="switchAuthModeTab('login')" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-xs transition">
+            🔑 Log Masuk
           </button>
-          <p class="text-[10px] font-bold text-slate-500 mt-1">Terus main 10 Jari & Sempoa serta-merta! Boleh simpan rekod bila-bila masa.</p>
+          <button type="button" id="tab-auth-register" onclick="switchAuthModeTab('register')" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 transition">
+            ✨ Daftar Baru
+          </button>
         </div>
 
-        <div class="relative flex items-center justify-center mb-3">
-          <div class="border-t border-slate-200 w-full"></div>
-          <span class="bg-white px-2.5 text-[10px] font-black text-slate-400 uppercase tracking-wider whitespace-nowrap">Atau Masuk Akaun Anda</span>
-          <div class="border-t border-slate-200 w-full"></div>
-        </div>
-
-        <form onsubmit="event.preventDefault()" class="space-y-3 text-left">
+        <form onsubmit="event.preventDefault(); handlePlayerAuthAction(currentAuthMode);" class="space-y-3 text-left">
           <div>
             <label id="lbl-login-name" class="block text-xs font-black text-slate-700 mb-1">Taip Nama Anda</label>
             <input id="input-player-name" type="text" required minlength="2" maxlength="25" placeholder="Contoh: Aiman / Siti Nur" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none font-bold text-sm bg-slate-50" />
@@ -249,33 +337,37 @@
               <span id="lbl-show-pass" class="text-xs font-extrabold text-slate-600">👁️ Lihat kata laluan</span>
             </label>
           </div>
-          <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
-          <div class="grid grid-cols-2 gap-2.5 pt-1">
-            <button id="btn-login-submit" type="button" onclick="handlePlayerAuthAction('login')" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm py-3.5 border-2 border-blue-800">
-              🔑 Log Masuk
-            </button>
-            <button id="btn-register-submit" type="button" onclick="handlePlayerAuthAction('register')" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-sm py-3.5 border-2 border-emerald-700">
-              ✨ Daftar Baru
-            </button>
-          </div>
-        </form>
 
-        <!-- Butang Terus Untuk Ibu Bapa / Pengajar & Menu Bantuan -->
-        <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
-          <div class="w-full bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-2.5 space-y-1.5 text-left">
-            <div class="text-[10px] font-black text-teal-950 uppercase tracking-wide">👤 Jenis Akaun (Untuk Daftar Baru):</div>
+          <!-- Pilihan Jenis Akaun (Dipaparkan HANYA apabila tab 'Daftar Baru' dipilih) -->
+          <div id="register-role-selector-box" class="hidden w-full bg-teal-50/95 border-2 border-teal-200 rounded-2xl p-2.5 space-y-1.5 text-left">
+            <div class="text-[10px] font-black text-teal-950 uppercase tracking-wide">👤 Daftar Sebagai:</div>
             <div class="grid grid-cols-2 gap-1.5">
               <button type="button" id="btn-role-student" onclick="selectRegisterAccountRole('student')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
-                🎓 Akaun Pelajar
+                🎓 Pelajar
               </button>
               <button type="button" id="btn-role-parent" onclick="selectRegisterAccountRole('parent')" class="py-2 px-2 rounded-xl text-xs font-black border-2 bg-white text-teal-900 border-teal-300 transition">
                 👨‍👩‍👧‍👦 Ibu Bapa / Pengajar
               </button>
             </div>
-            <div id="role-register-hint" class="text-[10px] font-bold text-slate-600">Pelajar boleh belajar, kumpul coin & bertanding.</div>
+            <div id="role-register-hint" class="text-[10px] font-bold text-slate-600">🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.</div>
           </div>
 
-          <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <div id="login-error-msg" class="hidden text-xs font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5"></div>
+
+          <div class="pt-1">
+            <button id="btn-login-submit" type="submit" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm sm:text-base py-3.5 border-2 border-blue-800">
+              🔑 Log Masuk Sekarang
+            </button>
+          </div>
+
+          <div id="auth-switch-footer-prompt" class="text-center text-xs font-bold text-slate-500 pt-0.5">
+            Belum ada akaun? <button type="button" onclick="switchAuthModeTab('register')" class="text-emerald-700 font-black underline">Daftar Baru di sini ✨</button>
+          </div>
+        </form>
+
+        <!-- Pautan Bantuan & Status -->
+        <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col items-center gap-2">
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-0.5">
             <button id="btn-forgot-pass" type="button" onclick="toggleResetPasswordPanel()" class="text-xs font-black text-indigo-700 hover:text-indigo-900 underline">
               🔑 Lupa Kata Laluan?
             </button>
@@ -290,7 +382,7 @@
             🟠 Mod Offline Aktif: Tiada sambungan internet dikesan. Akaun yang pernah log masuk di peranti ini masih boleh log masuk, belajar & berbelanja di kedai. Rekod akan dimuat naik automatik bila online semula!
           </div>
           <span class="inline-block mt-1 text-[10px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-3 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.80
+            Versi 1.9.85 • Baik Pulih Butang Daftar/Log Masuk & Susunan Baris Bahasa
           </span>
         </div>
 
@@ -487,31 +579,74 @@
         </button>
       </div>
 
-      <!-- Kad Profil & Avatar 3D -->
-      <div class="bubbly-card bg-white border-4 border-amber-300 p-3.5 sm:p-4 flex items-center justify-between gap-2 sm:gap-3">
-        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
-          <div id="home-avatar-box" onclick="navTo('rewards')" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex-shrink-0 cursor-pointer relative"></div>
-          <div class="min-w-0 flex-1">
-            <div id="home-welcome-tag" class="text-[10px] sm:text-[11px] font-extrabold text-amber-600 uppercase tracking-wide">Selamat Datang!</div>
-            <h2 id="home-player-name" class="text-base sm:text-lg font-bold text-slate-800 truncate">Pelajar</h2>
-            <div class="flex flex-wrap items-center gap-1 mt-1">
-              <span class="text-[10px] sm:text-[11px] font-black bg-amber-100 text-amber-800 px-1.5 sm:px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
-              <span class="text-[10px] sm:text-[11px] font-black bg-indigo-100 text-indigo-800 px-1.5 sm:px-2 py-0.5 rounded-lg">🏅 <span id="home-points-count">0</span></span>
+      <!-- Kad Hero Pengembaraan & Avatar 3D Utama (Adventure Hero Card) -->
+      <div class="bubbly-card bg-gradient-to-br from-white via-amber-50/70 to-sky-50 border-4 border-amber-400 p-4 space-y-3 relative overflow-hidden">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <div id="home-avatar-box" onclick="navTo('rewards')" title="Klik untuk tukar gaya Avatar 3D" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl flex-shrink-0 cursor-pointer relative shadow-md bg-white/80"></div>
+            <div class="min-w-0 flex-1 space-y-1">
+              <div class="flex flex-wrap items-center gap-1">
+                <span id="home-welcome-tag" class="text-[10px] font-extrabold text-amber-700 uppercase tracking-wide">Selamat Datang!</span>
+                <span id="home-hero-rank-badge" class="text-[10px] font-black bg-sky-600 text-white px-2 py-0.5 rounded-full">🌱 Perantis KiraKilat</span>
+              </div>
+              <h2 id="home-player-name" class="text-lg sm:text-xl font-bold text-slate-900 truncate">Pelajar</h2>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
+                <span class="text-[11px] font-black bg-indigo-100 text-indigo-900 border border-indigo-200 px-2 py-0.5 rounded-lg">🏅 <span id="home-points-count">0</span> Pts</span>
+              </div>
             </div>
           </div>
+
+          <div class="flex flex-col gap-1.5 flex-shrink-0">
+            <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-rose-700 whitespace-nowrap">
+              🎨 Avatar & Kedai
+            </button>
+            <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-600 whitespace-nowrap">
+              📅 Hadiah 7-Hari
+            </button>
+            <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-white text-slate-700 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-slate-300 whitespace-nowrap">
+              ⚙️ Urus Akaun
+            </button>
+          </div>
         </div>
-        <div class="flex flex-col gap-1 flex-shrink-0">
-          <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-rose-700 whitespace-nowrap">
-            🎨 Avatar & Kedai
-          </button>
-          <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-600 whitespace-nowrap">
-            📅 Hadiah 7-Hari
-          </button>
-          <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-400 whitespace-nowrap">
-            ⚙️ Urus Akaun
-          </button>
+
+        <!-- Bar Kemajuan Tahap Master (XP & Tahap Dikuasai) -->
+        <div class="bg-white/90 border-2 border-amber-200 rounded-2xl p-2.5 space-y-1.5">
+          <div class="flex items-center justify-between text-[11px] font-black">
+            <span id="home-xp-progress-label" class="text-slate-700">🗺️ Kemajuan Kurikulum: 0 / 8 Tahap Dikuasai</span>
+            <span id="home-xp-next-rank" class="text-indigo-700">Seterusnya: Pejuang Jari (100 Pts)</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div id="home-xp-progress-fill" class="h-full bg-gradient-to-r from-amber-400 via-emerald-500 to-sky-500 rounded-full transition-all duration-500" style="width: 12%"></div>
+          </div>
         </div>
       </div>
+
+      <!-- Butang Pintas Utama: Teruskan Belajar Tahap Semasa (Smart Resume Hero CTA) -->
+      <div class="space-y-3">
+        <div class="bubbly-card bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 border-4 border-blue-950 p-4 text-white space-y-2.5">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <div id="home-resume-icon" class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-3xl shadow-inner flex-shrink-0">🖐️</div>
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                  <span class="bg-amber-300 text-amber-950 text-[10px] font-black px-2.5 py-0.5 rounded-full">⚡ TERUSKAN BELAJAR</span>
+                  <span id="home-resume-track-pill" class="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full">Laluan Jari</span>
+                </div>
+                <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight truncate">Tahap 1: Keajaiban 10 Jari</div>
+                <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5 truncate">Rekod Terbaik: 0/50 Bintang • Klik untuk sambung!</div>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 pt-0.5">
+            <button type="button" onclick="resumeRecommendedModule()" class="col-span-2 bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-400 hover:to-yellow-500 text-amber-950 font-black text-xs sm:text-sm py-2.5 px-3 border-2 border-amber-700 flex items-center justify-center gap-1.5">
+              <span>🚀</span> <span id="btn-home-resume-text">Mula Tahap Ini</span>
+            </button>
+            <button type="button" onclick="navTo('modules')" class="bubbly-btn bg-white/20 hover:bg-white/30 text-white font-black text-xs py-2.5 px-2 border-2 border-white/40">
+              📚 Semua Tahap
+            </button>
+          </div>
+        </div>
 
       <!-- Kad Misi Harian 3 Bintang (Daily Quest Retention Hook) -->
       <div id="daily-quest-card" class="bubbly-card bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 border-3 border-indigo-300 p-3.5 space-y-2">
@@ -523,24 +658,6 @@
         </div>
         <div id="daily-quest-list" class="grid grid-cols-1 gap-1.5 text-[11px]"></div>
       </div>
-
-      <!-- Laluan Pembelajaran Terancang (Langkah 1 -> 2 -> 3) -->
-      <div class="space-y-3">
-        <!-- Langkah 1: Modul Belajar Utama (Penuh di Atas) -->
-        <button onclick="navTo('modules')" class="w-full bubbly-card bg-gradient-to-r from-sky-500 to-blue-600 border-4 border-blue-800 p-4 text-left text-white flex items-center justify-between gap-3 relative">
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center text-3xl shadow-inner flex-shrink-0">📚</div>
-            <div class="min-w-0">
-              <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
-                <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">LANGKAH 1</span>
-                <span id="badge-start-here-modules" class="bg-amber-300 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">⭐ MULA DI SINI</span>
-              </div>
-              <div id="menu-title-modules" class="text-base sm:text-lg font-bold leading-tight">Modul Belajar (Jari & Sempoa)</div>
-              <div id="menu-sub-modules" class="text-[11px] font-bold text-sky-100 mt-0.5">Laluan Jari (Asas, Kawan 5/10 & Gabungan) + Laluan Sempoa</div>
-            </div>
-          </div>
-          <span class="text-xl font-black flex-shrink-0">▶️</span>
-        </button>
 
         <!-- Langkah 2: Alat Latihan Bebas (Simulator Jari & Abakus) -->
         <div class="grid grid-cols-2 gap-3">
@@ -1747,10 +1864,21 @@
       <div class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-3.5">
         <div class="flex items-center justify-between gap-2">
           <div>
-            <h2 class="text-lg font-bold text-teal-950">👨‍👩‍👧‍👦 Panel Pemantauan Ibu Bapa</h2>
-            <p class="text-[11px] font-bold text-slate-500">Pantau markah, baki coin, masa belajar & penguasaan tahap setiap anak anda.</p>
+            <h2 class="text-lg font-bold text-teal-950">👨‍👩‍👧‍👦 Panel Ibu Bapa & Pengajar</h2>
+            <p class="text-[11px] font-bold text-slate-500">Pantau markah anak atau buka bilik latihan langsung untuk murid kelas.</p>
           </div>
           <span id="parent-linked-count-badge" class="text-xs font-black bg-teal-100 text-teal-900 px-3 py-1 rounded-full border border-teal-300">0 Anak</span>
+        </div>
+
+        <!-- Kad Pintas Mod Kelas Cikgu / Pusat Tuisyen -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-2xl p-3 flex items-center justify-between gap-2.5 border-2 border-indigo-950 shadow-sm">
+          <div class="min-w-0">
+            <div class="text-xs font-black flex items-center gap-1"><span>🏫</span> Mod Kelas Cikgu / Tuisyen</div>
+            <div class="text-[10px] font-bold text-indigo-100 mt-0.5">Jana Kod Bilik 4-Digit supaya semua murid terus masuk dari muka depan!</div>
+          </div>
+          <button type="button" onclick="navTo('arena')" class="bubbly-btn bg-amber-300 hover:bg-amber-400 text-amber-950 text-[11px] font-black px-3 py-2 border-2 border-amber-700 flex-shrink-0">
+            ⚡ Buka Bilik Kelas
+          </button>
         </div>
 
         <!-- Kotak Tambah / Pautkan Akaun Anak & Murid (2 Mod Mudah) -->
@@ -1938,6 +2066,7 @@
     let isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
     let isCloudSyncInProgress = false;
     let selectedRegisterRole = 'student';
+    let currentAuthMode = 'login';
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jari-abakus-pintar';
     const APP_LANG_STORAGE_KEY = 'kirapantas_selected_lang_v1';
     let currentAppLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || 'ms';
@@ -1948,8 +2077,8 @@
     const UI_TRANSLATIONS = {
       ms: {
         langLabel: '🌐 Bahasa:',
-        appTitle: 'Jari & Abakus Pintar',
-        appSubtitle: 'Platform Belajar Kira Pantas Chisanbop & Soroban',
+        appTitle: 'KiraKilat',
+        appSubtitle: 'Akademi Kira Pantas 10 Jari & Sempoa Pintar',
         lblName: 'Taip Nama Anda',
         phName: 'Contoh: Aiman / aiman_01 / Siti Nur',
         lblPass: 'Kata Laluan',
@@ -2033,8 +2162,8 @@
       },
       en: {
         langLabel: '🌐 Language:',
-        appTitle: 'Smart Finger & Abacus',
-        appSubtitle: 'Chisanbop & Soroban Mental Math Learning Platform',
+        appTitle: 'KiraKilat',
+        appSubtitle: 'Smart 10-Finger & Abacus Mental Math Academy',
         lblName: 'Student Name (Unique — Case, Space & Symbol Sensitive)',
         phName: 'Example: Aiman / aiman_01 / Siti Nur',
         lblPass: 'Password',
@@ -2118,8 +2247,8 @@
       },
       zh: {
         langLabel: '🌐 语言:',
-        appTitle: '智能手指与珠心算',
-        appSubtitle: '指算与算盘心算学习平台',
+        appTitle: 'KiraKilat 闪电算',
+        appSubtitle: '智能十指与珠心算学习学院',
         lblName: '学生姓名（唯一账号 — 区分大小写、空格和符号）',
         phName: '例如：Aiman / aiman_01 / 小明',
         lblPass: '密码',
@@ -2203,8 +2332,8 @@
       },
       ar: {
         langLabel: '🌐 اللغة:',
-        appTitle: 'الأصابع والمعداد الذكي',
-        appSubtitle: 'منصة تعلم الحساب الذهني السريع (تشيسانبوب وسوروبان)',
+        appTitle: 'KiraKilat كيرا كيلات',
+        appSubtitle: 'أكاديمية الحساب الذهني السريع بالأصابع والمعداد',
         lblName: 'اسم الطالب (فريد — يميز الأحرف والمسافات والرموز)',
         phName: 'مثال: Aiman / أحمد / aiman_01',
         lblPass: 'كلمة المرور',
@@ -2298,7 +2427,14 @@
       const setPh = (id, val) => { const el = document.getElementById(id); if (el) el.placeholder = val; };
 
       setTxt('login-lang-label', t.langLabel);
-      setTxt('login-app-title', t.appTitle);
+      const appTitleEl = document.getElementById('login-app-title');
+      if (appTitleEl) {
+        if (t.appTitle === 'KiraKilat') {
+          appTitleEl.innerHTML = 'Kira<span class="text-sky-600">Kilat</span>';
+        } else {
+          appTitleEl.innerText = t.appTitle;
+        }
+      }
       setTxt('login-app-subtitle', t.appSubtitle);
       setTxt('lbl-login-name', t.lblName);
       setPh('input-player-name', t.phName);
@@ -2306,7 +2442,7 @@
       setPh('input-player-pass', t.phPass);
       setTxt('lbl-show-pass', t.lblShowPass);
       setTxt('lbl-login-pin', t.lblPin);
-      setTxt('btn-login-submit', t.btnLogin);
+      if (typeof syncAuthModeSubmitButton === 'function') syncAuthModeSubmitButton(); else setTxt('btn-login-submit', t.btnLogin);
       setTxt('btn-forgot-pass', t.btnForgot);
       setTxt('login-footer-note', t.footerNote);
 
@@ -2319,8 +2455,10 @@
       setTxt('btn-home-avatar', t.btnAvatar);
       setTxt('btn-home-account', t.btnManageAcc);
 
-      setTxt('menu-title-modules', t.modTitle);
-      setTxt('menu-sub-modules', t.modSub);
+      if (!currentPlayer) {
+        setTxt('menu-title-modules', t.modTitle);
+        setTxt('menu-sub-modules', t.modSub);
+      }
       setTxt('menu-title-simulator', t.simTitle);
       setTxt('menu-sub-simulator', t.simSub);
       setTxt('menu-title-abacus', t.abaTitle);
@@ -2864,6 +3002,41 @@
     }
 
     function playClick() { playTone(520, 'triangle', 0.07, 0.08); }
+
+    /* Kesan Bunyi Ketukan Kayu Sempoa Organik (Wood Bead Foley) */
+    function playWoodBeadClick(isHeaven = false) {
+      if (!isAppSoundOn) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+        const now = sharedAudioCtx.currentTime;
+        const osc = sharedAudioCtx.createOscillator();
+        const gain = sharedAudioCtx.createGain();
+        osc.type = 'triangle';
+        const baseFreq = isHeaven ? 740 : 920;
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.42, now + 0.048);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.052);
+        osc.connect(gain);
+        gain.connect(sharedAudioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.055);
+      } catch (e) {}
+    }
+
+    /* Sonic Logo Rasmi KiraKilat (Kocokan Manik Sempoa + Chime Kilat) */
+    window.playSonicLogo = function() {
+      if (!isAppSoundOn) return;
+      playWoodBeadClick(false);
+      setTimeout(() => playWoodBeadClick(true), 65);
+      setTimeout(() => playTone(587.33, 'triangle', 0.11, 0.12), 140);
+      setTimeout(() => playTone(880.00, 'sine', 0.14, 0.13), 220);
+      setTimeout(() => playTone(1174.66, 'sine', 0.26, 0.14), 310);
+    };
+
     function playTick() {
       playTone(1150, 'square', 0.032, 0.11);
       setTimeout(() => playTone(880, 'triangle', 0.025, 0.06), 28);
@@ -7045,7 +7218,7 @@
     };
 
     window.toggleHelperTop = function(ctxKey, rIdx) {
-      playClick();
+      playWoodBeadClick(true);
       const st = helperAbacusState[ctxKey];
       if (!st) return;
       st.rods[rIdx].top = !st.rods[rIdx].top;
@@ -7053,7 +7226,7 @@
     };
 
     window.setHelperBot = function(ctxKey, rIdx, beadNum) {
-      playClick();
+      playWoodBeadClick(false);
       const st = helperAbacusState[ctxKey];
       if (!st) return;
       if (st.rods[rIdx].bot >= beadNum) {
@@ -7200,13 +7373,13 @@
     }
 
     window.toggleAbacusTop = function(rIdx) {
-      playClick();
+      playWoodBeadClick(true);
       abacusRods[rIdx].top = !abacusRods[rIdx].top;
       renderInteractiveAbacus();
     };
 
     window.setAbacusBot = function(rIdx, beadNum) {
-      playClick();
+      playWoodBeadClick(false);
       if (abacusRods[rIdx].bot >= beadNum) {
         abacusRods[rIdx].bot = beadNum - 1;
       } else {
@@ -8366,7 +8539,58 @@ Jom lawan kira pantas dengan saya!`;
           ? '✅ Disahkan Dewasa: Ibu Bapa boleh pantau semua akaun anak & bermain bersama!'
           : '🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.';
       }
+      const nameLbl = document.getElementById('lbl-login-name');
+      if (nameLbl && currentAuthMode === 'register') {
+        nameLbl.innerText = selectedRegisterRole === 'parent' ? 'Taip Nama Ibu Bapa / Pengajar' : 'Cipta Nama Pelajar Baharu';
+      }
+      syncAuthModeSubmitButton();
     }
+
+    function syncAuthModeSubmitButton() {
+      const submitBtn = document.getElementById('btn-login-submit');
+      if (!submitBtn) return;
+      if (currentAuthMode === 'register') {
+        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-sm sm:text-base py-3.5 border-2 border-emerald-700';
+        submitBtn.innerText = selectedRegisterRole === 'parent'
+          ? '✨ Daftar Akaun Ibu Bapa Sekarang'
+          : '✨ Daftar Akaun Pelajar Sekarang';
+      } else {
+        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm sm:text-base py-3.5 border-2 border-blue-800';
+        submitBtn.innerText = '🔑 Log Masuk Sekarang';
+      }
+    }
+
+    window.switchAuthModeTab = function(mode, silent = false) {
+      if (!silent) playClick();
+      currentAuthMode = mode === 'register' ? 'register' : 'login';
+      const tabLogin = document.getElementById('tab-auth-login');
+      const tabReg = document.getElementById('tab-auth-register');
+      const roleBox = document.getElementById('register-role-selector-box');
+      const switchPrompt = document.getElementById('auth-switch-footer-prompt');
+      const errBox = document.getElementById('login-error-msg');
+      const nameLbl = document.getElementById('lbl-login-name');
+
+      if (errBox && !silent) errBox.classList.add('hidden');
+
+      if (currentAuthMode === 'register') {
+        if (tabLogin) tabLogin.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 transition';
+        if (tabReg) tabReg.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-emerald-600 text-white shadow-xs transition';
+        if (roleBox) roleBox.classList.remove('hidden');
+        if (nameLbl) nameLbl.innerText = selectedRegisterRole === 'parent' ? 'Taip Nama Ibu Bapa / Pengajar' : 'Cipta Nama Pelajar Baharu';
+        if (switchPrompt) {
+          switchPrompt.innerHTML = 'Sudah ada akaun? <button type="button" onclick="switchAuthModeTab(\'login\')" class="text-sky-700 font-black underline">Log Masuk di sini 🔑</button>';
+        }
+      } else {
+        if (tabLogin) tabLogin.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-xs transition';
+        if (tabReg) tabReg.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 transition';
+        if (roleBox) roleBox.classList.add('hidden');
+        if (nameLbl) nameLbl.innerText = 'Taip Nama Anda';
+        if (switchPrompt) {
+          switchPrompt.innerHTML = 'Belum ada akaun? <button type="button" onclick="switchAuthModeTab(\'register\')" class="text-emerald-700 font-black underline">Daftar Baru di sini ✨</button>';
+        }
+      }
+      syncAuthModeSubmitButton();
+    };
 
     window.selectRegisterAccountRole = function(role) {
       playClick();
@@ -8462,6 +8686,67 @@ Jom lawan kira pantas dengan saya!`;
       if (hStars) hStars.innerText = stars;
       if (mStars) mStars.innerText = stars;
       if (mPts) mPts.innerText = pts;
+
+      // Kemas kini Pangkat Hero, Bar XP & Kad Teruskan Belajar di Muka Depan
+      const rankTiers = [
+        { minPts: 0,    badge: '🌱 Perantis KiraKilat', nextPts: 100,  nextName: 'Pejuang Jari' },
+        { minPts: 100,  badge: '🖐️ Pejuang Jari',       nextPts: 300,  nextName: 'Pakar Manik' },
+        { minPts: 300,  badge: '🧮 Pakar Manik',        nextPts: 700,  nextName: 'Kilat Anzan' },
+        { minPts: 700,  badge: '⚡ Kilat Anzan',        nextPts: 1500, nextName: 'Juara Sempoa' },
+        { minPts: 1500, badge: '🏆 Juara Sempoa',       nextPts: 3000, nextName: 'Grandmaster KiraKilat' },
+        { minPts: 3000, badge: '👑 Grandmaster KiraKilat', nextPts: 3000, nextName: 'Tahap Tertinggi!' }
+      ];
+      let curRank = rankTiers[0];
+      for (const r of rankTiers) {
+        if (pts >= r.minPts) curRank = r;
+      }
+      const rankBadgeEl = document.getElementById('home-hero-rank-badge');
+      const nextRankEl = document.getElementById('home-xp-next-rank');
+      const xpFillEl = document.getElementById('home-xp-progress-fill');
+      const xpLblEl = document.getElementById('home-xp-progress-label');
+      if (rankBadgeEl) rankBadgeEl.innerText = curRank.badge;
+      const allTrackIds = [1, 'jari2', 'jari3', 2, 3, 4, 5, 6];
+      const modScoresMap = currentPlayer.modScores || {};
+      const masteredCount = allTrackIds.filter(id => (modScoresMap[id] || 0) >= 40).length;
+      if (xpLblEl) xpLblEl.innerText = `🗺️ Kemajuan: ${masteredCount} / 8 Tahap Dikuasai`;
+      if (nextRankEl) {
+        nextRankEl.innerText = curRank.minPts >= 3000
+          ? '👑 Pangkat Tertinggi Dicapai!'
+          : `Seterusnya: ${curRank.nextName} (${curRank.nextPts} Pts)`;
+      }
+      if (xpFillEl) {
+        const pct = curRank.minPts >= 3000
+          ? 100
+          : Math.max(10, Math.min(100, Math.round(((pts - curRank.minPts) / (curRank.nextPts - curRank.minPts)) * 100)));
+        xpFillEl.style.width = `${pct}%`;
+      }
+
+      // Kesan tahap paling sesuai untuk disambung oleh pelajar
+      const unlockedArr = Array.isArray(currentPlayer.unlockedModules) ? currentPlayer.unlockedModules : [1, 'jari2', 2];
+      let recModId = 1;
+      for (const id of allTrackIds) {
+        if (unlockedArr.includes(id) && (modScoresMap[id] || 0) < 50) {
+          recModId = id;
+          break;
+        }
+      }
+      window._recommendedResumeModuleId = recModId;
+      const recMeta = typeof MODULES_META !== 'undefined' ? MODULES_META[recModId] : null;
+      if (recMeta) {
+        const isJariRec = JARI_TRACK_IDS.includes(recModId);
+        const stepIdx = isJariRec ? (JARI_TRACK_IDS.indexOf(recModId) + 1) : (SEMPOA_TRACK_IDS.indexOf(recModId) + 1);
+        const recBest = modScoresMap[recModId] || 0;
+        const rIcon = document.getElementById('home-resume-icon');
+        const rPill = document.getElementById('home-resume-track-pill');
+        const rTitle = document.getElementById('menu-title-modules');
+        const rSub = document.getElementById('menu-sub-modules');
+        const rBtnTxt = document.getElementById('btn-home-resume-text');
+        if (rIcon) rIcon.innerText = recMeta.icon || '📚';
+        if (rPill) rPill.innerText = isJariRec ? `🖐️ Laluan Jari • Tahap ${stepIdx}` : `🧮 Laluan Sempoa • Tahap ${stepIdx}`;
+        if (rTitle) rTitle.innerText = recMeta.shortTitle || recMeta.title;
+        if (rSub) rSub.innerText = `Rekod Terbaik: ${recBest}/50 Soalan • Tekan untuk terus berlatih!`;
+        if (rBtnTxt) rBtnTxt.innerText = recBest > 0 ? `Sambung Tahap ${stepIdx}` : `Mula Tahap ${stepIdx}`;
+      }
       if (hTime) hTime.innerText = formatDurationMMSS(currentPlayer.playSeconds || 0);
 
       const accIdEl = document.getElementById('acc-id-display');
@@ -8594,8 +8879,87 @@ Jom lawan kira pantas dengan saya!`;
       if (drawer) drawer.classList.toggle('hidden');
     };
 
+    window.resumeRecommendedModule = function() {
+      const targetId = window._recommendedResumeModuleId || 1;
+      navTo('modules');
+      if (typeof openModuleDetail === 'function') {
+        openModuleDetail(targetId);
+      }
+    };
+
+    window.toggleTeacherClassCodeDrawer = function(forceState) {
+      playClick();
+      const drawer = document.getElementById('teacher-class-code-drawer');
+      if (!drawer) return;
+      const shouldShow = typeof forceState === 'boolean' ? forceState : drawer.classList.contains('hidden');
+      drawer.classList.toggle('hidden', !shouldShow);
+      if (shouldShow) {
+        document.getElementById('reset-password-panel')?.classList.add('hidden');
+        document.getElementById('support-help-panel')?.classList.add('hidden');
+        setTimeout(() => document.getElementById('class-join-student-name')?.focus(), 60);
+      }
+    };
+
+    window.joinTeacherClassDirectFromLogin = async function(e) {
+      if (e) e.preventDefault();
+      const rawName = (document.getElementById('class-join-student-name')?.value || '').trim();
+      const code = (document.getElementById('class-join-room-code')?.value || '').trim();
+      if (rawName.length < 2) {
+        playWrong();
+        showAppToast('⚠️ Sila taip nama murid sekurang-kurangnya 2 huruf.');
+        return;
+      }
+      if (!/^\d{4}$/.test(code)) {
+        playWrong();
+        showAppToast('⚠️ Sila masukkan Kod Kelas 4-Digit yang sah daripada guru.');
+        return;
+      }
+
+      playSonicLogo();
+      const todayKey = getTodayDateKey();
+      const safeSlug = rawName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'murid';
+      currentPlayer = {
+        accountId: `class_${safeSlug}_${Date.now()}`,
+        key: `class_${safeSlug}_${Date.now()}`,
+        nameKey: `${safeSlug}_${code}`,
+        name: `${rawName} 🎓`,
+        password: '',
+        recoveryPin: '0000',
+        preferredLang: currentAppLang || 'ms',
+        isGuest: true,
+        isClassGuest: true,
+        isAdmin: false,
+        role: 'student',
+        isParent: false,
+        linkedChildrenIds: [],
+        stars: 10,
+        totalPoints: 0,
+        todayPoints: 0,
+        todayStars: 10,
+        playSeconds: 0,
+        todayDateKey: todayKey,
+        todaySeconds: 0,
+        isOnline: false,
+        lastActiveAt: Date.now(),
+        currentActivityLabel: `Kelas Cikgu #${code}`,
+        unlockedModules: [1, 'jari2', 2],
+        modScores: {},
+        avatarConfig: getDefaultAvatarConfig('boy'),
+        ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
+      };
+
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('app-header').classList.remove('hidden');
+      syncPlayerUI();
+      startPlayerSessionTimer();
+      navTo('arena');
+      if (typeof joinArenaRoomDirect === 'function') {
+        await joinArenaRoomDirect(code);
+      }
+    };
+
     window.startGuestDemoMode = function() {
-      playCheer();
+      playSonicLogo();
       const todayKey = getTodayDateKey();
       const guestNum = Math.floor(Math.random() * 900) + 100;
       currentPlayer = {
@@ -8638,12 +9002,13 @@ Jom lawan kira pantas dengan saya!`;
       playClick();
       const savedGuest = currentPlayer ? { ...currentPlayer } : null;
       logoutPlayer();
+      switchAuthModeTab('register', true);
       if (savedGuest) {
         window._pendingGuestUpgrade = savedGuest;
         const errBox = document.getElementById('login-error-msg');
         if (errBox) {
           errBox.className = 'text-xs font-extrabold text-emerald-900 bg-emerald-50 border-2 border-emerald-400 rounded-xl p-2.5';
-          errBox.innerHTML = `✨ Taip <b>Nama</b> & <b>Kata Laluan</b> anda di atas, kemudian tekan <b>✨ Daftar Baru</b> untuk simpan <b>${savedGuest.stars || 0} Coin</b> & <b>${savedGuest.totalPoints || 0} Markah</b> anda!`;
+          errBox.innerHTML = `✨ Taip <b>Nama</b> & <b>Kata Laluan</b> anda di atas, kemudian tekan <b>✨ Daftar Akaun Pelajar Sekarang</b> untuk simpan <b>${savedGuest.stars || 0} Coin</b> & <b>${savedGuest.totalPoints || 0} Markah</b> anda!`;
           errBox.classList.remove('hidden');
         }
       }
@@ -9387,12 +9752,8 @@ Jom lawan kira pantas dengan saya!`;
       } finally {
         if (loginBtn) {
           loginBtn.disabled = false;
-          loginBtn.innerText = '🔑 Log Masuk';
         }
-        if (regBtn) {
-          regBtn.disabled = false;
-          regBtn.innerText = '✨ Daftar Baru';
-        }
+        syncAuthModeSubmitButton();
       }
     };
 
@@ -9628,6 +9989,7 @@ Jom lawan kira pantas dengan saya!`;
       document.getElementById('input-player-pass').type = 'password';
       const chk = document.getElementById('toggle-show-pass');
       if (chk) chk.checked = false;
+      if (typeof switchAuthModeTab === 'function') switchAuthModeTab('login', true);
       document.getElementById('screen-login').classList.remove('hidden');
     };
 
@@ -13875,14 +14237,14 @@ Jom lawan kira pantas dengan saya!`;
 
     window.toggleDrillAbacusTop = function(rIdx) {
       if (drillLocked) return;
-      playClick();
+      playWoodBeadClick(true);
       drillAbacusRods[rIdx].top = !drillAbacusRods[rIdx].top;
       renderDrillInteractiveStage();
     };
 
     window.setDrillAbacusBot = function(rIdx, beadNum) {
       if (drillLocked) return;
-      playClick();
+      playWoodBeadClick(false);
       if (drillAbacusRods[rIdx].bot >= beadNum) {
         drillAbacusRods[rIdx].bot = beadNum - 1;
       } else {

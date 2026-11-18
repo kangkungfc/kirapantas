@@ -320,7 +320,7 @@
             🟠 Mod Offline Aktif: Akaun sedia ada di peranti ini masih boleh log masuk & belajar.
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.91 (Kemaskini Nota Sempoa Interaktif Beranimasi)
+            Versi 1.9.95 • Nota Sempoa Interaktif Beranimasi (Asas v1.9.95)
           </span>
         </div>
 
@@ -1356,6 +1356,18 @@
         </p>
       </div>
 
+            <!-- Kad Penjaga Sah Berdaftar (Pilihan B: Paparan Di Akaun Murid) -->
+      <div id="acc-registered-guardians-card" class="bubbly-card bg-white border-4 border-teal-400 p-4 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="text-sm font-black text-teal-950">🛡️ Penjaga Sah Berdaftar (Maksimum 3)</h3>
+          <span id="acc-guardians-count-badge" class="text-[10px] font-black bg-teal-100 text-teal-900 border border-teal-300 px-2.5 py-0.5 rounded-full">0/3 Slot</span>
+        </div>
+        <p class="text-[11px] font-bold text-slate-500">
+          Akaun anda dilindungi dengan had maksimum <b>1 Ibu</b>, <b>1 Bapa</b>, dan <b>1 Pengajar</b> sahaja bagi mengelakkan penyamaran.
+        </p>
+        <div id="acc-guardians-list" class="space-y-1.5"></div>
+      </div>
+
       <!-- Kad Naik Taraf / Tukar Jenis Akaun (Pelajar <-> Ibu Bapa / Pengajar) -->
       <div id="acc-role-upgrade-card" class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-2.5">
         <div class="flex items-center justify-between gap-2">
@@ -1830,9 +1842,20 @@
             </button>
           </div>
 
-          <!-- Sub-Borang A: Pautkan Akaun Sedia Ada -->
+          <!-- Sub-Borang A: Pautkan Akaun Sedia Ada (Had Maksimum 3 Penjaga: 1 Ibu, 1 Bapa, 1 Pengajar) -->
           <div id="parent-subpanel-link" class="space-y-2">
-            <p class="text-[10px] font-bold text-slate-600">Masukkan <b>Nama Akaun Anak</b> yang tepat beserta <b>PIN Pemulihan 4-Digit</b> akaun tersebut:</p>
+            <p class="text-[10px] font-bold text-slate-600">Pilih peranan penjaga sah (<b>Had 1 Ibu, 1 Bapa, 1 Pengajar</b> bagi setiap anak), kemudian masukkan nama &amp; PIN 4-Digit anak:</p>
+            <div class="grid grid-cols-3 gap-1.5" role="group" aria-label="Peranan Penjaga">
+              <button type="button" id="btn-guardian-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-teal-600 text-white border-teal-900 shadow-xs transition">
+                👩 Ibu
+              </button>
+              <button type="button" id="btn-guardian-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
+                👨 Bapa
+              </button>
+              <button type="button" id="btn-guardian-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
+                🎓 Pengajar
+              </button>
+            </div>
             <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
               <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
@@ -1846,6 +1869,14 @@
           <div id="parent-subpanel-create" class="hidden space-y-2">
             <p class="text-[10px] font-bold text-slate-600">Daftar akaun baharu untuk anak/murid dan pautkan terus secara automatik:</p>
             <form onsubmit="handleParentCreateChildAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="sm:col-span-2 flex items-center justify-between gap-1.5 bg-white border border-emerald-200 rounded-xl px-2.5 py-1.5">
+                <span class="text-[10px] font-black text-emerald-950">Peranan Anda:</span>
+                <div class="flex items-center gap-1">
+                  <button type="button" id="btn-create-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-teal-600 text-white border-teal-900">👩 Ibu</button>
+                  <button type="button" id="btn-create-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">👨 Bapa</button>
+                  <button type="button" id="btn-create-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">🎓 Pengajar</button>
+                </div>
+              </div>
               <input id="parent-create-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Anak / Murid (cth: Aisyah)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
               <input id="parent-create-child-pass" type="text" required minlength="3" maxlength="20" placeholder="Kata Laluan (cth: 1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
               <select id="parent-create-child-gender" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none">
@@ -1882,6 +1913,37 @@
         <div id="parent-children-list" class="space-y-3 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
       </div>
     </section>
+
+        <!-- POP-UP KECIL: SEMAKAN 3 SLOT PENJAGA & KUNCI KESELAMATAN (PILIHAN A) -->
+    <div id="guardian-slots-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3">
+      <div class="bubbly-card bg-white border-4 border-teal-500 w-full max-w-sm p-4 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-black text-teal-950">🛡️ Kawalan Penjaga Anak</h3>
+            <p id="guardian-modal-child-subtitle" class="text-[11px] font-bold text-slate-500">Maksimum 3 penjaga sah (1 Ibu, 1 Bapa, 1 Pengajar)</p>
+          </div>
+          <button type="button" onclick="closeGuardianSlotsModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs">✖️</button>
+        </div>
+
+        <div id="guardian-modal-slots-list" class="space-y-2"></div>
+
+        <div id="guardian-modal-lock-box" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <div id="guardian-modal-lock-title" class="text-xs font-black text-amber-950">🔓 Pautan Slot Kosong Dibuka</div>
+              <div id="guardian-modal-lock-desc" class="text-[10px] font-bold text-slate-600">Kunci untuk halang akaun luar mengisi slot yang masih kosong.</div>
+            </div>
+            <button type="button" id="btn-toggle-guardian-lock" onclick="toggleChildGuardianLock()" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-700 px-3 py-1.5 text-[11px] font-black flex-shrink-0">
+              🔒 Kunci
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[10px] font-bold text-slate-500 text-center">
+          ✅ Hanya penjaga dalam 3 slot ini sahaja dibenarkan menghantar hadiah Coin kepada anak.
+        </p>
+      </div>
+    </div>
 
     <!-- HAB MESEJ SATU HALAMAN (INBOX + SEND + SENT DALAM SATU PAGE) -->
     <div id="player-inbox-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-2.5 sm:p-3">
@@ -5879,9 +5941,46 @@
         </button>
       `).join('');
 
+      // Bina paparan formula bersegmen tepat di atas sempoa dengan sorotan mengikut langkah semasa
+      const formulaParts = item.f.split('=');
+      const lhsFormula = (formulaParts[0] || '').trim();
+      const rhsFormula = (formulaParts[1] || '').trim();
+      const rhsTokens = rhsFormula.match(/[+-]\s*\d+/g) || [];
+
+      const lhsActive = st.stepIdx === 0;
+      const lhsBadgeHtml = `
+        <button type="button" onclick="goToMod3FormulaStep(0)"
+          class="px-2.5 py-1 rounded-xl font-black text-base sm:text-lg transition ${lhsActive ? 'bg-indigo-600 text-white ring-2 ring-indigo-300 shadow-md scale-105' : 'bg-white text-indigo-900 border border-indigo-200 hover:bg-indigo-50'}"
+          title="Klik untuk ke Langkah 1 (Nilai Mula)">
+          ${lhsFormula}
+        </button>
+      `;
+
+      const rhsBadgesHtml = rhsTokens.map((tok, tIdx) => {
+        const cleanTok = tok.replace(/\s+/g, '');
+        const isTokActive = st.stepIdx === (tIdx + 1);
+        const isTokDone = st.stepIdx > (tIdx + 1);
+        const isPlus = cleanTok.startsWith('+');
+        let cls = 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50';
+        if (isTokActive) {
+          cls = isPlus
+            ? 'bg-emerald-500 text-white ring-2 ring-emerald-300 shadow-md scale-110'
+            : 'bg-rose-500 text-white ring-2 ring-rose-300 shadow-md scale-110';
+        } else if (isTokDone) {
+          cls = 'bg-slate-100 text-slate-500 border border-slate-300';
+        }
+        return `
+          <button type="button" onclick="goToMod3FormulaStep(${tIdx + 1})"
+            class="px-2.5 py-1 rounded-xl font-black text-base sm:text-lg transition ${cls}"
+            title="Klik untuk lihat gerakan ${cleanTok}">
+            ${cleanTok}
+          </button>
+        `;
+      }).join('');
+
       stageEl.innerHTML = `
         <div class="flex flex-wrap items-center justify-between gap-1.5">
-          <span class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">Formula: ${item.f}</span>
+          <span class="inline-block ${cat.badgeClass} text-[10px] font-black px-2.5 py-0.5 rounded-full">${cat.title.split('(')[0].trim()}</span>
           <div class="flex items-center gap-1">
             <span class="text-[10px] font-black text-slate-500 mr-0.5">Langkah:</span>
             ${stepDotsHtml}
@@ -5896,6 +5995,16 @@
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${curStep.badgeColor}">${curStep.badge}</span>
             <span class="text-xs font-black text-slate-700">Nilai Sempoa: <span class="text-base text-indigo-700">${curStep.val}</span></span>
+          </div>
+
+          <!-- Sepanduk Formula Jelas Tepat Di Atas Sempoa -->
+          <div class="bg-white/95 rounded-xl py-2 px-2.5 border-2 border-indigo-200 shadow-sm">
+            <div class="text-[9px] font-black uppercase tracking-wider text-indigo-500 mb-1">Formula Digunakan (Klik bahagian untuk lompat langkah)</div>
+            <div class="flex flex-wrap items-center justify-center gap-1.5">
+              ${lhsBadgeHtml}
+              <span class="font-black text-base sm:text-lg text-slate-500">=</span>
+              ${rhsBadgesHtml}
+            </div>
           </div>
 
           <div id="m3-abacus-anim-box" class="py-1 flex justify-center">
@@ -8708,45 +8817,52 @@ Jom lawan kira pantas dengan saya!`;
     }
 
     /* Cari akaun sedia ada berdasarkan nama tepat (menyokong kedua-dua akaun lama & baharu) */
+    function pickMostActiveAccountRecord(candidates) {
+      if (!candidates || candidates.length === 0) return null;
+      return candidates.sort((a, b) => {
+        const aPerm = String(a.accountId || '').startsWith('acc_') ? 1 : 0;
+        const bPerm = String(b.accountId || '').startsWith('acc_') ? 1 : 0;
+        if (bPerm !== aPerm) return bPerm - aPerm;
+        const bAct = Number(b.lastActiveAt || b.updatedAt || 0);
+        const aAct = Number(a.lastActiveAt || a.updatedAt || 0);
+        if (bAct !== aAct) return bAct - aAct;
+        return (Number(b.totalPoints) || 0) - (Number(a.totalPoints) || 0);
+      })[0];
+    }
+
     async function findAccountByExactName(exactName) {
       const targetNameKey = normalizePlayerKey(exactName);
       loadLocalAccountsFromStorage();
 
-      let found = null;
+      const localMatches = [];
       inMemoryAccounts.forEach((acc) => {
         if (acc && (acc.name === exactName || acc.nameKey === targetNameKey || acc.key === targetNameKey)) {
-          found = acc;
+          localMatches.push(acc);
         }
       });
+      let found = pickMostActiveAccountRecord(localMatches);
 
       if (db) {
         try {
           await authReadyPromise;
           if (fbUser) {
-            /* 1. Semak terus dokumen lama jika wujud */
-            const directSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', targetNameKey));
-            if (directSnap.exists()) {
-              const d = directSnap.data();
-              d.accountId = d.accountId || d.key || targetNameKey;
-              d.key = d.accountId;
-              d.nameKey = d.nameKey || targetNameKey;
-              inMemoryAccounts.set(d.accountId, d);
-              persistLocalAccountsToStorage();
-              return d;
-            }
-            /* 2. Imbas koleksi players untuk akaun yang telah ditukar nama (accountId kekal) */
+            const cloudMatches = [];
+            /* 1. Imbas keseluruhan koleksi players untuk mencari rekod terkini & kekal (accountId) */
             const allSnaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
             allSnaps.forEach((docSnap) => {
               const d = docSnap.data();
-              if (d && (d.name === exactName || d.nameKey === targetNameKey)) {
+              if (d && (d.name === exactName || d.nameKey === targetNameKey || docSnap.id === targetNameKey)) {
                 d.accountId = d.accountId || d.key || docSnap.id;
                 d.key = d.accountId;
                 d.nameKey = d.nameKey || targetNameKey;
                 inMemoryAccounts.set(d.accountId, d);
-                found = d;
+                cloudMatches.push(d);
               }
             });
-            if (found) persistLocalAccountsToStorage();
+            if (cloudMatches.length > 0) {
+              found = pickMostActiveAccountRecord(cloudMatches);
+              persistLocalAccountsToStorage();
+            }
           }
         } catch (err) {
           fbLastError = err?.code || 'read-error';
@@ -8973,6 +9089,9 @@ Jom lawan kira pantas dengan saya!`;
       const mChildBadge = document.getElementById('home-parent-children-badge');
       if (hChildBadge) hChildBadge.innerText = String(currentPlayer.linkedChildrenIds.length);
       if (mChildBadge) mChildBadge.innerText = `${currentPlayer.linkedChildrenIds.length} Anak`;
+      if (typeof renderStudentAccountGuardiansList === 'function') {
+        renderStudentAccountGuardiansList();
+      }
 
       const hAvatar = document.getElementById('header-avatar-box');
       const mAvatar = document.getElementById('home-avatar-box');
@@ -9432,7 +9551,10 @@ Jom lawan kira pantas dengan saya!`;
           isAdmin: false,
           role: currentPlayer.role === 'parent' ? 'parent' : 'student',
           isParent: currentPlayer.role === 'parent' || Boolean(currentPlayer.isParent),
-          linkedChildrenIds: Array.isArray(currentPlayer.linkedChildrenIds) ? currentPlayer.linkedChildrenIds : [],
+          linkedChildrenIds: Array.isArray(currentPlayer.linkedChildrenIds) ? Array.from(new Set(currentPlayer.linkedChildrenIds)) : [],
+          linkedGuardians: normalizeLinkedGuardiansObj(currentPlayer.linkedGuardians),
+          guardianLinkLocked: Boolean(currentPlayer.guardianLinkLocked),
+          parentDailyGifted: currentPlayer.parentDailyGifted && typeof currentPlayer.parentDailyGifted === 'object' ? currentPlayer.parentDailyGifted : {},
           stars: currentPlayer.stars || 0,
           totalPoints: currentPlayer.totalPoints || 0,
           todayPoints: currentPlayer.todayPoints || 0,
@@ -9543,9 +9665,17 @@ Jom lawan kira pantas dengan saya!`;
                 ? Math.max(Number(accData.todaySeconds) || 0, (r.todayDateKey === todayKey ? (Number(r.todaySeconds) || 0) : 0))
                 : (r.todayDateKey === todayKey ? (Number(r.todaySeconds) || 0) : 0);
 
+              const mergedLinkedChildren = Array.from(new Set([
+                ...(Array.isArray(r.linkedChildrenIds) ? r.linkedChildrenIds : []),
+                ...(Array.isArray(accData.linkedChildrenIds) ? accData.linkedChildrenIds : [])
+              ]));
+              const mergedGuardians = mergeLinkedGuardiansObjs(r.linkedGuardians, accData.linkedGuardians);
               mergedRecord = {
                 ...r,
                 ...accData,
+                linkedChildrenIds: mergedLinkedChildren,
+                linkedGuardians: mergedGuardians,
+                guardianLinkLocked: Boolean(r.guardianLinkLocked || accData.guardianLinkLocked),
                 stars: mergedStars,
                 totalPoints: mergedTotalPts,
                 todayPoints: mergedTodayPts,
@@ -9570,7 +9700,10 @@ Jom lawan kira pantas dengan saya!`;
             isAdmin: false,
             role: mergedRecord.role === 'parent' ? 'parent' : 'student',
             isParent: mergedRecord.role === 'parent' || Boolean(mergedRecord.isParent),
-            linkedChildrenIds: Array.isArray(mergedRecord.linkedChildrenIds) ? mergedRecord.linkedChildrenIds : [],
+            linkedChildrenIds: Array.isArray(mergedRecord.linkedChildrenIds) ? Array.from(new Set(mergedRecord.linkedChildrenIds)) : [],
+            linkedGuardians: normalizeLinkedGuardiansObj(mergedRecord.linkedGuardians),
+            guardianLinkLocked: Boolean(mergedRecord.guardianLinkLocked),
+            parentDailyGifted: mergedRecord.parentDailyGifted && typeof mergedRecord.parentDailyGifted === 'object' ? mergedRecord.parentDailyGifted : {},
             stars: mergedRecord.stars || 0,
             totalPoints: mergedRecord.totalPoints || 0,
             todayPoints: mergedRecord.todayPoints || 0,
@@ -9932,7 +10065,10 @@ Jom lawan kira pantas dengan saya!`;
             isAdmin: isAdminUser,
             role: existingAccount.role === 'parent' || existingAccount.isParent ? 'parent' : 'student',
             isParent: existingAccount.role === 'parent' || Boolean(existingAccount.isParent),
-            linkedChildrenIds: Array.isArray(existingAccount.linkedChildrenIds) ? existingAccount.linkedChildrenIds : [],
+            linkedChildrenIds: Array.isArray(existingAccount.linkedChildrenIds) ? Array.from(new Set(existingAccount.linkedChildrenIds)) : [],
+            linkedGuardians: normalizeLinkedGuardiansObj(existingAccount.linkedGuardians),
+            guardianLinkLocked: Boolean(existingAccount.guardianLinkLocked),
+            parentDailyGifted: existingAccount.parentDailyGifted && typeof existingAccount.parentDailyGifted === 'object' ? existingAccount.parentDailyGifted : {},
             stars: Number(existingAccount.stars) || 0,
             totalPoints: Number(existingAccount.totalPoints) || 0,
             todayPoints: savedTodayPts,
@@ -10634,13 +10770,142 @@ Jom lawan kira pantas dengan saya!`;
       }
     };
 
-    /* 10A. FUNGSI PANEL KAWALAN IBU BAPA (PAUTKAN & PANTAU AKAUN ANAK) */
+    /* 10A. FUNGSI PANEL KAWALAN IBU BAPA & PENGAJAR (PAUTAN DUA HALA KEKAL + HAD 3 SLOT PENJAGA) */
+    const GUARDIAN_ROLE_META = {
+      ibu:      { key: 'ibu',      icon: '👩', label: 'Ibu' },
+      bapa:     { key: 'bapa',     icon: '👨', label: 'Bapa' },
+      pengajar: { key: 'pengajar', icon: '🎓', label: 'Pengajar' }
+    };
+    let selectedGuardianLinkRole = 'ibu';
+    let activeGuardianModalChildId = null;
+
+    function normalizeLinkedGuardiansObj(raw) {
+      const out = { ibu: null, bapa: null, pengajar: null };
+      if (!raw || typeof raw !== 'object') return out;
+      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+        const entry = raw[rk];
+        if (entry && typeof entry === 'object' && entry.id) {
+          out[rk] = {
+            id: String(entry.id),
+            name: String(entry.name || 'Penjaga'),
+            roleKey: rk,
+            linkedAt: Number(entry.linkedAt) || Date.now()
+          };
+        }
+      });
+      return out;
+    }
+
+    function mergeLinkedGuardiansObjs(g1, g2) {
+      const a = normalizeLinkedGuardiansObj(g1);
+      const b = normalizeLinkedGuardiansObj(g2);
+      return {
+        ibu: a.ibu || b.ibu || null,
+        bapa: a.bapa || b.bapa || null,
+        pengajar: a.pengajar || b.pengajar || null
+      };
+    }
+
+    function countFilledGuardianSlots(guardiansObj) {
+      const g = normalizeLinkedGuardiansObj(guardiansObj);
+      return ['ibu', 'bapa', 'pengajar'].filter(rk => Boolean(g[rk] && g[rk].id)).length;
+    }
+
+    function isAuthorizedGuardianForChild(guardianId, childObj) {
+      if (!guardianId || !childObj) return false;
+      const g = normalizeLinkedGuardiansObj(childObj.linkedGuardians);
+      return ['ibu', 'bapa', 'pengajar'].some(rk => g[rk] && String(g[rk].id) === String(guardianId));
+    }
+
+    window.selectGuardianLinkRole = function(roleKey) {
+      playClick();
+      selectedGuardianLinkRole = ['ibu', 'bapa', 'pengajar'].includes(roleKey) ? roleKey : 'ibu';
+      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+        const isSel = rk === selectedGuardianLinkRole;
+        const b1 = document.getElementById(`btn-guardian-role-${rk}`);
+        if (b1) {
+          b1.className = isSel
+            ? 'py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-teal-600 text-white border-teal-900 shadow-xs transition'
+            : 'py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition';
+        }
+        const b2 = document.getElementById(`btn-create-role-${rk}`);
+        if (b2) {
+          b2.className = isSel
+            ? 'px-2 py-0.5 rounded-lg text-[10px] font-black border bg-teal-600 text-white border-teal-900'
+            : 'px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300';
+        }
+      });
+    };
+
+    /* Pilihan B: Paparkan senarai Penjaga Sah Berdaftar (Ibu / Bapa / Pengajar) dalam Menu Akaun Murid */
+    window.renderStudentAccountGuardiansList = function() {
+      const listEl = document.getElementById('acc-guardians-list');
+      const badgeEl = document.getElementById('acc-guardians-count-badge');
+      const cardEl = document.getElementById('acc-registered-guardians-card');
+      if (!listEl || !currentPlayer) return;
+
+      const isAdmin = Boolean(currentPlayer.isAdmin);
+      if (cardEl) cardEl.classList.toggle('hidden', isAdmin);
+      if (isAdmin) return;
+
+      const g = normalizeLinkedGuardiansObj(currentPlayer.linkedGuardians);
+      const filled = countFilledGuardianSlots(g);
+      const isLocked = Boolean(currentPlayer.guardianLinkLocked);
+      if (badgeEl) {
+        badgeEl.innerText = `${isLocked ? '🔒' : '🛡️'} ${filled}/3 Slot`;
+      }
+
+      listEl.innerHTML = ['ibu', 'bapa', 'pengajar'].map(rk => {
+        const meta = GUARDIAN_ROLE_META[rk];
+        const slot = g[rk];
+        if (slot && slot.id) {
+          return `
+            <div class="flex items-center justify-between bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-2 text-xs">
+              <span class="font-black text-emerald-950">${meta.icon} ${meta.label}: <span class="text-teal-800">${escapeHtmlSafe(slot.name)}</span></span>
+              <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full">✅ Sah</span>
+            </div>
+          `;
+        }
+        return `
+          <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs">
+            <span class="font-bold text-slate-500">${meta.icon} ${meta.label}: <i>Belum dipautkan</i></span>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${isLocked ? 'bg-amber-100 text-amber-900' : 'bg-slate-200 text-slate-600'}">${isLocked ? '🔒 Dikunci' : 'Slot Kosong'}</span>
+          </div>
+        `;
+      }).join('');
+    };
+
     function showParentLinkFeedback(msg, isOk) {
       const box = document.getElementById('parent-link-feedback');
       if (!box) return;
       box.className = `text-xs font-extrabold rounded-xl p-2 text-center ${isOk ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300'}`;
       box.innerText = msg;
       box.classList.remove('hidden');
+    }
+
+    async function persistChildGuardianRecordTwoWay(childObj) {
+      if (!childObj) return;
+      const cid = childObj.accountId || childObj.key;
+      if (!cid) return;
+      childObj.accountId = cid;
+      childObj.key = cid;
+      childObj.linkedGuardians = normalizeLinkedGuardiansObj(childObj.linkedGuardians);
+      childObj.guardianLinkLocked = Boolean(childObj.guardianLinkLocked);
+      childObj.updatedAt = Date.now();
+      inMemoryAccounts.set(cid, JSON.parse(JSON.stringify(childObj)));
+      persistLocalAccountsToStorage();
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', cid), {
+              linkedGuardians: childObj.linkedGuardians,
+              guardianLinkLocked: childObj.guardianLinkLocked,
+              updatedAt: childObj.updatedAt
+            }, { merge: true });
+          }
+        } catch (e) {}
+      }
     }
 
     window.handleParentLinkChild = async function(e) {
@@ -10652,6 +10917,7 @@ Jom lawan kira pantas dengan saya!`;
       const btn = document.getElementById('btn-parent-link-submit');
       const childName = (nameInp?.value || '').trim();
       const childPin = (pinInp?.value || '').trim();
+      const roleMeta = GUARDIAN_ROLE_META[selectedGuardianLinkRole] || GUARDIAN_ROLE_META.ibu;
 
       if (childName.length < 2 || !/^\d{4}$/.test(childPin)) {
         playWrong();
@@ -10661,7 +10927,7 @@ Jom lawan kira pantas dengan saya!`;
 
       if (btn) {
         btn.disabled = true;
-        btn.innerText = '⏳ Menyemak Akaun Anak...';
+        btn.innerText = '⏳ Menyemak Slot Penjaga...';
       }
 
       try {
@@ -10672,7 +10938,8 @@ Jom lawan kira pantas dengan saya!`;
           return;
         }
         const childId = foundChild.accountId || foundChild.key;
-        if (childId === currentPlayer.accountId) {
+        const myId = currentPlayer.accountId || currentPlayer.key;
+        if (childId === myId) {
           playWrong();
           showParentLinkFeedback('⚠️ Anda tidak boleh memautkan akaun anda sendiri sebagai anak.', false);
           return;
@@ -10684,20 +10951,62 @@ Jom lawan kira pantas dengan saya!`;
           return;
         }
 
+        const guardians = normalizeLinkedGuardiansObj(foundChild.linkedGuardians);
+        const existingRoleOfMe = ['ibu', 'bapa', 'pengajar'].find(rk => guardians[rk] && String(guardians[rk].id) === String(myId));
+
         if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
-        if (currentPlayer.linkedChildrenIds.includes(childId)) {
-          showParentLinkFeedback(`ℹ️ Akaun "${foundChild.name}" sudah pun dipautkan dalam senarai anak anda.`, true);
+
+        if (existingRoleOfMe) {
+          if (!currentPlayer.linkedChildrenIds.includes(childId)) {
+            currentPlayer.linkedChildrenIds.push(childId);
+            await savePlayerCloud();
+            syncPlayerUI();
+          }
+          const exMeta = GUARDIAN_ROLE_META[existingRoleOfMe];
+          showParentLinkFeedback(`ℹ️ Akaun "${foundChild.name}" sudah dipautkan di bawah slot ${exMeta.icon} ${exMeta.label} anda.`, true);
+          await loadParentChildrenDashboard();
           return;
         }
 
-        currentPlayer.linkedChildrenIds.push(childId);
+        if (foundChild.guardianLinkLocked) {
+          playWrong();
+          showParentLinkFeedback(`🔒 Pautan penjaga bagi "${foundChild.name}" telah DIKUNCI oleh penjaga sedia ada. Minta penjaga sedia ada buka kunci dahulu.`, false);
+          return;
+        }
+
+        const slotOccupant = guardians[roleMeta.key];
+        if (slotOccupant && slotOccupant.id && String(slotOccupant.id) !== String(myId)) {
+          playWrong();
+          showParentLinkFeedback(`🚫 Slot ${roleMeta.icon} ${roleMeta.label} bagi "${foundChild.name}" sudah diisi oleh "${slotOccupant.name}". Hanya 1 Ibu, 1 Bapa & 1 Pengajar dibenarkan!`, false);
+          return;
+        }
+
+        if (countFilledGuardianSlots(guardians) >= 3) {
+          playWrong();
+          showParentLinkFeedback(`🚫 Semua 3 slot penjaga (Ibu, Bapa & Pengajar) bagi "${foundChild.name}" telah penuh!`, false);
+          return;
+        }
+
+        // Simpan pautan DUA HALA (Akaun Anak + Akaun Penjaga) supaya kekal dan tidak akan 0 semula
+        guardians[roleMeta.key] = {
+          id: String(myId),
+          name: String(currentPlayer.name || 'Penjaga'),
+          roleKey: roleMeta.key,
+          linkedAt: Date.now()
+        };
+        foundChild.linkedGuardians = guardians;
+        await persistChildGuardianRecordTwoWay(foundChild);
+
+        if (!currentPlayer.linkedChildrenIds.includes(childId)) {
+          currentPlayer.linkedChildrenIds.push(childId);
+        }
         await savePlayerCloud();
         syncPlayerUI();
         playCheer();
         triggerConfetti();
         if (nameInp) nameInp.value = '';
         if (pinInp) pinInp.value = '';
-        showParentLinkFeedback(`✅ Berjaya! Akaun "${foundChild.name}" telah dipautkan ke profil Ibu Bapa anda.`, true);
+        showParentLinkFeedback(`✅ Berjaya! "${foundChild.name}" dipautkan ke slot ${roleMeta.icon} ${roleMeta.label} anda (Simpanan 2-Hala Kekal).`, true);
         await loadParentChildrenDashboard();
       } finally {
         if (btn) {
@@ -10710,10 +11019,130 @@ Jom lawan kira pantas dengan saya!`;
     window.parentUnlinkChild = async function(childId, childName) {
       if (!currentPlayer || !Array.isArray(currentPlayer.linkedChildrenIds)) return;
       playClick();
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
       currentPlayer.linkedChildrenIds = currentPlayer.linkedChildrenIds.filter(id => id !== childId);
       await savePlayerCloud();
+
+      // Kosongkan juga slot penjaga ini dalam rekod anak (2-hala)
+      loadLocalAccountsFromStorage();
+      let childObj = inMemoryAccounts.get(childId);
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', childId));
+            if (snap.exists()) childObj = snap.data();
+          }
+        } catch (e) {}
+      }
+      if (childObj) {
+        const g = normalizeLinkedGuardiansObj(childObj.linkedGuardians);
+        ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+          if (g[rk] && String(g[rk].id) === myId) g[rk] = null;
+        });
+        childObj.linkedGuardians = g;
+        await persistChildGuardianRecordTwoWay(childObj);
+      }
+
       syncPlayerUI();
-      showAppToast(`🔗 Pautan akaun "${childName}" telah dikeluarkan.`);
+      showAppToast(`🔗 Pautan akaun "${childName}" telah dikeluarkan daripada slot penjaga.`);
+      await loadParentChildrenDashboard();
+    };
+
+    /* Pilihan A: Pop-up Kecil Kawalan 3 Slot Penjaga & Kunci Pautan */
+    window.openGuardianSlotsModal = function(childId) {
+      playClick();
+      loadLocalAccountsFromStorage();
+      const child = inMemoryAccounts.get(childId);
+      if (!child) {
+        showAppToast('⚠️ Maklumat penjaga anak tidak ditemui.');
+        return;
+      }
+      activeGuardianModalChildId = childId;
+      renderGuardianSlotsModalContent(child);
+      const modal = document.getElementById('guardian-slots-modal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.closeGuardianSlotsModal = function() {
+      playClick();
+      activeGuardianModalChildId = null;
+      const modal = document.getElementById('guardian-slots-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    function renderGuardianSlotsModalContent(child) {
+      const subEl = document.getElementById('guardian-modal-child-subtitle');
+      const listEl = document.getElementById('guardian-modal-slots-list');
+      const lockTitleEl = document.getElementById('guardian-modal-lock-title');
+      const lockDescEl = document.getElementById('guardian-modal-lock-desc');
+      const lockBtn = document.getElementById('btn-toggle-guardian-lock');
+
+      const g = normalizeLinkedGuardiansObj(child.linkedGuardians);
+      const filled = countFilledGuardianSlots(g);
+      const isLocked = Boolean(child.guardianLinkLocked);
+
+      if (subEl) {
+        subEl.innerHTML = `Akaun: <b>${escapeHtmlSafe(child.name || 'Anak')}</b> • <b>${filled}/3 Slot Diisi</b>`;
+      }
+
+      if (listEl) {
+        listEl.innerHTML = ['ibu', 'bapa', 'pengajar'].map(rk => {
+          const meta = GUARDIAN_ROLE_META[rk];
+          const slot = g[rk];
+          if (slot && slot.id) {
+            return `
+              <div class="flex items-center justify-between bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-2 text-xs">
+                <span class="font-black text-emerald-950">${meta.icon} ${meta.label}: <span class="text-teal-800">${escapeHtmlSafe(slot.name)}</span></span>
+                <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full">✅ Sah</span>
+              </div>
+            `;
+          }
+          return `
+            <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs">
+              <span class="font-bold text-slate-500">${meta.icon} ${meta.label}: <i>Kosong</i></span>
+              <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${isLocked ? 'bg-amber-100 text-amber-900' : 'bg-slate-200 text-slate-600'}">${isLocked ? '🔒 Dikunci' : '🔓 Terbuka'}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (lockTitleEl) {
+        lockTitleEl.innerText = isLocked ? '🔒 Pautan Slot Kosong Dikunci' : '🔓 Pautan Slot Kosong Dibuka';
+      }
+      if (lockDescEl) {
+        lockDescEl.innerText = isLocked
+          ? 'Tiada akaun lain boleh memautkan anak ini selagi kunci diaktifkan.'
+          : 'Kunci untuk halang murid/akaun luar mengisi slot yang masih kosong.';
+      }
+      if (lockBtn) {
+        lockBtn.className = isLocked
+          ? 'bubbly-btn bg-emerald-500 hover:bg-emerald-600 text-white border-2 border-emerald-800 px-3 py-1.5 text-[11px] font-black flex-shrink-0'
+          : 'bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-700 px-3 py-1.5 text-[11px] font-black flex-shrink-0';
+        lockBtn.innerText = isLocked ? '🔓 Buka Kunci' : '🔒 Kunci';
+      }
+    }
+
+    window.toggleChildGuardianLock = async function() {
+      if (!activeGuardianModalChildId || !currentPlayer) return;
+      playClick();
+      loadLocalAccountsFromStorage();
+      const child = inMemoryAccounts.get(activeGuardianModalChildId);
+      if (!child) return;
+
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      if (!isAuthorizedGuardianForChild(myId, child)) {
+        playWrong();
+        showAppToast('🚫 Hanya penjaga sah anak ini boleh menukar tetapan kunci.');
+        return;
+      }
+
+      child.guardianLinkLocked = !Boolean(child.guardianLinkLocked);
+      await persistChildGuardianRecordTwoWay(child);
+      renderGuardianSlotsModalContent(child);
+      showAppToast(child.guardianLinkLocked
+        ? `🔒 Pautan penjaga bagi ${child.name} telah DIKUNCI!`
+        : `🔓 Pautan penjaga bagi ${child.name} telah DIBUKA semula.`);
       await loadParentChildrenDashboard();
     };
 
@@ -10753,6 +11182,7 @@ Jom lawan kira pantas dengan saya!`;
       const genderSel = document.getElementById('parent-create-child-gender');
       const pinInp = document.getElementById('parent-create-child-pin');
       const btn = document.getElementById('btn-parent-create-submit');
+      const roleMeta = GUARDIAN_ROLE_META[selectedGuardianLinkRole] || GUARDIAN_ROLE_META.ibu;
 
       const childName = (nameInp?.value || '').trim();
       const childPass = passInp?.value || '';
@@ -10779,7 +11209,16 @@ Jom lawan kira pantas dengan saya!`;
         }
 
         const newChildId = generatePermanentAccountId();
+        const myId = String(currentPlayer.accountId || currentPlayer.key || '');
         const todayKey = getTodayDateKey();
+        const initialGuardians = { ibu: null, bapa: null, pengajar: null };
+        initialGuardians[roleMeta.key] = {
+          id: myId,
+          name: String(currentPlayer.name || 'Penjaga'),
+          roleKey: roleMeta.key,
+          linkedAt: Date.now()
+        };
+
         const childRecord = {
           accountId: newChildId,
           key: newChildId,
@@ -10792,6 +11231,8 @@ Jom lawan kira pantas dengan saya!`;
           role: 'student',
           isParent: false,
           linkedChildrenIds: [],
+          linkedGuardians: initialGuardians,
+          guardianLinkLocked: false,
           stars: 10,
           totalPoints: 0,
           todayPoints: 0,
@@ -10814,7 +11255,9 @@ Jom lawan kira pantas dengan saya!`;
         }
 
         if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
-        currentPlayer.linkedChildrenIds.push(newChildId);
+        if (!currentPlayer.linkedChildrenIds.includes(newChildId)) {
+          currentPlayer.linkedChildrenIds.push(newChildId);
+        }
         await savePlayerCloud();
         syncPlayerUI();
 
@@ -10822,7 +11265,7 @@ Jom lawan kira pantas dengan saya!`;
         triggerConfetti(50);
         if (nameInp) nameInp.value = '';
         if (passInp) passInp.value = '';
-        showParentLinkFeedback(`✅ Akaun "${childName}" berjaya dicipta (+10 Coin permulaan) & dipautkan!`, true);
+        showParentLinkFeedback(`✅ Akaun "${childName}" dicipta & dipautkan ke slot ${roleMeta.icon} ${roleMeta.label} anda!`, true);
         await loadParentChildrenDashboard();
       } finally {
         if (btn) {
@@ -10835,6 +11278,15 @@ Jom lawan kira pantas dengan saya!`;
     window.parentGiftCoinsToChild = function(childId, childName, bonusCoins = 10) {
       if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
       playClick();
+      loadLocalAccountsFromStorage();
+      const childObj = inMemoryAccounts.get(childId);
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      if (childObj && !isAuthorizedGuardianForChild(myId, childObj)) {
+        playWrong();
+        showAppToast(`🚫 Hanya 3 penjaga rasmi (Ibu, Bapa atau Pengajar) bagi ${childName} sahaja dibenarkan memberi hadiah Coin.`);
+        return;
+      }
+
       const todayKey = getTodayDateKey();
       if (!currentPlayer.parentDailyGifted) currentPlayer.parentDailyGifted = {};
       if (currentPlayer.parentDailyGifted[childId] === todayKey) {
@@ -10843,15 +11295,13 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
       openParentalGate(
-        `Pengesahan Ibu Bapa: Sahkan jawapan untuk menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName} (Had 1x sehari):`,
+        `Pengesahan Penjaga Rasmi: Sahkan jawapan untuk menghadiahkan +${bonusCoins} Coin Semangat kepada ${childName} (Had 1x sehari):`,
         () => executeParentGiftCoinsToChild(childId, childName, bonusCoins)
       );
     };
 
     async function executeParentGiftCoinsToChild(childId, childName, bonusCoins = 10) {
       if (!currentPlayer || (currentPlayer.role !== 'parent' && !currentPlayer.isParent)) return;
-      playCheer();
-      triggerConfetti();
       loadLocalAccountsFromStorage();
       let childObj = inMemoryAccounts.get(childId);
 
@@ -10869,6 +11319,16 @@ Jom lawan kira pantas dengan saya!`;
         showAppToast('⚠️ Rekod anak tidak ditemui buat masa ini.');
         return;
       }
+
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      if (!isAuthorizedGuardianForChild(myId, childObj)) {
+        playWrong();
+        showAppToast(`🚫 Penolakan Keselamatan: Akaun anda tiada dalam 3 slot penjaga sah ${childName}.`);
+        return;
+      }
+
+      playCheer();
+      triggerConfetti();
 
       const todayKey = getTodayDateKey();
       const updatedStars = (Number(childObj.stars) || 0) + bonusCoins;
@@ -10930,7 +11390,6 @@ Jom lawan kira pantas dengan saya!`;
       const totalAns = totC + totW;
       const accPct = totalAns > 0 ? Math.round((totC / totalAns) * 100) : null;
 
-      // 7-Day Consistency Pills (6 days ago -> Today)
       const activeSet = new Set(Array.isArray(st.activeDays) ? st.activeDays : []);
       if (child.todayDateKey && ((Number(child.todaySeconds) || 0) > 0 || (Number(child.todayPoints) || 0) > 0)) {
         activeSet.add(child.todayDateKey);
@@ -10955,7 +11414,6 @@ Jom lawan kira pantas dengan saya!`;
         `);
       }
 
-      // Topic Breakdown & Weakest Topic Detection
       const topicEntries = Object.values(st.byTopic || {}).filter(t => (Number(t.correct) || 0) + (Number(t.wrong) || 0) > 0);
       let weakestHtml = `<div class="text-[10px] font-bold text-slate-500 italic">Belum ada data jawapan direkodkan untuk sesi baharu ini.</div>`;
 
@@ -11028,27 +11486,10 @@ Jom lawan kira pantas dengan saya!`;
       const sumTimeEl = document.getElementById('parent-sum-time');
 
       if (!Array.isArray(currentPlayer.linkedChildrenIds)) currentPlayer.linkedChildrenIds = [];
-      const linkedIds = currentPlayer.linkedChildrenIds;
-      if (countBadge) countBadge.innerText = `${linkedIds.length} Anak`;
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
 
-      if (linkedIds.length === 0) {
-        if (sumPtsEl) sumPtsEl.innerText = '0';
-        if (sumStarsEl) sumStarsEl.innerText = '0';
-        if (sumTimeEl) sumTimeEl.innerText = '0 jam 0 min';
-        if (listEl) {
-          listEl.innerHTML = `
-            <div class="text-center bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 space-y-1.5">
-              <div class="text-3xl">👨‍👩‍👧‍👦</div>
-              <div class="text-xs font-black text-slate-700">Belum Ada Akaun Anak Dipautkan</div>
-              <div class="text-[11px] font-bold text-slate-500">Masukkan Nama Akaun Anak & PIN 4-Digit di atas untuk mula memantau prestasi anak anda!</div>
-            </div>
-          `;
-        }
-        return;
-      }
-
-      if (listEl) {
-        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">⏳ Memuatkan laporan kemajuan anak...</div>`;
+      if (listEl && currentPlayer.linkedChildrenIds.length > 0) {
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">⏳ Menyegerakkan laporan kemajuan anak...</div>`;
       }
 
       loadLocalAccountsFromStorage();
@@ -11074,6 +11515,45 @@ Jom lawan kira pantas dengan saya!`;
         } catch (e) {}
       }
 
+      // PENYEGERAKAN PAUTAN DUA HALA (Anti-Reset 0): Pulihkan senarai anak daripada rekod awan & rekod anak
+      const myCloudRecord = cloudMap.get(myId);
+      const restoredIdSet = new Set(currentPlayer.linkedChildrenIds.map(String));
+      if (myCloudRecord && Array.isArray(myCloudRecord.linkedChildrenIds)) {
+        myCloudRecord.linkedChildrenIds.forEach(id => { if (id) restoredIdSet.add(String(id)); });
+      }
+      cloudMap.forEach((acc, cid) => {
+        if (acc && !isAdminAccountRecord(acc) && isAuthorizedGuardianForChild(myId, acc)) {
+          restoredIdSet.add(String(cid));
+        }
+      });
+
+      const mergedLinkedIds = Array.from(restoredIdSet);
+      const hadMissingLinks = mergedLinkedIds.length !== currentPlayer.linkedChildrenIds.length;
+      currentPlayer.linkedChildrenIds = mergedLinkedIds;
+      if (hadMissingLinks) {
+        await savePlayerCloud();
+        syncPlayerUI();
+      }
+
+      const linkedIds = currentPlayer.linkedChildrenIds;
+      if (countBadge) countBadge.innerText = `${linkedIds.length} Anak`;
+
+      if (linkedIds.length === 0) {
+        if (sumPtsEl) sumPtsEl.innerText = '0';
+        if (sumStarsEl) sumStarsEl.innerText = '0';
+        if (sumTimeEl) sumTimeEl.innerText = '0 jam 0 min';
+        if (listEl) {
+          listEl.innerHTML = `
+            <div class="text-center bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 space-y-1.5">
+              <div class="text-3xl">👨‍👩‍👧‍👦</div>
+              <div class="text-xs font-black text-slate-700">Belum Ada Akaun Anak Dipautkan</div>
+              <div class="text-[11px] font-bold text-slate-500">Pilih peranan (Ibu / Bapa / Pengajar), masukkan Nama Akaun Anak &amp; PIN 4-Digit di atas untuk mula memantau!</div>
+            </div>
+          `;
+        }
+        return;
+      }
+
       const todayKey = getTodayDateKey();
       let totalPtsAll = 0;
       let totalStarsAll = 0;
@@ -11081,7 +11561,6 @@ Jom lawan kira pantas dengan saya!`;
 
       if (listEl) listEl.innerHTML = '';
 
-      // Peta tambahan mengikut key & nameKey supaya pautan lama/baharu sentiasa dijumpai
       const byKeyMap = new Map();
       cloudMap.forEach((v, k) => {
         byKeyMap.set(k, v);
@@ -11090,7 +11569,7 @@ Jom lawan kira pantas dengan saya!`;
         if (v.nameKey) byKeyMap.set(String(v.nameKey), v);
       });
 
-      linkedIds.forEach(cid => {
+      for (const cid of linkedIds) {
         const child = cloudMap.get(cid) || byKeyMap.get(String(cid));
         if (!child) {
           const missCard = document.createElement('div');
@@ -11100,9 +11579,27 @@ Jom lawan kira pantas dengan saya!`;
             <button type="button" onclick="parentUnlinkChild('${cid}', '${cid}')" class="bg-rose-600 text-white font-black px-2.5 py-1 rounded-lg text-[10px]">Buang</button>
           `;
           if (listEl) listEl.appendChild(missCard);
-          return;
+          continue;
         }
 
+        // Auto-migrasi pautan lama ke rekod dua hala anak jika slot masih kosong
+        const guardians = normalizeLinkedGuardiansObj(child.linkedGuardians);
+        if (!isAuthorizedGuardianForChild(myId, child) && !child.guardianLinkLocked && countFilledGuardianSlots(guardians) < 3) {
+          const fallbackRole = ['ibu', 'bapa', 'pengajar'].find(rk => !guardians[rk]);
+          if (fallbackRole) {
+            guardians[fallbackRole] = {
+              id: myId,
+              name: String(currentPlayer.name || 'Penjaga'),
+              roleKey: fallbackRole,
+              linkedAt: Date.now()
+            };
+            child.linkedGuardians = guardians;
+            persistChildGuardianRecordTwoWay(child);
+          }
+        }
+
+        const filledSlotsCount = countFilledGuardianSlots(child.linkedGuardians);
+        const isChildLocked = Boolean(child.guardianLinkLocked);
         const cPts = Number(child.totalPoints) || 0;
         const cStars = Number(child.stars) || 0;
         const cTodayPts = child.todayDateKey === todayKey ? (Number(child.todayPoints) || 0) : 0;
@@ -11151,7 +11648,8 @@ Jom lawan kira pantas dengan saya!`;
             `).join('')
           : `<div class="text-[10px] font-bold text-slate-400 italic">Belum ada rekod masa terperinci bagi mod latihan.</div>`;
 
-        const safeChildName = String(child.name || 'Anak').replace(/'/g, "\\'");
+        const safeChildName = String(child.name || 'Anak').replace(/'/g, "\'");
+        const realCid = child.accountId || child.key || cid;
         const card = document.createElement('div');
         card.className = 'bg-gradient-to-br from-white to-teal-50/40 border-2 border-teal-300 rounded-2xl p-3.5 space-y-2.5 shadow-xs';
         card.innerHTML = `
@@ -11168,7 +11666,12 @@ Jom lawan kira pantas dengan saya!`;
                 <div class="text-[10px] font-bold text-indigo-700 truncate">🕹️ Terakhir Main: <b>${escapeHtmlSafe(lastModeName)}</b> (${lastSeenStr})</div>
               </div>
             </div>
-            <button type="button" onclick="parentUnlinkChild('${cid}', '${safeChildName}')" class="text-[10px] font-black text-slate-400 hover:text-rose-600 px-2 py-1" title="Buang pautan anak">✖️</button>
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <button type="button" onclick="openGuardianSlotsModal('${realCid}')" class="text-[10px] font-black px-2 py-1 rounded-full border ${isChildLocked ? 'bg-amber-100 text-amber-950 border-amber-400' : 'bg-teal-50 text-teal-900 border-teal-300'} hover:opacity-85 transition" title="Semak & kunci 3 slot penjaga (Ibu, Bapa, Pengajar)">
+                ${isChildLocked ? '🔒' : '🛡️'} ${filledSlotsCount}/3
+              </button>
+              <button type="button" onclick="parentUnlinkChild('${realCid}', '${safeChildName}')" class="text-[10px] font-black text-slate-400 hover:text-rose-600 px-1.5 py-1" title="Buang pautan anak">✖️</button>
+            </div>
           </div>
 
           <div class="grid grid-cols-3 gap-1.5 text-center text-[11px]">
@@ -11205,16 +11708,16 @@ Jom lawan kira pantas dengan saya!`;
           </div>
 
           <div class="pt-1 grid grid-cols-2 gap-1.5">
-            <button type="button" onclick="parentQuickSwitchToChild('${cid}')" class="bubbly-btn bg-sky-600 hover:bg-sky-700 text-white border border-sky-950 py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
+            <button type="button" onclick="parentQuickSwitchToChild('${realCid}')" class="bubbly-btn bg-sky-600 hover:bg-sky-700 text-white border border-sky-950 py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
               <span>📲 Serah Peranti</span>
             </button>
-            <button type="button" onclick="parentGiftCoinsToChild('${cid}', '${safeChildName}', 10)" class="bubbly-btn ${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[cid] === todayKey ? 'bg-slate-200 text-slate-500 border-slate-300' : 'bg-amber-400 hover:bg-amber-300 text-amber-950 border-amber-600'} border py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
-              <span>${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[cid] === todayKey ? '✅ +10 Coin Diberi' : '🎁 +10 Coin'}</span>
+            <button type="button" onclick="parentGiftCoinsToChild('${realCid}', '${safeChildName}', 10)" class="bubbly-btn ${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[realCid] === todayKey ? 'bg-slate-200 text-slate-500 border-slate-300' : 'bg-amber-400 hover:bg-amber-300 text-amber-950 border-amber-600'} border py-2 px-2 text-[10px] sm:text-[11px] font-black inline-flex items-center justify-center gap-1">
+              <span>${currentPlayer.parentDailyGifted && currentPlayer.parentDailyGifted[realCid] === todayKey ? '✅ +10 Coin Diberi' : '🎁 +10 Coin'}</span>
             </button>
           </div>
         `;
         if (listEl) listEl.appendChild(card);
-      });
+      }
 
       if (sumPtsEl) sumPtsEl.innerText = String(totalPtsAll);
       if (sumStarsEl) sumStarsEl.innerText = String(totalStarsAll);
@@ -11240,7 +11743,6 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
 
-      // Simpan sesi Ibu Bapa sementara untuk kembali semula dengan Pengesahan Dewasa
       window._savedParentHandoffSession = { ...currentPlayer };
       await markPlayerOfflineCloud();
 
@@ -11253,6 +11755,8 @@ Jom lawan kira pantas dengan saya!`;
         isAdmin: false,
         role: 'student',
         isParent: false,
+        linkedGuardians: normalizeLinkedGuardiansObj(childObj.linkedGuardians),
+        guardianLinkLocked: Boolean(childObj.guardianLinkLocked),
         todayDateKey: todayKey,
         todaySeconds: childObj.todayDateKey === todayKey ? (Number(childObj.todaySeconds) || 0) : 0,
         todayPoints: childObj.todayDateKey === todayKey ? (Number(childObj.todayPoints) || 0) : 0,

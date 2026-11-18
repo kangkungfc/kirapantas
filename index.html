@@ -67,6 +67,66 @@
     .animate-float {
       animation: floatSlow 3s ease-in-out infinite;
     }
+    @keyframes pandaFloatTeach {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      35% { transform: translateY(-5px) rotate(-2.5deg); }
+      70% { transform: translateY(-3px) rotate(2.5deg); }
+    }
+    @keyframes pandaSwayFriendly {
+      0%, 100% { transform: rotate(-3.5deg) translateY(0px); }
+      50% { transform: rotate(3.5deg) translateY(-4px); }
+    }
+    @keyframes pandaBreatheCalm {
+      0%, 100% { transform: scale(1) translateY(0px); }
+      50% { transform: scale(1.06) translateY(-3px); }
+    }
+    @keyframes pandaCheerPop {
+      0% { transform: scale(0.55) rotate(-8deg); }
+      45% { transform: scale(1.14) rotate(4deg); }
+      70% { transform: scale(0.96) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes pandaCheerBounce {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      40% { transform: translateY(-8px) scale(1.06); }
+      70% { transform: translateY(-2px) scale(0.98); }
+    }
+    @keyframes pandaWobbleConfused {
+      0%, 100% { transform: rotate(0deg) translateX(0px); }
+      25% { transform: rotate(-6deg) translateX(-3px); }
+      75% { transform: rotate(6deg) translateX(3px); }
+    }
+    @keyframes pandaPulseIdea {
+      0%, 100% { transform: scale(1) rotate(-2deg); filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.35)); }
+      50% { transform: scale(1.11) rotate(3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.85)); }
+    }
+    .panda-anim-teach {
+      animation: pandaFloatTeach 3.2s ease-in-out infinite;
+      will-change: transform;
+    }
+    .panda-anim-sway {
+      animation: pandaSwayFriendly 3.4s ease-in-out infinite;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+    .panda-anim-breathe {
+      animation: pandaBreatheCalm 3s ease-in-out infinite;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+    .panda-anim-cheer {
+      animation: pandaCheerPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, pandaCheerBounce 2.2s ease-in-out 0.45s infinite;
+      will-change: transform;
+    }
+    .panda-anim-confused {
+      animation: pandaWobbleConfused 2.4s ease-in-out infinite;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+    .panda-anim-idea {
+      animation: pandaPulseIdea 2s ease-in-out infinite;
+      will-change: transform, filter;
+    }
     .bead-transition {
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -324,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.0.7 • Integrasi Lengkap 9 Pose Maskot Cikgu Kiko Panda Lutsinar
+            Versi 2.0.8 • Maskot Cikgu Kiko Panda Diperbesar + Animasi Ekspresif
           </span>
         </div>
 
@@ -729,7 +789,7 @@
       <div id="parent-daily-guide-card" class="bubbly-card bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 border-4 border-amber-400 p-4 space-y-2.5">
         <div class="flex items-start justify-between gap-2">
           <div class="flex items-center gap-2.5">
-            <div class="w-14 h-14 rounded-2xl bg-white border-2 border-amber-300 flex items-center justify-center p-1 shadow-sm flex-shrink-0"><img id="modules-list-panda-img" alt="Cikgu Kiko Baca Buku" class="w-full h-full object-contain" /></div>
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white border-2 border-amber-300 flex items-center justify-center p-1 shadow-sm flex-shrink-0 overflow-hidden"><img id="modules-list-panda-img" alt="Cikgu Kiko Baca Buku" class="w-full h-full object-contain panda-anim-sway" /></div>
             <div>
               <div id="parent-guide-title" class="text-xs font-black text-amber-950">Ni hao! Kurikulum 6 Tahap Kalkulator Manusia</div>
               <div id="parent-guide-sub" class="text-[11px] font-bold text-amber-800">Rahsia juara dunia: Konsisten 15 minit setiap hari!</div>
@@ -773,7 +833,7 @@
             <div class="min-w-0 flex-1">
               <div id="mod-guide-age-badge" class="inline-block text-[10px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300 mb-0.5">Sasaran Umur</div>
               <div class="flex items-center gap-2 mt-0.5">
-                <img id="mod-guide-panda-img" alt="Cikgu Kiko Panda" class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-300 object-contain p-0.5 flex-shrink-0" />
+                <img id="mod-guide-panda-img" alt="Cikgu Kiko Panda" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-amber-50 border-2 border-amber-300 object-contain p-1 flex-shrink-0 shadow-sm panda-anim-teach" />
                 <div class="min-w-0">
                   <h3 id="mod-guide-title" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">Tajuk Tahap</h3>
                   <p id="mod-guide-subtitle" class="text-xs font-bold text-slate-500">Objektif</p>
@@ -856,7 +916,7 @@
                   <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
                 </button>
               </div>
-              <div class="flex items-center gap-1.5"><img id="mod-helper-idea-panda-img" alt="Idea Cikgu Kiko" class="w-8 h-8 object-contain flex-shrink-0" /><span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-left sm:text-right">Praktis gerakkan jari untuk memori otot!</span></div>
+              <div class="flex items-center gap-1.5"><img id="mod-helper-idea-panda-img" alt="Idea Cikgu Kiko" class="w-14 h-14 sm:w-16 sm:h-16 object-contain flex-shrink-0 panda-anim-idea" /><span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-left sm:text-right">Praktis gerakkan jari untuk memori otot!</span></div>
             </div>
 
             <!-- Simulator Jari Bantu Kira (0 - 99) -->
@@ -886,7 +946,7 @@
 
           <!-- Kad Kemenangan Bintang Mini (Setiap 10 Soalan) -->
           <div id="mod-star-milestone-card" class="hidden bg-gradient-to-br from-amber-300 via-yellow-200 to-orange-300 border-3 border-amber-600 rounded-3xl p-4 text-center space-y-2.5 shadow-lg">
-            <img id="mod-milestone-panda-img" alt="Juara KiraKilat" class="w-20 h-20 mx-auto object-contain drop-shadow-md animate-bounce" /><div id="mod-milestone-stars-emoji" class="text-2xl">⭐⭐</div>
+            <img id="mod-milestone-panda-img" alt="Juara KiraKilat" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto object-contain drop-shadow-md panda-anim-cheer" /><div id="mod-milestone-stars-emoji" class="text-2xl">⭐⭐</div>
             <div id="mod-milestone-title" class="text-base sm:text-lg font-black text-amber-950">Tahniah! Bintang 1/5 Selesai!</div>
             <p id="mod-milestone-desc" class="text-xs font-bold text-amber-900">Anda dapat bonus +3 Coin! Bersedia untuk Bintang seterusnya?</p>
             <div class="grid grid-cols-2 gap-2 pt-1">
@@ -904,7 +964,7 @@
     <section id="screen-simulator" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button id="btn-sim-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <div class="flex items-center gap-2"><img id="sim-panda-img" alt="Cikgu Kiko Kira" class="w-11 h-11 object-contain drop-shadow-sm" /><h2 id="sim-screen-title" class="text-lg font-bold text-slate-800">🖐️ Simulator Jari</h2></div>
+        <div class="flex items-center gap-2"><img id="sim-panda-img" alt="Cikgu Kiko Kira" class="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm panda-anim-breathe" /><h2 id="sim-screen-title" class="text-lg font-bold text-slate-800">🖐️ Simulator Jari</h2></div>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 text-center space-y-3">
@@ -937,7 +997,7 @@
     <section id="screen-abacus" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button id="btn-aba-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <div class="flex items-center gap-2"><img id="aba-panda-img" alt="Cikgu Kiko Sempoa" class="w-11 h-11 object-contain drop-shadow-sm" /><h2 id="aba-screen-title" class="text-lg font-bold text-slate-800">🧮 Abakus 4-Tiang</h2></div>
+        <div class="flex items-center gap-2"><img id="aba-panda-img" alt="Cikgu Kiko Sempoa" class="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm panda-anim-breathe" /><h2 id="aba-screen-title" class="text-lg font-bold text-slate-800">🧮 Abakus 4-Tiang</h2></div>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-amber-400 p-4 text-center space-y-3">
@@ -970,7 +1030,7 @@
     <section id="screen-quiz" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button id="btn-quiz-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <div class="flex items-center gap-2"><img id="quiz-ops-panda-img" alt="Cikgu Kiko Operasi" class="w-11 h-11 object-contain drop-shadow-sm" /><h2 id="quiz-screen-title" class="text-lg font-bold text-slate-800">⚡ Cabaran Kilat</h2></div>
+        <div class="flex items-center gap-2"><img id="quiz-ops-panda-img" alt="Cikgu Kiko Operasi" class="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm panda-anim-teach" /><h2 id="quiz-screen-title" class="text-lg font-bold text-slate-800">⚡ Cabaran Kilat</h2></div>
       </div>
 
       <div class="bubbly-card bg-white border-4 border-purple-400 p-4 space-y-3">
@@ -1006,7 +1066,7 @@
             <button type="button" onclick="toggleHelperAbacus('blitz')" id="blitz-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-3 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1.5">
               <span>🧮</span> <span id="blitz-helper-toggle-label">Buka Sempoa Kira</span>
             </button>
-            <div class="flex items-center gap-1.5"><img id="blitz-helper-idea-panda-img" alt="Idea Cikgu Kiko" class="w-8 h-8 object-contain flex-shrink-0" /><span id="blitz-helper-hint" class="text-[10px] font-extrabold text-purple-700">Buka sempoa hanya jika perlukan bantuan</span></div>
+            <div class="flex items-center gap-1.5"><img id="blitz-helper-idea-panda-img" alt="Idea Cikgu Kiko" class="w-14 h-14 sm:w-16 sm:h-16 object-contain flex-shrink-0 panda-anim-idea" /><span id="blitz-helper-hint" class="text-[10px] font-extrabold text-purple-700">Buka sempoa hanya jika perlukan bantuan</span></div>
           </div>
           <div id="blitz-helper-abacus-wrap" class="hidden bg-amber-950 rounded-2xl p-2.5 border-3 border-amber-700 shadow-inner space-y-2">
             <div class="flex items-center justify-between bg-amber-900/90 text-white px-3 py-1.5 rounded-xl text-xs font-black">
@@ -1022,7 +1082,7 @@
 
         <!-- Kad Tamat 3 Nyawa Cabaran Kilat -->
         <div id="blitz-gameover-card" class="hidden bg-gradient-to-br from-rose-100 via-amber-100 to-purple-100 border-3 border-rose-400 rounded-3xl p-4 text-center space-y-2.5">
-          <img id="blitz-gameover-panda-img" alt="Cikgu Kiko Cuba Lagi" class="w-16 h-16 mx-auto object-contain" />
+          <img id="blitz-gameover-panda-img" alt="Cikgu Kiko Cuba Lagi" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto object-contain drop-shadow-sm panda-anim-confused" />
           <div class="text-base font-black text-rose-950">Tamat 3 Nyawa!</div>
           <div id="blitz-gameover-summary" class="text-xs font-bold text-slate-700">Skor Sesi Ini: <b>0</b> • Rekod Terbaik: <b>0</b></div>
           <button type="button" onclick="resetBlitzLivesAndStart()" class="w-full bubbly-btn bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black text-xs py-3 border-2 border-indigo-900">
@@ -1095,7 +1155,7 @@
 
       <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-3">
         <div class="text-center">
-          <img id="score-champion-panda-img" alt="Juara Papan Skor" class="w-20 h-20 mx-auto mb-1 object-contain drop-shadow-md" /><h2 id="score-screen-title" class="text-lg font-bold text-indigo-950">🏆 Papan Skor Juara Online</h2>
+          <img id="score-champion-panda-img" alt="Juara Papan Skor" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-1 object-contain drop-shadow-md panda-anim-cheer" /><h2 id="score-screen-title" class="text-lg font-bold text-indigo-950">🏆 Papan Skor Juara Online</h2>
           <p id="score-screen-sub" class="text-xs font-bold text-slate-500">Kedudukan markah, coin & masa aktif semua pelajar secara langsung</p>
           <div id="scoreboard-sync-status" class="inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">⏳ Menyemak sambungan awan...</div>
           <div id="scoreboard-apikey-fix" class="hidden mt-2 bg-rose-50 border border-rose-200 rounded-xl p-2 text-left space-y-1.5">
@@ -1127,7 +1187,7 @@
     <section id="screen-anzan" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <button id="btn-anzan-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
-        <div class="flex items-center gap-2"><img id="anzan-ops-panda-img" alt="Cikgu Kiko Anzan" class="w-11 h-11 object-contain drop-shadow-sm" /><h2 id="anzan-screen-title" class="text-lg font-bold text-rose-950">🧠 Akademi Master Anzan</h2></div>
+        <div class="flex items-center gap-2"><img id="anzan-ops-panda-img" alt="Cikgu Kiko Anzan" class="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm panda-anim-teach" /><h2 id="anzan-screen-title" class="text-lg font-bold text-rose-950">🧠 Akademi Master Anzan</h2></div>
       </div>
 
       <!-- Tab 3 Latihan Teras Master Abakus & Jari -->
@@ -1826,7 +1886,7 @@
       <div class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-3.5">
         <div class="flex items-center justify-between gap-2">
           <div>
-            <div class="flex items-center gap-2.5"><img id="parent-panel-panda-img" alt="Laporan Cikgu Kiko" class="w-14 h-14 object-contain flex-shrink-0 drop-shadow-sm" /><div><h2 class="text-lg font-bold text-teal-950">👨‍👩‍👧‍👦 Panel Ibu Bapa & Pengajar</h2>
+            <div class="flex items-center gap-2.5"><img id="parent-panel-panda-img" alt="Laporan Cikgu Kiko" class="w-20 h-20 sm:w-24 sm:h-24 object-contain flex-shrink-0 drop-shadow-sm panda-anim-breathe" /><div><h2 class="text-lg font-bold text-teal-950">👨‍👩‍👧‍👦 Panel Ibu Bapa & Pengajar</h2>
             <p class="text-[11px] font-bold text-slate-500">Pantau markah anak atau buka bilik latihan langsung untuk murid kelas.</p></div></div>
           </div>
           <span id="parent-linked-count-badge" class="text-xs font-black bg-teal-100 text-teal-900 px-3 py-1 rounded-full border border-teal-300">0 Anak</span>
@@ -2094,8 +2154,8 @@
 
         <!-- Maskot Panda Cikgu Kiko + Buih Dialog Mesra Kanak-Kanak -->
         <div class="bg-gradient-to-br from-sky-50 via-white to-amber-50 border-2 border-amber-300 rounded-2xl p-3 flex items-center gap-3 text-left">
-          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white border-2 border-amber-300 shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden p-1">
-            <img id="kid-tut-panda-img" alt="Cikgu Kiko Panda" class="w-full h-full object-contain animate-float" />
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white border-2 border-amber-300 shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden p-1">
+            <img id="kid-tut-panda-img" alt="Cikgu Kiko Panda" class="w-full h-full object-contain panda-anim-sway" />
           </div>
           <div class="min-w-0 flex-1 space-y-1">
             <span class="inline-block text-[10px] font-black bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full">🐼 Cikgu Kiko Panda</span>
@@ -7001,7 +7061,7 @@
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
         const bOkHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${bw.pts} Markah</b> ${coinNote}${blitzStreakTag}`;
-        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('champion', 'w-12 h-12 object-contain flex-shrink-0')}<div>${headerBadge}<div class="mt-1">${bOkHtml}</div></div></div>`;
+        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('champion', 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 panda-anim-cheer')}<div>${headerBadge}<div class="mt-1">${bOkHtml}</div></div></div>`;
         fb.classList.remove('hidden');
         showQuizInstantPopup(bOkHtml, popupVariant, headerBadge);
         triggerCenterRewardBurst(totalBlitzPts, totalBlitzCoins, bw.tierKey, isBlitzCombo10);
@@ -7025,7 +7085,7 @@
         btnEl.className = 'bubbly-btn bg-rose-500 border-3 border-rose-700 py-3.5 text-lg font-black text-white';
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
         const bWrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan sebenar ialah <b>${currentBlitzAnswer}</b>. (Nyawa tinggal: ${blitzLives}/3)`;
-        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('confused', 'w-12 h-12 object-contain flex-shrink-0')}<div>${bWrongHtml}</div></div>`;
+        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('confused', 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 panda-anim-confused')}<div>${bWrongHtml}</div></div>`;
         fb.classList.remove('hidden');
         showQuizInstantPopup(bWrongHtml, 'wrong');
         if (blitzLives <= 0) {
@@ -7522,7 +7582,7 @@
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
         const msgHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${reward.total} Markah</b> & <b>+1 Coin</b> ${COIN_ICON_HTML}${streakTagHtml}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
-        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('champion', 'w-12 h-12 object-contain flex-shrink-0')}<div>${headerBadge}<div class="mt-1">${msgHtml}</div></div></div>`;
+        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg('champion', 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 panda-anim-cheer')}<div>${headerBadge}<div class="mt-1">${msgHtml}</div></div></div>`;
         fb.classList.remove('hidden');
         showQuizInstantPopup(msgHtml, popupVariant, headerBadge);
         triggerCenterRewardBurst(totalEarnedPts, totalEarnedCoins, reward.tierKey, isCombo10);
@@ -7571,7 +7631,7 @@
 
         const wrongHtml = `❌ Kurang tepat (${elapsedSec.toFixed(1)}s)! Jawapan betul ialah <b>${q.answer}</b>.${autoHelperNote}`;
         fb.className = 'rounded-2xl p-3 text-center text-xs font-black bg-rose-100 text-rose-800 border-2 border-rose-300';
-        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg(autoHelperNote ? 'idea_bulb' : 'confused', 'w-12 h-12 object-contain flex-shrink-0')}<div>${wrongHtml}</div></div>`;
+        fb.innerHTML = `<div class="flex items-center justify-center gap-2.5">${getPandaMascotImg(autoHelperNote ? 'idea_bulb' : 'confused', autoHelperNote ? 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 panda-anim-idea' : 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 panda-anim-confused')}<div>${wrongHtml}</div></div>`;
         fb.classList.remove('hidden');
         showQuizInstantPopup(`❌ Kurang tepat! Jawapan betul: <b>${q.answer}</b>`, 'wrong');
       }
@@ -15986,9 +16046,13 @@ Jom lawan kira pantas dengan saya!`;
       const tutPandaImg = document.getElementById('kid-tut-panda-img');
       if (tutPandaImg && window.PANDA_MASCOT_POSES) {
         const stepPoses = ['peace_abacus', 'teach_board', 'idea_bulb'];
+        const stepAnims = ['panda-anim-sway', 'panda-anim-teach', 'panda-anim-idea'];
         tutPandaImg.src = kidTutStepSolved
           ? PANDA_MASCOT_POSES.champion
           : (PANDA_MASCOT_POSES[stepPoses[kidTutStepIdx]] || PANDA_MASCOT_POSES.peace_abacus);
+        tutPandaImg.className = 'w-full h-full object-contain ' + (kidTutStepSolved
+          ? 'panda-anim-cheer'
+          : (stepAnims[kidTutStepIdx] || 'panda-anim-sway'));
       }
       if (titleEl) titleEl.innerText = step.title;
       if (instrEl) instrEl.innerHTML = step.instruction;

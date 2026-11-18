@@ -324,7 +324,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.0.1 • Perlindungan Skor Anti-Timpa (High-Water-Mark & Multi-Tab Sync)
+            Versi 2.0.2 • Panel Admin Laras Coin & Markah + Perlindungan Anti-Timpa
           </span>
         </div>
 
@@ -12102,6 +12102,10 @@ Jom lawan kira pantas dengan saya!`;
         const safeName = (st.name || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const miniAvatar = renderRealisticAvatarSVG(st.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full');
         const isConfirmingDelete = adminPendingDeleteId === id;
+        const isEditingStats = window.adminEditingStatsId === id;
+        const todayKey = getTodayDateKey();
+        const curDailyPts = st.todayDateKey === todayKey ? (Number(st.todayPoints) || 0) : 0;
+        const curDailyStars = st.todayDateKey === todayKey ? (Number(st.todayStars) || 0) : 0;
 
         return `
           <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-2.5">
@@ -12111,23 +12115,57 @@ Jom lawan kira pantas dengan saya!`;
                 <div class="min-w-0">
                   <div class="text-sm font-black text-slate-800 truncate">${safeName}</div>
                   <div class="text-[10px] font-bold text-slate-500">ID: <span class="font-mono">${id}</span> • PIN: <b>${st.recoveryPin || '0000'}</b></div>
-                  <div class="text-[10px] font-extrabold text-indigo-700 inline-flex items-center gap-1 flex-wrap">${COIN_ICON_HTML} ${st.stars || 0} Coin • 🏅 ${st.totalPoints || 0} Markah • ⏱️ ${formatDurationHHMM(st.playSeconds || 0)}</div>
+                  <div class="text-[10px] font-extrabold text-indigo-700 inline-flex items-center gap-1 flex-wrap">${COIN_ICON_HTML} ${st.stars || 0} Coin • 🔥 Hari Ini: <b>${curDailyPts}</b> Pts (${curDailyStars} Coin) • 🏅 Terkumpul: <b>${st.totalPoints || 0}</b> Pts • ⏱️ ${formatDurationHHMM(st.playSeconds || 0)}</div>
                 </div>
               </div>
             </div>
-            <div class="flex flex-wrap gap-2 pt-1 border-t border-slate-200">
-              <button type="button" onclick="adminResetStudentPassword('${id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-2.5 text-[11px] font-black">
+            ${isEditingStats ? `
+              <form onsubmit="adminSaveStudentStats(event, '${id}')" class="bg-sky-50 border-2 border-sky-300 rounded-xl p-2.5 space-y-2">
+                <div class="text-[11px] font-black text-sky-950">✏️ Laras Coin & Markah (${safeName})</div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  <div>
+                    <label class="block text-[9px] font-black text-slate-700 mb-0.5">🪙 Jumlah Coin</label>
+                    <input id="adm-edit-stars-${id}" type="number" min="0" max="9999999" required value="${Number(st.stars) || 0}" class="w-full px-2 py-1.5 rounded-lg border border-sky-300 text-xs font-black bg-white" />
+                  </div>
+                  <div>
+                    <label class="block text-[9px] font-black text-slate-700 mb-0.5">🔥 Markah Hari Ini</label>
+                    <input id="adm-edit-today-pts-${id}" type="number" min="0" max="9999999" required value="${curDailyPts}" class="w-full px-2 py-1.5 rounded-lg border border-sky-300 text-xs font-black bg-white" />
+                  </div>
+                  <div>
+                    <label class="block text-[9px] font-black text-slate-700 mb-0.5">✨ Coin Hari Ini</label>
+                    <input id="adm-edit-today-stars-${id}" type="number" min="0" max="9999999" required value="${curDailyStars}" class="w-full px-2 py-1.5 rounded-lg border border-sky-300 text-xs font-black bg-white" />
+                  </div>
+                  <div>
+                    <label class="block text-[9px] font-black text-slate-700 mb-0.5">🏅 Markah Terkumpul</label>
+                    <input id="adm-edit-total-pts-${id}" type="number" min="0" max="9999999" required value="${Number(st.totalPoints) || 0}" class="w-full px-2 py-1.5 rounded-lg border border-sky-300 text-xs font-black bg-white" />
+                  </div>
+                </div>
+                <div class="flex gap-1.5 pt-0.5">
+                  <button type="submit" class="flex-1 bubbly-btn bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-900 py-1.5 px-2.5 text-[11px] font-black">
+                    💾 Simpan Perubahan
+                  </button>
+                  <button type="button" onclick="adminToggleEditStudentStats(null)" class="bubbly-btn bg-slate-200 text-slate-700 border border-slate-400 py-1.5 px-2.5 text-[11px] font-black">
+                    Batal
+                  </button>
+                </div>
+              </form>
+            ` : ''}
+            <div class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-200">
+              <button type="button" onclick="adminToggleEditStudentStats('${id}')" class="flex-1 bubbly-btn bg-sky-500 hover:bg-sky-400 text-white border border-sky-800 py-2 px-2 text-[11px] font-black">
+                ✏️ Laras Coin & Markah
+              </button>
+              <button type="button" onclick="adminResetStudentPassword('${id}')" class="flex-1 bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-600 py-2 px-2 text-[11px] font-black">
                 🔑 Reset Password
               </button>
               ${isConfirmingDelete ? `
-                <button type="button" onclick="adminConfirmDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-600 text-white border border-rose-900 py-2 px-2.5 text-[11px] font-black">
+                <button type="button" onclick="adminConfirmDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-600 text-white border border-rose-900 py-2 px-2 text-[11px] font-black">
                   ⚠️ Sah Padam Kekal?
                 </button>
-                <button type="button" onclick="adminCancelDeleteStudent()" class="bubbly-btn bg-slate-200 text-slate-700 border border-slate-400 py-2 px-2.5 text-[11px] font-black">
+                <button type="button" onclick="adminCancelDeleteStudent()" class="bubbly-btn bg-slate-200 text-slate-700 border border-slate-400 py-2 px-2 text-[11px] font-black">
                   Batal
                 </button>
               ` : `
-                <button type="button" onclick="adminRequestDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 py-2 px-2.5 text-[11px] font-black">
+                <button type="button" onclick="adminRequestDeleteStudent('${id}')" class="flex-1 bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 py-2 px-2 text-[11px] font-black">
                   🗑️ Padam Akaun
                 </button>
               `}
@@ -12135,6 +12173,72 @@ Jom lawan kira pantas dengan saya!`;
           </div>
         `;
       }).join('');
+    };
+
+    window.adminEditingStatsId = null;
+
+    window.adminToggleEditStudentStats = function(studentId) {
+      playClick();
+      window.adminEditingStatsId = (window.adminEditingStatsId === studentId) ? null : studentId;
+      filterAdminStudentList();
+    };
+
+    window.adminSaveStudentStats = async function(e, studentId) {
+      if (e) e.preventDefault();
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const target = adminCachedStudents.find(s => (s.accountId || s.key) === studentId);
+      if (!target) return;
+
+      const newStars = Math.max(0, Math.floor(Number(document.getElementById(`adm-edit-stars-${studentId}`)?.value) || 0));
+      const newTodayPts = Math.max(0, Math.floor(Number(document.getElementById(`adm-edit-today-pts-${studentId}`)?.value) || 0));
+      const newTodayStars = Math.max(0, Math.floor(Number(document.getElementById(`adm-edit-today-stars-${studentId}`)?.value) || 0));
+      const newTotalPts = Math.max(newTodayPts, Math.floor(Number(document.getElementById(`adm-edit-total-pts-${studentId}`)?.value) || 0));
+      const todayKey = getTodayDateKey();
+      const fb = document.getElementById('admin-action-feedback');
+
+      try {
+        target.stars = newStars;
+        target.todayDateKey = todayKey;
+        target.todayPoints = newTodayPts;
+        target.todayStars = newTodayStars;
+        target.totalPoints = newTotalPts;
+        target.updatedAt = Date.now();
+
+        inMemoryAccounts.set(studentId, target);
+        persistLocalAccountsToStorage();
+
+        if (db) {
+          await authReadyPromise;
+          if (fbUser) {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId), {
+              ...target,
+              stars: newStars,
+              todayDateKey: todayKey,
+              todayPoints: newTodayPts,
+              todayStars: newTodayStars,
+              totalPoints: newTotalPts,
+              updatedAt: target.updatedAt
+            }, { merge: true });
+          }
+        }
+
+        window.adminEditingStatsId = null;
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `✅ Berjaya! Rekod "${target.name}" dikemas kini: ${newStars} Coin • ${newTodayPts} Markah Hari Ini • ${newTotalPts} Markah Terkumpul.`;
+          fb.classList.remove('hidden');
+        }
+        filterAdminStudentList();
+      } catch (err) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '❌ Gagal menyimpan pelarasan Coin & Markah pelajar.';
+          fb.classList.remove('hidden');
+        }
+      }
     };
 
     window.adminResetStudentPassword = async function(studentId) {

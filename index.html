@@ -324,7 +324,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.0.2 • Panel Admin Laras Coin & Markah + Perlindungan Anti-Timpa
+            Versi 2.0.3 • Kata Laluan Admin Disimpan Kekal Di Awan + Panel Laras Skor
           </span>
         </div>
 
@@ -9626,21 +9626,34 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
 
-      /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor / Firestore semasa ujian admin */
+      /* Pengecualian Mutlak Akaun Admin: Jangan simpan ke papan skor 'players', simpan dalam dokumen tersembunyi 'admin_config/master' */
       if (isAdminAccountRecord(currentPlayer)) {
+        const adminPayload = {
+          name: currentPlayer.name || ADMIN_DEFAULT_NAME,
+          password: currentPlayer.password || ADMIN_DEFAULT_PASS,
+          recoveryPin: currentPlayer.recoveryPin || '2026',
+          preferredLang: currentPlayer.preferredLang || currentAppLang,
+          avatarConfig: currentPlayer.avatarConfig || getDefaultAvatarConfig('boy'),
+          mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
+          lastMysteryPrizeText: currentPlayer.lastMysteryPrizeText || '',
+          dailyLoginStreak: currentPlayer.dailyLoginStreak || { streakDay: 1, lastClaimDate: '' },
+          dailyQuests: currentPlayer.dailyQuests || null,
+          updatedAt: Date.now()
+        };
         try {
-          localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify({
-            name: currentPlayer.name,
-            password: currentPlayer.password,
-            recoveryPin: currentPlayer.recoveryPin || '2026',
-            preferredLang: currentPlayer.preferredLang || currentAppLang,
-            avatarConfig: currentPlayer.avatarConfig,
-            mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
-            lastMysteryPrizeText: currentPlayer.lastMysteryPrizeText || '',
-            dailyLoginStreak: currentPlayer.dailyLoginStreak || { streakDay: 1, lastClaimDate: '' },
-            dailyQuests: currentPlayer.dailyQuests || null
-          }));
+          localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify(adminPayload));
         } catch (e) {}
+        if (isDeviceOnline && db) {
+          try {
+            await authReadyPromise;
+            if (fbUser) {
+              const adminCfgRef = doc(db, 'artifacts', appId, 'public', 'data', 'admin_config', 'master');
+              await setDoc(adminCfgRef, adminPayload, { merge: true });
+            }
+          } catch (admCloudErr) {
+            console.warn('Gagal simpan profil Admin ke awan:', admCloudErr);
+          }
+        }
         await purgeAdminFromCloudScoreboard();
         return;
       }
@@ -10056,7 +10069,7 @@ Jom lawan kira pantas dengan saya!`;
       if (nameInp) nameInp.value = ADMIN_DEFAULT_NAME;
       if (passInp) passInp.value = '';
       if (passInp) passInp.focus();
-      showAppToast('Masukkan kata laluan Admin (lalai: admin123) untuk masuk ke Panel Kawalan.');
+      showAppToast('Masukkan kata laluan Admin anda untuk masuk ke Panel Kawalan.');
     };
 
     function startPlayerSessionTimer() {
@@ -10270,6 +10283,33 @@ Jom lawan kira pantas dengan saya!`;
             const rawAdm = localStorage.getItem('kirapantas_admin_profile_v1');
             if (rawAdm) savedAdmin = JSON.parse(rawAdm);
           } catch (e) {}
+
+          /* Baca profil Admin terkini daripada awan (admin_config/master) supaya kata laluan baharu kekal merentas semua peranti */
+          if (isDeviceOnline && db) {
+            try {
+              await authReadyPromise;
+              if (fbUser) {
+                const adminCfgRef = doc(db, 'artifacts', appId, 'public', 'data', 'admin_config', 'master');
+                const adminCfgSnap = await getDoc(adminCfgRef);
+                if (adminCfgSnap.exists()) {
+                  const cloudAdm = adminCfgSnap.data();
+                  if (cloudAdm && typeof cloudAdm === 'object') {
+                    const localTs = Number(savedAdmin && savedAdmin.updatedAt) || 0;
+                    const cloudTs = Number(cloudAdm.updatedAt) || 0;
+                    if (!savedAdmin || cloudTs >= localTs || cloudAdm.password) {
+                      savedAdmin = Object.assign({}, savedAdmin || {}, cloudAdm);
+                      try {
+                        localStorage.setItem('kirapantas_admin_profile_v1', JSON.stringify(savedAdmin));
+                      } catch (e) {}
+                    }
+                  }
+                }
+              }
+            } catch (admReadErr) {
+              console.warn('Gagal baca profil Admin dari awan:', admReadErr);
+            }
+          }
+
           existingAccount = {
             accountId: ADMIN_ACCOUNT_ID,
             key: ADMIN_ACCOUNT_ID,

@@ -3288,32 +3288,59 @@
         }
       }).join('');
 
-      // Ibu Jari Anatomi
+      // Ibu Jari Anatomi: Perbezaan Ketara Antara Dilipat Ke Dalam Tapak Tangan vs Dibuka Mendepa Keluar!
       const thumbActive = !!fingerState[0];
       const thumbDelta = highlightDeltas && highlightDeltas[0];
       const thumbClickAttr = interactive ? `onclick="${clickHandlerName}('${handSide}', 0)" style="cursor:pointer"` : '';
-      const thumbPivotX = isLeft ? 86 : 34;
-      const thumbPivotY = 93;
-      const thumbRot = isLeft
-        ? (thumbActive ? 34 : 66)
-        : (thumbActive ? -34 : -66);
       const thumbStroke = thumbDelta === 'open' ? '#10B981' : (thumbDelta === 'fold' ? '#E11D48' : '#8C4A1C');
-      const thumbStrokeW = thumbDelta ? '2.4' : '1.5';
+      const thumbStrokeW = thumbDelta ? '2.5' : '1.6';
 
-      const thumbSvg = `
-        <g ${thumbClickAttr} transform="translate(${thumbPivotX}, ${thumbPivotY}) rotate(${thumbRot})">
-          <path d="M -9,4
-                   C -10,-10 -8.5,-24 -6.8,-31
-                   C -5,-37 5,-37 6.8,-31
-                   C 8.5,-24 9.5,-10 8.5,4 Z"
-                fill="${thumbActive ? `url(#${uid}_finger_open)` : `url(#${uid}_finger_folded)`}"
-                stroke="${thumbStroke}" stroke-width="${thumbStrokeW}" stroke-linejoin="round"/>
-          <ellipse cx="${isLeft ? -2.2 : 2.2}" cy="-28.5" rx="3.4" ry="4.5" fill="url(#${uid}_nail)" opacity="0.72"/>
-          <path d="M -5.5,-15 Q 0,-13.2 5.5,-15" fill="none" stroke="#B46934" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/>
-          <rect x="-8" y="-12" width="16" height="11.5" rx="5" fill="${thumbActive ? '#D97706' : '#94A3B8'}" stroke="#FFFFFF" stroke-width="1"/>
-          <text x="0" y="-3.6" text-anchor="middle" font-size="7.6" font-weight="900" fill="#FFFFFF">${labels[0]}</text>
-        </g>
-      `;
+      let thumbSvg = '';
+      if (thumbActive) {
+        // IBU JARI DIBUKA (OPEN): Tegak mendepa keluar jauh dari tapak tangan, jelas terpisah dan bersinar!
+        const pivotX = isLeft ? 83 : 37;
+        const pivotY = 89;
+        const openRot = isLeft ? 48 : -48;
+        thumbSvg = `
+          <g ${thumbClickAttr} transform="translate(${pivotX}, ${pivotY}) rotate(${openRot})">
+            <!-- Pangkal otot ibu jari terbuka -->
+            <path d="M -9.5,5
+                     C -11,-12 -9.5,-29 -7.2,-38
+                     C -5.2,-44.5 5.2,-44.5 7.2,-38
+                     C 9.5,-29 10.5,-12 9.5,5 Z"
+                  fill="url(#${uid}_finger_open)" stroke="${thumbStroke}" stroke-width="${thumbStrokeW}" stroke-linejoin="round"/>
+            <!-- Kuku ibu jari -->
+            <ellipse cx="${isLeft ? -2.4 : 2.4}" cy="-35.5" rx="3.7" ry="4.8" fill="url(#${uid}_nail)" opacity="0.8"/>
+            <!-- Garis sendi ibu jari -->
+            <path d="M -6,-19 Q 0,-17 6,-19" fill="none" stroke="#B46934" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+            <!-- Lencana Nilai Emas Terang (50 / 5) -->
+            <rect x="-8.5" y="-14" width="17" height="12.5" rx="5.5" fill="#D97706" stroke="#FFFFFF" stroke-width="1.2"/>
+            <text x="0" y="-5" text-anchor="middle" font-size="8" font-weight="900" fill="#FFFFFF">${labels[0]}</text>
+            ${thumbDelta === 'open' ? `<circle cx="0" cy="-47" r="3.6" fill="#10B981" stroke="#FFFFFF" stroke-width="1.1"/>` : ''}
+          </g>
+        `;
+      } else {
+        // IBU JARI DILIPAT (FOLDED): Melintang masuk ke dalam tengah tapak tangan (seperti menggenggam), tidak terjulur keluar!
+        const foldX = isLeft ? 61 : 59;
+        const foldY = 85;
+        const foldRot = isLeft ? -68 : 68;
+        thumbSvg = `
+          <g ${thumbClickAttr} transform="translate(${foldX}, ${foldY}) rotate(${foldRot})">
+            <!-- Bayang ibu jari yang dirapatkan ke tapak tangan -->
+            <path d="M -8.5,11
+                     C -9,1 -8.2,-12 -6.5,-18
+                     C -4.8,-23.5 4.8,-23.5 6.5,-18
+                     C 8.2,-12 8.8,1 8.5,11
+                     C 7.5,15 -7.5,15 -8.5,11 Z"
+                  fill="url(#${uid}_finger_folded)" stroke="${thumbStroke}" stroke-width="${thumbStrokeW}" stroke-linejoin="round"/>
+            <!-- Garis lipatan sendi ibu jari di atas tapak tangan -->
+            <path d="M -5.5,-4 Q 0,-1.8 5.5,-4" fill="none" stroke="#9A4E1C" stroke-width="1.25" stroke-linecap="round" opacity="0.85"/>
+            <!-- Lencana kelabu malap menandakan ibu jari dilipat (tidak aktif) -->
+            <rect x="-7.5" y="-13" width="15" height="10.5" rx="4.5" fill="#94A3B8" stroke="#FFFFFF" stroke-width="0.9" opacity="0.9"/>
+            <text x="0" y="-5.2" text-anchor="middle" font-size="7.2" font-weight="900" fill="#FFFFFF">${labels[0]}</text>
+          </g>
+        `;
+      }
 
       const palmPath = isLeft
         ? `M 23,74

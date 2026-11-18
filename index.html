@@ -316,11 +316,15 @@
           </div>
 
           <p id="login-footer-note" class="sr-only">Simpan tahap, coin & avatar anda secara automatik.</p>
-          <div id="login-offline-banner" class="hidden w-full bg-amber-100 border-2 border-amber-400 text-amber-950 rounded-xl px-2.5 py-1.5 text-[10px] font-black">
-            🟠 Mod Offline Aktif: Akaun sedia ada di peranti ini masih boleh log masuk & belajar.
+          <div id="login-offline-banner" class="hidden w-full bg-amber-50 border-2 border-amber-400 text-amber-950 rounded-xl p-2.5 text-[10px] font-black space-y-1.5 text-left">
+            <div class="flex items-center justify-between gap-1">
+              <span>🟠 <b>Mod Offline Aktif:</b> Tiada sambungan internet.</span>
+              <span class="bg-amber-200 text-amber-950 px-1.5 py-0.5 rounded-md text-[9px]">Auto-Sync Bila Online</span>
+            </div>
+            <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 1.9.95 • Nota Sempoa Interaktif Beranimasi (Asas v1.9.95)
+            Versi 2.0.0 • Mod Offline Lengkap & Nota Jari Anatomi 3D (Asas v1.9.99)
           </span>
         </div>
 
@@ -8958,12 +8962,22 @@ Jom lawan kira pantas dengan saya!`;
     }
 
     async function findAccountByExactName(exactName) {
-      const targetNameKey = normalizePlayerKey(exactName);
+      const trimmedName = String(exactName || '').trim();
+      const lowerName = trimmedName.toLowerCase();
+      const targetNameKey = normalizePlayerKey(trimmedName);
       loadLocalAccountsFromStorage();
 
       const localMatches = [];
       inMemoryAccounts.forEach((acc) => {
-        if (acc && (acc.name === exactName || acc.nameKey === targetNameKey || acc.key === targetNameKey)) {
+        if (!acc || !acc.name) return;
+        const accTrimmed = String(acc.name).trim();
+        if (
+          acc.name === exactName ||
+          accTrimmed === trimmedName ||
+          accTrimmed.toLowerCase() === lowerName ||
+          acc.nameKey === targetNameKey ||
+          acc.key === targetNameKey
+        ) {
           localMatches.push(acc);
         }
       });
@@ -9722,10 +9736,55 @@ Jom lawan kira pantas dengan saya!`;
       }
     }
 
+    window.quickFillOfflineAccount = function(accName) {
+      playClick();
+      const nameInp = document.getElementById('input-player-name');
+      const passInp = document.getElementById('input-player-pass');
+      if (nameInp) nameInp.value = accName;
+      if (typeof switchAuthModeTab === 'function') switchAuthModeTab('login', true);
+      if (passInp) {
+        passInp.value = '';
+        passInp.focus();
+      }
+      showAppToast(`👤 Nama <b>"${escapeHtmlSafe(accName)}"</b> diisi! Masukkan kata laluan untuk masuk secara offline.`);
+    };
+
+    function renderOfflineSavedAccountsChips() {
+      const box = document.getElementById('offline-saved-accounts-box');
+      if (!box) return;
+      loadLocalAccountsFromStorage();
+      const savedList = [];
+      inMemoryAccounts.forEach((acc) => {
+        if (acc && acc.name && !isAdminAccountRecord(acc)) {
+          savedList.push(acc);
+        }
+      });
+      if (savedList.length === 0) {
+        box.innerHTML = `
+          <div class="text-[10px] font-bold text-slate-700 leading-snug">
+            ℹ️ Belum ada akaun disimpan di pelayar/peranti ini. Anda masih boleh tekan <b>✨ Daftar Baru</b> untuk buat akaun offline (akan disegerak automatik bila online), atau tekan <b>🎮 Cuba Main Terus</b>.
+          </div>
+        `;
+        return;
+      }
+      const chipsHtml = savedList.map(acc => {
+        const safeName = escapeHtmlSafe(acc.name);
+        const jsArg = JSON.stringify(String(acc.name)).replace(/"/g, '&quot;');
+        return `<button type="button" onclick="quickFillOfflineAccount(${jsArg})" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-200 text-amber-950 border border-amber-400 text-[10px] font-black shadow-2xs transition">👤 ${safeName}</button>`;
+      }).join('');
+      box.innerHTML = `
+        <div class="text-[9px] font-extrabold text-amber-900">⚡ Akaun Tersimpan Di Peranti Ini (Klik nama untuk log masuk):</div>
+        <div class="flex flex-wrap gap-1 pt-0.5">${chipsHtml}</div>
+      `;
+    }
+
     function updateNetworkStatusUI() {
       isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
       const loginBanner = document.getElementById('login-offline-banner');
-      if (loginBanner) loginBanner.classList.toggle('hidden', isDeviceOnline);
+      if (loginBanner) {
+        loginBanner.classList.toggle('hidden', isDeviceOnline);
+        if (!isDeviceOnline) renderOfflineSavedAccountsChips();
+      }
 
       const badge = document.getElementById('header-network-badge');
       if (!badge) return;
@@ -10162,7 +10221,12 @@ Jom lawan kira pantas dengan saya!`;
         if (mode === 'login') {
           if (!existingAccount) {
             playWrong();
-            errBox.innerHTML = `❌ Akaun <b>"${displayName}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan butang hijau <b>✨ Daftar Baru</b>.`;
+            const safeDisp = escapeHtmlSafe(displayName.trim());
+            if (!isDeviceOnline) {
+              errBox.innerHTML = `🟠 <b>Mod Offline:</b> Akaun <b>"${safeDisp}"</b> tiada dalam simpanan pelayar/peranti ini (akaun mesti pernah log masuk semasa Online sekali di peranti ini).<br>👉 Tekan tab <b>✨ Daftar Baru</b> untuk buat akaun offline sekarang, atau tekan <b>🎮 Cuba Main Terus</b>.`;
+            } else {
+              errBox.innerHTML = `❌ Akaun <b>"${safeDisp}"</b> belum didaftarkan! Jika anda murid baharu, sila tekan tab <b>✨ Daftar Baru</b>.`;
+            }
             errBox.classList.remove('hidden');
             return;
           }
@@ -10263,13 +10327,7 @@ Jom lawan kira pantas dengan saya!`;
             }
           } catch (e) {}
         } else {
-          /* Mod DAFTAR BARU */
-          if (!isDeviceOnline) {
-            playWrong();
-            errBox.innerHTML = `🟠 <b>Mod Offline:</b> Pendaftaran akaun baharu memerlukan internet supaya nama tidak bertindih di papan skor. Jika sudah ada akaun di peranti ini, sila tekan <b>🔑 Log Masuk</b>.`;
-            errBox.classList.remove('hidden');
-            return;
-          }
+          /* Mod DAFTAR BARU (Sokong Online & Giliran Pendaftaran Offline) */
           if (existingAccount) {
             playWrong();
             errBox.innerHTML = `⚠️ Nama <b>"${existingAccount.name}"</b> sudah wujud! Jika ini akaun lama anda, sila tekan butang biru <b>🔑 Log Masuk</b>. Jika murid baharu, guna nama unik yang lain.`;
@@ -10277,14 +10335,16 @@ Jom lawan kira pantas dengan saya!`;
             return;
           }
 
+          const cleanRegName = displayName.trim();
           const newAccountId = generatePermanentAccountId();
           const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || currentAppLang || 'ms';
           const isParentRole = selectedRegisterRole === 'parent';
           currentPlayer = {
             accountId: newAccountId,
             key: newAccountId,
-            nameKey: normalizePlayerKey(displayName),
-            name: displayName,
+            nameKey: normalizePlayerKey(cleanRegName),
+            name: cleanRegName,
+            pendingCloudSync: !isDeviceOnline,
             password: password,
             recoveryPin: '0000',
             preferredLang: keptLang,

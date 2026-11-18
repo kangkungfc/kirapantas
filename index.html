@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.1 • Alat Bantu Jari & Sempoa Pintar (Auto-Sembunyi Pada Soalan Baca Rajah)
+            Versi 2.1.2 • Laporan Ibu Bapa Pintar: Cadangan Modul Latihan Khusus Mengikut Kelemahan
           </span>
         </div>
 
@@ -11852,19 +11852,94 @@ Jom lawan kira pantas dengan saya!`;
       const topicEntries = Object.values(st.byTopic || {}).filter(t => (Number(t.correct) || 0) + (Number(t.wrong) || 0) > 0);
       let weakestHtml = `<div class="text-[10px] font-bold text-slate-500 italic">Belum ada data jawapan direkodkan untuk sesi baharu ini.</div>`;
 
+      function getRecommendedModulesForWeakTopic(topicKey, topicLabel) {
+        const k = String(topicKey || '').toLowerCase();
+        const lbl = String(topicLabel || '').toLowerCase();
+        if (k.includes('anzan_flash') || lbl.includes('flash anzan')) {
+          return '🧠 Sempoa Tahap 4: Anzan Minda & ⚡ Jari Tahap 3: Silat Jari Kilat (latih bayangan minda & kelajuan)';
+        }
+        if (k.includes('anzan_dict') || lbl.includes('dikte suara')) {
+          return '🧠 Sempoa Tahap 4: Anzan Minda & 🖐️ Jari Tahap 2: Formula 5 & 10 (latih fokus pendengaran & langkah berturut)';
+        }
+        if (k.includes('mod_1') || lbl.includes('jari tahap 1')) {
+          return '🖐️ Jari Tahap 1: Asas 0–99 (kukuhkan bacaan nilai jari kiri puluh & kanan sa)';
+        }
+        if (k.includes('mod_jari2') || lbl.includes('jari tahap 2')) {
+          if (k.includes('kecil') || lbl.includes('kawan kecil')) {
+            return '🖐️ Jari Tahap 2: Formula 5 & 10 (pilih penapis "Kawan Kecil 5")';
+          }
+          if (k.includes('besar') || lbl.includes('kawan besar')) {
+            return '🖐️ Jari Tahap 2: Formula 5 & 10 (pilih penapis "Kawan Besar 10")';
+          }
+          if (k.includes('gabung') || lbl.includes('gabungan')) {
+            return '🖐️ Jari Tahap 2: Formula 5 & 10 (pilih penapis "Formula Gabungan")';
+          }
+          return '🖐️ Jari Tahap 2: Formula 5 & 10 & 🖐️ Jari Tahap 1: Asas 0–99';
+        }
+        if (k.includes('mod_jari3') || lbl.includes('jari tahap 3')) {
+          return '⚡ Jari Tahap 3: Silat Jari Kilat & 🖐️ Jari Tahap 2: Formula 5 & 10';
+        }
+        if (k.includes('mod_2') || lbl.includes('sempoa tahap 1')) {
+          return '🧮 Sempoa Tahap 1: Kenali Manik (latih bacaan Manik Syurga 5 & Manik Bumi 1)';
+        }
+        if (k.includes('mod_3') || lbl.includes('sempoa tahap 2')) {
+          if (k.includes('kecil') || lbl.includes('kawan kecil')) {
+            return '🧮 Sempoa Tahap 2: Kawan 5 & 10 (pilih penapis "Kawan Kecil 5")';
+          }
+          if (k.includes('besar') || lbl.includes('kawan besar')) {
+            return '🧮 Sempoa Tahap 2: Kawan 5 & 10 (pilih penapis "Kawan Besar 10")';
+          }
+          if (k.includes('gabung') || lbl.includes('gabungan')) {
+            return '🧮 Sempoa Tahap 2: Kawan 5 & 10 (pilih penapis "Formula Gabungan")';
+          }
+          return '🧮 Sempoa Tahap 2: Kawan 5 & 10 & 🧮 Sempoa Tahap 1: Kenali Manik';
+        }
+        if (k.includes('mod_4') || lbl.includes('sempoa tahap 3')) {
+          return '✖️ Sempoa Tahap 3: Darab & Bahagi & 🧮 Sempoa Tahap 2: Kawan 5 & 10';
+        }
+        if (k.includes('mod_5') || lbl.includes('sempoa tahap 4')) {
+          return '🧠 Sempoa Tahap 4: Anzan Minda & 🧮 Sempoa Tahap 2: Kawan 5 & 10';
+        }
+        if (k.includes('mod_6') || lbl.includes('sempoa tahap 5')) {
+          return '🏆 Sempoa Tahap 5: Master Juara & ✖️ Sempoa Tahap 3: Darab & Bahagi';
+        }
+        if (k.includes('blitz') || lbl.includes('kilat')) {
+          if (k.includes('basic') || lbl.includes('asas')) {
+            return '🖐️ Jari Tahap 1: Asas 0–99';
+          }
+          if (k.includes('friends') || k.includes('jari') || lbl.includes('formula')) {
+            return '🖐️ Jari Tahap 2: Formula 5 & 10 & ⚡ Jari Tahap 3: Silat Jari Kilat';
+          }
+          if (k.includes('twodigit') || lbl.includes('dua digit')) {
+            return '🧮 Sempoa Tahap 2: Kawan 5 & 10';
+          }
+          if (k.includes('hundreds') || lbl.includes('ratus')) {
+            return '🧠 Sempoa Tahap 4: Anzan Minda & 🏆 Sempoa Tahap 5: Master Juara';
+          }
+          return '🖐️ Jari Tahap 2: Formula 5 & 10 & 🧮 Sempoa Tahap 2: Kawan 5 & 10';
+        }
+        return '🖐️ Jari Tahap 2: Formula 5 & 10 & 🧮 Sempoa Tahap 2: Kawan 5 & 10';
+      }
+
       if (topicEntries.length > 0) {
-        const enriched = topicEntries.map(t => {
-          const c = Number(t.correct) || 0;
-          const w = Number(t.wrong) || 0;
-          const sum = c + w;
-          const pct = Math.round((c / sum) * 100);
-          return { label: t.label, c, w, sum, pct };
-        }).sort((a, b) => a.pct - b.pct);
+        const enriched = Object.entries(st.byTopic || {})
+          .filter(([, t]) => t && ((Number(t.correct) || 0) + (Number(t.wrong) || 0) > 0))
+          .map(([tKey, t]) => {
+            const c = Number(t.correct) || 0;
+            const w = Number(t.wrong) || 0;
+            const sum = c + w;
+            const pct = Math.round((c / sum) * 100);
+            return { key: tKey, label: t.label, c, w, sum, pct };
+          }).sort((a, b) => a.pct - b.pct);
 
         const weakest = enriched[0];
         const needFocus = weakest.pct < 75 && weakest.w >= 1;
+        const recModulesText = getRecommendedModulesForWeakTopic(weakest.key, weakest.label);
         const focusBanner = needFocus
-          ? `<div class="bg-rose-100 border border-rose-300 text-rose-900 rounded-lg px-2 py-1 text-[10px] font-black">⚠️ Perlu Latihan Fokus: ${escapeHtmlSafe(weakest.label)} (${weakest.pct}% tepat • ${weakest.w} salah)</div>`
+          ? `<div class="bg-rose-100 border border-rose-300 text-rose-900 rounded-lg px-2.5 py-1.5 text-[10px] font-black space-y-1">
+              <div>⚠️ Perlu Latihan Fokus: ${escapeHtmlSafe(weakest.label)} (${weakest.pct}% tepat • ${weakest.w} salah)</div>
+              <div class="bg-white/85 border border-rose-200 rounded-md px-2 py-1 text-[9.5px] font-extrabold text-rose-950">💡 Cadangan Modul Latihan: <span class="text-indigo-900">${escapeHtmlSafe(recModulesText)}</span></div>
+            </div>`
           : `<div class="bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-lg px-2 py-1 text-[10px] font-black">🌟 Penguasaan Cemerlang! Semua topik yang dicuba ≥75% tepat.</div>`;
 
         const bars = enriched.slice(0, 4).map(t => {

@@ -195,7 +195,7 @@
   <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
   <!-- Pop-up Segera Keputusan Kuiz (Sentiasa Nampak Di Skrin Tanpa Terlindung) -->
-  <div id="quiz-instant-popup" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none"></div>
+  <div id="quiz-instant-popup" style="top: calc(env(safe-area-inset-top, 0px) + 4.25rem);" class="hidden fixed left-1/2 -translate-x-1/2 z-50 max-w-md w-[94%] rounded-2xl p-3.5 text-center text-xs sm:text-sm font-black shadow-2xl border-3 transition-all duration-200 pointer-events-none"></div>
   <div id="quiz-reward-burst-layer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
   <!-- Bar Atas Pemain (Disembunyikan sebelum Log Masuk) -->
@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.0.8 • Maskot Cikgu Kiko Panda Diperbesar + Animasi Ekspresif
+            Versi 2.0.9 • Pop-up Kuiz Atas Skrin + Simpan Kemajuan Checkpoint Bintang
           </span>
         </div>
 
@@ -950,7 +950,7 @@
             <div id="mod-milestone-title" class="text-base sm:text-lg font-black text-amber-950">Tahniah! Bintang 1/5 Selesai!</div>
             <p id="mod-milestone-desc" class="text-xs font-bold text-amber-900">Anda dapat bonus +3 Coin! Bersedia untuk Bintang seterusnya?</p>
             <div class="grid grid-cols-2 gap-2 pt-1">
-              <button type="button" onclick="closeModuleView()" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 text-xs font-black">🏠 Rehat Dulu</button>
+              <button type="button" onclick="restAndSaveModuleCheckpoint()" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 text-xs font-black">🏠 Rehat Dulu</button>
               <button type="button" onclick="continueToNextModuleStar()" class="bubbly-btn bg-emerald-600 text-white border-2 border-emerald-900 py-2.5 text-xs font-black">🚀 Bintang Seterusnya!</button>
             </div>
           </div>
@@ -7174,7 +7174,16 @@
             <div class="min-w-0 space-y-0.5">
               <div class="flex flex-wrap items-center gap-1.5">
                 <span class="inline-block bg-white text-slate-900 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black uppercase tracking-wide shadow-sm">${trackPrefix} ${displayStep}</span>
-                ${(m === 1 || m === 2) && best === 0 && !currentPlayer.isAdmin ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ MULA DI SINI</span>' : ''}
+                ${(() => {
+                  const cp = getModuleSavedCheckpoint(m);
+                  if (unlocked && cp) {
+                    const stNum = Math.floor(cp.nextIndex / 10) + 1;
+                    return `<span class="bg-emerald-300 text-emerald-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⏸️ Sambung Bintang ${stNum}/5 (${cp.nextIndex}/50)</span>`;
+                  }
+                  return (m === 1 || m === 2) && best === 0 && !currentPlayer.isAdmin
+                    ? '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">⭐ MULA DI SINI</span>'
+                    : '';
+                })()}
                 ${!unlocked ? `<span class="inline-flex items-center gap-1 bg-black/40 text-amber-200 px-2 py-0.5 rounded-lg text-[10px] font-black">🔒 Lulus ${prereqLabel} (${MODULE_UNLOCK_PASS_SCORE}/50)</span>` : ''}
               </div>
               <div class="text-sm sm:text-base font-extrabold text-white drop-shadow-sm truncate">${meta.title}</div>
@@ -7281,10 +7290,10 @@
         success:    'bg-emerald-600 text-white border-emerald-900',
         wrong:      'bg-rose-600 text-white border-rose-950'
       };
-      const isMysteryOrSpecial = customDurationMs >= 3000;
-      const posClass = isMysteryOrSpecial ? 'top-16' : 'bottom-4';
-      const hideMs = customDurationMs > 0 ? customDurationMs : (variant === 'combo' ? 2200 : 1650);
-      pop.className = `animate-bonus-pop fixed ${posClass} left-1/2 z-50 max-w-md w-[94%] rounded-3xl p-4 text-center text-xs sm:text-sm font-black shadow-2xl border-3 pointer-events-none ${styles[variant] || styles.success}`;
+      const hideMs = customDurationMs > 0 ? customDurationMs : (variant === 'combo' ? 2300 : 1850);
+      pop.style.top = 'calc(env(safe-area-inset-top, 0px) + 4.25rem)';
+      pop.style.bottom = 'auto';
+      pop.className = `animate-bonus-pop fixed left-1/2 z-50 max-w-md w-[94%] rounded-3xl p-3.5 sm:p-4 text-center text-xs sm:text-sm font-black shadow-2xl border-3 pointer-events-none ${styles[variant] || styles.success}`;
       pop.innerHTML = customHeaderHtml ? `<div class="mb-1">${customHeaderHtml}</div><div>${htmlMsg}</div>` : htmlMsg;
       pop.classList.remove('hidden');
       quizPopupTimer = setTimeout(() => {
@@ -7297,8 +7306,11 @@
       const quizBox = document.getElementById('mod-quiz-box');
       if (!quizBox) return;
       requestAnimationFrame(() => {
-        quizBox.scrollIntoView({ behavior: 'auto', block: 'end' });
-        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'auto' });
+        const rect = quizBox.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < 56 || rect.bottom > vh - 12) {
+          quizBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       });
     }
 
@@ -7366,14 +7378,68 @@
       }
     };
 
+    
+    /* Pengurusan Checkpoint Bintang Modul (Simpan kemajuan setiap 10 soalan apabila murid Rehat Dulu) */
+    function getModuleSavedCheckpoint(modId, subCat = 'random') {
+      if (!currentPlayer || !currentPlayer.modCheckpoints || typeof currentPlayer.modCheckpoints !== 'object') return null;
+      const cp = currentPlayer.modCheckpoints[String(modId)];
+      if (!cp || typeof cp !== 'object') return null;
+      const nextIdx = Number(cp.nextIndex) || 0;
+      if (nextIdx <= 0 || nextIdx >= 50) return null;
+      if ((modId === 3 || modId === 'jari2') && subCat && cp.subCategory && cp.subCategory !== subCat) {
+        return null;
+      }
+      return {
+        nextIndex: nextIdx,
+        sessionCorrect: Number(cp.sessionCorrect) || 0,
+        streak: Number(cp.streak) || 0,
+        subCategory: cp.subCategory || 'random',
+        updatedAt: Number(cp.updatedAt) || Date.now()
+      };
+    }
+
+    function saveModuleCheckpointData(modId, nextIdx, sessionCorrect, streak, subCat = 'random') {
+      if (!currentPlayer) return;
+      if (!currentPlayer.modCheckpoints || typeof currentPlayer.modCheckpoints !== 'object') {
+        currentPlayer.modCheckpoints = {};
+      }
+      if (nextIdx <= 0 || nextIdx >= 50) {
+        delete currentPlayer.modCheckpoints[String(modId)];
+      } else {
+        currentPlayer.modCheckpoints[String(modId)] = {
+          nextIndex: nextIdx,
+          sessionCorrect: sessionCorrect,
+          streak: streak,
+          subCategory: subCat || 'random',
+          updatedAt: Date.now()
+        };
+      }
+      if (typeof savePlayerCloud === 'function') savePlayerCloud();
+    }
+
+    function clearModuleCheckpointData(modId) {
+      if (!currentPlayer || !currentPlayer.modCheckpoints) return;
+      delete currentPlayer.modCheckpoints[String(modId)];
+      if (typeof savePlayerCloud === 'function') savePlayerCloud();
+    }
+
+    window.restAndSaveModuleCheckpoint = function() {
+      const nextIdx = Math.min(49, activeModIndex + 1);
+      const nextStar = Math.floor(nextIdx / 10) + 1;
+      saveModuleCheckpointData(activeModId, nextIdx, activeModSessionCorrect, activeModConsecutiveStreak, activeMod3QuizCategory);
+      closeModuleView();
+      showAppToast(`💾 Kemajuan disimpan! Anda boleh sambung Bintang ${nextStar}/5 (Soalan ${nextIdx + 1}/50) pada bila-bila masa.`);
+    };
+
     function openModuleDetail(modId) {
       playClick();
       activeModId = modId;
-      activeMod3QuizCategory = 'random';
+      const savedCp = getModuleSavedCheckpoint(modId);
+      activeMod3QuizCategory = (savedCp && (modId === 3 || modId === 'jari2')) ? (savedCp.subCategory || 'random') : 'random';
       activeModQuestions = buildProcedural50QuestionsForModule(modId, activeMod3QuizCategory);
-      activeModIndex = 0;
-      activeModSessionCorrect = 0;
-      activeModConsecutiveStreak = 0;
+      activeModIndex = savedCp ? savedCp.nextIndex : 0;
+      activeModSessionCorrect = savedCp ? savedCp.sessionCorrect : 0;
+      activeModConsecutiveStreak = savedCp ? savedCp.streak : 0;
       activeModConsecutiveWrong = 0;
 
       if (!isModuleUnlockedForPlayer(currentPlayer, modId)) {
@@ -7425,7 +7491,15 @@
 
       if (hasFormulaFilter) {
         switchMod3InfographicTab('kecil');
-        window.setMod3QuizCategory('random', true);
+        const restoredIdx = activeModIndex;
+        const restoredCorrect = activeModSessionCorrect;
+        const restoredStreak = activeModConsecutiveStreak;
+        window.setMod3QuizCategory(activeMod3QuizCategory, true);
+        if (savedCp && restoredIdx > 0) {
+          activeModIndex = restoredIdx;
+          activeModSessionCorrect = restoredCorrect;
+          activeModConsecutiveStreak = restoredStreak;
+        }
       }
       document.getElementById('mod-best-score').innerText = (currentPlayer?.modScores?.[modId]) || 0;
 
@@ -7442,6 +7516,10 @@
 
       setPlayerCurrentActivity(`${badgeLabel} (${meta.shortTitle})`);
       renderCurrentModuleQuestion();
+      if (savedCp && savedCp.nextIndex > 0) {
+        const resumeStar = Math.floor(savedCp.nextIndex / 10) + 1;
+        showAppToast(`▶️ Menyambung Bintang ${resumeStar}/5 (Soalan ${savedCp.nextIndex + 1}/50 • Skor semasa: ${savedCp.sessionCorrect})!`);
+      }
     }
 
     window.closeModuleView = function() {
@@ -7459,12 +7537,14 @@
 
     window.reshuffleModuleQuestions = function() {
       playClick();
+      clearModuleCheckpointData(activeModId);
       const hasFormulaFilter = activeModId === 3 || activeModId === 'jari2';
       activeModQuestions = buildProcedural50QuestionsForModule(activeModId, hasFormulaFilter ? activeMod3QuizCategory : 'random');
       activeModIndex = 0;
       activeModSessionCorrect = 0;
       activeModConsecutiveStreak = 0;
       renderCurrentModuleQuestion();
+      showAppToast('🔀 Soalan dikocok semula! Bermula dari Bintang 1/5 (Soalan 1/50).');
     };
 
     function updateModule5StarsUI(qIdx) {
@@ -7497,6 +7577,7 @@
       const optBox = document.getElementById('mod-q-options');
       if (optBox) optBox.classList.remove('hidden');
       activeModIndex++;
+      saveModuleCheckpointData(activeModId, activeModIndex, activeModSessionCorrect, activeModConsecutiveStreak, activeMod3QuizCategory);
       renderCurrentModuleQuestion();
     };
 
@@ -7641,6 +7722,7 @@
         const isStarCheckpoint = ((activeModIndex + 1) % 10 === 0) && activeModIndex < 49;
         if (isStarCheckpoint) {
           const completedStarNum = Math.floor((activeModIndex + 1) / 10);
+          saveModuleCheckpointData(activeModId, activeModIndex + 1, activeModSessionCorrect, activeModConsecutiveStreak, activeMod3QuizCategory);
           playCheer();
           triggerConfetti(55);
           if (currentPlayer) addPlayerReward(3, 15);
@@ -7664,6 +7746,7 @@
           activeModIndex++;
           renderCurrentModuleQuestion();
         } else {
+          clearModuleCheckpointData(activeModId);
           triggerConfetti(80);
           const doneHtml = `🏆 Tahniah! Anda tamatkan semua 5 Bintang (50 soalan) dengan skor ${activeModSessionCorrect}/50!`;
           fb.className = 'rounded-2xl p-4 text-center text-xs font-black bg-amber-100 text-amber-900 border-2 border-amber-400';
@@ -9739,6 +9822,9 @@ Jom lawan kira pantas dengan saya!`;
                 currentPlayer.modScores[mk] = Math.max(Number(currentPlayer.modScores[mk]) || 0, Number(mv) || 0);
               });
             }
+            if (r.modCheckpoints && typeof r.modCheckpoints === 'object') {
+              currentPlayer.modCheckpoints = { ...(r.modCheckpoints || {}), ...(currentPlayer.modCheckpoints || {}) };
+            }
             if (Array.isArray(r.linkedChildrenIds)) {
               currentPlayer.linkedChildrenIds = Array.from(new Set([...(currentPlayer.linkedChildrenIds || []), ...r.linkedChildrenIds]));
             }
@@ -9778,6 +9864,7 @@ Jom lawan kira pantas dengan saya!`;
           analyticsStats: currentPlayer.analyticsStats || { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] },
           unlockedModules: currentPlayer.unlockedModules || [1, 2],
           modScores: currentPlayer.modScores || {},
+          modCheckpoints: currentPlayer.modCheckpoints || {},
           avatarConfig: currentPlayer.avatarConfig,
           ownedAvatarItems: currentPlayer.ownedAvatarItems || [],
           mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
@@ -9907,6 +9994,7 @@ Jom lawan kira pantas dengan saya!`;
                   mergedModScores[mKey] = Math.max(Number(mergedModScores[mKey]) || 0, Number(mVal) || 0);
                 });
               }
+              const mergedModCheckpoints = { ...(r.modCheckpoints || {}), ...(accData.modCheckpoints || {}) };
               const todayKey = getTodayDateKey();
               const mergedTodayPts = accData.todayDateKey === todayKey
                 ? Math.max(Number(accData.todayPoints) || 0, (r.todayDateKey === todayKey ? (Number(r.todayPoints) || 0) : 0) + deltaPts)
@@ -9972,6 +10060,7 @@ Jom lawan kira pantas dengan saya!`;
             activityDurations: mergedRecord.activityDurations || {},
             unlockedModules: mergedRecord.unlockedModules || [1, 2],
             modScores: mergedRecord.modScores || {},
+            modCheckpoints: mergedRecord.modCheckpoints || {},
             avatarConfig: mergedRecord.avatarConfig,
             ownedAvatarItems: mergedRecord.ownedAvatarItems || [],
             updatedAt: Date.now()
@@ -10395,6 +10484,9 @@ Jom lawan kira pantas dengan saya!`;
                 : [1, 2]),
             modScores: existingAccount.modScores && typeof existingAccount.modScores === 'object'
               ? existingAccount.modScores
+              : {},
+            modCheckpoints: existingAccount.modCheckpoints && typeof existingAccount.modCheckpoints === 'object'
+              ? existingAccount.modCheckpoints
               : {},
             avatarConfig: existingAccount.avatarConfig || getDefaultAvatarConfig('boy'),
             ownedAvatarItems: Array.isArray(existingAccount.ownedAvatarItems)

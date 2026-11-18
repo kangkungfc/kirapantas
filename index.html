@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.0 • Pop-up Maskot Cikgu Kiko Panda Atas Skrin (Tiada Terpotong Bawah)
+            Versi 2.1.1 • Alat Bantu Jari & Sempoa Pintar (Auto-Sembunyi Pada Soalan Baca Rajah)
           </span>
         </div>
 
@@ -6399,6 +6399,7 @@
             if (bank.length >= 18) break;
             const st = numberToFingerStates(target);
             pushFresh(`m1_f_${target}`, {
+              isVisualRead: true,
               prompt: 'Teka Nombor Rahsia: Berapakah nilai jari kedua-dua tangan ini?',
               visualHtml: `
                 <div class="flex gap-2 justify-center">
@@ -6459,6 +6460,7 @@
             const minV = rods === 2 ? 11 : rods === 3 ? 105 : 1025;
             const target = Math.floor(Math.random() * (maxV - minV + 1)) + minV;
             pushFresh(`m2_aba_${rods}_${target}`, {
+              isVisualRead: true,
               prompt: 'Baca nilai Manik Syurga (5) & Manik Bumi (1) yang rapat palang:',
               visualHtml: renderAbacusQuestionSVG(target, rods),
               options: makeNumericOptions(target, 1, maxV),
@@ -6726,6 +6728,7 @@
             guard++;
             const target = Math.floor(Math.random() * 888) + 111;
             pushFresh(`m5_aba_${target}`, {
+              isVisualRead: true,
               prompt: 'Bayangkan sempoa minda: Berapakah nilai susunan manik ini?',
               visualHtml: renderAbacusQuestionSVG(target, 3),
               options: makeNumericOptions(target, 100, 999),
@@ -6973,6 +6976,9 @@
       document.getElementById('blitz-tag').innerText = tag;
       document.getElementById('blitz-question-text').innerText = qText;
       document.getElementById('blitz-visual-box').innerHTML = visualHtml;
+      if (visualHtml && visualHtml.includes('<svg')) {
+        setHelperAbacusVisibility('blitz', false);
+      }
 
       const opts = makeNumericOptions(ans, 0, 9999);
       const grid = document.getElementById('blitz-options-grid');
@@ -7581,12 +7587,47 @@
       renderCurrentModuleQuestion();
     };
 
+    function isQuestionVisualReadingType(q) {
+      if (!q) return false;
+      if (q.isVisualRead === true) return true;
+      const sig = String(q._sig || '');
+      if (sig.startsWith('m1_f_') || sig.startsWith('m2_aba_') || sig.startsWith('m5_aba_')) return true;
+      const vis = String(q.visualHtml || '');
+      return vis.includes('<svg');
+    }
+
     function renderCurrentModuleQuestion() {
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
 
       resetHelperAbacus('mod', true);
       resetHelperFingers(true);
+
+      const isVisualReadQ = isQuestionVisualReadingType(q);
+      const isJariTrack = JARI_TRACK_IDS.includes(activeModId);
+      const hintTextEl = document.getElementById('mod-helper-hint-text');
+      if (isVisualReadQ) {
+        // Soalan sudah memaparkan rajah jari/sempoa: sembunyikan papan bantu supaya soalan & 4 pilihan jawapan muat 1 skrin
+        setHelperFingersVisibility(false);
+        setHelperAbacusVisibility('mod', false);
+        if (hintTextEl) {
+          hintTextEl.innerText = isJariTrack
+            ? '👀 Terus baca rajah jari di atas & pilih jawapan pantas!'
+            : '👀 Terus baca nilai manik pada rajah di atas & pilih jawapan!';
+        }
+      } else {
+        if (isJariTrack) {
+          setHelperFingersVisibility(activeModId === 1 || activeModId === 'jari2');
+          if (hintTextEl) hintTextEl.innerText = '🖐️ Tekan jari di bawah untuk praktis buka & lipat jari!';
+        } else {
+          setHelperAbacusVisibility('mod', activeModId >= 2 && activeModId <= 4);
+          if (hintTextEl) {
+            hintTextEl.innerText = (activeModId >= 2 && activeModId <= 4)
+              ? '🧮 Praktis gerakkan manik sempoa untuk memori otot!'
+              : '🧠 Cuba kira dalam bayangan minda (Anzan) dahulu!';
+          }
+        }
+      }
       updateModule5StarsUI(activeModIndex);
       const mCard = document.getElementById('mod-star-milestone-card');
       if (mCard) mCard.classList.add('hidden');

@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.2 • Laporan Ibu Bapa Pintar: Cadangan Modul Latihan Khusus Mengikut Kelemahan
+            Versi 2.1.4 • Tunjuk Cara Interaktif Step-by-Step (Animasi Jari & Sempoa • 0 Markah)
           </span>
         </div>
 
@@ -915,8 +915,27 @@
                 <button type="button" onclick="toggleHelperAbacus('mod')" id="mod-helper-toggle-btn" class="bubbly-btn bg-amber-100 border-2 border-amber-400 px-2.5 py-1.5 text-[11px] font-black text-amber-950 flex items-center gap-1 flex-shrink-0">
                   <span id="mod-helper-toggle-icon">🧮</span> <span id="mod-helper-toggle-label">Buka Sempoa Kira</span>
                 </button>
+                <button type="button" onclick="startStepByStepDemo()" id="mod-demo-guide-btn" class="bubbly-btn bg-sky-100 hover:bg-sky-200 border-2 border-sky-500 px-2.5 py-1.5 text-[11px] font-black text-sky-950 flex items-center gap-1 flex-shrink-0">
+                  <span>💡</span> <span id="mod-demo-guide-label">Tunjuk Cara (0 Markah)</span>
+                </button>
               </div>
               <div class="flex items-center gap-1.5"><img id="mod-helper-idea-panda-img" alt="Idea Cikgu Kiko" class="w-14 h-14 sm:w-16 sm:h-16 object-contain flex-shrink-0 panda-anim-idea" /><span id="mod-helper-hint-text" class="text-[10px] font-extrabold text-slate-500 text-left sm:text-right">Praktis gerakkan jari untuk memori otot!</span></div>
+            </div>
+
+            <!-- Banner Animasi Tunjuk Cara Step-by-Step (0 Markah & 0 Coin) -->
+            <div id="mod-demo-steps-banner" class="hidden bg-gradient-to-r from-sky-50 via-indigo-50 to-amber-50 border-3 border-sky-400 rounded-2xl p-3 space-y-2 shadow-sm">
+              <div class="flex items-center justify-between gap-2">
+                <span id="mod-demo-step-badge" class="bg-sky-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">🎬 Tunjuk Cara Step-by-Step</span>
+                <span class="bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-black px-2 py-0.5 rounded-full">0 Markah • 0 Coin</span>
+              </div>
+              <div id="mod-demo-step-title" class="text-xs sm:text-sm font-black text-sky-950">Menyediakan animasi langkah demi langkah...</div>
+              <div id="mod-demo-step-detail" class="text-[11px] font-bold text-slate-700 leading-snug"></div>
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-sky-200">
+                <span id="mod-demo-lock-status" class="text-[10px] font-black text-amber-800">🔒 Pilihan jawapan dikunci sehingga tunjuk cara tamat...</span>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" id="btn-mod-demo-replay" onclick="startStepByStepDemo()" class="hidden bubbly-btn bg-white hover:bg-sky-100 text-sky-900 border-2 border-sky-400 px-2.5 py-1 text-[10px] font-black">🔁 Ulang Demo</button>
+                </div>
+              </div>
             </div>
 
             <!-- Simulator Jari Bantu Kira (0 - 99) -->
@@ -1397,6 +1416,24 @@
           <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
           <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文 (Mandarin)</button>
           <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية (Arab)</button>
+        </div>
+      </div>
+
+      <!-- Kad Tetapan Gaya Suara Cikgu Kiko (Enjin Suara Natural & Prosodi) -->
+      <div class="bubbly-card bg-white border-4 border-sky-400 p-4 space-y-2.5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-sm font-black text-sky-950">🐼 Gaya Suara Cikgu Kiko (AI Neural & Prosodi)</h3>
+          <span id="kiko-voice-engine-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 px-2.5 py-0.5 rounded-full">🎙️ Enjin: Suara Natural Pintar</span>
+        </div>
+        <p class="text-[11px] font-bold text-slate-500">Enjin suara secara automatik mengutamakan suara Neural/Natural terbaik peranti anda serta memecahkan ayat dengan jeda semula jadi.</p>
+        <div class="grid grid-cols-3 gap-2 pt-0.5">
+          <button type="button" onclick="setKikoVoicePreset('ceria')" data-voice-preset="ceria" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-sky-500 text-white border-sky-700">😊 Ceria & Mesra</button>
+          <button type="button" onclick="setKikoVoicePreset('lembut')" data-voice-preset="lembut" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🌸 Lembut & Tenang</button>
+          <button type="button" onclick="setKikoVoicePreset('semangat')" data-voice-preset="semangat" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">⚡ Pantas & Aktif</button>
+        </div>
+        <div class="flex items-center justify-between gap-2 pt-1">
+          <span id="kiko-detected-voice-name" class="text-[10px] font-extrabold text-slate-500 truncate">Mengesan suara terbaik peranti...</span>
+          <button type="button" onclick="previewCikguKikoVoice()" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-600 px-3 py-1.5 text-[11px] font-black flex-shrink-0">🔊 Dengar Sampel Suara</button>
         </div>
       </div>
 
@@ -5616,6 +5653,246 @@
       box.innerHTML = examples[key] || examples.mul1;
     };
 
+    /* =========================================================================
+       ENJIN SUARA PINTAR CIKGU KIKO (Smart Neural Selector + Prosody Pacing)
+       ========================================================================= */
+    const KIKO_VOICE_PRESETS = {
+      ceria:    { rate: 0.96, pitch: 1.09, pauseScale: 1.0,  label: 'Ceria & Mesra' },
+      lembut:   { rate: 0.89, pitch: 1.03, pauseScale: 1.22, label: 'Lembut & Tenang' },
+      semangat: { rate: 1.06, pitch: 1.13, pauseScale: 0.82, label: 'Pantas & Aktif' }
+    };
+
+    let kikoVoicePresetKey = (() => {
+      try {
+        const saved = localStorage.getItem('kirakilat_kiko_voice_preset');
+        return KIKO_VOICE_PRESETS[saved] ? saved : 'ceria';
+      } catch (e) {
+        return 'ceria';
+      }
+    })();
+
+    let kikoSpeechSessionToken = 0;
+
+    function scoreNaturalSpeechVoice(voice, targetLangCodes) {
+      if (!voice) return -999;
+      const name = String(voice.name || '').toLowerCase();
+      const lang = String(voice.lang || '').toLowerCase();
+      let score = 0;
+
+      // Padanan bahasa utama (cth: ms-my, id-id, en-gb, zh-cn, ar-sa)
+      let langMatched = false;
+      for (let i = 0; i < targetLangCodes.length; i++) {
+        const code = targetLangCodes[i].toLowerCase();
+        if (lang === code) {
+          score += (120 - i * 25);
+          langMatched = true;
+          break;
+        }
+        if (lang.startsWith(code.split('-')[0])) {
+          score += (85 - i * 20);
+          langMatched = true;
+          break;
+        }
+      }
+      if (!langMatched) return -500;
+
+      // Utamakan enjin suara Neural / Natural / Online / Siri / Enhanced berbanding eSpeak/robotik lama
+      if (name.includes('natural')) score += 90;
+      if (name.includes('neural')) score += 85;
+      if (name.includes('online')) score += 65;
+      if (name.includes('yasmin') || name.includes('osman') || name.includes('amira') || name.includes('damayanti')) score += 60;
+      if (name.includes('wavenet') || name.includes('chirp') || name.includes('studio')) score += 75;
+      if (name.includes('google')) score += 45;
+      if (name.includes('microsoft')) score += 40;
+      if (name.includes('siri') || name.includes('enhanced') || name.includes('premium')) score += 55;
+      if (name.includes('female') || name.includes('perempuan') || name.includes('woman')) score += 12;
+
+      // Tolak markah suara sintetik lama yang kasar
+      if (name.includes('espeak') || name.includes('festival') || name.includes('mbrola')) score -= 120;
+      return score;
+    }
+
+    function pickBestNaturalVoiceForCodes(targetLangCodes = ['ms-MY', 'ms', 'id-ID', 'id']) {
+      if (!('speechSynthesis' in window)) return null;
+      const voices = window.speechSynthesis.getVoices() || [];
+      if (!voices.length) return null;
+      let best = null;
+      let bestScore = -400;
+      for (const v of voices) {
+        const s = scoreNaturalSpeechVoice(v, targetLangCodes);
+        if (s > bestScore) {
+          bestScore = s;
+          best = v;
+        }
+      }
+      return best;
+    }
+
+    function normalizeMalayMathProsody(rawText) {
+      let txt = String(rawText || '').trim();
+      // Bersihkan emoji supaya enjin suara tidak membaca nama simbol pelik
+      txt = txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, ' ');
+      // Tukar simbol matematik kepada sebutan bahasa Melayu yang lancar & natural
+      txt = txt
+        .replace(/\s*\+\s*/g, ' tambah ')
+        .replace(/\s*[−–-]\s*(?=\d)/g, ' tolak ')
+        .replace(/\s*[×xX]\s*(?=\d)/g, ' darab ')
+        .replace(/\s*÷\s*/g, ' bahagi ')
+        .replace(/\s*=\s*/g, ' sama dengan ')
+        .replace(/(\d+)\s*[–-]\s*(\d+)/g, '$1 hingga $2')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return txt;
+    }
+
+    function splitIntoNaturalProsodyClauses(text) {
+      const cleaned = normalizeMalayMathProsody(text);
+      if (!cleaned) return [];
+      // Pecahkan ayat pada tanda noktah, tanda seru, tanda soal, koma, sengkang panjang & titik bertindih
+      const rawParts = cleaned
+        .split(/(?<=[.!?;:])\s+|(?<=[,])\s+|\s+[—–]\s+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const clauses = [];
+      for (const part of rawParts) {
+        // Jika klausa terlalu panjang (>95 aksara), pecahkan lagi pada kata hubung supaya intonasi tidak mendatar
+        if (part.length > 95) {
+          const sub = part.split(/\s+(?=dan\s|atau\s|supaya\s|kerana\s|kemudian\s|manakala\s)/i);
+          for (const s of sub) {
+            if (s.trim()) clauses.push(s.trim());
+          }
+        } else {
+          clauses.push(part);
+        }
+      }
+      return clauses;
+    }
+
+    function refreshKikoVoiceDetectionUI() {
+      const badgeEl = document.getElementById('kiko-voice-engine-badge');
+      const nameEl = document.getElementById('kiko-detected-voice-name');
+      const bestMs = pickBestNaturalVoiceForCodes(['ms-MY', 'ms', 'id-ID', 'id']);
+      if (bestMs) {
+        const isNeural = /natural|neural|online|wavenet|chirp|siri|enhanced/i.test(bestMs.name || '');
+        if (badgeEl) {
+          badgeEl.innerText = isNeural ? '🎙️ Enjin: AI Neural / Natural' : '🎙️ Enjin: Suara Natural Peranti';
+        }
+        if (nameEl) {
+          nameEl.innerText = `Suara aktif: ${bestMs.name} (${bestMs.lang})`;
+        }
+      } else {
+        if (badgeEl) badgeEl.innerText = '🎙️ Enjin: Suara Piawai Pelayar';
+        if (nameEl) nameEl.innerText = 'Suara aktif: Piawai Bahasa Melayu (ms-MY)';
+      }
+
+      document.querySelectorAll('.kiko-voice-preset-btn').forEach(btn => {
+        const key = btn.getAttribute('data-voice-preset');
+        if (key === kikoVoicePresetKey) {
+          btn.className = 'kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-sky-500 text-white border-sky-700';
+        } else {
+          btn.className = 'kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200';
+        }
+      });
+    }
+
+    window.setKikoVoicePreset = function(presetKey) {
+      if (!KIKO_VOICE_PRESETS[presetKey]) return;
+      kikoVoicePresetKey = presetKey;
+      try { localStorage.setItem('kirakilat_kiko_voice_preset', presetKey); } catch (e) {}
+      playClick();
+      refreshKikoVoiceDetectionUI();
+      previewCikguKikoVoice();
+    };
+
+    window.stopCikguKikoSpeech = function() {
+      kikoSpeechSessionToken++;
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+    };
+
+    window.speakCikguKikoNatural = function(text, opts = {}) {
+      if (!text || !('speechSynthesis' in window)) {
+        if (typeof opts.onEnd === 'function') opts.onEnd();
+        return;
+      }
+      stopCikguKikoSpeech();
+      const token = ++kikoSpeechSessionToken;
+      const preset = KIKO_VOICE_PRESETS[kikoVoicePresetKey] || KIKO_VOICE_PRESETS.ceria;
+      const langCodes = opts.langCodes || ['ms-MY', 'ms', 'id-ID', 'id'];
+      const matchedVoice = pickBestNaturalVoiceForCodes(langCodes);
+      const clauses = splitIntoNaturalProsodyClauses(text);
+
+      if (!clauses.length) {
+        if (typeof opts.onEnd === 'function') opts.onEnd();
+        return;
+      }
+
+      if (typeof opts.onStart === 'function') opts.onStart();
+      if (opts.playIntroChime !== false && typeof playTone === 'function') {
+        playTone(660, 'sine', 0.08, 0.05);
+      }
+
+      let idx = 0;
+      const speakNextClause = () => {
+        if (token !== kikoSpeechSessionToken) return;
+        if (idx >= clauses.length) {
+          if (typeof opts.onEnd === 'function') opts.onEnd();
+          return;
+        }
+
+        const clause = clauses[idx];
+        const isQuestion = clause.endsWith('?');
+        const isExclaim = clause.endsWith('!');
+        const utter = new SpeechSynthesisUtterance(clause);
+        if (matchedVoice) {
+          utter.voice = matchedVoice;
+          utter.lang = matchedVoice.lang;
+        } else {
+          utter.lang = langCodes[0] || 'ms-MY';
+        }
+
+        // Variasi mikro nada & kelajuan mengikut jenis ayat supaya tidak berbunyi robotik mendatar
+        const baseRate = opts.rate || preset.rate;
+        const basePitch = opts.pitch || preset.pitch;
+        utter.rate = isExclaim ? Math.min(1.25, baseRate * 1.03) : (isQuestion ? baseRate * 0.98 : baseRate);
+        utter.pitch = isQuestion ? Math.min(1.3, basePitch + 0.06) : (isExclaim ? Math.min(1.3, basePitch + 0.04) : basePitch);
+
+        const finishClause = () => {
+          if (token !== kikoSpeechSessionToken) return;
+          idx++;
+          if (idx >= clauses.length) {
+            if (typeof opts.onEnd === 'function') opts.onEnd();
+            return;
+          }
+          // Jeda pernafasan semula jadi antara klausa
+          let pauseMs = 210;
+          if (/[.!?]$/.test(clause)) pauseMs = 340;
+          else if (/,$/.test(clause)) pauseMs = 190;
+          pauseMs = Math.round(pauseMs * preset.pauseScale);
+          setTimeout(speakNextClause, pauseMs);
+        };
+
+        utter.onend = finishClause;
+        utter.onerror = finishClause;
+
+        try {
+          window.speechSynthesis.speak(utter);
+        } catch (e) {
+          finishClause();
+        }
+      };
+
+      setTimeout(speakNextClause, 70);
+    };
+
+    window.previewCikguKikoVoice = function() {
+      refreshKikoVoiceDetectionUI();
+      const sampleText = 'Hai juara! Saya Cikgu Kiko Panda. Jom kita kira pantas sama-sama, sepuluh tambah lima, sama dengan lima belas!';
+      speakCikguKikoNatural(sampleText);
+    };
+
     window.speakModuleGuideNote = function() {
       playClick();
       const meta = MODULES_META[activeModId];
@@ -5624,21 +5901,15 @@
         showAppToast('⚠️ Pelayar ini tidak menyokong suara pembaca nota.');
         return;
       }
-      try {
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(meta.speakText);
-        utter.lang = 'ms-MY';
-        utter.rate = 0.95;
-        utter.pitch = 1.22;
-        const btn = document.getElementById('btn-read-mod-guide');
-        if (btn) btn.innerText = '🗣️ Membaca...';
-        utter.onend = () => { if (btn) btn.innerText = '🔊 Dengar'; };
-        utter.onerror = () => { if (btn) btn.innerText = '🔊 Dengar'; };
-        window.speechSynthesis.speak(utter);
-      } catch (e) {}
+      const btn = document.getElementById('btn-read-mod-guide');
+      speakCikguKikoNatural(meta.speakText, {
+        onStart: () => { if (btn) btn.innerText = '🗣️ Cikgu Kiko Bercakap...'; },
+        onEnd: () => { if (btn) btn.innerText = '🔊 Dengar'; }
+      });
     };
 
     applyAppLanguageUI(currentAppLang);
+    setTimeout(refreshKikoVoiceDetectionUI, 250);
 
     window.toggleParentGuideDetails = function() {
       playClick();
@@ -7596,9 +7867,384 @@
       return vis.includes('<svg');
     }
 
+    let isCurrentModQuestionDemoUsed = false;
+    let isCurrentModDemoRunning = false;
+    let modDemoTimerHandles = [];
+
+    function clearModDemoTimers() {
+      while (modDemoTimerHandles.length) {
+        clearTimeout(modDemoTimerHandles.pop());
+      }
+      isCurrentModDemoRunning = false;
+      if (typeof stopCikguKikoSpeech === 'function') {
+        stopCikguKikoSpeech();
+      }
+    }
+
+    function setModAnswerButtonsLocked(locked) {
+      const allBtns = document.querySelectorAll('#mod-q-options button');
+      allBtns.forEach(b => {
+        b.disabled = Boolean(locked);
+        if (locked) {
+          b.classList.add('opacity-45', 'cursor-not-allowed');
+        } else {
+          b.classList.remove('opacity-45', 'cursor-not-allowed');
+        }
+      });
+    }
+
+    function setHelperAbacusValueAnimated(numVal) {
+      const st = helperAbacusState.mod;
+      if (!st) return;
+      const val = Math.max(0, Math.min(9999, Math.round(Math.abs(Number(numVal) || 0))));
+      const digits = [
+        Math.floor(val / 1000) % 10,
+        Math.floor(val / 100) % 10,
+        Math.floor(val / 10) % 10,
+        val % 10
+      ];
+      for (let i = 0; i < 4; i++) {
+        const d = digits[i];
+        st.rods[i].top = d >= 5;
+        st.rods[i].bot = d % 5;
+      }
+      renderHelperAbacus('mod');
+    }
+
+    function setHelperFingersValueAnimated(numVal) {
+      const val = Math.max(0, Math.min(99, Math.round(Math.abs(Number(numVal) || 0))));
+      const fStates = numberToFingerStates(val);
+      helperFingerLeft = [...fStates.left];
+      helperFingerRight = [...fStates.right];
+      renderHelperFingersBoard();
+    }
+
+    function buildSmartDemoStepsForQuestion(q, isJariTrack) {
+      const prompt = String(q.prompt || '');
+      const ans = Number(q.answer);
+      const steps = [];
+
+      // Kes 1: Soalan bacaan rajah jari atau rajah sempoa sedia ada
+      if (q.isVisualRead) {
+        if (isJariTrack) {
+          const tens = Math.floor(ans / 10) * 10;
+          const ones = ans % 10;
+          steps.push({
+            val: 0,
+            title: 'Langkah 1: Sediakan Kedua-dua Tangan (0)',
+            detail: 'Tangan Kiri mewakili nilai Puluh (10–90) dan Tangan Kanan mewakili nilai Sa (1–9).',
+            voice: 'Langkah satu. Tangan kiri ialah puluh, tangan kanan ialah sa.'
+          });
+          steps.push({
+            val: tens,
+            title: `Langkah 2: Baca Tangan Kiri (Puluh = ${tens})`,
+            detail: `Ibu jari kiri bernilai 50, setiap jari lain bernilai 10. Nilai tangan kiri ialah ${tens}.`,
+            voice: `Langkah dua. Baca tangan kiri, nilainya ${tens}.`
+          });
+          steps.push({
+            val: ans,
+            title: `Langkah 3: Tambah Tangan Kanan (Sa = ${ones}) → Jumlah = ${ans}`,
+            detail: `Ibu jari kanan bernilai 5, setiap jari lain bernilai 1. Gabungkan ${tens} + ${ones} = ${ans}.`,
+            voice: `Langkah tiga. Tambah tangan kanan ${ones}, jumlahnya ${ans}.`
+          });
+        } else {
+          const ribuan = Math.floor(ans / 1000) * 1000;
+          const ratusan = Math.floor((ans % 1000) / 100) * 100;
+          const puluhan = Math.floor((ans % 100) / 10) * 10;
+          const sa = ans % 10;
+          steps.push({
+            val: 0,
+            title: 'Langkah 1: Kenal Pasti Manik Rapat Palang Pemisah',
+            detail: 'Manik Syurga (atas) rapat palang = 5. Setiap Manik Bumi (bawah) rapat palang = 1.',
+            voice: 'Langkah satu. Baca manik yang rapat pada palang pemisah dari kiri ke kanan.'
+          });
+          if (ribuan > 0) {
+            steps.push({
+              val: ribuan,
+              title: `Langkah 2: Baca Tiang Ribu = ${ribuan.toLocaleString()}`,
+              detail: `Tiang Ribu menunjukkan nilai ${ribuan.toLocaleString()}.`,
+              voice: `Tiang ribu bernilai ${ribuan}.`
+            });
+          }
+          if (ratusan > 0 || ribuan > 0) {
+            steps.push({
+              val: ribuan + ratusan,
+              title: `Langkah Baca Tiang Ratus (+${ratusan}) → ${ (ribuan + ratusan).toLocaleString() }`,
+              detail: `Gabungkan nilai Ratus (${ratusan}) menjadikan ${(ribuan + ratusan).toLocaleString()}.`,
+              voice: `Tiang ratus bernilai ${ratusan}.`
+            });
+          }
+          steps.push({
+            val: ans,
+            title: `Langkah Akhir: Gabung Puluh (${puluhan}) & Sa (${sa}) = ${ans.toLocaleString()}`,
+            detail: `Jumlah keseluruhan bacaan manik pada sempoa ialah ${ans.toLocaleString()}.`,
+            voice: `Jumlah bacaan manik sempoa ialah ${ans}.`
+          });
+        }
+        return steps;
+      }
+
+      // Ekstrak ungkapan matematik selepas tanda ":" jika ada
+      const exprPart = prompt.includes(':') ? prompt.split(':').slice(1).join(':').replace('= ?', '').trim() : prompt;
+
+      // Kes 2: Operasi Darab (cth: 50 × 28 atau 34 × 6)
+      const mulMatch = exprPart.match(/(\d+(?:\.\d+)?)\s*[×xX*]\s*(\d+(?:\.\d+)?)/);
+      if (mulMatch) {
+        const a = Number(mulMatch[1]);
+        const b = Number(mulMatch[2]);
+        const product = a * b;
+        steps.push({
+          val: 0,
+          title: `Langkah 1: Kosongkan Sempoa (0) untuk ${a} × ${b}`,
+          detail: 'Gunakan kaedah Darab Kilat dari nilai tempat terbesar (Kiri ke Kanan).',
+          voice: `Langkah satu. Kosongkan sempoa untuk mengira ${a} darab ${b}.`
+        });
+
+        if (b >= 10) {
+          const bTens = Math.floor(b / 10) * 10;
+          const bOnes = b % 10;
+          const part1 = a * bTens;
+          const part2 = a * bOnes;
+          steps.push({
+            val: part1,
+            title: `Langkah 2: Darab Puluh Dahulu (${a} × ${bTens} = ${part1.toLocaleString()})`,
+            detail: `Darabkan ${a} dengan ${bTens} untuk mendapat ${part1.toLocaleString()} dan gerakkan manik pada tiang berkaitan.`,
+            voice: `Langkah dua. Darab nilai puluh dahulu. ${a} darab ${bTens} sama dengan ${part1}.`
+          });
+          if (bOnes > 0) {
+            steps.push({
+              val: product,
+              title: `Langkah 3: Darab Sa (${a} × ${bOnes} = ${part2.toLocaleString()}) → Jumlah ${product.toLocaleString()}`,
+              detail: `Tambahkan hasil ${a} × ${bOnes} (${part2.toLocaleString()}) ke atas sempoa: ${part1.toLocaleString()} + ${part2.toLocaleString()} = ${product.toLocaleString()}.`,
+              voice: `Langkah tiga. Darab nilai sa, ${a} darab ${bOnes} sama dengan ${part2}. Jumlahnya ${product}.`
+            });
+          }
+        } else {
+          // 2-digit atau 3-digit × 1-digit dari kiri ke kanan
+          const hundreds = Math.floor(a / 100) * 100;
+          const tens = Math.floor((a % 100) / 10) * 10;
+          const ones = a % 10;
+          let running = 0;
+          let stepNo = 2;
+          if (hundreds > 0) {
+            const pH = hundreds * b;
+            running += pH;
+            steps.push({
+              val: running,
+              title: `Langkah ${stepNo++}: Darab Ratus (${hundreds} × ${b} = ${pH.toLocaleString()})`,
+              detail: `Mulakan dari kiri: ${hundreds} × ${b} = ${pH.toLocaleString()}.`,
+              voice: `Darab ratus, ${hundreds} darab ${b} sama dengan ${pH}.`
+            });
+          }
+          if (tens > 0) {
+            const pT = tens * b;
+            running += pT;
+            steps.push({
+              val: running,
+              title: `Langkah ${stepNo++}: Darab Puluh (${tens} × ${b} = ${pT.toLocaleString()})`,
+              detail: `Seterusnya darab puluh: ${tens} × ${b} = ${pT.toLocaleString()}, jumlah sementara = ${running.toLocaleString()}.`,
+              voice: `Darab puluh, ${tens} darab ${b} sama dengan ${pT}.`
+            });
+          }
+          if (ones > 0) {
+            const pO = ones * b;
+            running += pO;
+            steps.push({
+              val: product,
+              title: `Langkah ${stepNo}: Darab Sa (${ones} × ${b} = ${pO.toLocaleString()}) → Jumlah ${product.toLocaleString()}`,
+              detail: `Akhir sekali darab sa: ${ones} × ${b} = ${pO.toLocaleString()}. Jumlah akhir = ${product.toLocaleString()}.`,
+              voice: `Darab sa, ${ones} darab ${b} sama dengan ${pO}. Jumlah akhir ialah ${product}.`
+            });
+          }
+        }
+        return steps;
+      }
+
+      // Kes 3: Operasi Bahagi (cth: 432 ÷ 6)
+      const divMatch = exprPart.replace(/,/g, '').match(/(\d+)\s*÷\s*(\d+)/);
+      if (divMatch) {
+        const dividend = Number(divMatch[1]);
+        const divisor = Number(divMatch[2]);
+        const quot = Math.floor(dividend / divisor);
+        const qTens = Math.floor(quot / 10) * 10;
+        const qOnes = quot % 10;
+        steps.push({
+          val: dividend,
+          title: `Langkah 1: Wakilkan Nombor Dibahagi (${dividend.toLocaleString()})`,
+          detail: `Kita mahu bahagikan ${dividend.toLocaleString()} kepada ${divisor} bahagian sama rata dari kiri ke kanan.`,
+          voice: `Langkah satu. Kita bahagikan ${dividend} dengan ${divisor} dari kiri ke kanan.`
+        });
+        if (qTens > 0) {
+          steps.push({
+            val: qTens,
+            title: `Langkah 2: Bahagi Nilai Puluh/Ratus → ${qTens}`,
+            detail: `${divisor} × ${qTens} = ${(divisor * qTens).toLocaleString()} (baki ${dividend - divisor * qTens}). Letak ${qTens} pada sempoa.`,
+            voice: `Langkah dua. Bahagi bahagian kiri mendapat ${qTens}.`
+          });
+        }
+        steps.push({
+          val: quot,
+          title: `Langkah Akhir: Bahagi Baki Sa → Hasil Bahagi = ${quot}`,
+          detail: `Baki dibahagi ${divisor} mendapat ${qOnes}. Hasil bahagi lengkap = ${quot}.`,
+          voice: `Hasil bahagi lengkap ialah ${quot}.`
+        });
+        return steps;
+      }
+
+      // Kes 4: Operasi Rantaian Tambah & Tolak (2 hingga 4 nombor, Jari atau Sempoa)
+      const cleanTokens = exprPart.replace(/,/g, '').match(/[+-]?\s*\d+(?:\.\d+)?/g);
+      if (cleanTokens && cleanTokens.length >= 2) {
+        const nums = cleanTokens.map(tok => Number(tok.replace(/\s+/g, '')));
+        let current = nums[0];
+        const toolName = isJariTrack ? 'Jari Kira' : 'Sempoa';
+        steps.push({
+          val: Math.max(0, Math.round(current)),
+          title: `Langkah 1: Bentukkan Nombor Pertama (${current}) pada ${toolName}`,
+          detail: isJariTrack
+            ? `Buka jari untuk mewakili ${current} (Tangan Kiri = ${Math.floor(Math.abs(current) / 10) * 10}, Tangan Kanan = ${Math.abs(current) % 10}).`
+            : `Gerakkan manik Syurga (5) dan Bumi (1) pada ${toolName} untuk membentuk ${current}.`,
+          voice: `Langkah satu. Bentukkan nombor ${current}.`
+        });
+
+        for (let i = 1; i < nums.length; i++) {
+          const delta = nums[i];
+          const prev = current;
+          const next = Number((prev + delta).toFixed(2));
+          const absD = Math.abs(delta);
+          const isAdd = delta >= 0;
+          const prevOnes = Math.abs(Math.trunc(prev)) % 10;
+          const dOnes = Math.abs(Math.trunc(delta)) % 10;
+
+          // Kenal pasti teknik Kawan Kecil 5 atau Kawan Besar 10 jika berkaitan
+          let formulaHint = '';
+          if (Number.isInteger(prev) && Number.isInteger(delta) && absD >= 1 && absD <= 9) {
+            if (isAdd && prevOnes < 5 && prevOnes + dOnes >= 5 && prevOnes + dOnes < 10) {
+              const k5 = 5 - dOnes;
+              formulaHint = ` (Formula Kawan Kecil 5: +5, -${k5})`;
+            } else if (!isAdd && prevOnes >= 5 && prevOnes - dOnes < 5 && prevOnes >= dOnes) {
+              const k5 = 5 - dOnes;
+              formulaHint = ` (Formula Kawan Kecil 5: -5, +${k5})`;
+            } else if (isAdd && prevOnes + dOnes >= 10) {
+              const k10 = 10 - dOnes;
+              formulaHint = ` (Formula Kawan Besar 10: +10, -${k10})`;
+            } else if (!isAdd && prevOnes < dOnes) {
+              const k10 = 10 - dOnes;
+              formulaHint = ` (Formula Kawan Besar 10: -10, +${k10})`;
+            }
+          }
+
+          steps.push({
+            val: Math.max(0, Math.round(next)),
+            title: `Langkah ${i + 1}: ${isAdd ? `Tambah ${absD}` : `Tolak ${absD}`}${formulaHint} → ${next}`,
+            detail: next < 0
+              ? `Tolak ${absD} daripada ${prev} menghasilkan nombor negatif ${next}.`
+              : `${isAdd ? 'Tambahkan' : 'Tolakkan'} ${absD} pada ${toolName} daripada ${prev} menjadi ${next}.`,
+            voice: `Langkah ${i + 1}. ${isAdd ? 'Tambah' : 'Tolak'} ${absD}, menjadi ${next}.`
+          });
+          current = next;
+        }
+        return steps;
+      }
+
+      // Sandaran umum jika bentuk soalan khas
+      steps.push({
+        val: Math.max(0, Math.round(ans)),
+        title: `Langkah Tunjuk Cara: Jawapan Akhir = ${q.answer}`,
+        detail: `Perhatikan susunan nilai tempat pada ${isJariTrack ? 'Jari Kira' : 'Sempoa'} untuk mendapatkan ${q.answer}.`,
+        voice: `Jawapan bagi soalan ini ialah ${q.answer}.`
+      });
+      return steps;
+    }
+
+    window.startStepByStepDemo = function() {
+      const q = activeModQuestions[activeModIndex];
+      if (!q) return;
+
+      playClick();
+      clearModDemoTimers();
+      stopQuestionLiveTimer('mod');
+
+      isCurrentModQuestionDemoUsed = true;
+      isCurrentModDemoRunning = true;
+
+      const isJariTrack = JARI_TRACK_IDS.includes(activeModId);
+      if (isJariTrack) {
+        setHelperAbacusVisibility('mod', false);
+        setHelperFingersVisibility(true);
+      } else {
+        setHelperFingersVisibility(false);
+        setHelperAbacusVisibility('mod', true);
+      }
+
+      // Kunci 4 butang pilihan jawapan sehingga tunjuk cara tamat
+      setModAnswerButtonsLocked(true);
+
+      const banner = document.getElementById('mod-demo-steps-banner');
+      const stepBadge = document.getElementById('mod-demo-step-badge');
+      const stepTitle = document.getElementById('mod-demo-step-title');
+      const stepDetail = document.getElementById('mod-demo-step-detail');
+      const lockStatus = document.getElementById('mod-demo-lock-status');
+      const replayBtn = document.getElementById('btn-mod-demo-replay');
+
+      if (banner) banner.classList.remove('hidden');
+      if (replayBtn) replayBtn.classList.add('hidden');
+      if (lockStatus) {
+        lockStatus.className = 'text-[10px] font-black text-amber-800';
+        lockStatus.innerText = '🔒 Pilihan jawapan dikunci sehingga tunjuk cara tamat...';
+      }
+
+      const steps = buildSmartDemoStepsForQuestion(q, isJariTrack);
+      const stepIntervalMs = 2100;
+
+      steps.forEach((st, idx) => {
+        const tId = setTimeout(() => {
+          if (!isCurrentModDemoRunning) return;
+          if (stepBadge) stepBadge.innerText = `🎬 Langkah ${idx + 1} / ${steps.length}`;
+          if (stepTitle) stepTitle.innerText = st.title;
+          if (stepDetail) stepDetail.innerText = st.detail;
+
+          if (isJariTrack) {
+            playClick();
+            setHelperFingersValueAnimated(st.val);
+          } else {
+            if (typeof playWoodBeadClick === 'function') playWoodBeadClick(true);
+            setHelperAbacusValueAnimated(st.val);
+          }
+
+          if (typeof speakCikguKikoNatural === 'function' && st.voice) {
+            speakCikguKikoNatural(st.voice, { playIntroChime: idx === 0 });
+          }
+
+          keepQuizBottomInView();
+
+          // Apabila langkah terakhir dipaparkan, buka kunci 4 butang pilihan jawapan selepas jeda ringkas
+          if (idx === steps.length - 1) {
+            const unlockTimer = setTimeout(() => {
+              isCurrentModDemoRunning = false;
+              setModAnswerButtonsLocked(false);
+              if (lockStatus) {
+                lockStatus.className = 'text-[10px] font-black text-emerald-800';
+                lockStatus.innerText = '🔓 Tunjuk cara tamat! Tekan jawapan di bawah untuk teruskan (0 Markah & 0 Coin).';
+              }
+              if (replayBtn) replayBtn.classList.remove('hidden');
+              keepQuizBottomInView();
+            }, 1350);
+            modDemoTimerHandles.push(unlockTimer);
+          }
+        }, idx * stepIntervalMs);
+        modDemoTimerHandles.push(tId);
+      });
+    };
+
     function renderCurrentModuleQuestion() {
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
+
+      clearModDemoTimers();
+      isCurrentModQuestionDemoUsed = false;
+
+      const demoBanner = document.getElementById('mod-demo-steps-banner');
+      if (demoBanner) demoBanner.classList.add('hidden');
 
       resetHelperAbacus('mod', true);
       resetHelperFingers(true);
@@ -7667,6 +8313,33 @@
 
       const fb = document.getElementById('mod-q-feedback');
       if (chosen === q.answer) {
+        if (isCurrentModQuestionDemoUsed) {
+          clearModDemoTimers();
+          playClick();
+          btnEl.className = 'bubbly-btn bg-sky-600 border-3 border-sky-800 py-3 text-base font-black text-white';
+          fb.classList.add('hidden');
+          const demoDoneHtml = `<div class="flex items-center justify-center gap-3 text-left">${getPandaMascotImg('idea_bulb', 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-md panda-anim-idea')}<div class="min-w-0 flex-1"><span class="inline-flex items-center gap-1 bg-sky-950 text-sky-200 px-3 py-0.5 rounded-full text-xs font-black">💡 LATIHAN TUNJUK CARA SELESAI</span><div class="mt-1">Jawapan tepat (<b>${q.answer}</b>)! Tiada markah & coin diberikan (<b>0 Markah</b>). Cuba jawab sendiri soalan seterusnya!</div></div></div>`;
+          showQuizInstantPopup(demoDoneHtml, 'fast', '', 2100);
+          activeModConsecutiveWrong = 0;
+
+          keepQuizBottomInView();
+          setTimeout(() => {
+            const isStarCheckpoint = ((activeModIndex + 1) % 10 === 0) && activeModIndex < 49;
+            if (isStarCheckpoint) {
+              const completedStarNum = Math.floor((activeModIndex + 1) / 10);
+              saveModuleCheckpointData(activeModId, activeModIndex + 1, activeModSessionCorrect, activeModConsecutiveStreak, activeMod3QuizCategory);
+              showModuleStarMilestoneCard(completedStarNum);
+            } else if (activeModIndex < activeModQuestions.length - 1) {
+              activeModIndex++;
+              renderCurrentModuleQuestion();
+            } else {
+              clearModuleCheckpointData(activeModId);
+              finishModuleQuiz();
+            }
+          }, 1550);
+          return;
+        }
+
         const reward = calculateSpeedBonusPoints(elapsedSec, activeModId);
         activeModSessionCorrect++;
         activeModConsecutiveStreak++;
@@ -15929,28 +16602,20 @@ Jom lawan kira pantas dengan saya!`;
     };
 
     function pickBestSpeechVoice(langKey) {
-      if (!('speechSynthesis' in window)) return null;
-      const voices = window.speechSynthesis.getVoices() || [];
-      if (!voices.length) return null;
       const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
-      for (const code of cfg.fallbacks) {
-        const exact = voices.find(v => (v.lang || '').toLowerCase() === code.toLowerCase());
-        if (exact) return exact;
-        const prefix = voices.find(v => (v.lang || '').toLowerCase().startsWith(code.toLowerCase()));
-        if (prefix) return prefix;
-      }
-      return null;
+      return pickBestNaturalVoiceForCodes(cfg.fallbacks);
     }
 
     if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = () => {
+        refreshKikoVoiceDetectionUI();
         const langKey = document.getElementById('dict-lang')?.value || 'ms';
         const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
         const badge = document.getElementById('dict-voice-badge');
         const matched = pickBestSpeechVoice(langKey);
         if (badge) {
           badge.innerText = matched
-            ? `Suara: ${cfg.label} (${matched.lang})`
+            ? `Suara: ${cfg.label} (${matched.name})`
             : `Suara: ${cfg.label} (Standard Peranti)`;
         }
       };
@@ -15959,8 +16624,9 @@ Jom lawan kira pantas dengan saya!`;
     function speakDictationPhrase(text, langKey = 'ms', speechRate = 0.92) {
       try {
         if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
+          stopCikguKikoSpeech();
           const cfg = DICTATION_LANG_CONFIG[langKey] || DICTATION_LANG_CONFIG.ms;
+          const preset = KIKO_VOICE_PRESETS[kikoVoicePresetKey] || KIKO_VOICE_PRESETS.ceria;
           const utter = new SpeechSynthesisUtterance(text);
           const matchedVoice = pickBestSpeechVoice(langKey);
           if (matchedVoice) {
@@ -15970,6 +16636,7 @@ Jom lawan kira pantas dengan saya!`;
             utter.lang = cfg.bcp47;
           }
           utter.rate = speechRate;
+          utter.pitch = preset.pitch;
           window.speechSynthesis.speak(utter);
         }
       } catch (e) {}
@@ -16183,9 +16850,7 @@ Jom lawan kira pantas dengan saya!`;
 
     window.closeKidTutorialModal = function(markDone = true) {
       playClick();
-      if ('speechSynthesis' in window) {
-        try { window.speechSynthesis.cancel(); } catch (e) {}
-      }
+      stopCikguKikoSpeech();
       const modal = document.getElementById('modal-kid-tutorial');
       if (modal) modal.classList.add('hidden');
       if (markDone && currentPlayer) {
@@ -16219,15 +16884,8 @@ Jom lawan kira pantas dengan saya!`;
 
     window.speakKidTutorialPrompt = function() {
       const step = KID_TUTORIAL_STEPS[kidTutStepIdx];
-      if (!step || !('speechSynthesis' in window)) return;
-      try {
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(step.voiceText);
-        utter.lang = 'ms-MY';
-        utter.rate = 0.94;
-        utter.pitch = 1.24;
-        window.speechSynthesis.speak(utter);
-      } catch (e) {}
+      if (!step) return;
+      speakCikguKikoNatural(step.voiceText);
     };
 
     function renderKidTutorialStage() {

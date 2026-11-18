@@ -324,7 +324,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.0.0 • Mod Offline Lengkap & Nota Jari Anatomi 3D (Asas v1.9.99)
+            Versi 2.0.1 • Perlindungan Skor Anti-Timpa (High-Water-Mark & Multi-Tab Sync)
           </span>
         </div>
 
@@ -8582,6 +8582,7 @@ Jom lawan kira pantas dengan saya!`;
       triggerConfetti();
       if (!isAdm) {
         currentPlayer.stars -= cost;
+        currentPlayer._allowCoinSpendUntil = Date.now() + 8000;
       }
       if (!currentPlayer.ownedAvatarItems.includes(itemId)) {
         currentPlayer.ownedAvatarItems.push(itemId);
@@ -9661,6 +9662,24 @@ Jom lawan kira pantas dengan saya!`;
       currentPlayer.updatedAt = Date.now();
       currentPlayer.currentActivityLabel = currentPlayer.currentActivityLabel || 'Menu Utama';
 
+      /* Pastikan tab lain dalam pelayar sama tidak ditimpa dengan skor lebih rendah */
+      try {
+        loadLocalAccountsFromStorage();
+        const prevLocal = inMemoryAccounts.get(docId);
+        if (prevLocal && typeof prevLocal === 'object') {
+          const isCoinSpendActive = Number(currentPlayer._allowCoinSpendUntil || 0) > Date.now();
+          currentPlayer.totalPoints = Math.max(Number(currentPlayer.totalPoints) || 0, Number(prevLocal.totalPoints) || 0);
+          if (!isCoinSpendActive) {
+            currentPlayer.stars = Math.max(Number(currentPlayer.stars) || 0, Number(prevLocal.stars) || 0);
+          }
+          if (prevLocal.todayDateKey === currentPlayer.todayDateKey) {
+            currentPlayer.todayPoints = Math.max(Number(currentPlayer.todayPoints) || 0, Number(prevLocal.todayPoints) || 0);
+            currentPlayer.todayStars = Math.max(Number(currentPlayer.todayStars) || 0, Number(prevLocal.todayStars) || 0);
+            currentPlayer.todaySeconds = Math.max(Number(currentPlayer.todaySeconds) || 0, Number(prevLocal.todaySeconds) || 0);
+          }
+          currentPlayer.playSeconds = Math.max(Number(currentPlayer.playSeconds) || 0, Number(prevLocal.playSeconds) || 0);
+        }
+      } catch (e) {}
       inMemoryAccounts.set(docId, JSON.parse(JSON.stringify(currentPlayer)));
       persistLocalAccountsToStorage();
 
@@ -9681,6 +9700,42 @@ Jom lawan kira pantas dengan saya!`;
           return;
         }
         const playerRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', docId);
+        /* Perlindungan Anti-Timpa (High-Water-Mark Merge): Semak rekod awan terkini sebelum simpan supaya tab/peranti lama tidak memadam skor lebih tinggi */
+        try {
+          const latestSnap = await getDoc(playerRef);
+          if (latestSnap.exists()) {
+            const r = latestSnap.data();
+            const isCoinSpendActive = Number(currentPlayer._allowCoinSpendUntil || 0) > Date.now();
+            currentPlayer.totalPoints = Math.max(Number(currentPlayer.totalPoints) || 0, Number(r.totalPoints) || 0);
+            if (!isCoinSpendActive) {
+              currentPlayer.stars = Math.max(Number(currentPlayer.stars) || 0, Number(r.stars) || 0);
+            }
+            if (r.todayDateKey === currentPlayer.todayDateKey) {
+              currentPlayer.todayPoints = Math.max(Number(currentPlayer.todayPoints) || 0, Number(r.todayPoints) || 0);
+              currentPlayer.todayStars = Math.max(Number(currentPlayer.todayStars) || 0, Number(r.todayStars) || 0);
+              currentPlayer.todaySeconds = Math.max(Number(currentPlayer.todaySeconds) || 0, Number(r.todaySeconds) || 0);
+            }
+            currentPlayer.playSeconds = Math.max(Number(currentPlayer.playSeconds) || 0, Number(r.playSeconds) || 0);
+            if (Array.isArray(r.unlockedModules)) {
+              currentPlayer.unlockedModules = Array.from(new Set([...(currentPlayer.unlockedModules || [1, 2]), ...r.unlockedModules]));
+            }
+            if (Array.isArray(r.ownedAvatarItems)) {
+              currentPlayer.ownedAvatarItems = Array.from(new Set([...(currentPlayer.ownedAvatarItems || []), ...r.ownedAvatarItems]));
+            }
+            if (r.modScores && typeof r.modScores === 'object') {
+              currentPlayer.modScores = currentPlayer.modScores || {};
+              Object.entries(r.modScores).forEach(([mk, mv]) => {
+                currentPlayer.modScores[mk] = Math.max(Number(currentPlayer.modScores[mk]) || 0, Number(mv) || 0);
+              });
+            }
+            if (Array.isArray(r.linkedChildrenIds)) {
+              currentPlayer.linkedChildrenIds = Array.from(new Set([...(currentPlayer.linkedChildrenIds || []), ...r.linkedChildrenIds]));
+            }
+            currentPlayer.linkedGuardians = mergeLinkedGuardiansObjs(r.linkedGuardians, currentPlayer.linkedGuardians);
+            currentPlayer.guardianLinkLocked = Boolean(r.guardianLinkLocked || currentPlayer.guardianLinkLocked);
+          }
+        } catch (hwmErr) {}
+
         await setDoc(playerRef, {
           accountId: docId,
           key: docId,
@@ -9720,6 +9775,7 @@ Jom lawan kira pantas dengan saya!`;
           dailyQuests: currentPlayer.dailyQuests || null,
           updatedAt: currentPlayer.updatedAt
         });
+        syncPlayerUI();
         currentPlayer.pendingCloudSync = false;
         currentPlayer.offlineDeltaPoints = 0;
         currentPlayer.offlineDeltaStars = 0;
@@ -9933,6 +9989,25 @@ Jom lawan kira pantas dengan saya!`;
         updateNetworkStatusUI();
       }
     }
+
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === LOCAL_DB_STORAGE_KEY && currentPlayer && !currentPlayer.isGuest && !isAdminAccountRecord(currentPlayer)) {
+        const docId = currentPlayer.accountId || currentPlayer.key;
+        loadLocalAccountsFromStorage();
+        const updatedAcc = docId ? inMemoryAccounts.get(docId) : null;
+        if (updatedAcc && typeof updatedAcc === 'object') {
+          currentPlayer.totalPoints = Math.max(Number(currentPlayer.totalPoints) || 0, Number(updatedAcc.totalPoints) || 0);
+          currentPlayer.stars = Math.max(Number(currentPlayer.stars) || 0, Number(updatedAcc.stars) || 0);
+          if (updatedAcc.todayDateKey === currentPlayer.todayDateKey) {
+            currentPlayer.todayPoints = Math.max(Number(currentPlayer.todayPoints) || 0, Number(updatedAcc.todayPoints) || 0);
+            currentPlayer.todayStars = Math.max(Number(currentPlayer.todayStars) || 0, Number(updatedAcc.todayStars) || 0);
+            currentPlayer.todaySeconds = Math.max(Number(currentPlayer.todaySeconds) || 0, Number(updatedAcc.todaySeconds) || 0);
+          }
+          currentPlayer.playSeconds = Math.max(Number(currentPlayer.playSeconds) || 0, Number(updatedAcc.playSeconds) || 0);
+          syncPlayerUI();
+        }
+      }
+    });
 
     window.addEventListener('online', () => {
       isDeviceOnline = true;

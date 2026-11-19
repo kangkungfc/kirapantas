@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.6 • Penukaran Peranan Penjaga (Ibu / Bapa / Pengajar) Terus dalam Kawalan Penjaga Anak
+            Versi 2.1.7 • Terjemahan Penuh 4 Bahasa (Tetapan Akaun, Nota Modul, Formula & Mesej Dinamik)
           </span>
         </div>
 
@@ -17089,5 +17089,1133 @@ Jom lawan kira pantas dengan saya!`;
     };
     if (typeof syncPandaMascotImages === 'function') syncPandaMascotImages();
   </script>
+
+  <script>
+  (function() {
+    const EXTENDED_I18N = {
+      ms: {
+        // Account Settings
+        voiceCardTitle: '🐼 Gaya Suara Cikgu Kiko (AI Neural & Prosodi)',
+        voiceEngineBadge: '🎙️ Enjin: Suara Natural Pintar',
+        voiceCardDesc: 'Enjin suara secara automatik mengutamakan suara Neural/Natural terbaik peranti anda serta memecahkan ayat dengan jeda semula jadi.',
+        voicePresetCeria: '😊 Ceria & Mesra',
+        voicePresetLembut: '🌸 Lembut & Tenang',
+        voicePresetSemangat: '⚡ Pantas & Aktif',
+        voicePreviewBtn: '🔊 Dengar Sampel Suara',
+        btnToggleSecretsShow: '🔐 Tunjuk PIN',
+        btnToggleSecretsHide: '🙈 Sorok PIN',
+        lblRecoveryPin: '🔐 PIN Pemulihan:',
+        accProfileNote: '💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.',
+        accGuardiansTitle: '🛡️ Penjaga Sah Berdaftar (Maksimum 3)',
+        accGuardiansDesc: 'Akaun anda dilindungi dengan had maksimum <b>1 Ibu</b>, <b>1 Bapa</b>, dan <b>1 Pengajar</b> sahaja bagi mengelakkan penyamaran.',
+        accUpgradeTitle: '👨‍👩‍👧‍👦 Naik Taraf ke Akaun Ibu Bapa / Pengajar',
+        accUpgradeDesc: 'Sudah lama bermain dan ada banyak Coin serta Markah? Anda boleh menaik taraf akaun sedia ada ini kepada <b>Akaun Ibu Bapa / Pengajar</b> tanpa kehilangan walau 1 Coin, Markah, Avatar atau Tahap anda!',
+        accUpgradeBtn: '🚀 Naik Taraf Akaun Ini ke Ibu Bapa (Kekalkan Semua Coin & Markah)',
+        accChangeNameTitle: '✏️ Tukar Nama Pelajar',
+        accNewNameLbl: 'Nama Baharu (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)',
+        accNewNamePh: 'Masukkan nama baharu',
+        accSaveNameBtn: '💾 Simpan Nama Baharu (Kekalkan Semua Rekod)',
+        accChangePassTitle: '🔒 Tukar Kata Laluan & PIN Pemulihan',
+        accOldPassLbl: 'Kata Laluan Semasa',
+        accOldPassPh: 'Masukkan kata laluan semasa',
+        accNewPassLbl: 'Kata Laluan Baharu',
+        accNewPassPh: 'Masukkan kata laluan baharu',
+        accNewPinLbl: 'PIN Pemulihan 4-Digit Baharu <span class="text-slate-400 font-bold">(Untuk tetapkan semula kata laluan jika terlupa)</span>',
+        accNewPinPh: '4 digit nombor (cth: 2580)',
+        accSavePassBtn: '🔐 Kemas Kini Kata Laluan & PIN',
+        accSupportTitle: '🆘 Hubungi Admin / Lapor Masalah Akaun',
+        accSupportDesc: 'Perlukan bantuan daripada Admin? Pilih jenis masalah di bawah dan hantar mesej terus ke Peti Masuk Admin.',
+        accSupportTypeLbl: 'Jenis Masalah',
+        accSupportMsgLbl: 'Mesej kepada Admin',
+        accSupportMsgPh: 'Tulis mesej atau penerangan masalah anda di sini...',
+        accSupportSendBtn: '📨 Hantar Mesej kepada Admin',
+        accSupportHistTitle: '📬 Sejarah Laporan & Balasan Admin',
+        accSupportReloadBtn: '🔄 Muat Semula',
+        // Modules & Notes
+        trackJariBtn: '🖐️ Laluan Jari (3 Tahap)',
+        trackSempoaBtn: '🧮 Laluan Sempoa (5 Tahap)',
+        mysteryTitle: '🎁 Peti Hadiah Misteri Harian',
+        mysteryDesc: 'Buka 1 peti kejutan percuma setiap hari semasa belajar untuk Coin atau Aksesori!',
+        mysteryBtn: '✨ Buka Peti!',
+        guide5Min1Title: '⏱️ 5 Minit Pertama',
+        guide5Min1Desc: 'Pemanasan otot jari: naik dan turun manik dari tiang 1 hingga 10.',
+        guide5Min2Title: '🧮 5 Minit Kedua',
+        guide5Min2Desc: 'Latihan menggunakan sempoa fizikal atau simulator mengikut tahap semasa.',
+        guide5Min3Title: '🧠 5 Minit Terakhir',
+        guide5Min3Desc: 'Latihan Anzan (mengira tanpa sempoa) guna kad imbasan atau Flash Anzan.',
+        btnSpeakGuide: '🔊 Dengar',
+        btnCloseGuide: '🔼 Tutup Nota',
+        btnOpenGuide: '🔽 Buka Nota',
+        m3TabKecil: '✋ Kawan 5',
+        m3TabBesar: '🚀 Kawan 10',
+        m3TabGabung: '⚡ Gabungan',
+        m3TabGame: '🎮 Kuiz Mini',
+        m3AddHeader: '➕ Semua Formula Tambah (Klik untuk lihat contoh):',
+        m3SubHeader: '➖ Semua Formula Tolak (Klik untuk lihat contoh):',
+        roleIbu: 'Ibu',
+        roleBapa: 'Bapa',
+        rolePengajar: 'Pengajar',
+        slotEmpty: 'Belum dipautkan',
+        slotLocked: '🔒 Dikunci',
+        slotOpen: 'Slot Kosong',
+        slotValid: '✅ Sah'
+      },
+      en: {
+        // Account Settings
+        voiceCardTitle: '🐼 Teacher Kiko Voice Style (AI Neural & Prosody)',
+        voiceEngineBadge: '🎙️ Engine: Smart Natural Voice',
+        voiceCardDesc: 'The voice engine automatically prioritizes your device’s best Neural/Natural voice and splits sentences with natural pauses.',
+        voicePresetCeria: '😊 Cheerful & Friendly',
+        voicePresetLembut: '🌸 Soft & Calm',
+        voicePresetSemangat: '⚡ Fast & Energetic',
+        voicePreviewBtn: '🔊 Listen to Sample',
+        btnToggleSecretsShow: '🔐 Show PIN',
+        btnToggleSecretsHide: '🙈 Hide PIN',
+        lblRecoveryPin: '🔐 Recovery PIN:',
+        accProfileNote: '💡 All progress (coins, points, unlocked modules & avatar) is saved automatically even if you change your name or password.',
+        accGuardiansTitle: '🛡️ Registered Authorized Guardians (Max 3)',
+        accGuardiansDesc: 'Your account is protected with a maximum of <b>1 Mother</b>, <b>1 Father</b>, and <b>1 Teacher</b> to prevent impersonation.',
+        accUpgradeTitle: '👨‍👩‍👧‍👦 Upgrade to Parent / Teacher Account',
+        accUpgradeDesc: 'Been playing for a while with lots of Coins and Points? Upgrade this existing account to a <b>Parent / Teacher Account</b> without losing a single Coin, Point, Avatar, or Level!',
+        accUpgradeBtn: '🚀 Upgrade This Account to Parent (Keep All Coins & Points)',
+        accChangeNameTitle: '✏️ Change Student Name',
+        accNewNameLbl: 'New Name (Unique — Case, Space & Symbol Sensitive)',
+        accNewNamePh: 'Enter new name',
+        accSaveNameBtn: '💾 Save New Name (Keep All Records)',
+        accChangePassTitle: '🔒 Change Password & 4-Digit Recovery PIN',
+        accOldPassLbl: 'Current Password',
+        accOldPassPh: 'Enter current password',
+        accNewPassLbl: 'New Password',
+        accNewPassPh: 'Enter new password',
+        accNewPinLbl: 'New 4-Digit Recovery PIN <span class="text-slate-400 font-bold">(Used to reset password if forgotten)</span>',
+        accNewPinPh: '4 digits (e.g., 2580)',
+        accSavePassBtn: '🔐 Update Password & PIN',
+        accSupportTitle: '🆘 Contact Admin / Report Account Issue',
+        accSupportDesc: 'Need help from the Admin? Select an issue category below and send a message directly to the Admin Inbox.',
+        accSupportTypeLbl: 'Issue Category',
+        accSupportMsgLbl: 'Message to Admin',
+        accSupportMsgPh: 'Write your message or describe your issue here...',
+        accSupportSendBtn: '📨 Send Message to Admin',
+        accSupportHistTitle: '📬 Report History & Admin Replies',
+        accSupportReloadBtn: '🔄 Reload',
+        // Modules & Notes
+        trackJariBtn: '🖐️ Finger Track (3 Levels)',
+        trackSempoaBtn: '🧮 Abacus Track (5 Levels)',
+        mysteryTitle: '🎁 Daily Mystery Gift Box',
+        mysteryDesc: 'Open 1 free surprise box every day while learning to win Coins or Accessories!',
+        mysteryBtn: '✨ Open Box!',
+        guide5Min1Title: '⏱️ First 5 Minutes',
+        guide5Min1Desc: 'Finger warm-up: move beads up and down across rods 1 to 10.',
+        guide5Min2Title: '🧮 Next 5 Minutes',
+        guide5Min2Desc: 'Practice using a physical abacus or the simulator according to your current level.',
+        guide5Min3Title: '🧠 Final 5 Minutes',
+        guide5Min3Desc: 'Anzan practice (mental calculation without abacus) using flashcards or Flash Anzan.',
+        btnSpeakGuide: '🔊 Listen',
+        btnCloseGuide: '🔼 Hide Note',
+        btnOpenGuide: '🔽 Open Note',
+        m3TabKecil: '✋ Friend 5',
+        m3TabBesar: '🚀 Friend 10',
+        m3TabGabung: '⚡ Combined',
+        m3TabGame: '🎮 Mini Quiz',
+        m3AddHeader: '➕ All Addition Formulas (Click to preview step-by-step):',
+        m3SubHeader: '➖ All Subtraction Formulas (Click to preview step-by-step):',
+        roleIbu: 'Mother',
+        roleBapa: 'Father',
+        rolePengajar: 'Teacher',
+        slotEmpty: 'Not linked yet',
+        slotLocked: '🔒 Locked',
+        slotOpen: 'Open Slot',
+        slotValid: '✅ Verified',
+        notes: {
+          1: {
+            title: '10-Finger Magic (Chisanbop)',
+            shortTitle: '10-Finger Magic',
+            ageGroup: '👶 Ages 4 – 6 • 10-Finger Basics',
+            subtitle: 'Count numbers from 0 to 99 using only your two hands!',
+            speakText: 'Hello friends! In Level 1, your left hand represents Tens. The left thumb is worth fifty, and each of the other four fingers is worth ten. Your right hand represents Ones. The right thumb is worth five, and each of the other four fingers is worth one. Tap any number button below to see the finger positions!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-sky-950 flex items-center gap-1.5"><span>👑</span> The Secret Power of Your Two Hands:</div>
+                  <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-white border-2 border-emerald-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-emerald-800">👈 Left Hand (Tens)</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 Tens Boss = 50</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 Fingers = <b>10</b> each</div>
+                    </div>
+                    <div class="bg-white border-2 border-blue-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-blue-800">👉 Right Hand (Ones)</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 Big Boss = 5</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 Fingers = <b>1</b> each</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="font-black text-amber-950">🎮 Tap a Number Below to Preview:</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[1, 5, 7, 15, 25, 63, 99].map(v => `<button type="button" onclick="demoGuideBothHands(${v})" class="bubbly-btn bg-white border-2 border-amber-400 px-2.5 py-1 text-[11px] font-black text-amber-950">Show ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center pt-1">
+                    <div class="flex gap-2">
+                      ${renderRealisticHandSVG('left', numberToFingerStates(63).left, false, 'w-24 h-28')}
+                      ${renderRealisticHandSVG('right', numberToFingerStates(63).right, false, 'w-24 h-28')}
+                    </div>
+                    <span class="text-[11px] font-black text-emerald-800">Example 63: Left (50 + 10 = 60) + Right (5 + 3 = 8)</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          jari2: {
+            title: 'Secret Finger Formulas (Friend 5, 10 & Combined)',
+            shortTitle: 'Finger Formulas 5 & 10',
+            ageGroup: '🖐️ Finger Track • Level 2 (No Abacus)',
+            subtitle: 'When fingers are not enough, call Friend 5 and Friend 10 for help!',
+            speakText: 'When four regular fingers are not enough, call the Thumb worth five as Friend Five. If the right hand still needs more, raise one finger on the left hand worth ten as Friend Ten. Tap any formula below to see the fingers move!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🖐️</span> Finger Formula Lab (Click Any Formula Below!)</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Friend 5</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Friend 10</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ Combined</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Mini Quiz</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          jari3: {
+            title: 'Lightning Finger Art (Mental Fingers 0 – 99)',
+            shortTitle: 'Lightning Finger Art',
+            ageGroup: '⚡ Finger Track • Level 3 (Fast Chains)',
+            subtitle: 'Calculate 3 to 4 numbers in a row at high speed!',
+            speakText: 'Two-hand speed secrets: First, calculate the left hand tens first, then the right hand ones. Second, move your fingers on the table for every number one by one.',
+            guideHtml: `
+              <div class="space-y-2.5">
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-2 text-[11px]">
+                  <div class="font-black text-indigo-950">⚡ 3 Speed Secrets of Finger Math:</div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-bold text-slate-700">
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-indigo-800">1️⃣ Left First, Then Right</div>
+                      <div class="mt-0.5">Calculate <b>Tens (Left)</b> first, then <b>Ones (Right)</b>.</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-rose-700">2️⃣ Use Friends 5 & 10</div>
+                      <div class="mt-0.5">E.g. <code class="bg-rose-50 px-1 rounded">18 + 6</code>: raise +10 left, and on right do <code class="bg-rose-50 px-1 rounded">-5 + 1</code> = <b>24</b>!</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-emerald-800">3️⃣ Tap Fingers on Table</div>
+                      <div class="mt-0.5">Move your fingers for each step so you never lose track!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
+          },
+          2: {
+            title: 'My Abacus Friend (Suanpan 1:4)',
+            shortTitle: 'My Abacus Friend',
+            ageGroup: '🧒 Ages 6 – 7 • Know the Abacus',
+            subtitle: 'Beads are counted ONLY when they touch the Center Beam!',
+            speakText: 'Let us meet the abacus! The red upper bead above the beam is worth five. The four yellow lower beads are worth one each. Remember, beads are counted only when pushed close to the center beam!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
+                  <div class="font-black text-amber-950">🏛️ Parts of the Abacus:</div>
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="bg-rose-50 border border-rose-300 rounded-xl p-2">
+                      <div class="font-black text-rose-800">🔴 Upper Bead = 5</div>
+                      <div class="font-bold text-slate-600">1 red bead on top is worth <b>5</b>.</div>
+                    </div>
+                    <div class="bg-amber-100/70 border border-amber-300 rounded-xl p-2">
+                      <div class="font-black text-amber-900">🟡 Lower Beads = 1</div>
+                      <div class="font-bold text-slate-600">4 lower beads are worth <b>1</b> each.</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-2 col-span-2">
+                      <div class="font-black text-emerald-800">⭐ Center Beam Golden Rule:</div>
+                      <div class="font-bold text-slate-600">Beads count <b>ONLY WHEN TOUCHING</b> the center beam! Use 👍 Thumb to push up, and ☝️ Index finger to push down.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white border-2 border-amber-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[4, 5, 8, 26, 153].map(v => `<button type="button" onclick="demoGuideAbacus(${v})" class="bubbly-btn bg-amber-50 border-2 border-amber-300 px-2.5 py-1 text-[11px] font-black text-amber-950">Abacus ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center">
+                    ${renderAbacusQuestionSVG(26, 3)}
+                    <span class="text-[11px] font-black text-amber-900">Example 26: Tens Rod = 2, Ones Rod = 6</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          3: {
+            title: 'Small & Big Friends (Secret Formulas)',
+            shortTitle: 'Secret Formulas 5 & 10',
+            ageGroup: '🎒 Ages 7 – 8 • Bead Formulas',
+            subtitle: 'When beads on one rod are not enough, call Friend 5 and Friend 10!',
+            speakText: 'When lower beads are not enough, bring down the Heaven Bead worth five as Friend Five. If one rod still does not have enough, borrow ten from the left rod as Friend Ten!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🪄</span> Abacus Formula Lab (Click Any Formula Below!)</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ Friend 5</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 Friend 10</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ Combined</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 Mini Quiz</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          4: {
+            title: 'Lightning Multiplication & Division',
+            shortTitle: 'Lightning Mul & Div',
+            ageGroup: '🚀 Ages 8 – 10 • Split-Number Technique',
+            subtitle: 'Split large numbers from LEFT to RIGHT to make calculation effortless!',
+            speakText: 'The secret of lightning multiplication and division is splitting numbers from left to right! For example, twenty-four times three: multiply twenty times three to get sixty first, then add four times three which is twelve. Total is seventy-two!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="text-xs font-black text-amber-950">🎮 Tap an Example to See How to Split Numbers:</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    <button type="button" onclick="demoMod4StepExample('mul1')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 24 × 3</button>
+                    <button type="button" onclick="demoMod4StepExample('mul2')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 132 × 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div1')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 96 ÷ 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div2')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 145 ÷ 5</button>
+                  </div>
+                  <div id="mod4-step-demo-box" class="bg-white border-2 border-orange-200 rounded-2xl p-3 text-left space-y-1.5 text-[11px]">
+                    <div class="font-black text-orange-900">✖️ Example: 24 × 3 = ?</div>
+                    <div class="font-bold text-slate-700">1️⃣ Multiply the front digit (Tens) first: <b>20 × 3 = 60</b></div>
+                    <div class="font-bold text-slate-700">2️⃣ Multiply the back digit (Ones): <b>4 × 3 = 12</b></div>
+                    <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ Combine: 60 + 12 = 72!</div>
+                  </div>
+                </div>
+              </div>`
+          },
+          5: {
+            title: 'Mental Abacus (Anzan Visualization)',
+            shortTitle: 'Mental Abacus (Anzan)',
+            ageGroup: '⚡ Ages 9 – 12 • Calculate in Mind',
+            subtitle: 'Visualize abacus beads moving inside your mind without touching an abacus!',
+            speakText: 'In Anzan practice, picture the abacus beads in your mind and move your fingers on the table for each number. Try pressing the Flash 3 Numbers button below!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-purple-950">👁️ 1. Picture in Your Mind</div>
+                    <p class="font-bold text-slate-700">Visualize red beads (5) and yellow beads (1) moving up and down in your head.</p>
+                  </div>
+                  <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-pink-950">🖐️ 2. Fingers on the Table</div>
+                    <p class="font-bold text-slate-700">Move your fingers on the desk as if flicking invisible abacus beads!</p>
+                  </div>
+                </div>
+                <div class="bg-slate-900 text-white rounded-2xl p-3.5 text-center space-y-2 border-2 border-purple-400">
+                  <div class="text-xs font-black text-amber-300">⚡ Try Flash Vision (0.8s Interval)</div>
+                  <div id="mod5-mini-flash-num" class="text-3xl font-display font-black tracking-wider text-emerald-300 py-1">READY</div>
+                  <button type="button" onclick="runMod5MiniFlashDemo()" class="bubbly-btn bg-purple-500 hover:bg-purple-600 text-white text-xs font-black px-4 py-2 border border-purple-300">▶️ Flash 3 Numbers Now</button>
+                </div>
+              </div>`
+          },
+          6: {
+            title: 'International Warrior (Master Tier)',
+            shortTitle: 'International Warrior',
+            ageGroup: '🏆 Ages 10+ • Champion Challenge',
+            subtitle: 'Master decimals, negative numbers & stay calm like a world champion!',
+            speakText: 'Congratulations on reaching Champion Level! For decimals, add the whole numbers first and then add the cents behind. For negative numbers, when subtracting a larger number, the answer has a minus sign in front!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-cyan-950">💰 Decimal Tip (Cents)</div>
+                    <div class="font-bold text-slate-700">E.g. <code class="bg-white px-1 rounded">14.5 + 8.7</code>: Add <b>14 + 8 = 22</b> first, then <b>0.5 + 0.7 = 1.2</b> → <b>23.2</b>!</div>
+                  </div>
+                  <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-rose-950">❄️ Negative Numbers (Below Zero)</div>
+                    <div class="font-bold text-slate-700">E.g. <code class="bg-white px-1 rounded">15 - 20</code>: Difference between 20 and 15 is 5. Since subtracting a bigger number, put minus: <b>-5</b>!</div>
+                  </div>
+                </div>
+                <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="text-xs font-black text-emerald-950">🧘‍♂️ Champion Calm Breathing Technique (12 Seconds)</div>
+                  <p id="breath-coach-text" class="text-[11px] font-bold text-emerald-800">Inhale 4s → Hold 4s → Exhale 4s to keep your mind sharp!</p>
+                  <button type="button" onclick="startBreathingCoach()" class="bubbly-btn bg-emerald-500 text-white text-[11px] font-black px-4 py-1.5 border border-emerald-700">🌬️ Start Calm Breathing</button>
+                </div>
+              </div>`
+          }
+        }
+      },
+      zh: {
+        // Account Settings
+        voiceCardTitle: '🐼 Kiko 老师语音风格（AI 神经拟真语音）',
+        voiceEngineBadge: '🎙️ 引擎：智能自然语音',
+        voiceCardDesc: '语音引擎自动优先选择设备最佳神经拟真语音，并带有自然停顿节奏。',
+        voicePresetCeria: '😊 活泼亲切',
+        voicePresetLembut: '🌸 温柔平静',
+        voicePresetSemangat: '⚡ 快速活力',
+        voicePreviewBtn: '🔊 试听语音样本',
+        btnToggleSecretsShow: '🔐 显示 PIN 码',
+        btnToggleSecretsHide: '🙈 隐藏 PIN 码',
+        lblRecoveryPin: '🔐 恢复 PIN 码：',
+        accProfileNote: '💡 即使您更改姓名或密码，所有成就（金币、积分、已解锁阶段和形象）都会自动保留。',
+        accGuardiansTitle: '🛡️ 已注册合法监护人（最多 3 个席位）',
+        accGuardiansDesc: '您的账号受 <b>1 位母亲</b>、<b>1 位父亲</b> 和 <b>1 位老师</b> 的席位限制保护，防止冒充。',
+        accUpgradeTitle: '👨‍👩‍👧‍👦 升级为家长 / 老师账号',
+        accUpgradeDesc: '已经积累了许多金币和积分？您可以将此现有账号升级为 <b>家长 / 老师账号</b>，所有金币、积分、形象与阶段完整保留！',
+        accUpgradeBtn: '🚀 升级此账号为家长账号（保留全部金币与积分）',
+        accChangeNameTitle: '✏️ 修改学生姓名',
+        accNewNameLbl: '新姓名（唯一 — 区分大小写、空格和符号）',
+        accNewNamePh: '请输入新姓名',
+        accSaveNameBtn: '💾 保存新姓名（保留所有记录）',
+        accChangePassTitle: '🔒 修改密码与 4 位恢复 PIN 码',
+        accOldPassLbl: '当前密码',
+        accOldPassPh: '请输入当前密码',
+        accNewPassLbl: '新密码',
+        accNewPassPh: '请输入新密码',
+        accNewPinLbl: '新 4 位恢复 PIN 码 <span class="text-slate-400 font-bold">（忘记密码时用于重置）</span>',
+        accNewPinPh: '4 位数字（例如：2580）',
+        accSavePassBtn: '🔐 更新密码与 PIN 码',
+        accSupportTitle: '🆘 联系管理员 / 反馈账号问题',
+        accSupportDesc: '需要管理员协助？请在下方选择问题类型并发送消息至管理员收件箱。',
+        accSupportTypeLbl: '问题类型',
+        accSupportMsgLbl: '给管理员的留言',
+        accSupportMsgPh: '请在此输入您的问题说明或建议...',
+        accSupportSendBtn: '📨 发送消息给管理员',
+        accSupportHistTitle: '📬 反馈历史与管理员回复',
+        accSupportReloadBtn: '🔄 重新加载',
+        // Modules & Notes
+        trackJariBtn: '🖐️ 指算路线（3 个阶段）',
+        trackSempoaBtn: '🧮 算盘路线（5 个阶段）',
+        mysteryTitle: '🎁 每日神秘礼盒',
+        mysteryDesc: '每天学习时免费开启 1 个惊喜礼盒，赢取金币或装扮道具！',
+        mysteryBtn: '✨ 开启礼盒！',
+        guide5Min1Title: '⏱️ 前 5 分钟',
+        guide5Min1Desc: '手指热身：在 1 到 10 档算珠上上下拨珠练习。',
+        guide5Min2Title: '🧮 中间 5 分钟',
+        guide5Min2Desc: '根据当前阶段使用实体算盘或模拟器进行专项练习。',
+        guide5Min3Title: '🧠 最后 5 分钟',
+        guide5Min3Desc: '使用闪卡或闪电心算进行无算盘心算（Anzan）训练。',
+        btnSpeakGuide: '🔊 朗读笔记',
+        btnCloseGuide: '🔼 收起笔记',
+        btnOpenGuide: '🔽 展开笔记',
+        m3TabKecil: '✋ 凑五口诀',
+        m3TabBesar: '🚀 凑十口诀',
+        m3TabGabung: '⚡ 综合口诀',
+        m3TabGame: '🎮 迷你测验',
+        m3AddHeader: '➕ 所有加法口诀（点击查看分步演示）：',
+        m3SubHeader: '➖ 所有减法口诀（点击查看分步演示）：',
+        roleIbu: '母亲',
+        roleBapa: '父亲',
+        rolePengajar: '老师',
+        slotEmpty: '尚未绑定',
+        slotLocked: '🔒 已锁定',
+        slotOpen: '空余席位',
+        slotValid: '✅ 已验证',
+        notes: {
+          1: {
+            title: '十指魔法（指算 Chisanbop）',
+            shortTitle: '十指魔法',
+            ageGroup: '👶 4 – 6 岁 • 十指基础',
+            subtitle: '仅用双手就能从 0 数到 99！',
+            speakText: '小朋友们好！在第一阶段，左手代表十位，左手大拇指代表五十，其余四根手指每根代表十。右手代表个位，右手大拇指代表五，其余四根手指每根代表一。点击下方数字按钮查看手势吧！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-sky-950 flex items-center gap-1.5"><span>👑</span> 双手的神奇力量：</div>
+                  <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-white border-2 border-emerald-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-emerald-800">👈 左手（十位）</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 十位老大 = 50</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 根手指 = 每根 <b>10</b></div>
+                    </div>
+                    <div class="bg-white border-2 border-blue-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-blue-800">👉 右手（个位）</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 个位老大 = 5</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 根手指 = 每根 <b>1</b></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="font-black text-amber-950">🎮 点击下方数字查看手势演示：</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[1, 5, 7, 15, 25, 63, 99].map(v => `<button type="button" onclick="demoGuideBothHands(${v})" class="bubbly-btn bg-white border-2 border-amber-400 px-2.5 py-1 text-[11px] font-black text-amber-950">演示 ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center pt-1">
+                    <div class="flex gap-2">
+                      ${renderRealisticHandSVG('left', numberToFingerStates(63).left, false, 'w-24 h-28')}
+                      ${renderRealisticHandSVG('right', numberToFingerStates(63).right, false, 'w-24 h-28')}
+                    </div>
+                    <span class="text-[11px] font-black text-emerald-800">示例 63：左手 (50 + 10 = 60) + 右手 (5 + 3 = 8)</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          jari2: {
+            title: '手指秘密口诀（凑五、凑十与综合）',
+            shortTitle: '手指凑五凑十口诀',
+            ageGroup: '🖐️ 指算路线 • 第 2 阶段（无算盘）',
+            subtitle: '手指不够用时，请出“朋友 5”和“朋友 10”来帮忙！',
+            speakText: '当四根普通手指不够时，请出代表五的大拇指作为朋友五。如果右手还不够，就伸出左手一根代表十的手指作为朋友十。点击下方口诀观看手指动作！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🖐️</span> 手指口诀实验室（点击下方口诀！）</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ 凑五口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 凑十口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ 综合口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 迷你测验</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          jari3: {
+            title: '闪电指算术（脑海指影 0 – 99）',
+            shortTitle: '闪电指算术',
+            ageGroup: '⚡ 指算路线 • 第 3 阶段（连加连减）',
+            subtitle: '连续快速计算 3 到 4 个数字！',
+            speakText: '双手速算秘诀：第一，先算左手十位，再算右手个位。第二，在桌面上随每个数字拨动手指，记忆更牢固。',
+            guideHtml: `
+              <div class="space-y-2.5">
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-2 text-[11px]">
+                  <div class="font-black text-indigo-950">⚡ 指算速算 3 大秘诀：</div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-bold text-slate-700">
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-indigo-800">1️⃣ 先左手，后右手</div>
+                      <div class="mt-0.5">先算 <b>十位（左手）</b>，再算 <b>个位（右手）</b>。</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-rose-700">2️⃣ 运用凑五与凑十</div>
+                      <div class="mt-0.5">例 <code class="bg-rose-50 px-1 rounded">18 + 6</code>：左手 +10，右手 <code class="bg-rose-50 px-1 rounded">-5 + 1</code> = <b>24</b>！</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-emerald-800">3️⃣ 桌面模拟拨指</div>
+                      <div class="mt-0.5">每读一个数字就动一下手指，绝不会算漏！</div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
+          },
+          2: {
+            title: '我的算盘伙伴（1:4 算盘）',
+            shortTitle: '我的算盘伙伴',
+            ageGroup: '🧒 6 – 7 岁 • 认识算盘',
+            subtitle: '算珠只有靠拢中间横梁时才会计数！',
+            speakText: '一起来认识算盘吧！横梁上方的红色上珠代表五，下方的四颗黄色下珠每颗代表一。请记住，算珠只有靠拢中间横梁时才有效！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
+                  <div class="font-black text-amber-950">🏛️ 认识算盘结构：</div>
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="bg-rose-50 border border-rose-300 rounded-xl p-2">
+                      <div class="font-black text-rose-800">🔴 上珠 = 5</div>
+                      <div class="font-bold text-slate-600">上方 1 颗红色算珠代表 <b>5</b>。</div>
+                    </div>
+                    <div class="bg-amber-100/70 border border-amber-300 rounded-xl p-2">
+                      <div class="font-black text-amber-900">🟡 下珠 = 1</div>
+                      <div class="font-bold text-slate-600">下方 4 颗算珠每颗代表 <b>1</b>。</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-2 col-span-2">
+                      <div class="font-black text-emerald-800">⭐ 中间横梁黄金法则：</div>
+                      <div class="font-bold text-slate-600">算珠<b>只有靠拢横梁</b>才会计数！用 👍 大拇指向上拨入，☝️ 食指向下拨去。</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white border-2 border-amber-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[4, 5, 8, 26, 153].map(v => `<button type="button" onclick="demoGuideAbacus(${v})" class="bubbly-btn bg-amber-50 border-2 border-amber-300 px-2.5 py-1 text-[11px] font-black text-amber-950">算盘 ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center">
+                    ${renderAbacusQuestionSVG(26, 3)}
+                    <span class="text-[11px] font-black text-amber-900">示例 26：十位档 = 2，个位档 = 6</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          3: {
+            title: '小数友与大数友（凑五与凑十口诀）',
+            shortTitle: '凑五与凑十口诀',
+            ageGroup: '🎒 7 – 8 岁 • 拨珠口诀',
+            subtitle: '单档算珠不够时，请出“凑五”和“凑十”好朋友！',
+            speakText: '当下方算珠不够时，把代表五的上珠拨下来帮忙，这就是凑五口诀。如果单档还不够，就向左边一档借十，这就是凑十口诀！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🪄</span> 算盘口诀实验室（点击下方口诀！）</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ 凑五口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 凑十口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ 综合口诀</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 迷你测验</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          4: {
+            title: '闪电乘除法',
+            shortTitle: '闪电乘除法',
+            ageGroup: '🚀 8 – 10 岁 • 拆数速算技巧',
+            subtitle: '从左到右拆分大数字，计算变得超级简单！',
+            speakText: '闪电乘除法的秘诀是从左到右拆分数字！例如二十四乘以三：先算二十乘以三等于六十，再加上四乘以三等于十二，总和就是七十二！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="text-xs font-black text-amber-950">🎮 点击示例查看数字拆分步骤：</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    <button type="button" onclick="demoMod4StepExample('mul1')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 24 × 3</button>
+                    <button type="button" onclick="demoMod4StepExample('mul2')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 132 × 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div1')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 96 ÷ 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div2')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 145 ÷ 5</button>
+                  </div>
+                  <div id="mod4-step-demo-box" class="bg-white border-2 border-orange-200 rounded-2xl p-3 text-left space-y-1.5 text-[11px]">
+                    <div class="font-black text-orange-900">✖️ 示例：24 × 3 = ?</div>
+                    <div class="font-bold text-slate-700">1️⃣ 先乘高位（十位）：<b>20 × 3 = 60</b></div>
+                    <div class="font-bold text-slate-700">2️⃣ 再乘低位（个位）：<b>4 × 3 = 12</b></div>
+                    <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ 合并结果：60 + 12 = 72！</div>
+                  </div>
+                </div>
+              </div>`
+          },
+          5: {
+            title: '闪电心算（脑海映象 Anzan）',
+            shortTitle: '闪电心算',
+            ageGroup: '⚡ 9 – 12 岁 • 脑海珠算',
+            subtitle: '无需触碰算盘，直接在脑海中拨动虚拟算珠！',
+            speakText: '在心算训练中，在脑海里想象算珠图像，并在桌面上随数字拨动手指。点击下方按钮体验 3 个数字闪算！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-purple-950">👁️ 1. 脑海成像</div>
+                    <p class="font-bold text-slate-700">在脑海中想象红珠 (5) 和黄珠 (1) 上下移动。</p>
+                  </div>
+                  <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-pink-950">🖐️ 2. 桌面指法</div>
+                    <p class="font-bold text-slate-700">在桌面上移动手指，仿佛正在拨动隐形算盘！</p>
+                  </div>
+                </div>
+                <div class="bg-slate-900 text-white rounded-2xl p-3.5 text-center space-y-2 border-2 border-purple-400">
+                  <div class="text-xs font-black text-amber-300">⚡ 闪电视觉挑战（0.8 秒闪烁）</div>
+                  <div id="mod5-mini-flash-num" class="text-3xl font-display font-black tracking-wider text-emerald-300 py-1">准备就绪</div>
+                  <button type="button" onclick="runMod5MiniFlashDemo()" class="bubbly-btn bg-purple-500 hover:bg-purple-600 text-white text-xs font-black px-4 py-2 border border-purple-300">▶️ 立即闪现 3 个数字</button>
+                </div>
+              </div>`
+          },
+          6: {
+            title: '国际珠心算战士（大师级）',
+            shortTitle: '国际珠心算战士',
+            ageGroup: '🏆 10 岁以上 • 冠军挑战',
+            subtitle: '掌握小数、负数计算，像世界冠军一样冷静专注！',
+            speakText: '恭喜晋级冠军阶段！计算小数时，先加整数部分，再加小数部分。计算负数时，如果减去更大的数字，结果前面要加上负号！',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-cyan-950">💰 小数计算技巧</div>
+                    <div class="font-bold text-slate-700">例 <code class="bg-white px-1 rounded">14.5 + 8.7</code>：先算 <b>14 + 8 = 22</b>，再算 <b>0.5 + 0.7 = 1.2</b> → <b>23.2</b>！</div>
+                  </div>
+                  <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-rose-950">❄️ 负数计算技巧（零下）</div>
+                    <div class="font-bold text-slate-700">例 <code class="bg-white px-1 rounded">15 - 20</code>：20 与 15 相差 5，因减去更大的数，加上负号得 <b>-5</b>！</div>
+                  </div>
+                </div>
+                <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="text-xs font-black text-emerald-950">🧘‍♂️ 冠军专注呼吸法（12 秒）</div>
+                  <p id="breath-coach-text" class="text-[11px] font-bold text-emerald-800">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒，保持头脑清醒！</p>
+                  <button type="button" onclick="startBreathingCoach()" class="bubbly-btn bg-emerald-500 text-white text-[11px] font-black px-4 py-1.5 border border-emerald-700">🌬️ 开始放松呼吸</button>
+                </div>
+              </div>`
+          }
+        }
+      },
+      ar: {
+        // Account Settings
+        voiceCardTitle: '🐼 أسلوب صوت المعلم كيكو (الذكاء الاصطناعي الطبيعي)',
+        voiceEngineBadge: '🎙️ المحرك: صوت طبيعي ذكي',
+        voiceCardDesc: 'يعطي محرك الصوت الأولوية تلقائيًا لأفضل صوت طبيعي في جهازك مع وقفات نطق مريحة.',
+        voicePresetCeria: '😊 مرح وودود',
+        voicePresetLembut: '🌸 هادئ ولطيف',
+        voicePresetSemangat: '⚡ سريع ونشيط',
+        voicePreviewBtn: '🔊 استمع لعينة الصوت',
+        btnToggleSecretsShow: '🔐 إظهار رمز PIN',
+        btnToggleSecretsHide: '🙈 إخفاء رمز PIN',
+        lblRecoveryPin: '🔐 رمز الاسترداد PIN:',
+        accProfileNote: '💡 يتم حفظ جميع إنجازاتك (العملات، النقاط، المراحل المفتوحة والشخصية) تلقائيًا حتى عند تغيير الاسم أو كلمة المرور.',
+        accGuardiansTitle: '🛡️ الأوصياء المسجلون المعتمدون (بحد أقصى 3)',
+        accGuardiansDesc: 'حسابك محمي بحد أقصى <b>أم واحدة</b>، <b>أب واحد</b>، و<b>معلم واحد</b> فقط لمنع انتحال الهوية.',
+        accUpgradeTitle: '👨‍👩‍👧‍👦 الترقية إلى حساب ولي أمر / معلم',
+        accUpgradeDesc: 'لديك الكثير من العملات والنقاط؟ يمكنك ترقية هذا الحساب الحالي إلى <b>حساب ولي أمر / معلم</b> دون فقدان أي عملة أو نقطة أو مستوى!',
+        accUpgradeBtn: '🚀 ترقية هذا الحساب إلى ولي أمر (مع الاحتفاظ بجميع العملات والنقاط)',
+        accChangeNameTitle: '✏️ تغيير اسم الطالب',
+        accNewNameLbl: 'الاسم الجديد (فريد — يميز الأحرف والمسافات والرموز)',
+        accNewNamePh: 'أدخل الاسم الجديد',
+        accSaveNameBtn: '💾 حفظ الاسم الجديد (الاحتفاظ بجميع السجلات)',
+        accChangePassTitle: '🔒 تغيير كلمة المرور ورمز PIN للاسترداد',
+        accOldPassLbl: 'كلمة المرور الحالية',
+        accOldPassPh: 'أدخل كلمة المرور الحالية',
+        accNewPassLbl: 'كلمة المرور الجديدة',
+        accNewPassPh: 'أدخل كلمة المرور الجديدة',
+        accNewPinLbl: 'رمز استرداد PIN جديد من 4 أرقام <span class="text-slate-400 font-bold">(لإعادة تعيين كلمة المرور عند نسيانها)</span>',
+        accNewPinPh: '4 أرقام (مثال: 2580)',
+        accSavePassBtn: '🔐 تحديث كلمة المرور ورمز PIN',
+        accSupportTitle: '🆘 تواصل مع الإدارة / الإبلاغ عن مشكلة بالحساب',
+        accSupportDesc: 'تحتاج إلى مساعدة من الإدارة؟ اختر نوع المشكلة أدناه وأرسل رسالة مباشرة إلى صندوق الإدارة.',
+        accSupportTypeLbl: 'نوع المشكلة',
+        accSupportMsgLbl: 'الرسالة إلى الإدارة',
+        accSupportMsgPh: 'اكتب رسالتك أو اشرح مشكلتك هنا...',
+        accSupportSendBtn: '📨 إرسال الرسالة إلى الإدارة',
+        accSupportHistTitle: '📬 سجل البلاغات وردود الإدارة',
+        accSupportReloadBtn: '🔄 إعادة تحميل',
+        // Modules & Notes
+        trackJariBtn: '🖐️ مسار الأصابع (3 مستويات)',
+        trackSempoaBtn: '🧮 مسار المعداد (5 مستويات)',
+        mysteryTitle: '🎁 صندوق الهدايا الغامض اليومي',
+        mysteryDesc: 'افتح صندوق مفاجآت مجاني كل يوم أثناء التعلم لربح عملات أو إكسسوارات!',
+        mysteryBtn: '✨ افتح الصندوق!',
+        guide5Min1Title: '⏱️ أول 5 دقائق',
+        guide5Min1Desc: 'إحماء الأصابع: تحريك الخرزات صعودًا وهبوطًا على الأعمدة من 1 إلى 10.',
+        guide5Min2Title: '🧮 الـ 5 دقائق الثانية',
+        guide5Min2Desc: 'التدرب باستخدام المعداد الفعلي أو المحاكي حسب مستواك الحالي.',
+        guide5Min3Title: '🧠 آخر 5 دقائق',
+        guide5Min3Desc: 'تدريب أنزان (الحساب الذهني بدون معداد) باستخدام البطاقات أو الوميض السريع.',
+        btnSpeakGuide: '🔊 استمع للشرح',
+        btnCloseGuide: '🔼 إغلاق الملاحظة',
+        btnOpenGuide: '🔽 فتح الملاحظة',
+        m3TabKecil: '✋ أصدقاء 5',
+        m3TabBesar: '🚀 أصدقاء 10',
+        m3TabGabung: '⚡ مدمج',
+        m3TabGame: '🎮 اختبار مصغر',
+        m3AddHeader: '➕ جميع صيغ الجمع (انقر لمعاينة الخطوات):',
+        m3SubHeader: '➖ جميع صيغ الطرح (انقر لمعاينة الخطوات):',
+        roleIbu: 'الأم',
+        roleBapa: 'الأب',
+        rolePengajar: 'المعلم',
+        slotEmpty: 'غير مرتبط بعد',
+        slotLocked: '🔒 مقفل',
+        slotOpen: 'خانة متاحة',
+        slotValid: '✅ موثق',
+        notes: {
+          1: {
+            title: 'سحر الأصابع العشرة (تشيسانبوب)',
+            shortTitle: 'سحر الأصابع العشرة',
+            ageGroup: '👶 الأعمار 4 – 6 سنوات • أساسيات الأصابع',
+            subtitle: 'عدّ الأرقام من 0 إلى 99 باستخدام يديك فقط!',
+            speakText: 'مرحبًا يا أصدقاء! في المستوى الأول، اليد اليسرى تمثل العشرات؛ الإبهام الأيسر يساوي خمسين وكل إصبع آخر يساوي عشرة. اليد اليمنى تمثل الآحاد؛ الإبهام الأيمن يساوي خمسة وكل إصبع آخر يساوي واحدًا. اضغط على أي رقم أدناه لمشاهدة حركة الأصابع!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-sky-950 flex items-center gap-1.5"><span>👑</span> سر قوة يديك الاثنتين:</div>
+                  <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-white border-2 border-emerald-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-emerald-800">👈 اليد اليسرى (العشرات)</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 الإبهام الكبير = 50</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 أصابع = <b>10</b> لكل إصبع</div>
+                    </div>
+                    <div class="bg-white border-2 border-blue-300 rounded-2xl p-2.5 shadow-sm">
+                      <div class="text-xs font-black text-blue-800">👉 اليد اليمنى (الآحاد)</div>
+                      <div class="mt-1 inline-block bg-amber-100 text-amber-900 font-black px-2 py-0.5 rounded-lg text-[11px]">👍 الإبهام = 5</div>
+                      <div class="text-[11px] font-bold text-slate-600 mt-1">4 أصابع = <b>1</b> لكل إصبع</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="font-black text-amber-950">🎮 اضغط على رقم أدناه للمعاينة:</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[1, 5, 7, 15, 25, 63, 99].map(v => `<button type="button" onclick="demoGuideBothHands(${v})" class="bubbly-btn bg-white border-2 border-amber-400 px-2.5 py-1 text-[11px] font-black text-amber-950">عرض ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center pt-1">
+                    <div class="flex gap-2">
+                      ${renderRealisticHandSVG('left', numberToFingerStates(63).left, false, 'w-24 h-28')}
+                      ${renderRealisticHandSVG('right', numberToFingerStates(63).right, false, 'w-24 h-28')}
+                    </div>
+                    <span class="text-[11px] font-black text-emerald-800">مثال 63: اليسرى (50 + 10 = 60) + اليمنى (5 + 3 = 8)</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          jari2: {
+            title: 'صيغ الأصابع السرية (أصدقاء 5 و 10 والمدمج)',
+            shortTitle: 'صيغ الأصابع 5 و 10',
+            ageGroup: '🖐️ مسار الأصابع • المستوى 2 (بدون معداد)',
+            subtitle: 'عندما لا تكفي الأصابع، نستدعي أصدقاء 5 وأصدقاء 10 للمساعدة!',
+            speakText: 'عندما لا تكفي الأصابع الأربعة العادية، نستخدم الإبهام بقيمة خمسة كصديق الخمسة. وإذا لم تكفِ اليد اليمنى، نرفع إصبعًا في اليد اليسرى بقيمة عشرة كصديق العشرة.',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🖐️</span> مختبر صيغ الأصابع (انقر على أي صيغة أدناه!)</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ أصدقاء 5</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 أصدقاء 10</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ مدمج</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 اختبار مصغر</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          jari3: {
+            title: 'فن الأصابع الخاطف (تخيل الأصابع 0 – 99)',
+            shortTitle: 'فن الأصابع الخاطف',
+            ageGroup: '⚡ مسار الأصابع • المستوى 3 (سلاسل سريعة)',
+            subtitle: 'احسب 3 إلى 4 أرقام متتالية بسرعة فائقة!',
+            speakText: 'أسرار السرعة باليدين: أولاً احسب العشرات في اليد اليسرى ثم الآحاد في اليد اليمنى. ثانيًا حرّك أصابعك على الطاولة مع كل رقم.',
+            guideHtml: `
+              <div class="space-y-2.5">
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-3 space-y-2 text-[11px]">
+                  <div class="font-black text-indigo-950">⚡ أسرار السرعة الثلاثة لحساب الأصابع:</div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-bold text-slate-700">
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-indigo-800">1️⃣ اليسار أولاً ثم اليمين</div>
+                      <div class="mt-0.5">احسب <b>العشرات (اليسرى)</b> أولاً، ثم <b>الآحاد (اليمنى)</b>.</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-rose-700">2️⃣ استخدم أصدقاء 5 و 10</div>
+                      <div class="mt-0.5">مثال <code class="bg-rose-50 px-1 rounded">18 + 6</code>: ارفع +10 يسار، ويمين <code class="bg-rose-50 px-1 rounded">-5 + 1</code> = <b>24</b>!</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-2.5 border border-indigo-200">
+                      <div class="font-black text-emerald-800">3️⃣ حرّك الأصابع على الطاولة</div>
+                      <div class="mt-0.5">حرّك أصابعك مع كل خطوة حتى لا تنسى الرقم!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
+          },
+          2: {
+            title: 'صديقي المعداد (سوانبان 1:4)',
+            shortTitle: 'صديقي المعداد',
+            ageGroup: '🧒 الأعمار 6 – 7 سنوات • التعرف على المعداد',
+            subtitle: 'تُحسب الخرزات فقط عندما تلامس العارضة الوسطى!',
+            speakText: 'هيا نتعرف على المعداد! الخرزة الحمراء في الأعلى تساوي خمسة، والخرزات الصفراء الأربع في الأسفل تساوي واحدة لكل منها. تذكر أن الخرزة تُحسب فقط عند ملامستها للعارضة الوسطى!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
+                  <div class="font-black text-amber-950">🏛️ أجزاء المعداد:</div>
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="bg-rose-50 border border-rose-300 rounded-xl p-2">
+                      <div class="font-black text-rose-800">🔴 الخرزة العلوية = 5</div>
+                      <div class="font-bold text-slate-600">خرزة حمراء واحدة في الأعلى تساوي <b>5</b>.</div>
+                    </div>
+                    <div class="bg-amber-100/70 border border-amber-300 rounded-xl p-2">
+                      <div class="font-black text-amber-900">🟡 الخرزات السفلية = 1</div>
+                      <div class="font-bold text-slate-600">4 خرزات في الأسفل تساوي <b>1</b> لكل منها.</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-2 col-span-2">
+                      <div class="font-black text-emerald-800">⭐ القاعدة الذهبية للعارضة الوسطى:</div>
+                      <div class="font-bold text-slate-600">تُحسب الخرزات <b>فقط عند ملامستها</b> للعارضة الوسطى! استخدم 👍 الإبهام للرفع و ☝️ السبابة للإنزال.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white border-2 border-amber-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    ${[4, 5, 8, 26, 153].map(v => `<button type="button" onclick="demoGuideAbacus(${v})" class="bubbly-btn bg-amber-50 border-2 border-amber-300 px-2.5 py-1 text-[11px] font-black text-amber-950">معداد ${v}</button>`).join('')}
+                  </div>
+                  <div id="guide-demo-box" class="flex flex-col items-center">
+                    ${renderAbacusQuestionSVG(26, 3)}
+                    <span class="text-[11px] font-black text-amber-900">مثال 26: عمود العشرات = 2، عمود الآحاد = 6</span>
+                  </div>
+                </div>
+              </div>`
+          },
+          3: {
+            title: 'الأصدقاء الصغار والكبار (الصيغ السرية)',
+            shortTitle: 'الصيغ السرية 5 و 10',
+            ageGroup: '🎒 الأعمار 7 – 8 سنوات • صيغ الخرزات',
+            subtitle: 'عندما لا تكفي الخرزات في عمود واحد، استدعِ أصدقاء 5 و 10!',
+            speakText: 'عندما لا تكفي الخرزات السفلية، أنزل خرزة الخمسة العلوية للمساعدة كصديق الخمسة. وإذا لم يكفِ العمود، استلف عشرة من العمود الأيسر كصديق العشرة!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-gradient-to-br from-amber-50 via-rose-50 to-indigo-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2.5">
+                  <div class="font-black text-amber-950 text-xs flex items-center gap-1.5"><span>🪄</span> مختبر صيغ المعداد (انقر على أي صيغة أدناه!)</div>
+                  <div class="grid grid-cols-4 gap-1">
+                    <button type="button" onclick="switchMod3InfographicTab('kecil')" id="m3-tab-kecil" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-rose-500 text-white shadow-sm">✋ أصدقاء 5</button>
+                    <button type="button" onclick="switchMod3InfographicTab('besar')" id="m3-tab-besar" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-indigo-900 border border-indigo-200">🚀 أصدقاء 10</button>
+                    <button type="button" onclick="switchMod3InfographicTab('gabung')" id="m3-tab-gabung" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-purple-900 border border-purple-200">⚡ مدمج</button>
+                    <button type="button" onclick="switchMod3InfographicTab('game')" id="m3-tab-game" class="m3-tab py-1.5 px-1 rounded-xl text-[10px] font-black bg-white text-emerald-900 border border-emerald-200">🎮 اختبار مصغر</button>
+                  </div>
+                  <div id="m3-tab-content"></div>
+                  <div id="m3-visual-stage" class="bg-white border-2 border-sky-300 rounded-2xl p-3 text-center space-y-2 shadow-sm"></div>
+                </div>
+              </div>`
+          },
+          4: {
+            title: 'الضرب والقسمة الخاطفة',
+            shortTitle: 'الضرب والقسمة الخاطفة',
+            ageGroup: '🚀 الأعمار 8 – 10 سنوات • تقنية تجزئة الأعداد',
+            subtitle: 'جزّئ الأعداد الكبيرة من اليسار إلى اليمين لتصبح سهلة للغاية!',
+            speakText: 'سر الضرب والقسمة الخاطفة هو تجزئة الأعداد من اليسار إلى اليمين! مثلاً أربعة وعشرون ضرب ثلاثة: اضرب عشرين في ثلاثة لتحصل على ستين أولاً، ثم أضف أربعة في ثلاثة أي اثني عشر، والمجموع اثنان وسبعون!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 space-y-2 text-center">
+                  <div class="text-xs font-black text-amber-950">🎮 اضغط على مثال لمشاهدة طريقة تجزئة الأعداد:</div>
+                  <div class="flex flex-wrap justify-center gap-1.5">
+                    <button type="button" onclick="demoMod4StepExample('mul1')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 24 × 3</button>
+                    <button type="button" onclick="demoMod4StepExample('mul2')" class="bubbly-btn bg-orange-100 border-2 border-orange-400 px-2.5 py-1 text-[11px] font-black text-orange-950">✖️ 132 × 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div1')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 96 ÷ 4</button>
+                    <button type="button" onclick="demoMod4StepExample('div2')" class="bubbly-btn bg-sky-100 border-2 border-sky-400 px-2.5 py-1 text-[11px] font-black text-sky-950">➗ 145 ÷ 5</button>
+                  </div>
+                  <div id="mod4-step-demo-box" class="bg-white border-2 border-orange-200 rounded-2xl p-3 text-left space-y-1.5 text-[11px]">
+                    <div class="font-black text-orange-900">✖️ مثال: 24 × 3 = ?</div>
+                    <div class="font-bold text-slate-700">1️⃣ اضرب خانة العشرات أولاً: <b>20 × 3 = 60</b></div>
+                    <div class="font-bold text-slate-700">2️⃣ اضرب خانة الآحاد: <b>4 × 3 = 12</b></div>
+                    <div class="font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">✅ اجمع الناتج: 60 + 12 = 72!</div>
+                  </div>
+                </div>
+              </div>`
+          },
+          5: {
+            title: 'الحساب الذهني الخاطف (تخيل المعداد أنزان)',
+            shortTitle: 'الحساب الذهني أنزان',
+            ageGroup: '⚡ الأعمار 9 – 12 سنة • الحساب في العقل',
+            subtitle: 'تخيّل خرزات المعداد تتحرك في ذهنك دون لمس المعداد!',
+            speakText: 'في تدريب أنزان، تخيّل صورة خرزات المعداد في ذهنك وحرّك أصابعك على الطاولة مع كل رقم. جرب الضغط على زر وميض 3 أرقام أدناه!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-purple-950">👁️ 1. التصور الذهني</div>
+                    <p class="font-bold text-slate-700">تخيّل الخرزات الحمراء (5) والصفراء (1) تتحرك صعودًا وهبوطًا في ذهنك.</p>
+                  </div>
+                  <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-pink-950">🖐️ 2. الأصابع على الطاولة</div>
+                    <p class="font-bold text-slate-700">حرّك أصابعك على الطاولة وكأنك تحرك معدادًا خفيًا!</p>
+                  </div>
+                </div>
+                <div class="bg-slate-900 text-white rounded-2xl p-3.5 text-center space-y-2 border-2 border-purple-400">
+                  <div class="text-xs font-black text-amber-300">⚡ اختبار الوميض السريع (فاصل 0.8 ثانية)</div>
+                  <div id="mod5-mini-flash-num" class="text-3xl font-display font-black tracking-wider text-emerald-300 py-1">جاهز</div>
+                  <button type="button" onclick="runMod5MiniFlashDemo()" class="bubbly-btn bg-purple-500 hover:bg-purple-600 text-white text-xs font-black px-4 py-2 border border-purple-300">▶️ ابدأ وميض 3 أرقام</button>
+                </div>
+              </div>`
+          },
+          6: {
+            title: 'المحارب الدولي (مستوى الاحتراف)',
+            shortTitle: 'المحارب الدولي',
+            ageGroup: '🏆 الأعمار 10+ سنوات • تحدي الأبطال',
+            subtitle: 'أتقن الأعداد العشرية والسالبة وحافظ على هدوئك كالأبطال!',
+            speakText: 'تهانينا لوصولك إلى مستوى الأبطال! للأعداد العشرية اجمع الأعداد الصحيحة أولاً ثم الكسور العشرية. وللأعداد السالبة، عند طرح عدد أكبر نضع إشارة السالب في البداية!',
+            guideHtml: `
+              <div class="space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                  <div class="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-cyan-950">💰 نصيحة الأعداد العشرية</div>
+                    <div class="font-bold text-slate-700">مثال <code class="bg-white px-1 rounded">14.5 + 8.7</code>: اجمع <b>14 + 8 = 22</b> أولاً، ثم <b>0.5 + 0.7 = 1.2</b> ← <b>23.2</b>!</div>
+                  </div>
+                  <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-2.5 space-y-1">
+                    <div class="font-black text-rose-950">❄️ نصيحة الأعداد السالبة (تحت الصفر)</div>
+                    <div class="font-bold text-slate-700">مثال <code class="bg-white px-1 rounded">15 - 20</code>: الفرق بين 20 و 15 هو 5. وبما أننا نطرح عددًا أكبر، نضع <b>-5</b>!</div>
+                  </div>
+                </div>
+                <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3 text-center space-y-2">
+                  <div class="text-xs font-black text-emerald-950">🧘‍♂️ تقنية التنفس الهادئ للأبطال (12 ثانية)</div>
+                  <p id="breath-coach-text" class="text-[11px] font-bold text-emerald-800">شهيق 4 ثوانٍ ← حبس النفس 4 ثوانٍ ← زفير 4 ثوانٍ لتصفية الذهن!</p>
+                  <button type="button" onclick="startBreathingCoach()" class="bubbly-btn bg-emerald-500 text-white text-[11px] font-black px-4 py-1.5 border border-emerald-700">🌬️ ابدأ تمرين الهدوء</button>
+                </div>
+              </div>`
+          }
+        }
+      }
+    };
+
+    // Preserve original Malay MODULES_META notes on first run
+    const ORIGINAL_MS_MODULES = {};
+    if (typeof MODULES_META !== 'undefined') {
+      Object.keys(MODULES_META).forEach(k => {
+        ORIGINAL_MS_MODULES[k] = {
+          title: MODULES_META[k].title,
+          shortTitle: MODULES_META[k].shortTitle,
+          ageGroup: MODULES_META[k].ageGroup,
+          subtitle: MODULES_META[k].subtitle,
+          speakText: MODULES_META[k].speakText,
+          renderGuide: MODULES_META[k].renderGuide
+        };
+      });
+    }
+
+    function syncAllSettingsAndNotesLanguage(langCode) {
+      const code = ['ms', 'en', 'zh', 'ar'].includes(langCode) ? langCode : 'ms';
+      const dict = EXTENDED_I18N[code] || EXTENDED_I18N.ms;
+      const isRtl = code === 'ar';
+
+      // Set text direction on account and modules screens
+      ['screen-account', 'screen-modules'].forEach(sid => {
+        const el = document.getElementById(sid);
+        if (el) el.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+      });
+
+      // 1. Sync MODULES_META (1, 'jari2', 'jari3', 2..6)
+      if (typeof MODULES_META !== 'undefined') {
+        Object.keys(MODULES_META).forEach(k => {
+          if (code === 'ms' && ORIGINAL_MS_MODULES[k]) {
+            Object.assign(MODULES_META[k], ORIGINAL_MS_MODULES[k]);
+          } else if (dict.notes && dict.notes[k]) {
+            const n = dict.notes[k];
+            MODULES_META[k].title = n.title;
+            MODULES_META[k].shortTitle = n.shortTitle;
+            MODULES_META[k].ageGroup = n.ageGroup;
+            MODULES_META[k].subtitle = n.subtitle;
+            MODULES_META[k].speakText = n.speakText;
+            MODULES_META[k].renderGuide = () => n.guideHtml;
+          }
+        });
+      }
+
+      // 2. Sync Account Settings (#screen-account) static texts
+      const accSec = document.getElementById('screen-account');
+      if (accSec) {
+        const cards = accSec.querySelectorAll('.bubbly-card');
+        // Card 2: Voice Settings
+        if (cards[1]) {
+          const h3 = cards[1].querySelector('h3'); if (h3) h3.innerText = dict.voiceCardTitle;
+          const badge = document.getElementById('kiko-voice-engine-badge'); if (badge) badge.innerText = dict.voiceEngineBadge;
+          const p = cards[1].querySelector('p'); if (p) p.innerText = dict.voiceCardDesc;
+          const presets = cards[1].querySelectorAll('.kiko-voice-preset-btn');
+          if (presets[0]) presets[0].innerText = dict.voicePresetCeria;
+          if (presets[1]) presets[1].innerText = dict.voicePresetLembut;
+          if (presets[2]) presets[2].innerText = dict.voicePresetSemangat;
+          const sampleBtn = cards[1].querySelector('button[onclick="previewCikguKikoVoice()"]');
+          if (sampleBtn) sampleBtn.innerText = dict.voicePreviewBtn;
+        }
+        // Card 3: Profile Summary
+        if (cards[2]) {
+          const pinBtn = document.getElementById('btn-toggle-acc-secrets');
+          const secretsBox = document.getElementById('acc-secrets-box');
+          if (pinBtn && secretsBox) {
+            pinBtn.innerText = secretsBox.classList.contains('hidden') ? dict.btnToggleSecretsShow : dict.btnToggleSecretsHide;
+          }
+          const noteP = cards[2].querySelector('p');
+          if (noteP) noteP.innerText = dict.accProfileNote;
+        }
+        // Card 4: Registered Guardians
+        const gCard = document.getElementById('acc-registered-guardians-card');
+        if (gCard) {
+          const h3 = gCard.querySelector('h3'); if (h3) h3.innerText = dict.accGuardiansTitle;
+          const p = gCard.querySelector('p'); if (p) p.innerHTML = dict.accGuardiansDesc;
+        }
+        // Card 5: Role Upgrade
+        const uCard = document.getElementById('acc-role-upgrade-card');
+        if (uCard) {
+          const h3 = uCard.querySelector('h3'); if (h3) h3.innerText = dict.accUpgradeTitle;
+          const p = document.getElementById('acc-role-upgrade-desc'); if (p) p.innerHTML = dict.accUpgradeDesc;
+          const btn = document.getElementById('btn-upgrade-to-parent-acc'); if (btn) btn.innerText = dict.accUpgradeBtn;
+        }
+        // Card 6: Change Name
+        if (cards[5]) {
+          const h3 = cards[5].querySelector('h3'); if (h3) h3.innerText = dict.accChangeNameTitle;
+          const lbl = cards[5].querySelector('label'); if (lbl) lbl.innerText = dict.accNewNameLbl;
+          const inp = document.getElementById('acc-new-name'); if (inp) inp.placeholder = dict.accNewNamePh;
+          const btn = document.getElementById('btn-save-new-name'); if (btn) btn.innerText = dict.accSaveNameBtn;
+        }
+        // Card 7: Change Password & PIN
+        if (cards[6]) {
+          const h3 = cards[6].querySelector('h3'); if (h3) h3.innerText = dict.accChangePassTitle;
+          const lbls = cards[6].querySelectorAll('label');
+          if (lbls[0]) lbls[0].innerText = dict.accOldPassLbl;
+          if (lbls[1]) lbls[1].innerText = dict.accNewPassLbl;
+          if (lbls[2]) lbls[2].innerHTML = dict.accNewPinLbl;
+          const oldInp = document.getElementById('acc-old-pass'); if (oldInp) oldInp.placeholder = dict.accOldPassPh;
+          const newInp = document.getElementById('acc-new-pass'); if (newInp) newInp.placeholder = dict.accNewPassPh;
+          const pinInp = document.getElementById('acc-new-pin'); if (pinInp) pinInp.placeholder = dict.accNewPinPh;
+          const btn = document.getElementById('btn-save-new-pass'); if (btn) btn.innerText = dict.accSavePassBtn;
+        }
+        // Card 8: Contact Admin / Support
+        if (cards[7]) {
+          const h3 = cards[7].querySelector('h3'); if (h3) h3.innerText = dict.accSupportTitle;
+          const p = cards[7].querySelector('p'); if (p) p.innerText = dict.accSupportDesc;
+          const lbls = cards[7].querySelectorAll('label');
+          if (lbls[0]) lbls[0].innerText = dict.accSupportTypeLbl;
+          if (lbls[1]) lbls[1].innerText = dict.accSupportMsgLbl;
+          const ta = document.getElementById('support-acc-msg'); if (ta) ta.placeholder = dict.accSupportMsgPh;
+          const btn = document.getElementById('btn-support-acc-submit'); if (btn) btn.innerText = dict.accSupportSendBtn;
+          const histSpan = cards[7].querySelector('span.text-indigo-950'); if (histSpan) histSpan.innerText = dict.accSupportHistTitle;
+          const relBtn = cards[7].querySelector('button[onclick*="checkStudentSupportReplies"]'); if (relBtn) relBtn.innerText = dict.accSupportReloadBtn;
+        }
+      }
+
+      // 3. Sync Modules Screen (#screen-modules) static guide & track switchers
+      const jariBtn = document.getElementById('track-btn-jari'); if (jariBtn) jariBtn.innerText = dict.trackJariBtn;
+      const sempoaBtn = document.getElementById('track-btn-sempoa'); if (sempoaBtn) sempoaBtn.innerText = dict.trackSempoaBtn;
+      const mystCard = document.getElementById('modules-mystery-box-card');
+      if (mystCard) {
+        const mTitle = mystCard.querySelector('.text-amber-950'); if (mTitle) mTitle.innerText = dict.mysteryTitle;
+        const mDesc = document.getElementById('daily-mystery-box-desc'); if (mDesc) mDesc.innerText = dict.mysteryDesc;
+        const mBtn = document.getElementById('btn-open-mystery-box'); if (mBtn) mBtn.innerText = dict.mysteryBtn;
+      }
+      const pDetails = document.getElementById('parent-guide-details');
+      if (pDetails) {
+        const boxes = pDetails.querySelectorAll('.rounded-xl');
+        if (boxes[0]) { boxes[0].children[0].innerText = dict.guide5Min1Title; boxes[0].children[1].innerText = dict.guide5Min1Desc; }
+        if (boxes[1]) { boxes[1].children[0].innerText = dict.guide5Min2Title; boxes[1].children[1].innerText = dict.guide5Min2Desc; }
+        if (boxes[2]) { boxes[2].children[0].innerText = dict.guide5Min3Title; boxes[2].children[1].innerText = dict.guide5Min3Desc; }
+      }
+      const readBtn = document.getElementById('btn-read-mod-guide'); if (readBtn) readBtn.innerText = dict.btnSpeakGuide;
+      const toggleNoteBtn = document.getElementById('btn-toggle-mod-guide');
+      const noteContentEl = document.getElementById('mod-guide-content');
+      if (toggleNoteBtn && noteContentEl) {
+        toggleNoteBtn.innerText = noteContentEl.classList.contains('hidden') ? dict.btnOpenGuide : dict.btnCloseGuide;
+      }
+
+      // Re-render open module detail note if user is currently viewing a module note
+      const modDetail = document.getElementById('module-detail-view');
+      if (modDetail && !modDetail.classList.contains('hidden') && typeof activeModId !== 'undefined' && MODULES_META[activeModId]) {
+        const meta = MODULES_META[activeModId];
+        const isJariTrack = typeof JARI_TRACK_IDS !== 'undefined' && JARI_TRACK_IDS.includes(activeModId);
+        const stepNumber = isJariTrack ? (JARI_TRACK_IDS.indexOf(activeModId) + 1) : (SEMPOA_TRACK_IDS.indexOf(activeModId) + 1);
+        const badgeLabel = isJariTrack
+          ? (code === 'en' ? `🖐️ Finger Level ${stepNumber}` : code === 'zh' ? `🖐️ 指算阶段 ${stepNumber}` : code === 'ar' ? `🖐️ أصابع مستوى ${stepNumber}` : `🖐️ Jari Tahap ${stepNumber}`)
+          : (code === 'en' ? `🧮 Abacus Level ${stepNumber}` : code === 'zh' ? `🧮 算盘阶段 ${stepNumber}` : code === 'ar' ? `🧮 معداد مستوى ${stepNumber}` : `🧮 Sempoa Tahap ${stepNumber}`);
+        const badgeEl = document.getElementById('mod-badge-level'); if (badgeEl) badgeEl.innerText = badgeLabel;
+        const ageEl = document.getElementById('mod-guide-age-badge'); if (ageEl) ageEl.innerText = meta.ageGroup || badgeLabel;
+        const titleEl = document.getElementById('mod-guide-title'); if (titleEl) titleEl.innerText = `${badgeLabel}: ${meta.title}`;
+        const subEl = document.getElementById('mod-guide-subtitle'); if (subEl) subEl.innerText = meta.subtitle;
+        if (noteContentEl) noteContentEl.innerHTML = meta.renderGuide();
+        if ((activeModId === 3 || activeModId === 'jari2') && typeof switchMod3InfographicTab === 'function') {
+          switchMod3InfographicTab('kecil');
+        }
+      }
+      if (typeof renderModulesMenu === 'function' && currentPlayer && !document.getElementById('screen-modules')?.classList.contains('hidden')) {
+        renderModulesMenu();
+      }
+    }
+
+    // Wrap applyAppLanguageUI so every language switch immediately updates Settings & Notes too
+    if (typeof applyAppLanguageUI === 'function') {
+      const _origApplyAppLanguageUI = applyAppLanguageUI;
+      applyAppLanguageUI = function(langCode) {
+        _origApplyAppLanguageUI(langCode);
+        syncAllSettingsAndNotesLanguage(langCode);
+      };
+    }
+
+    // Also localize Formula Lab headers whenever switchMod3InfographicTab runs
+    if (typeof window.switchMod3InfographicTab === 'function') {
+      const _origSwitchM3 = window.switchMod3InfographicTab;
+      window.switchMod3InfographicTab = function(tabKey) {
+        _origSwitchM3(tabKey);
+        const code = typeof currentAppLang !== 'undefined' ? currentAppLang : 'ms';
+        const dict = EXTENDED_I18N[code] || EXTENDED_I18N.ms;
+        const contentEl = document.getElementById('m3-tab-content');
+        if (contentEl && tabKey !== 'game') {
+          const headers = contentEl.querySelectorAll('.uppercase');
+          if (headers[0]) headers[0].innerText = dict.m3AddHeader;
+          if (headers[1]) headers[1].innerText = dict.m3SubHeader;
+        }
+      };
+    }
+
+    // Run once on load for saved language
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('kirapantas_app_lang_v1') || 'ms';
+      syncAllSettingsAndNotesLanguage(saved);
+    });
+  })();
+  </script>
 </body>
+
 </html>

@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.9 • Pembaikan Sesi Biometrik WebAuthn & Penyembunyian Kad Penjaga bagi Akaun Ibu Bapa
+            Versi 2.2.0 • Susunan Semula Tetapan Akaun dengan Submenu Kategori (Profil, Keselamatan, Keluarga, Umum & Bantuan)
           </span>
         </div>
 
@@ -1402,50 +1402,17 @@
     <!-- ========================================================
          SKRIN 9: PENGURUSAN AKAUN PELAJAR (TUKAR NAMA, PASSWORD & PIN)
          ======================================================== -->
-    <section id="screen-account" class="hidden space-y-4">
+    <section id="screen-account" class="hidden space-y-3">
       <div class="flex items-center justify-between">
         <button id="btn-acc-back" onclick="navTo('home')" class="bubbly-btn bg-white border-2 border-slate-300 px-3 py-2 text-xs font-black text-slate-700">⬅️ Menu Utama</button>
         <h2 id="acc-screen-title" class="text-lg font-bold text-amber-950">⚙️ Pengurusan Akaun</h2>
       </div>
 
-      <!-- Kad Pilihan Bahasa Laman Web (Kekal Disimpan) -->
-      <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-2.5">
-        <div class="flex items-center justify-between gap-2">
-          <h3 id="acc-lang-title" class="text-sm font-black text-indigo-950">🌐 Pilihan Bahasa Laman Web</h3>
-          <span id="acc-lang-saved-badge" class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">✅ Disimpan Kekal</span>
-        </div>
-        <p id="acc-lang-desc" class="text-[11px] font-bold text-slate-500">Pilihan bahasa anda akan disimpan secara automatik untuk sesi seterusnya dan turut menyelaraskan bahasa Dikte Suara.</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-          <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Bahasa Melayu</button>
-          <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
-          <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文 (Mandarin)</button>
-          <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية (Arab)</button>
-        </div>
-      </div>
-
-      <!-- Kad Tetapan Gaya Suara Cikgu Kiko (Enjin Suara Natural & Prosodi) -->
-      <div class="bubbly-card bg-white border-4 border-sky-400 p-4 space-y-2.5">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <h3 class="text-sm font-black text-sky-950">🐼 Gaya Suara Cikgu Kiko (AI Neural & Prosodi)</h3>
-          <span id="kiko-voice-engine-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 px-2.5 py-0.5 rounded-full">🎙️ Enjin: Suara Natural Pintar</span>
-        </div>
-        <p class="text-[11px] font-bold text-slate-500">Enjin suara secara automatik mengutamakan suara Neural/Natural terbaik peranti anda serta memecahkan ayat dengan jeda semula jadi.</p>
-        <div class="grid grid-cols-3 gap-2 pt-0.5">
-          <button type="button" onclick="setKikoVoicePreset('ceria')" data-voice-preset="ceria" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-sky-500 text-white border-sky-700">😊 Ceria & Mesra</button>
-          <button type="button" onclick="setKikoVoicePreset('lembut')" data-voice-preset="lembut" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🌸 Lembut & Tenang</button>
-          <button type="button" onclick="setKikoVoicePreset('semangat')" data-voice-preset="semangat" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">⚡ Pantas & Aktif</button>
-        </div>
-        <div class="flex items-center justify-between gap-2 pt-1">
-          <span id="kiko-detected-voice-name" class="text-[10px] font-extrabold text-slate-500 truncate">Mengesan suara terbaik peranti...</span>
-          <button type="button" onclick="previewCikguKikoVoice()" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-600 px-3 py-1.5 text-[11px] font-black flex-shrink-0">🔊 Dengar Sampel Suara</button>
-        </div>
-      </div>
-
-      <!-- Kad Ringkasan Profil Pelajar (ID & PIN Dilindungi) -->
-      <div class="bubbly-card bg-white border-4 border-amber-400 p-4 space-y-3">
-        <div class="flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3 min-w-0">
-            <div id="acc-avatar-box" class="w-16 h-16 rounded-2xl flex-shrink-0 relative"></div>
+      <!-- Kad Ringkasan Profil Pelajar (Sentiasa Dipaparkan Di Atas) -->
+      <div class="bubbly-card bg-white border-4 border-amber-400 p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div id="acc-avatar-box" class="w-14 h-14 rounded-2xl flex-shrink-0 relative"></div>
             <div class="min-w-0 flex-1">
               <div id="acc-current-name-display" class="text-base font-black text-slate-800 truncate">Pelajar</div>
               <div class="flex flex-wrap gap-1.5 mt-1 text-[11px] font-extrabold">
@@ -1464,131 +1431,201 @@
           <span class="text-slate-600 text-[10px]">ID: <span id="acc-id-display" class="font-mono">-</span></span>
         </div>
 
-        <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2.5">
+        <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2">
           💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.
         </p>
       </div>
 
-      <!-- Kad Keselamatan Biometrik Peranti (Face ID / Touch ID / Cap Jari Android) -->
-      <div id="acc-biometric-card" class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-2.5">
-        <div class="flex items-center justify-between gap-2">
-          <h3 id="acc-bio-title" class="text-sm font-black text-emerald-950">👆 Log Masuk Biometrik (Face ID / Cap Jari)</h3>
-          <span id="acc-bio-status-badge" class="text-[10px] font-black bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full">Belum Aktif</span>
-        </div>
-        <p id="acc-bio-desc" class="text-[11px] font-bold text-slate-600">
-          Daftarkan <b>Face ID</b>, <b>Touch ID</b> atau <b>Imbasan Cap Jari</b> peranti ini supaya anda boleh terus log masuk dengan satu sentuhan tanpa menaip kata laluan!
-        </p>
-        <div id="acc-bio-env-warning" class="hidden text-[10px] font-extrabold text-amber-900 bg-amber-50 border border-amber-300 rounded-xl p-2">
-          ⚠️ Pengesahan biometrik memerlukan laman web dibuka melalui protokol selamat <b>HTTPS</b> (bukan fail tempatan <code>file://</code>).
-        </div>
-        <div id="acc-bio-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-        <div class="flex flex-wrap gap-2 pt-0.5">
-          <button id="btn-register-biometric" type="button" onclick="registerDeviceBiometrics()" class="flex-1 bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs py-2.5 px-3 border-2 border-teal-900">
-            🔐 Aktifkan Face ID / Cap Jari Pada Peranti Ini
-          </button>
-          <button id="btn-remove-biometric" type="button" onclick="removeDeviceBiometrics()" class="hidden bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 font-black text-xs py-2.5 px-3 border-2 border-rose-300">
-            🗑️ Nyahaktif
-          </button>
-        </div>
-      </div>
-
-            <!-- Kad Penjaga Sah Berdaftar (Pilihan B: Paparan Di Akaun Murid) -->
-      <div id="acc-registered-guardians-card" class="bubbly-card bg-white border-4 border-teal-400 p-4 space-y-2.5">
-        <div class="flex items-center justify-between gap-2">
-          <h3 class="text-sm font-black text-teal-950">🛡️ Penjaga Sah Berdaftar (Maksimum 3)</h3>
-          <span id="acc-guardians-count-badge" class="text-[10px] font-black bg-teal-100 text-teal-900 border border-teal-300 px-2.5 py-0.5 rounded-full">0/3 Slot</span>
-        </div>
-        <p class="text-[11px] font-bold text-slate-500">
-          Akaun anda dilindungi dengan had maksimum <b>1 Ibu</b>, <b>1 Bapa</b>, dan <b>1 Pengajar</b> sahaja bagi mengelakkan penyamaran.
-        </p>
-        <div id="acc-guardians-list" class="space-y-1.5"></div>
-      </div>
-
-      <!-- Kad Naik Taraf / Tukar Jenis Akaun (Pelajar <-> Ibu Bapa / Pengajar) -->
-      <div id="acc-role-upgrade-card" class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-2.5">
-        <div class="flex items-center justify-between gap-2">
-          <h3 class="text-sm font-black text-teal-950">👨‍👩‍👧‍👦 Naik Taraf ke Akaun Ibu Bapa / Pengajar</h3>
-          <span id="acc-current-role-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full">🎓 Akaun Pelajar</span>
-        </div>
-        <p id="acc-role-upgrade-desc" class="text-[11px] font-bold text-slate-600">
-          Sudah lama bermain dan ada banyak Coin serta Markah? Anda boleh menaik taraf akaun sedia ada ini kepada <b>Akaun Ibu Bapa / Pengajar</b> tanpa kehilangan walau 1 Coin, Markah, Avatar atau Tahap anda!
-        </p>
-        <div id="acc-role-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-        <button id="btn-upgrade-to-parent-acc" type="button" onclick="promptUpgradeCurrentAccountToParent()" class="w-full bubbly-btn bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black text-xs py-3 border-2 border-teal-900">
-          🚀 Naik Taraf Akaun Ini ke Ibu Bapa (Kekalkan Semua Coin & Markah)
+      <!-- Navigasi Submenu Kategori Tetapan (Mengelakkan Skrol Panjang) -->
+      <div id="acc-category-tabs-bar" class="bg-white/95 backdrop-blur-xs p-1.5 rounded-2xl border-2 border-amber-300 shadow-xs grid grid-cols-5 gap-1">
+        <button type="button" onclick="switchAccountSettingsTab('profil')" data-acc-tab="profil" class="acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-amber-400 text-amber-950 border-2 border-amber-600 shadow-2xs flex flex-col items-center justify-center gap-0.5 transition">
+          <span class="text-sm leading-none">👤</span>
+          <span id="acc-tab-lbl-profil">Profil</span>
+        </button>
+        <button type="button" onclick="switchAccountSettingsTab('keselamatan')" data-acc-tab="keselamatan" class="acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-slate-50 text-slate-600 border-2 border-transparent hover:bg-slate-100 flex flex-col items-center justify-center gap-0.5 transition">
+          <span class="text-sm leading-none">🔐</span>
+          <span id="acc-tab-lbl-keselamatan">Keselamatan</span>
+        </button>
+        <button type="button" onclick="switchAccountSettingsTab('keluarga')" data-acc-tab="keluarga" class="acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-slate-50 text-slate-600 border-2 border-transparent hover:bg-slate-100 flex flex-col items-center justify-center gap-0.5 transition">
+          <span class="text-sm leading-none">👨‍👩‍👧‍👦</span>
+          <span id="acc-tab-lbl-keluarga">Keluarga</span>
+        </button>
+        <button type="button" onclick="switchAccountSettingsTab('umum')" data-acc-tab="umum" class="acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-slate-50 text-slate-600 border-2 border-transparent hover:bg-slate-100 flex flex-col items-center justify-center gap-0.5 transition">
+          <span class="text-sm leading-none">🌐</span>
+          <span id="acc-tab-lbl-umum">Umum</span>
+        </button>
+        <button type="button" onclick="switchAccountSettingsTab('bantuan')" data-acc-tab="bantuan" class="acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-slate-50 text-slate-600 border-2 border-transparent hover:bg-slate-100 flex flex-col items-center justify-center gap-0.5 transition">
+          <span class="text-sm leading-none">🆘</span>
+          <span id="acc-tab-lbl-bantuan">Bantuan</span>
         </button>
       </div>
 
-      <!-- Borang 1: Tukar Nama Pelajar -->
-      <div class="bubbly-card bg-white border-4 border-sky-400 p-4 space-y-3">
-        <h3 class="text-sm font-black text-sky-950">✏️ Tukar Nama Pelajar</h3>
-        <form onsubmit="handleChangeAccountName(event)" class="space-y-2.5">
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Nama Baharu (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
-            <input id="acc-new-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama baharu" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-sky-500 focus:outline-none font-bold text-sm bg-slate-50" />
-          </div>
-          <div id="acc-name-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-          <button id="btn-save-new-name" type="submit" class="w-full bubbly-btn bg-sky-500 text-white font-black text-xs py-3 border-2 border-sky-700">
-            💾 Simpan Nama Baharu (Kekalkan Semua Rekod)
-          </button>
-        </form>
+      <!-- KATEGORI 1: PROFIL (Tukar Nama) -->
+      <div id="acc-panel-profil" class="acc-cat-panel space-y-3">
+        <div class="bubbly-card bg-white border-4 border-sky-400 p-4 space-y-3">
+          <h3 class="text-sm font-black text-sky-950">✏️ Tukar Nama Pelajar</h3>
+          <form onsubmit="handleChangeAccountName(event)" class="space-y-2.5">
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">Nama Baharu (Unik — Peka Huruf Besar/Kecil, Ruang & Simbol)</label>
+              <input id="acc-new-name" type="text" required minlength="2" maxlength="25" placeholder="Masukkan nama baharu" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-sky-500 focus:outline-none font-bold text-sm bg-slate-50" />
+            </div>
+            <div id="acc-name-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+            <button id="btn-save-new-name" type="submit" class="w-full bubbly-btn bg-sky-500 text-white font-black text-xs py-3 border-2 border-sky-700">
+              💾 Simpan Nama Baharu (Kekalkan Semua Rekod)
+            </button>
+          </form>
+        </div>
       </div>
 
-      <!-- Borang 2: Tukar Kata Laluan & PIN Pemulihan 4-Digit -->
-      <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-3">
-        <h3 class="text-sm font-black text-emerald-950">🔒 Tukar Kata Laluan & PIN Pemulihan</h3>
-        <form onsubmit="handleChangeAccountPassword(event)" class="space-y-2.5">
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Kata Laluan Semasa</label>
-            <input id="acc-old-pass" type="password" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan semasa" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+      <!-- KATEGORI 2: KESELAMATAN (Biometrik Face ID / Cap Jari + Kata Laluan & PIN) -->
+      <div id="acc-panel-keselamatan" class="acc-cat-panel hidden space-y-3">
+        <!-- Kad Keselamatan Biometrik Peranti (Face ID / Touch ID / Cap Jari Android) -->
+        <div id="acc-biometric-card" class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="acc-bio-title" class="text-sm font-black text-emerald-950">👆 Log Masuk Biometrik (Face ID / Cap Jari)</h3>
+            <span id="acc-bio-status-badge" class="text-[10px] font-black bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full">Belum Aktif</span>
           </div>
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Kata Laluan Baharu</label>
-            <input id="acc-new-pass" type="text" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan baharu" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+          <p id="acc-bio-desc" class="text-[11px] font-bold text-slate-600">
+            Daftarkan <b>Face ID</b>, <b>Touch ID</b> atau <b>Imbasan Cap Jari</b> peranti ini supaya anda boleh terus log masuk dengan satu sentuhan tanpa menaip kata laluan!
+          </p>
+          <div id="acc-bio-env-warning" class="hidden text-[10px] font-extrabold text-amber-900 bg-amber-50 border border-amber-300 rounded-xl p-2">
+            ⚠️ Pengesahan biometrik memerlukan laman web dibuka melalui protokol selamat <b>HTTPS</b> (bukan fail tempatan <code>file://</code>).
           </div>
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">PIN Pemulihan 4-Digit Baharu <span class="text-slate-400 font-bold">(Untuk tetapkan semula kata laluan jika terlupa)</span></label>
-            <input id="acc-new-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="4 digit nombor (cth: 2580)" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+          <div id="acc-bio-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+          <div class="flex flex-wrap gap-2 pt-0.5">
+            <button id="btn-register-biometric" type="button" onclick="registerDeviceBiometrics()" class="flex-1 bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs py-2.5 px-3 border-2 border-teal-900">
+              🔐 Aktifkan Face ID / Cap Jari Pada Peranti Ini
+            </button>
+            <button id="btn-remove-biometric" type="button" onclick="removeDeviceBiometrics()" class="hidden bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 font-black text-xs py-2.5 px-3 border-2 border-rose-300">
+              🗑️ Nyahaktif
+            </button>
           </div>
-          <div id="acc-pass-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-          <button id="btn-save-new-pass" type="submit" class="w-full bubbly-btn bg-emerald-500 text-white font-black text-xs py-3 border-2 border-emerald-700">
-            🔐 Kemas Kini Kata Laluan & PIN
-          </button>
-        </form>
+        </div>
+
+        <!-- Borang Tukar Kata Laluan & PIN Pemulihan 4-Digit -->
+        <div class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-3">
+          <h3 class="text-sm font-black text-emerald-950">🔒 Tukar Kata Laluan & PIN Pemulihan</h3>
+          <form onsubmit="handleChangeAccountPassword(event)" class="space-y-2.5">
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">Kata Laluan Semasa</label>
+              <input id="acc-old-pass" type="password" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan semasa" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+            </div>
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">Kata Laluan Baharu</label>
+              <input id="acc-new-pass" type="text" required minlength="3" maxlength="20" placeholder="Masukkan kata laluan baharu" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+            </div>
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">PIN Pemulihan 4-Digit Baharu <span class="text-slate-400 font-bold">(Untuk tetapkan semula kata laluan jika terlupa)</span></label>
+              <input id="acc-new-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="4 digit nombor (cth: 2580)" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none font-bold text-sm bg-slate-50" />
+            </div>
+            <div id="acc-pass-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+            <button id="btn-save-new-pass" type="submit" class="w-full bubbly-btn bg-emerald-500 text-white font-black text-xs py-3 border-2 border-emerald-700">
+              🔐 Kemas Kini Kata Laluan & PIN
+            </button>
+          </form>
+        </div>
       </div>
 
-      <!-- Borang 3: Hubungi Admin / Lapor Masalah Akaun -->
-      <div class="bubbly-card bg-white border-4 border-rose-400 p-4 space-y-3">
-        <h3 class="text-sm font-black text-rose-950">🆘 Hubungi Admin / Lapor Masalah Akaun</h3>
-        <p class="text-[11px] font-bold text-slate-500">Perlukan bantuan daripada Admin? Pilih jenis masalah di bawah dan hantar mesej terus ke Peti Masuk Admin.</p>
-        <form onsubmit="submitSupportTicket(event, 'account')" class="space-y-2.5">
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Jenis Masalah</label>
-            <select id="support-acc-issue" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50">
-              <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
-              <option value="🎨 Masalah Item Avatar / Kedai">🎨 Masalah Item Avatar / Kedai</option>
-              <option value="✏️ Bantuan Tukar Nama / Akaun">✏️ Bantuan Tukar Nama / Akaun</option>
-              <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
-              <option value="💬 Cadangan / Pertanyaan kepada Admin">💬 Cadangan / Pertanyaan kepada Admin</option>
-            </select>
+      <!-- KATEGORI 3: KELUARGA & PENJAGA -->
+      <div id="acc-panel-keluarga" class="acc-cat-panel hidden space-y-3">
+        <!-- Kad Penjaga Sah Berdaftar (Pilihan B: Paparan Di Akaun Murid) -->
+        <div id="acc-registered-guardians-card" class="bubbly-card bg-white border-4 border-teal-400 p-4 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-black text-teal-950">🛡️ Penjaga Sah Berdaftar (Maksimum 3)</h3>
+            <span id="acc-guardians-count-badge" class="text-[10px] font-black bg-teal-100 text-teal-900 border border-teal-300 px-2.5 py-0.5 rounded-full">0/3 Slot</span>
           </div>
-          <div>
-            <label class="block text-xs font-black text-slate-700 mb-1">Mesej kepada Admin</label>
-            <textarea id="support-acc-msg" rows="2" maxlength="250" required placeholder="Tulis mesej atau penerangan masalah anda di sini..." class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50"></textarea>
-          </div>
-          <div id="support-acc-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
-          <button id="btn-support-acc-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-3 border-2 border-rose-900">
-            📨 Hantar Mesej kepada Admin
-          </button>
-        </form>
+          <p class="text-[11px] font-bold text-slate-500">
+            Akaun anda dilindungi dengan had maksimum <b>1 Ibu</b>, <b>1 Bapa</b>, dan <b>1 Pengajar</b> sahaja bagi mengelakkan penyamaran.
+          </p>
+          <div id="acc-guardians-list" class="space-y-1.5"></div>
+        </div>
 
-        <!-- Senarai Sejarah Laporan & Balasan Admin untuk Pelajar Ini -->
-        <div class="pt-3 border-t border-slate-200 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-indigo-950">📬 Sejarah Laporan & Balasan Admin</span>
-            <button type="button" onclick="checkStudentSupportReplies('account')" class="text-[11px] font-black text-indigo-700 hover:text-indigo-900 underline">🔄 Muat Semula</button>
+        <!-- Kad Naik Taraf / Tukar Jenis Akaun (Pelajar <-> Ibu Bapa / Pengajar) -->
+        <div id="acc-role-upgrade-card" class="bubbly-card bg-white border-4 border-teal-500 p-4 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-black text-teal-950">👨‍👩‍👧‍👦 Naik Taraf ke Akaun Ibu Bapa / Pengajar</h3>
+            <span id="acc-current-role-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded-full">🎓 Akaun Pelajar</span>
           </div>
-          <div id="support-acc-history-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-0.5"></div>
+          <p id="acc-role-upgrade-desc" class="text-[11px] font-bold text-slate-600">
+            Sudah lama bermain dan ada banyak Coin serta Markah? Anda boleh menaik taraf akaun sedia ada ini kepada <b>Akaun Ibu Bapa / Pengajar</b> tanpa kehilangan walau 1 Coin, Markah, Avatar atau Tahap anda!
+          </p>
+          <div id="acc-role-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+          <button id="btn-upgrade-to-parent-acc" type="button" onclick="promptUpgradeCurrentAccountToParent()" class="w-full bubbly-btn bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black text-xs py-3 border-2 border-teal-900">
+            🚀 Naik Taraf Akaun Ini ke Ibu Bapa (Kekalkan Semua Coin & Markah)
+          </button>
+        </div>
+      </div>
+
+      <!-- KATEGORI 4: UMUM (Bahasa & Gaya Suara Cikgu Kiko) -->
+      <div id="acc-panel-umum" class="acc-cat-panel hidden space-y-3">
+        <!-- Kad Pilihan Bahasa Laman Web (Kekal Disimpan) -->
+        <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="acc-lang-title" class="text-sm font-black text-indigo-950">🌐 Pilihan Bahasa Laman Web</h3>
+            <span id="acc-lang-saved-badge" class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">✅ Disimpan Kekal</span>
+          </div>
+          <p id="acc-lang-desc" class="text-[11px] font-bold text-slate-500">Pilihan bahasa anda akan disimpan secara automatik untuk sesi seterusnya dan turut menyelaraskan bahasa Dikte Suara.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+            <button type="button" onclick="setAppLanguage('ms')" data-lang-btn="ms" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-amber-400 text-amber-950 border-amber-600">🇲🇾 Bahasa Melayu</button>
+            <button type="button" onclick="setAppLanguage('en')" data-lang-btn="en" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇬🇧 English</button>
+            <button type="button" onclick="setAppLanguage('zh')" data-lang-btn="zh" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇨🇳 中文 (Mandarin)</button>
+            <button type="button" onclick="setAppLanguage('ar')" data-lang-btn="ar" class="lang-switch-btn bubbly-btn py-2.5 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🇸🇦 العربية (Arab)</button>
+          </div>
+        </div>
+
+        <!-- Kad Tetapan Gaya Suara Cikgu Kiko (Enjin Suara Natural & Prosodi) -->
+        <div class="bubbly-card bg-white border-4 border-sky-400 p-4 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-sm font-black text-sky-950">🐼 Gaya Suara Cikgu Kiko (AI Neural & Prosodi)</h3>
+            <span id="kiko-voice-engine-badge" class="text-[10px] font-black bg-sky-100 text-sky-900 px-2.5 py-0.5 rounded-full">🎙️ Enjin: Suara Natural Pintar</span>
+          </div>
+          <p class="text-[11px] font-bold text-slate-500">Enjin suara secara automatik mengutamakan suara Neural/Natural terbaik peranti anda serta memecahkan ayat dengan jeda semula jadi.</p>
+          <div class="grid grid-cols-3 gap-2 pt-0.5">
+            <button type="button" onclick="setKikoVoicePreset('ceria')" data-voice-preset="ceria" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-sky-500 text-white border-sky-700">😊 Ceria & Mesra</button>
+            <button type="button" onclick="setKikoVoicePreset('lembut')" data-voice-preset="lembut" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">🌸 Lembut & Tenang</button>
+            <button type="button" onclick="setKikoVoicePreset('semangat')" data-voice-preset="semangat" class="kiko-voice-preset-btn bubbly-btn py-2 px-2 text-xs font-black border-2 bg-white text-slate-700 border-slate-200">⚡ Pantas & Aktif</button>
+          </div>
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <span id="kiko-detected-voice-name" class="text-[10px] font-extrabold text-slate-500 truncate">Mengesan suara terbaik peranti...</span>
+            <button type="button" onclick="previewCikguKikoVoice()" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-600 px-3 py-1.5 text-[11px] font-black flex-shrink-0">🔊 Dengar Sampel Suara</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KATEGORI 5: BANTUAN & ADMIN -->
+      <div id="acc-panel-bantuan" class="acc-cat-panel hidden space-y-3">
+        <div class="bubbly-card bg-white border-4 border-rose-400 p-4 space-y-3">
+          <h3 class="text-sm font-black text-rose-950">🆘 Hubungi Admin / Lapor Masalah Akaun</h3>
+          <p class="text-[11px] font-bold text-slate-500">Perlukan bantuan daripada Admin? Pilih jenis masalah di bawah dan hantar mesej terus ke Peti Masuk Admin.</p>
+          <form onsubmit="submitSupportTicket(event, 'account')" class="space-y-2.5">
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">Jenis Masalah</label>
+              <select id="support-acc-issue" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50">
+                <option value="🪙 Masalah Coin, Markah atau Modul Terkunci">🪙 Masalah Coin, Markah atau Modul Terkunci</option>
+                <option value="🎨 Masalah Item Avatar / Kedai">🎨 Masalah Item Avatar / Kedai</option>
+                <option value="✏️ Bantuan Tukar Nama / Akaun">✏️ Bantuan Tukar Nama / Akaun</option>
+                <option value="🐞 Ralat Teknikal / Pepijat Aplikasi">🐞 Ralat Teknikal / Pepijat Aplikasi</option>
+                <option value="💬 Cadangan / Pertanyaan kepada Admin">💬 Cadangan / Pertanyaan kepada Admin</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-black text-slate-700 mb-1">Mesej kepada Admin</label>
+              <textarea id="support-acc-msg" rows="2" maxlength="250" required placeholder="Tulis mesej atau penerangan masalah anda di sini..." class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-300 focus:border-rose-500 focus:outline-none font-bold text-xs bg-slate-50"></textarea>
+            </div>
+            <div id="support-acc-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+            <button id="btn-support-acc-submit" type="submit" class="w-full bubbly-btn bg-rose-600 text-white font-black text-xs py-3 border-2 border-rose-900">
+              📨 Hantar Mesej kepada Admin
+            </button>
+          </form>
+
+          <!-- Senarai Sejarah Laporan & Balasan Admin untuk Pelajar Ini -->
+          <div class="pt-3 border-t border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-indigo-950">📬 Sejarah Laporan & Balasan Admin</span>
+              <button type="button" onclick="checkStudentSupportReplies('account')" class="text-[11px] font-black text-indigo-700 hover:text-indigo-900 underline">🔄 Muat Semula</button>
+            </div>
+            <div id="support-acc-history-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-0.5"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -18638,7 +18675,95 @@ Jom lawan kira pantas dengan saya!`;
     });
   })();
   </script>
+
+  <script>
+  (function() {
+    const ACC_TAB_I18N = {
+      ms: {
+        profil: 'Profil',
+        keselamatan: 'Keselamatan',
+        keluarga: 'Keluarga',
+        umum: 'Umum',
+        bantuan: 'Bantuan'
+      },
+      en: {
+        profil: 'Profile',
+        keselamatan: 'Security',
+        keluarga: 'Family',
+        umum: 'General',
+        bantuan: 'Help'
+      },
+      zh: {
+        profil: '资料',
+        keselamatan: '安全',
+        keluarga: '家庭',
+        umum: '通用',
+        bantuan: '帮助'
+      },
+      ar: {
+        profil: 'الملف',
+        keselamatan: 'الأمان',
+        keluarga: 'العائلة',
+        umum: 'عام',
+        bantuan: 'المساعدة'
+      }
+    };
+
+    window.currentAccSettingsTab = 'profil';
+
+    window.switchAccountSettingsTab = function(tabKey) {
+      if (typeof playClick === 'function') playClick();
+      const validTabs = ['profil', 'keselamatan', 'keluarga', 'umum', 'bantuan'];
+      const chosen = validTabs.includes(tabKey) ? tabKey : 'profil';
+      window.currentAccSettingsTab = chosen;
+
+      document.querySelectorAll('.acc-cat-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+      const activePanel = document.getElementById('acc-panel-' + chosen);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      document.querySelectorAll('.acc-cat-tab-btn').forEach(btn => {
+        const isCurrent = btn.getAttribute('data-acc-tab') === chosen;
+        btn.className = isCurrent
+          ? 'acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-amber-400 text-amber-950 border-2 border-amber-600 shadow-2xs flex flex-col items-center justify-center gap-0.5 transition'
+          : 'acc-cat-tab-btn py-2 px-1 rounded-xl text-[10px] sm:text-xs font-black bg-slate-50 text-slate-600 border-2 border-transparent hover:bg-slate-100 flex flex-col items-center justify-center gap-0.5 transition';
+      });
+
+      if (chosen === 'keselamatan' && typeof window.syncBiometricUI === 'function') {
+        window.syncBiometricUI();
+      }
+      if (chosen === 'bantuan' && typeof checkStudentSupportReplies === 'function') {
+        checkStudentSupportReplies('account');
+      }
+    };
+
+    window.syncAccountSettingsTabLabels = function() {
+      const code = (localStorage.getItem('kirapantas_app_lang_v1') || 'ms');
+      const labels = ACC_TAB_I18N[code] || ACC_TAB_I18N.ms;
+      Object.keys(labels).forEach(k => {
+        const el = document.getElementById('acc-tab-lbl-' + k);
+        if (el) el.innerText = labels[k];
+      });
+    };
+
+    // Sync tab labels whenever language changes
+    if (typeof applyAppLanguageUI === 'function') {
+      const _origApplyLang2 = applyAppLanguageUI;
+      applyAppLanguageUI = function(langCode) {
+        _origApplyLang2(langCode);
+        window.syncAccountSettingsTabLabels();
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.syncAccountSettingsTabLabels();
+      window.switchAccountSettingsTab('profil');
+    });
+  })();
+  </script>
 </body>
+
 
 
 </html>

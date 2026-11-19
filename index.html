@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.4 • Tunjuk Cara Interaktif Step-by-Step (Animasi Jari & Sempoa • 0 Markah)
+            Versi 2.1.5 • Ekonomi Markah & Coin Pintar (Pengganda Kesukaran, Bonus Ketepatan & Had Optimum Harian)
           </span>
         </div>
 
@@ -7116,6 +7116,8 @@
     let blitzScore = 0;
     let blitzStreak = 0;
     let blitzLives = 3;
+    let blitzSessionCorrect = 0;
+    let blitzSessionWrong = 0;
     let blitzBestScore = Number(localStorage.getItem('kirapantas_blitz_best_v1') || 0);
 
     function updateBlitzLivesAndBestUI() {
@@ -7137,6 +7139,8 @@
       blitzLives = 3;
       blitzScore = 0;
       blitzStreak = 0;
+      blitzSessionCorrect = 0;
+      blitzSessionWrong = 0;
       document.getElementById('blitz-score').innerText = '0';
       document.getElementById('blitz-streak').innerText = '0';
       document.getElementById('blitz-gameover-card')?.classList.add('hidden');
@@ -7266,22 +7270,24 @@
 
     function calculateBalancedBlitzReward(diffKey, elapsedSec, nextStreak) {
       const diffScale = {
-        basic:    { mult: 0.45, streakStep: 5, label: 'Asas Terus' },
-        jari_all: { mult: 0.80, streakStep: 3, label: 'Jari Formula' },
-        friends:  { mult: 0.85, streakStep: 3, label: 'Formula 5 & 10' },
-        twodigit: { mult: 0.95, streakStep: 3, label: 'Dua Digit' },
-        all:      { mult: 1.00, streakStep: 3, label: 'Campur Semua' },
-        hundreds: { mult: 1.15, streakStep: 3, label: 'Ratus & Ribu' }
+        basic:    { mult: 0.60, streakStep: 3, coinPerStep: 1, label: 'Asas (0.6×)' },
+        jari_all: { mult: 1.00, streakStep: 2, coinPerStep: 1, label: 'Jari Formula (1.0×)' },
+        friends:  { mult: 1.05, streakStep: 2, coinPerStep: 1, label: 'Formula 5 & 10 (1.05×)' },
+        twodigit: { mult: 1.30, streakStep: 2, coinPerStep: 1, label: 'Dua Digit (1.3×)' },
+        all:      { mult: 1.40, streakStep: 2, coinPerStep: 1, label: 'Campur Semua (1.4×)' },
+        hundreds: { mult: 1.75, streakStep: 2, coinPerStep: 2, label: 'Pakar Ratus/Ribu (1.75×)' }
       };
       const cfg = diffScale[diffKey] || diffScale.jari_all;
       const raw = calculateSpeedBonusPoints(elapsedSec, diffKey);
-      const scaledPts = Math.max(2, Math.round(raw.total * cfg.mult));
-      const earnedCoin = (nextStreak > 0 && nextStreak % cfg.streakStep === 0) ? 1 : 0;
+      const scaledPts = Math.max(4, Math.round(raw.total * cfg.mult));
+      const earnedCoin = (nextStreak > 0 && nextStreak % cfg.streakStep === 0) ? cfg.coinPerStep : 0;
       const remainingToCoin = cfg.streakStep - (nextStreak % cfg.streakStep);
       return {
         tierKey: raw.tierKey,
         pts: scaledPts,
         coin: earnedCoin,
+        coinPerStep: cfg.coinPerStep,
+        diffLabel: cfg.label,
         speedLabel: raw.label,
         streakStep: cfg.streakStep,
         remainingToCoin,
@@ -7298,6 +7304,7 @@
 
       if (chosen === currentBlitzAnswer) {
         blitzStreak += 1;
+        blitzSessionCorrect += 1;
         const bw = calculateBalancedBlitzReward(diffKey, elapsedSec, blitzStreak);
 
         let blitzStreakPts = 0;
@@ -7322,7 +7329,7 @@
 
         const coinNote = bw.coin > 0
           ? `& <b>+${bw.coin} Coin</b> ${COIN_ICON_HTML}`
-          : `(Lagi ${bw.remainingToCoin} berturut → +1 ${COIN_ICON_HTML})`;
+          : `(Lagi ${bw.remainingToCoin} berturut → +${bw.coinPerStep} ${COIN_ICON_HTML})`;
 
         const tierHeaders = {
           super_fast: `<span class="inline-flex items-center gap-1 bg-amber-950 text-amber-300 px-3 py-0.5 rounded-full text-xs font-black tracking-wide shadow">⚡🔥 KILAT SUPER! BONUS KELAJUAN</span>`,
@@ -7352,6 +7359,7 @@
       } else {
         playWrong();
         blitzStreak = 0;
+        blitzSessionWrong += 1;
         blitzLives = Math.max(0, blitzLives - 1);
         updateBlitzLivesAndBestUI();
         if (currentPlayer) {
@@ -7369,9 +7377,24 @@
           setTimeout(() => {
             document.getElementById('blitz-options-grid')?.classList.add('hidden');
             fb.classList.add('hidden');
+            const totalAnswered = blitzSessionCorrect + blitzSessionWrong;
+            const accPct = totalAnswered > 0 ? Math.round((blitzSessionCorrect / totalAnswered) * 100) : 0;
+            let accBonusPts = 0;
+            let accBonusCoins = 0;
+            let accBonusLine = '';
+            if (blitzSessionCorrect >= 5 && accPct >= 90) {
+              accBonusPts = Math.round(blitzScore * 0.10);
+              accBonusCoins = 2;
+              blitzScore += accBonusPts;
+              updateBlitzLivesAndBestUI();
+              if (currentPlayer) addPlayerReward(accBonusCoins, accBonusPts);
+              accBonusLine = `<br><span class="inline-block mt-1 bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full text-[11px] font-black">🎯 Bonus Ketepatan ${accPct}%: +${accBonusPts} Markah & +${accBonusCoins} Coin!</span>`;
+            }
             const goCard = document.getElementById('blitz-gameover-card');
             const goSum = document.getElementById('blitz-gameover-summary');
-            if (goSum) goSum.innerHTML = `Skor Sesi Ini: <b>${blitzScore}</b> • Rekod Terbaik: <b>${blitzBestScore}</b> 🏆`;
+            if (goSum) {
+              goSum.innerHTML = `Skor Sesi Ini: <b>${blitzScore}</b> • Ketepatan: <b>${accPct}%</b> (${blitzSessionCorrect}/${totalAnswered}) • Rekod Terbaik: <b>${blitzBestScore}</b> 🏆${accBonusLine}`;
+            }
             if (goCard) goCard.classList.remove('hidden');
           }, 1100);
         } else {
@@ -9576,7 +9599,13 @@ Jom lawan kira pantas dengan saya!`;
         currentPlayer.todayPoints = 0;
         currentPlayer.todayStars = 0;
       }
-      const addStars = starsEarned || 0;
+      const DAILY_COIN_FULL_RATE_CAP = 50;
+      let rawStars = Number(starsEarned) || 0;
+      let addStars = rawStars;
+      if (rawStars > 0 && (currentPlayer.todayStars || 0) >= DAILY_COIN_FULL_RATE_CAP) {
+        currentPlayer._softCapCoinStep = (currentPlayer._softCapCoinStep || 0) + 1;
+        addStars = (currentPlayer._softCapCoinStep % 3 === 0) ? 1 : 0;
+      }
       const addPts = pointsEarned || 0;
       currentPlayer.stars = (currentPlayer.stars || 0) + addStars;
       currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + addPts;
@@ -11635,9 +11664,10 @@ Jom lawan kira pantas dengan saya!`;
                   </div>
                 </div>
               </div>
-              <div class="text-right flex-shrink-0">
+              <div class="text-right flex-shrink-0 space-y-0.5">
                 <div class="text-xs sm:text-sm font-black ${isTodayTab ? 'text-amber-700' : 'text-indigo-800'}">${shownPoints.toLocaleString()} <span class="text-[10px]">Markah</span></div>
-                <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} ${shownStars}</div>
+                <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} <span>${shownStars.toLocaleString()} Coin${isTodayTab ? ' (Hari Ini)' : ''}</span></div>
+                ${(isTodayTab && todaySec >= 60 && shownPoints > 0) ? `<div class="text-[9px] font-black text-emerald-700">⚡ ${Math.round(shownPoints / (todaySec / 60))} markah/min</div>` : ''}
                 <div class="text-[9px] text-slate-500 font-bold leading-tight">${subScoreInfo}</div>
               </div>
             </div>

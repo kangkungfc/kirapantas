@@ -384,7 +384,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.5 • Ekonomi Markah & Coin Pintar (Pengganda Kesukaran, Bonus Ketepatan & Had Optimum Harian)
+            Versi 2.1.6 • Penukaran Peranan Penjaga (Ibu / Bapa / Pengajar) Terus dalam Kawalan Penjaga Anak
           </span>
         </div>
 
@@ -12224,15 +12224,29 @@ Jom lawan kira pantas dengan saya!`;
         subEl.innerHTML = `Akaun: <b>${escapeHtmlSafe(child.name || 'Anak')}</b> • <b>${filled}/3 Slot Diisi</b>`;
       }
 
+      const myId = currentPlayer ? String(currentPlayer.accountId || currentPlayer.key || '') : '';
+      const myCurrentRoleKey = ['ibu', 'bapa', 'pengajar'].find(rk => g[rk] && String(g[rk].id) === myId) || null;
+
       if (listEl) {
         listEl.innerHTML = ['ibu', 'bapa', 'pengajar'].map(rk => {
           const meta = GUARDIAN_ROLE_META[rk];
           const slot = g[rk];
           if (slot && slot.id) {
+            const isMySlot = myId && String(slot.id) === myId;
             return `
-              <div class="flex items-center justify-between bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-2 text-xs">
-                <span class="font-black text-emerald-950">${meta.icon} ${meta.label}: <span class="text-teal-800">${escapeHtmlSafe(slot.name)}</span></span>
-                <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full">✅ Sah</span>
+              <div class="flex items-center justify-between gap-2 bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-2 text-xs">
+                <span class="font-black text-emerald-950 truncate">${meta.icon} ${meta.label}: <span class="text-teal-800">${escapeHtmlSafe(slot.name)}</span></span>
+                <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full flex-shrink-0">${isMySlot ? '⭐ Anda' : '✅ Sah'}</span>
+              </div>
+            `;
+          }
+          if (myCurrentRoleKey) {
+            return `
+              <div class="flex items-center justify-between gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                <span class="font-bold text-slate-600">${meta.icon} ${meta.label}: <i>Kosong</i></span>
+                <button type="button" onclick="switchMyGuardianRoleForChild('${rk}')" class="bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border border-teal-900 px-2.5 py-1 text-[10px] font-black flex-shrink-0">
+                  🔄 Tukar Saya ke ${meta.label}
+                </button>
               </div>
             `;
           }
@@ -12260,6 +12274,60 @@ Jom lawan kira pantas dengan saya!`;
         lockBtn.innerText = isLocked ? '🔓 Buka Kunci' : '🔒 Kunci';
       }
     }
+
+    window.switchMyGuardianRoleForChild = async function(targetRoleKey) {
+      if (!activeGuardianModalChildId || !currentPlayer) return;
+      if (!['ibu', 'bapa', 'pengajar'].includes(targetRoleKey)) return;
+      playClick();
+      loadLocalAccountsFromStorage();
+      let child = inMemoryAccounts.get(activeGuardianModalChildId);
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', activeGuardianModalChildId));
+            if (snap.exists()) child = snap.data();
+          }
+        } catch (e) {}
+      }
+      if (!child) return;
+
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      const g = normalizeLinkedGuardiansObj(child.linkedGuardians);
+      const oldRoleKey = ['ibu', 'bapa', 'pengajar'].find(rk => g[rk] && String(g[rk].id) === myId);
+      if (!oldRoleKey) {
+        playWrong();
+        showAppToast('🚫 Akaun anda tidak ditemui dalam senarai penjaga anak ini.');
+        return;
+      }
+      if (oldRoleKey === targetRoleKey) return;
+      if (g[targetRoleKey] && g[targetRoleKey].id) {
+        playWrong();
+        const targetMeta = GUARDIAN_ROLE_META[targetRoleKey];
+        showAppToast(`⚠️ Slot ${targetMeta.label} sudah diisi oleh ${g[targetRoleKey].name}.`);
+        return;
+      }
+
+      const movedEntry = {
+        ...g[oldRoleKey],
+        id: myId,
+        name: String(currentPlayer.name || g[oldRoleKey].name || 'Penjaga'),
+        roleKey: targetRoleKey,
+        updatedAt: Date.now()
+      };
+      g[oldRoleKey] = null;
+      g[targetRoleKey] = movedEntry;
+      child.linkedGuardians = g;
+
+      await persistChildGuardianRecordTwoWay(child);
+      renderGuardianSlotsModalContent(child);
+      const newMeta = GUARDIAN_ROLE_META[targetRoleKey];
+      playCheer();
+      showAppToast(`✅ Peranan anda bagi ${child.name} berjaya ditukar kepada ${newMeta.icon} ${newMeta.label}!`);
+      if (typeof loadParentChildrenDashboard === 'function') {
+        await loadParentChildrenDashboard();
+      }
+    };
 
     window.toggleChildGuardianLock = async function() {
       if (!activeGuardianModalChildId || !currentPlayer) return;

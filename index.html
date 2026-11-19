@@ -352,9 +352,13 @@
 
           <div id="login-error-msg" class="hidden text-[11px] font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2"></div>
 
-          <div class="pt-0.5">
+          <div class="pt-0.5 space-y-1.5">
             <button id="btn-login-submit" type="submit" class="w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-xs sm:text-sm py-2.5 border-2 border-blue-800">
               🔑 Log Masuk Sekarang
+            </button>
+            <button id="btn-biometric-login" type="button" onclick="loginWithDeviceBiometrics()" class="hidden w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs sm:text-sm py-2.5 border-2 border-teal-900 flex items-center justify-center gap-1.5">
+              <span>👆</span>
+              <span id="lbl-biometric-login-btn">Log Masuk Face ID / Cap Jari</span>
             </button>
           </div>
 
@@ -384,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.7 • Terjemahan Penuh 4 Bahasa (Tetapan Akaun, Nota Modul, Formula & Mesej Dinamik)
+            Versi 2.1.8 • Log Masuk Biometrik Peranti (Face ID / Touch ID / Cap Jari Android via WebAuthn)
           </span>
         </div>
 
@@ -1463,6 +1467,29 @@
         <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2.5">
           💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.
         </p>
+      </div>
+
+      <!-- Kad Keselamatan Biometrik Peranti (Face ID / Touch ID / Cap Jari Android) -->
+      <div id="acc-biometric-card" class="bubbly-card bg-white border-4 border-emerald-400 p-4 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h3 id="acc-bio-title" class="text-sm font-black text-emerald-950">👆 Log Masuk Biometrik (Face ID / Cap Jari)</h3>
+          <span id="acc-bio-status-badge" class="text-[10px] font-black bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full">Belum Aktif</span>
+        </div>
+        <p id="acc-bio-desc" class="text-[11px] font-bold text-slate-600">
+          Daftarkan <b>Face ID</b>, <b>Touch ID</b> atau <b>Imbasan Cap Jari</b> peranti ini supaya anda boleh terus log masuk dengan satu sentuhan tanpa menaip kata laluan!
+        </p>
+        <div id="acc-bio-env-warning" class="hidden text-[10px] font-extrabold text-amber-900 bg-amber-50 border border-amber-300 rounded-xl p-2">
+          ⚠️ Pengesahan biometrik memerlukan laman web dibuka melalui protokol selamat <b>HTTPS</b> (bukan fail tempatan <code>file://</code>).
+        </div>
+        <div id="acc-bio-feedback" class="hidden text-xs font-extrabold rounded-xl p-2.5"></div>
+        <div class="flex flex-wrap gap-2 pt-0.5">
+          <button id="btn-register-biometric" type="button" onclick="registerDeviceBiometrics()" class="flex-1 bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs py-2.5 px-3 border-2 border-teal-900">
+            🔐 Aktifkan Face ID / Cap Jari Pada Peranti Ini
+          </button>
+          <button id="btn-remove-biometric" type="button" onclick="removeDeviceBiometrics()" class="hidden bubbly-btn bg-rose-100 hover:bg-rose-200 text-rose-800 font-black text-xs py-2.5 px-3 border-2 border-rose-300">
+            🗑️ Nyahaktif
+          </button>
+        </div>
       </div>
 
             <!-- Kad Penjaga Sah Berdaftar (Pilihan B: Paparan Di Akaun Murid) -->
@@ -18216,6 +18243,398 @@ Jom lawan kira pantas dengan saya!`;
     });
   })();
   </script>
+
+  <script>
+  (function() {
+    const BIO_STORAGE_KEY = 'kirakilat_webauthn_credentials_v1';
+
+    const BIO_I18N = {
+      ms: {
+        loginBtn: 'Log Masuk Face ID / Cap Jari',
+        loginBtnAs: 'Log Masuk Biometrik ({name})',
+        cardTitle: '👆 Log Masuk Biometrik (Face ID / Cap Jari)',
+        badgeActive: '✅ Aktif di Peranti Ini',
+        badgeInactive: 'Belum Aktif',
+        cardDesc: 'Daftarkan <b>Face ID</b>, <b>Touch ID</b> atau <b>Imbasan Cap Jari</b> peranti ini supaya anda boleh terus log masuk dengan satu sentuhan tanpa menaip kata laluan!',
+        envWarn: '⚠️ Pengesahan biometrik memerlukan laman web dibuka melalui protokol selamat <b>HTTPS</b> (bukan fail tempatan <code>file://</code>).',
+        btnEnable: '🔐 Aktifkan Face ID / Cap Jari Pada Peranti Ini',
+        btnReenable: '🔄 Kemas Kini Face ID / Cap Jari',
+        btnRemove: '🗑️ Nyahaktif',
+        errUnsupported: '❌ Pelayar atau peranti ini tidak menyokong pengesahan biometrik WebAuthn, atau laman tidak dibuka melalui HTTPS.',
+        errNotLoggedIn: '⚠️ Sila log masuk ke akaun anda terlebih dahulu.',
+        errCancelled: '⚠️ Pengesahan biometrik dibatalkan atau tamat masa. Sila cuba lagi.',
+        errNoCred: '⚠️ Tiada pendaftaran biometrik ditemui pada peranti ini. Sila log masuk guna kata laluan dan aktifkan di menu Akaun.',
+        errAccMissing: '❌ Akaun yang dipautkan tidak ditemui. Sila log masuk menggunakan kata laluan.',
+        msgRegistered: '✅ Berjaya! Log masuk Face ID / Cap Jari telah diaktifkan untuk akaun "{name}" pada peranti ini.',
+        msgRemoved: '🗑️ Log masuk biometrik pada peranti ini telah dinyahaktifkan.',
+        msgVerifying: '⏳ Sila imbas Face ID / Cap Jari anda...'
+      },
+      en: {
+        loginBtn: 'Log In with Face ID / Fingerprint',
+        loginBtnAs: 'Biometric Login ({name})',
+        cardTitle: '👆 Biometric Login (Face ID / Fingerprint)',
+        badgeActive: '✅ Active on This Device',
+        badgeInactive: 'Not Enabled',
+        cardDesc: 'Register your device’s <b>Face ID</b>, <b>Touch ID</b>, or <b>Fingerprint Scanner</b> so you can log in with a single tap without typing a password!',
+        envWarn: '⚠️ Biometric authentication requires opening the app over a secure <b>HTTPS</b> connection (not a local <code>file://</code> path).',
+        btnEnable: '🔐 Enable Face ID / Fingerprint on This Device',
+        btnReenable: '🔄 Update Face ID / Fingerprint',
+        btnRemove: '🗑️ Disable',
+        errUnsupported: '❌ This browser/device does not support WebAuthn biometrics, or the page is not served over HTTPS.',
+        errNotLoggedIn: '⚠️ Please log in to your account first.',
+        errCancelled: '⚠️ Biometric verification was cancelled or timed out. Please try again.',
+        errNoCred: '⚠️ No biometric passkey found on this device. Please log in with your password and enable it under Account Settings.',
+        errAccMissing: '❌ Linked account could not be found. Please log in using your password.',
+        msgRegistered: '✅ Success! Face ID / Fingerprint login is now enabled for "{name}" on this device.',
+        msgRemoved: '🗑️ Biometric login has been disabled on this device.',
+        msgVerifying: '⏳ Please scan your Face ID / Fingerprint...'
+      },
+      zh: {
+        loginBtn: '使用面容 ID / 指纹登录',
+        loginBtnAs: '生物识别登录 ({name})',
+        cardTitle: '👆 生物识别登录（面容 ID / 指纹）',
+        badgeActive: '✅ 已在此设备启用',
+        badgeInactive: '未启用',
+        cardDesc: '绑定本设备的 <b>面容 ID (Face ID)</b>、<b>触控 ID</b> 或 <b>安卓指纹识别</b>，下次无需输入密码即可一键快速登录！',
+        envWarn: '⚠️ 生物识别验证需要通过安全的 <b>HTTPS</b> 网址访问（不支持本地 <code>file://</code> 文件路径）。',
+        btnEnable: '🔐 在此设备上启用面容 ID / 指纹',
+        btnReenable: '🔄 重新绑定面容 ID / 指纹',
+        btnRemove: '🗑️ 停用',
+        errUnsupported: '❌ 当前浏览器或设备不支持 WebAuthn 生物识别，或未使用 HTTPS 协议打开。',
+        errNotLoggedIn: '⚠️ 请先登录您的账号。',
+        errCancelled: '⚠️ 生物识别验证已取消或超时，请重试。',
+        errNoCred: '⚠️ 此设备尚未绑定生物识别。请先使用密码登录并在“账号管理”中启用。',
+        errAccMissing: '❌ 未找到关联的账号，请使用密码登录。',
+        msgRegistered: '✅ 成功！已为账号 “{name}” 在此设备上启用面容 ID / 指纹登录。',
+        msgRemoved: '🗑️ 已停用此设备上的生物识别登录。',
+        msgVerifying: '⏳ 请验证您的面容 ID 或指纹...'
+      },
+      ar: {
+        loginBtn: 'تسجيل الدخول عبر بصمة الوجه / الإصبع',
+        loginBtnAs: 'دخول بيومتري ({name})',
+        cardTitle: '👆 تسجيل الدخول البيومتري (Face ID / البصمة)',
+        badgeActive: '✅ مفعّل على هذا الجهاز',
+        badgeInactive: 'غير مفعّل',
+        cardDesc: 'سجّل <b>بصمة الوجه (Face ID)</b> أو <b>بصمة الإصبع</b> لهذا الجهاز لتتمكن من تسجيل الدخول بلمسة واحدة دون كتابة كلمة المرور!',
+        envWarn: '⚠️ تتطلب المصادقة البيومترية فتح التطبيق عبر اتصال آمن <b>HTTPS</b> (وليس ملفًا محليًا <code>file://</code>).',
+        btnEnable: '🔐 تفعيل بصمة الوجه / الإصبع على هذا الجهاز',
+        btnReenable: '🔄 تحديث بصمة الوجه / الإصبع',
+        btnRemove: '🗑️ تعطيل',
+        errUnsupported: '❌ هذا المتصفح أو الجهاز لا يدعم المصادقة البيومترية WebAuthn، أو أن الصفحة لا تعمل عبر HTTPS.',
+        errNotLoggedIn: '⚠️ يرجى تسجيل الدخول إلى حسابك أولاً.',
+        errCancelled: '⚠️ تم إلغاء التحقق البيومتري أو انتهت المهلة. يرجى المحاولة مرة أخرى.',
+        errNoCred: '⚠️ لا توجد بصمة مسجلة على هذا الجهاز. يرجى تسجيل الدخول بكلمة المرور وتفعيلها من إعدادات الحساب.',
+        errAccMissing: '❌ تعذر العثور على الحساب المرتبط. يرجى تسجيل الدخول بكلمة المرور.',
+        msgRegistered: '✅ تم بنجاح! تم تفعيل الدخول عبر بصمة الوجه / الإصبع لحساب "{name}" على هذا الجهاز.',
+        msgRemoved: '🗑️ تم تعطيل تسجيل الدخول البيومتري على هذا الجهاز.',
+        msgVerifying: '⏳ يرجى مسح بصمة الوجه أو الإصبع...'
+      }
+    };
+
+    function getBioLang() {
+      const code = (typeof currentAppLang !== 'undefined' && BIO_I18N[currentAppLang])
+        ? currentAppLang
+        : (localStorage.getItem('kirapantas_app_lang_v1') || 'ms');
+      return BIO_I18N[code] || BIO_I18N.ms;
+    }
+
+    function bufToBase64Url(buffer) {
+      const bytes = new Uint8Array(buffer);
+      let bin = '';
+      for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function base64UrlToBuf(base64url) {
+      const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+      const padLen = (4 - (base64.length % 4)) % 4;
+      const padded = base64 + '='.repeat(padLen);
+      const bin = atob(padded);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return bytes.buffer;
+    }
+
+    function getStoredBioRecords() {
+      try {
+        const raw = localStorage.getItem(BIO_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveStoredBioRecords(list) {
+      try {
+        localStorage.setItem(BIO_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    function isWebAuthnAvailable() {
+      return Boolean(
+        window.PublicKeyCredential &&
+        navigator.credentials &&
+        typeof navigator.credentials.create === 'function' &&
+        typeof navigator.credentials.get === 'function' &&
+        window.isSecureContext
+      );
+    }
+
+    window.syncBiometricUI = function() {
+      const t = getBioLang();
+      const records = getStoredBioRecords();
+      const loginBtn = document.getElementById('btn-biometric-login');
+      const loginLbl = document.getElementById('lbl-biometric-login-btn');
+
+      // Update Login Screen Biometric Button
+      if (loginBtn && loginLbl) {
+        if (records.length > 0 && isWebAuthnAvailable()) {
+          loginBtn.classList.remove('hidden');
+          const latest = records[records.length - 1];
+          loginLbl.innerText = records.length === 1
+            ? t.loginBtnAs.replace('{name}', latest.name)
+            : t.loginBtn;
+        } else {
+          loginBtn.classList.add('hidden');
+        }
+      }
+
+      // Update Account Settings Card
+      const titleEl = document.getElementById('acc-bio-title');
+      const badgeEl = document.getElementById('acc-bio-status-badge');
+      const descEl = document.getElementById('acc-bio-desc');
+      const warnEl = document.getElementById('acc-bio-env-warning');
+      const regBtn = document.getElementById('btn-register-biometric');
+      const remBtn = document.getElementById('btn-remove-biometric');
+
+      if (titleEl) titleEl.innerText = t.cardTitle;
+      if (descEl) descEl.innerHTML = t.cardDesc;
+      if (warnEl) {
+        warnEl.innerHTML = t.envWarn;
+        warnEl.classList.toggle('hidden', isWebAuthnAvailable());
+      }
+
+      const myRecord = (typeof currentPlayer !== 'undefined' && currentPlayer)
+        ? records.find(r => r.accountId === (currentPlayer.accountId || currentPlayer.key))
+        : null;
+
+      if (badgeEl) {
+        badgeEl.innerText = myRecord ? t.badgeActive : t.badgeInactive;
+        badgeEl.className = myRecord
+          ? 'text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full'
+          : 'text-[10px] font-black bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full';
+      }
+      if (regBtn) regBtn.innerText = myRecord ? t.btnReenable : t.btnEnable;
+      if (remBtn) {
+        remBtn.innerText = t.btnRemove;
+        remBtn.classList.toggle('hidden', !myRecord);
+      }
+    };
+
+    window.registerDeviceBiometrics = async function() {
+      if (typeof playClick === 'function') playClick();
+      const t = getBioLang();
+      const fb = document.getElementById('acc-bio-feedback');
+      const showFb = (msg, ok) => {
+        if (!fb) return;
+        fb.innerHTML = msg;
+        fb.className = `text-xs font-extrabold rounded-xl p-2.5 ${ok ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-rose-50 text-rose-700 border border-rose-200'}`;
+        fb.classList.remove('hidden');
+      };
+
+      if (typeof currentPlayer === 'undefined' || !currentPlayer) {
+        showFb(t.errNotLoggedIn, false);
+        return;
+      }
+      if (!isWebAuthnAvailable()) {
+        if (typeof playWrong === 'function') playWrong();
+        showFb(t.errUnsupported, false);
+        return;
+      }
+
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        const accId = String(currentPlayer.accountId || currentPlayer.key || currentPlayer.name);
+        const userIdBytes = new TextEncoder().encode(accId);
+
+        const credential = await navigator.credentials.create({
+          publicKey: {
+            challenge: challenge,
+            rp: {
+              name: 'KiraKilat Academy',
+              id: window.location.hostname || undefined
+            },
+            user: {
+              id: userIdBytes,
+              name: currentPlayer.name,
+              displayName: currentPlayer.name
+            },
+            pubKeyCredParams: [
+              { type: 'public-key', alg: -7 },   // ES256 (Apple Face ID / Touch ID / Android)
+              { type: 'public-key', alg: -257 }  // RS256 fallback
+            ],
+            authenticatorSelection: {
+              authenticatorAttachment: 'platform',
+              userVerification: 'required',
+              residentKey: 'preferred'
+            },
+            timeout: 60000,
+            attestation: 'none'
+          }
+        });
+
+        if (!credential) {
+          showFb(t.errCancelled, false);
+          return;
+        }
+
+        const credId = bufToBase64Url(credential.rawId);
+        const records = getStoredBioRecords().filter(r => r.accountId !== accId);
+        records.push({
+          credentialId: credId,
+          accountId: accId,
+          name: currentPlayer.name,
+          password: currentPlayer.password,
+          createdAt: Date.now()
+        });
+        saveStoredBioRecords(records);
+
+        if (typeof playCheer === 'function') playCheer();
+        const msg = t.msgRegistered.replace('{name}', currentPlayer.name);
+        showFb(msg, true);
+        if (typeof showAppToast === 'function') showAppToast(msg);
+        window.syncBiometricUI();
+      } catch (err) {
+        if (typeof playWrong === 'function') playWrong();
+        showFb(t.errCancelled, false);
+      }
+    };
+
+    window.removeDeviceBiometrics = function() {
+      if (typeof playClick === 'function') playClick();
+      const t = getBioLang();
+      if (typeof currentPlayer === 'undefined' || !currentPlayer) return;
+      const accId = String(currentPlayer.accountId || currentPlayer.key || currentPlayer.name);
+      const records = getStoredBioRecords().filter(r => r.accountId !== accId);
+      saveStoredBioRecords(records);
+      const fb = document.getElementById('acc-bio-feedback');
+      if (fb) {
+        fb.innerHTML = t.msgRemoved;
+        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-amber-50 text-amber-900 border border-amber-300';
+        fb.classList.remove('hidden');
+      }
+      if (typeof showAppToast === 'function') showAppToast(t.msgRemoved);
+      window.syncBiometricUI();
+    };
+
+    window.loginWithDeviceBiometrics = async function() {
+      if (typeof playClick === 'function') playClick();
+      const t = getBioLang();
+      const errBox = document.getElementById('login-error-msg');
+      const bioBtn = document.getElementById('btn-biometric-login');
+      const bioLbl = document.getElementById('lbl-biometric-login-btn');
+
+      if (!isWebAuthnAvailable()) {
+        if (typeof playWrong === 'function') playWrong();
+        if (errBox) {
+          errBox.innerHTML = t.errUnsupported;
+          errBox.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const records = getStoredBioRecords();
+      if (records.length === 0) {
+        if (typeof playWrong === 'function') playWrong();
+        if (errBox) {
+          errBox.innerHTML = t.errNoCred;
+          errBox.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const prevText = bioLbl ? bioLbl.innerText : '';
+      if (bioBtn) bioBtn.disabled = true;
+      if (bioLbl) bioLbl.innerText = t.msgVerifying;
+      if (errBox) errBox.classList.add('hidden');
+
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+
+        const allowCredentials = records.map(r => ({
+          type: 'public-key',
+          id: base64UrlToBuf(r.credentialId),
+          transports: ['internal']
+        }));
+
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge: challenge,
+            rpId: window.location.hostname || undefined,
+            allowCredentials: allowCredentials,
+            userVerification: 'required',
+            timeout: 60000
+          }
+        });
+
+        if (!assertion) {
+          throw new Error('No assertion returned');
+        }
+
+        const matchedId = bufToBase64Url(assertion.rawId);
+        const matchedRecord = records.find(r => r.credentialId === matchedId) || records[records.length - 1];
+        if (!matchedRecord) {
+          throw new Error('Account record missing');
+        }
+
+        // Populate login fields and execute standard KiraKilat login flow
+        const nameInput = document.getElementById('input-player-name');
+        const passInput = document.getElementById('input-player-pass');
+        if (nameInput) nameInput.value = matchedRecord.name;
+        if (passInput) passInput.value = matchedRecord.password;
+
+        if (typeof switchAuthModeTab === 'function') switchAuthModeTab('login');
+        if (typeof handlePlayerAuthAction === 'function') {
+          await handlePlayerAuthAction('login');
+        }
+      } catch (err) {
+        if (typeof playWrong === 'function') playWrong();
+        if (errBox) {
+          errBox.innerHTML = t.errCancelled;
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (bioBtn) bioBtn.disabled = false;
+        if (bioLbl && prevText) bioLbl.innerText = prevText;
+      }
+    };
+
+    // Hook into language switcher and navigation so biometric UI always stays synced
+    if (typeof applyAppLanguageUI === 'function') {
+      const _origApplyLang = applyAppLanguageUI;
+      applyAppLanguageUI = function(langCode) {
+        _origApplyLang(langCode);
+        window.syncBiometricUI();
+      };
+    }
+
+    if (typeof navTo === 'function') {
+      const _origNavTo = navTo;
+      navTo = function(screenName) {
+        _origNavTo(screenName);
+        window.syncBiometricUI();
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.syncBiometricUI();
+    });
+  })();
+  </script>
 </body>
+
 
 </html>

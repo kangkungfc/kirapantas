@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.1.8 • Log Masuk Biometrik Peranti (Face ID / Touch ID / Cap Jari Android via WebAuthn)
+            Versi 2.1.9 • Pembaikan Sesi Biometrik WebAuthn & Penyembunyian Kad Penjaga bagi Akaun Ibu Bapa
           </span>
         </div>
 
@@ -2826,6 +2826,7 @@
     }
 
     let currentPlayer = null;
+    window.getKiraCurrentPlayer = () => currentPlayer;
     let activePlayTimer = null;
     let activeStudioTab = 'face';
     let flashTimerHandle = null;
@@ -12010,8 +12011,9 @@ Jom lawan kira pantas dengan saya!`;
       if (!listEl || !currentPlayer) return;
 
       const isAdmin = Boolean(currentPlayer.isAdmin);
-      if (cardEl) cardEl.classList.toggle('hidden', isAdmin);
-      if (isAdmin) return;
+      const isParentAcc = currentPlayer.role === 'parent' || Boolean(currentPlayer.isParent);
+      if (cardEl) cardEl.classList.toggle('hidden', isAdmin || isParentAcc);
+      if (isAdmin || isParentAcc) return;
 
       const g = normalizeLinkedGuardiansObj(currentPlayer.linkedGuardians);
       const filled = countFilledGuardianSlots(g);
@@ -18415,7 +18417,7 @@ Jom lawan kira pantas dengan saya!`;
         warnEl.classList.toggle('hidden', isWebAuthnAvailable());
       }
 
-      const myRecord = (typeof currentPlayer !== 'undefined' && currentPlayer)
+      const myRecord = (window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null)
         ? records.find(r => r.accountId === (currentPlayer.accountId || currentPlayer.key))
         : null;
 
@@ -18443,7 +18445,8 @@ Jom lawan kira pantas dengan saya!`;
         fb.classList.remove('hidden');
       };
 
-      if (typeof currentPlayer === 'undefined' || !currentPlayer) {
+      const currentPlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
+      if (!currentPlayer) {
         showFb(t.errNotLoggedIn, false);
         return;
       }
@@ -18515,7 +18518,8 @@ Jom lawan kira pantas dengan saya!`;
     window.removeDeviceBiometrics = function() {
       if (typeof playClick === 'function') playClick();
       const t = getBioLang();
-      if (typeof currentPlayer === 'undefined' || !currentPlayer) return;
+      const currentPlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
+      if (!currentPlayer) return;
       const accId = String(currentPlayer.accountId || currentPlayer.key || currentPlayer.name);
       const records = getStoredBioRecords().filter(r => r.accountId !== accId);
       saveStoredBioRecords(records);

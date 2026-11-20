@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.3 • Kemas Kini Ayat Kongsi Kad Juara & Jemputan Bilik Arena Mesra Murid + Panduan Daftar Pantas
+            Versi 2.2.4 • Pembersihan Automatik Duplikasi Slot Penjaga (Ibu/Bapa/Pengajar) + Butang Kosongkan Slot & Kawalan Penuh
           </span>
         </div>
 
@@ -12106,19 +12106,50 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
     let selectedGuardianLinkRole = 'ibu';
     let activeGuardianModalChildId = null;
 
-    function normalizeLinkedGuardiansObj(raw) {
+    function normalizeLinkedGuardiansObj(raw, preferredRoleKey = null, preferredGuardianId = null) {
       const out = { ibu: null, bapa: null, pengajar: null };
       if (!raw || typeof raw !== 'object') return out;
-      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+      const roleOrder = ['ibu', 'bapa', 'pengajar'];
+      const entries = [];
+      roleOrder.forEach(rk => {
         const entry = raw[rk];
         if (entry && typeof entry === 'object' && entry.id) {
-          out[rk] = {
+          entries.push({
             id: String(entry.id),
             name: String(entry.name || 'Penjaga'),
             roleKey: rk,
-            linkedAt: Number(entry.linkedAt) || Date.now()
-          };
+            linkedAt: Number(entry.linkedAt) || 0,
+            updatedAt: Number(entry.updatedAt) || Number(entry.linkedAt) || 0
+          });
         }
+      });
+
+      // Deduplicate: one guardian account (by id or exact lowercase name) can occupy ONLY ONE role slot
+      const byGuardian = new Map();
+      entries.forEach(item => {
+        const gKey = item.id || item.name.trim().toLowerCase();
+        const existing = byGuardian.get(gKey);
+        if (!existing) {
+          byGuardian.set(gKey, item);
+        } else {
+          const isItemPreferred = preferredRoleKey && item.roleKey === preferredRoleKey && (!preferredGuardianId || item.id === String(preferredGuardianId));
+          const isExPreferred = preferredRoleKey && existing.roleKey === preferredRoleKey && (!preferredGuardianId || existing.id === String(preferredGuardianId));
+          if (isItemPreferred && !isExPreferred) {
+            byGuardian.set(gKey, item);
+          } else if (!isExPreferred && item.updatedAt >= existing.updatedAt) {
+            byGuardian.set(gKey, item);
+          }
+        }
+      });
+
+      byGuardian.forEach(item => {
+        out[item.roleKey] = {
+          id: item.id,
+          name: item.name,
+          roleKey: item.roleKey,
+          linkedAt: item.linkedAt || Date.now(),
+          updatedAt: item.updatedAt || Date.now()
+        };
       });
       return out;
     }
@@ -12126,11 +12157,22 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
     function mergeLinkedGuardiansObjs(g1, g2) {
       const a = normalizeLinkedGuardiansObj(g1);
       const b = normalizeLinkedGuardiansObj(g2);
-      return {
-        ibu: a.ibu || b.ibu || null,
-        bapa: a.bapa || b.bapa || null,
-        pengajar: a.pengajar || b.pengajar || null
-      };
+      const combined = { ibu: null, bapa: null, pengajar: null };
+      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+        if (a[rk] && b[rk]) {
+          combined[rk] = (Number(b[rk].updatedAt) || 0) >= (Number(a[rk].updatedAt) || 0) ? b[rk] : a[rk];
+        } else {
+          combined[rk] = b[rk] || a[rk] || null;
+        }
+      });
+      // Determine latest updated role so deduplication keeps the newest role
+      let latestEntry = null;
+      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+        if (combined[rk] && (!latestEntry || (Number(combined[rk].updatedAt) || 0) >= (Number(latestEntry.updatedAt) || 0))) {
+          latestEntry = combined[rk];
+        }
+      });
+      return normalizeLinkedGuardiansObj(combined, latestEntry ? latestEntry.roleKey : null, latestEntry ? latestEntry.id : null);
     }
 
     function countFilledGuardianSlots(guardiansObj) {
@@ -12399,6 +12441,13 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (modal) modal.classList.add('hidden');
     };
 
+    function isGuardianSlotOwnedByMe(slot, myId, myNameLower) {
+      if (!slot || typeof slot !== 'object') return false;
+      if (myId && slot.id && String(slot.id) === myId) return true;
+      if (myNameLower && slot.name && String(slot.name).trim().toLowerCase() === myNameLower) return true;
+      return false;
+    }
+
     function renderGuardianSlotsModalContent(child) {
       const subEl = document.getElementById('guardian-modal-child-subtitle');
       const listEl = document.getElementById('guardian-modal-slots-list');
@@ -12406,27 +12455,40 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       const lockDescEl = document.getElementById('guardian-modal-lock-desc');
       const lockBtn = document.getElementById('btn-toggle-guardian-lock');
 
-      const g = normalizeLinkedGuardiansObj(child.linkedGuardians);
-      const filled = countFilledGuardianSlots(g);
+      const myId = currentPlayer ? String(currentPlayer.accountId || currentPlayer.key || '') : '';
+      const myNameLower = currentPlayer && currentPlayer.name ? String(currentPlayer.name).trim().toLowerCase() : '';
+
+      // Auto-clean any duplicate slots owned by the same guardian account immediately
+      const rawG = child.linkedGuardians || {};
+      const g = normalizeLinkedGuardiansObj(rawG, null, myId);
+      const rawCount = ['ibu', 'bapa', 'pengajar'].filter(rk => rawG[rk] && rawG[rk].id).length;
+      const cleanCount = countFilledGuardianSlots(g);
+      if (rawCount !== cleanCount) {
+        child.linkedGuardians = g;
+        persistChildGuardianRecordTwoWay(child);
+      }
+
       const isLocked = Boolean(child.guardianLinkLocked);
 
       if (subEl) {
-        subEl.innerHTML = `Akaun: <b>${escapeHtmlSafe(child.name || 'Anak')}</b> • <b>${filled}/3 Slot Diisi</b>`;
+        subEl.innerHTML = `Akaun: <b>${escapeHtmlSafe(child.name || 'Anak')}</b> • <b>${cleanCount}/3 Slot Diisi</b>`;
       }
 
-      const myId = currentPlayer ? String(currentPlayer.accountId || currentPlayer.key || '') : '';
-      const myCurrentRoleKey = ['ibu', 'bapa', 'pengajar'].find(rk => g[rk] && String(g[rk].id) === myId) || null;
+      const myCurrentRoleKey = ['ibu', 'bapa', 'pengajar'].find(rk => isGuardianSlotOwnedByMe(g[rk], myId, myNameLower)) || null;
 
       if (listEl) {
         listEl.innerHTML = ['ibu', 'bapa', 'pengajar'].map(rk => {
           const meta = GUARDIAN_ROLE_META[rk];
           const slot = g[rk];
           if (slot && slot.id) {
-            const isMySlot = myId && String(slot.id) === myId;
+            const isMySlot = isGuardianSlotOwnedByMe(slot, myId, myNameLower);
             return `
               <div class="flex items-center justify-between gap-2 bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-2 text-xs">
                 <span class="font-black text-emerald-950 truncate">${meta.icon} ${meta.label}: <span class="text-teal-800">${escapeHtmlSafe(slot.name)}</span></span>
-                <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full flex-shrink-0">${isMySlot ? '⭐ Anda' : '✅ Sah'}</span>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                  <span class="text-[10px] font-black bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded-full">${isMySlot ? '⭐ Anda' : '✅ Sah'}</span>
+                  ${isMySlot ? `<button type="button" onclick="vacateMyGuardianSlotForChild('${rk}')" title="Kosongkan slot ini" class="bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-lg text-[10px] font-black">✖️ Kosongkan</button>` : ''}
+                </div>
               </div>
             `;
           }
@@ -12465,6 +12527,30 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       }
     }
 
+    window.vacateMyGuardianSlotForChild = async function(targetRoleKey) {
+      if (!activeGuardianModalChildId || !currentPlayer) return;
+      playClick();
+      loadLocalAccountsFromStorage();
+      let child = inMemoryAccounts.get(activeGuardianModalChildId);
+      if (!child) return;
+      const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      const myNameLower = currentPlayer.name ? String(currentPlayer.name).trim().toLowerCase() : '';
+      const g = normalizeLinkedGuardiansObj(child.linkedGuardians);
+
+      // Remove only the requested slot (or if it's the sole slot, clear all my slots)
+      if (g[targetRoleKey] && isGuardianSlotOwnedByMe(g[targetRoleKey], myId, myNameLower)) {
+        g[targetRoleKey] = null;
+      }
+      child.linkedGuardians = g;
+      await persistChildGuardianRecordTwoWay(child);
+      renderGuardianSlotsModalContent(child);
+      const roleMeta = GUARDIAN_ROLE_META[targetRoleKey] || { icon: '🛡️', label: targetRoleKey };
+      showAppToast(`🗑️ Slot ${roleMeta.icon} ${roleMeta.label} bagi ${child.name} telah dikosongkan.`);
+      if (typeof loadParentChildrenDashboard === 'function') {
+        await loadParentChildrenDashboard();
+      }
+    };
+
     window.switchMyGuardianRoleForChild = async function(targetRoleKey) {
       if (!activeGuardianModalChildId || !currentPlayer) return;
       if (!['ibu', 'bapa', 'pengajar'].includes(targetRoleKey)) return;
@@ -12483,31 +12569,44 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (!child) return;
 
       const myId = String(currentPlayer.accountId || currentPlayer.key || '');
+      const myNameLower = currentPlayer.name ? String(currentPlayer.name).trim().toLowerCase() : '';
       const g = normalizeLinkedGuardiansObj(child.linkedGuardians);
-      const oldRoleKey = ['ibu', 'bapa', 'pengajar'].find(rk => g[rk] && String(g[rk].id) === myId);
-      if (!oldRoleKey) {
+
+      // Find ANY slot(s) currently owned by me (by ID or exact name)
+      const myOldRoles = ['ibu', 'bapa', 'pengajar'].filter(rk => isGuardianSlotOwnedByMe(g[rk], myId, myNameLower));
+      if (myOldRoles.length === 0) {
         playWrong();
         showAppToast('🚫 Akaun anda tidak ditemui dalam senarai penjaga anak ini.');
         return;
       }
-      if (oldRoleKey === targetRoleKey) return;
-      if (g[targetRoleKey] && g[targetRoleKey].id) {
+
+      const targetOccupant = g[targetRoleKey];
+      if (targetOccupant && targetOccupant.id && !isGuardianSlotOwnedByMe(targetOccupant, myId, myNameLower)) {
         playWrong();
         const targetMeta = GUARDIAN_ROLE_META[targetRoleKey];
-        showAppToast(`⚠️ Slot ${targetMeta.label} sudah diisi oleh ${g[targetRoleKey].name}.`);
+        showAppToast(`⚠️ Slot ${targetMeta.label} sudah diisi oleh ${targetOccupant.name}.`);
         return;
       }
 
+      const baseEntry = g[myOldRoles[0]] || {};
+      const nowTs = Date.now();
       const movedEntry = {
-        ...g[oldRoleKey],
+        ...baseEntry,
         id: myId,
-        name: String(currentPlayer.name || g[oldRoleKey].name || 'Penjaga'),
+        name: String(currentPlayer.name || baseEntry.name || 'Penjaga'),
         roleKey: targetRoleKey,
-        updatedAt: Date.now()
+        linkedAt: Number(baseEntry.linkedAt) || nowTs,
+        updatedAt: nowTs
       };
-      g[oldRoleKey] = null;
+
+      // Clear ALL 3 slots that belong to me before assigning the single new role slot
+      ['ibu', 'bapa', 'pengajar'].forEach(rk => {
+        if (isGuardianSlotOwnedByMe(g[rk], myId, myNameLower)) {
+          g[rk] = null;
+        }
+      });
       g[targetRoleKey] = movedEntry;
-      child.linkedGuardians = g;
+      child.linkedGuardians = normalizeLinkedGuardiansObj(g, targetRoleKey, myId);
 
       await persistChildGuardianRecordTwoWay(child);
       renderGuardianSlotsModalContent(child);

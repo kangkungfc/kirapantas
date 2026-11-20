@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.2 • Misi Harian 3 Bintang Adaptif Mengikut Tahap + Pintasan Klik Terus (Tap-to-Go)
+            Versi 2.2.3 • Kemas Kini Ayat Kongsi Kad Juara & Jemputan Bilik Arena Mesra Murid + Panduan Daftar Pantas
           </span>
         </div>
 
@@ -9147,18 +9147,34 @@
 
     window.shareArenaChampionCard = async function() {
       playClick();
-      const playerName = currentPlayer ? currentPlayer.name : 'Juara Kira Pantas';
-      const modeTitle = document.getElementById('arena-room-mode-title')?.innerText || 'Arena Perlawanan Online';
-      const sumText = (document.getElementById('arena-result-summary')?.innerText || '').replace(/\s+/g, ' ').trim();
-      const shareText = `🏆 KAD JUARA JARI & ABAKUS PINTAR 🏆
+      const playerName = currentPlayer ? currentPlayer.name : 'Juara KiraKilat';
+      const rawMode = (document.getElementById('arena-room-mode-title')?.innerText || 'Arena Kira Pantas').replace(/^[^a-zA-Z0-9]+\s*/, '');
+      const baseUrl = window.location.href.split('?')[0];
+      const st = window._latestArenaShareStats;
+
+      let statsBlock = '';
+      if (st) {
+        statsBlock = `🥇 Keputusan: ${st.rankHeadline}
+✅ Ketepatan: ${st.correct}/${st.total} Betul (Purata ${st.avgLabel})
+🏅 Skor: +${st.totalPoints} Markah (+${st.totalCoins} Coin 🪙)`;
+      } else {
+        const fallbackSummary = (document.getElementById('arena-result-summary')?.innerText || '').replace(/\s+/g, ' ').trim();
+        statsBlock = `🌟 Keputusan: ${fallbackSummary}`;
+      }
+
+      const shareText = `🏆 REKOD JUARA KIRAKILAT! 🏆
+
 👤 Pemain: ${playerName}
-⚔️ Mod: ${modeTitle}
-🌟 ${sumText}
-Jom lawan kira pantas dengan saya!`;
+⚔️ Mod: ${rawMode}
+${statsBlock}
+
+🔥 Boleh kalahkan rekod saya?
+Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sahaja):
+👉 ${baseUrl}`;
 
       try {
         if (navigator.share) {
-          await navigator.share({ title: 'Kad Juara Jari & Abakus Pintar', text: shareText });
+          await navigator.share({ title: 'Rekod Juara KiraKilat', text: shareText });
           return;
         }
       } catch (e) {}
@@ -15239,16 +15255,25 @@ Jom lawan kira pantas dengan saya!`;
     window.copyArenaRoomInvite = async function() {
       if (!activeArenaRoomId || !activeArenaRoomData) return;
       playClick();
-      const modeName = ARENA_MODE_LABELS[activeArenaRoomData.mode] || 'Arena Kira Pantas';
+      const hostName = currentPlayer ? currentPlayer.name : 'Rakan anda';
+      const rawModeName = (ARENA_MODE_LABELS[activeArenaRoomData.mode] || 'Kuiz Kilat Serentak').replace(/^[^a-zA-Z0-9]+\s*/, '');
       const baseUrl = window.location.href.split('?')[0];
       const shareUrl = `${baseUrl}?room=${activeArenaRoomId}`;
-      const inviteText = `⚔️ Jom lawan ${modeName} di Jari & Abakus Pintar!
+      const inviteText = `⚔️ JOM LAWAN KIRA PANTAS DI KIRAKILAT! ⚡
+
+${hostName} menjemput anda berlawan ${rawModeName} sekarang!
+
 🔑 Kod Bilik: ${activeArenaRoomId}
-🔗 Pautan Terus: ${shareUrl}`;
+👉 Klik Pautan Terus: ${shareUrl}
+
+💡 Cara sertai:
+1. Tekan pautan di atas.
+2. Log masuk (jika belum ada akaun, tekan *Daftar Baru* — cuma isi nama & kata laluan ringkas).
+3. Terus masuk ke bilik lawan!`;
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(inviteText);
-          showAppToast(`📋 Kod Bilik ${activeArenaRoomId} & pautan telah disalin! Tampal di WhatsApp / Telegram untuk rakan.`);
+          showAppToast(`📋 Jemputan Bilik ${activeArenaRoomId} & panduan ringkas telah disalin! Tampal di WhatsApp kelas.`);
         } else {
           showAppToast(`🔑 Kod Bilik Anda: ${activeArenaRoomId}`);
         }
@@ -16311,6 +16336,16 @@ Jom lawan kira pantas dengan saya!`;
           </div>
         `;
       }
+      window._latestArenaShareStats = {
+        rankHeadline: rankHeadline.replace(/^[^a-zA-Z0-9]+\s*/, ''),
+        diffLabel: dCfg.label,
+        correct: arenaCorrectCount,
+        total: Math.max(arenaAnsweredCount, arenaCorrectCount),
+        avgLabel: arenaCorrectCount > 0 ? `${avgSec.toFixed(1)} saat/soalan` : '-',
+        totalPoints: finalTotalPoints,
+        totalCoins: finalTotalCoins
+      };
+
       if (currentPlayer && (finalTotalPoints > 0 || finalTotalCoins > 0)) {
         addPlayerReward(finalTotalCoins, finalTotalPoints);
       }

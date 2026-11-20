@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.4 • Pembersihan Automatik Duplikasi Slot Penjaga (Ibu/Bapa/Pengajar) + Butang Kosongkan Slot & Kawalan Penuh
+            Versi 2.2.5 • Tunjuk Cara Berpandukan Suara (TTS Sync + Jeda Pedagogi 0.8s + Kawalan Manual Undur/Jeda/Seterusnya)
           </span>
         </div>
 
@@ -934,9 +934,12 @@
               </div>
               <div id="mod-demo-step-title" class="text-xs sm:text-sm font-black text-sky-950">Menyediakan animasi langkah demi langkah...</div>
               <div id="mod-demo-step-detail" class="text-[11px] font-bold text-slate-700 leading-snug"></div>
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-sky-200">
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-sky-200">
                 <span id="mod-demo-lock-status" class="text-[10px] font-black text-amber-800">🔒 Pilihan jawapan dikunci sehingga tunjuk cara tamat...</span>
-                <div class="flex items-center gap-1.5">
+                <div class="flex flex-wrap items-center gap-1">
+                  <button type="button" id="btn-mod-demo-prev" onclick="stepModDemoManual(-1)" class="bubbly-btn bg-white hover:bg-sky-100 text-sky-950 border border-sky-400 px-2 py-1 text-[10px] font-black disabled:opacity-40">⏮️ Undur</button>
+                  <button type="button" id="btn-mod-demo-pause" onclick="toggleModDemoPause()" class="bubbly-btn bg-amber-300 hover:bg-amber-200 text-amber-950 border border-amber-600 px-2 py-1 text-[10px] font-black">⏸️ Jeda</button>
+                  <button type="button" id="btn-mod-demo-next" onclick="stepModDemoManual(1)" class="bubbly-btn bg-sky-600 hover:bg-sky-700 text-white border border-sky-900 px-2 py-1 text-[10px] font-black disabled:opacity-40">⏭️ Seterusnya</button>
                   <button type="button" id="btn-mod-demo-replay" onclick="startStepByStepDemo()" class="hidden bubbly-btn bg-white hover:bg-sky-100 text-sky-900 border-2 border-sky-400 px-2.5 py-1 text-[10px] font-black">🔁 Ulang Demo</button>
                 </div>
               </div>
@@ -7958,12 +7961,19 @@
     let isCurrentModQuestionDemoUsed = false;
     let isCurrentModDemoRunning = false;
     let modDemoTimerHandles = [];
+    let modDemoSessionId = 0;
+    let modDemoStepsCache = [];
+    let modDemoCurrentStepIdx = 0;
+    let modDemoIsPaused = false;
+    let modDemoIsJariTrack = true;
 
     function clearModDemoTimers() {
+      modDemoSessionId++;
       while (modDemoTimerHandles.length) {
         clearTimeout(modDemoTimerHandles.pop());
       }
       isCurrentModDemoRunning = false;
+      modDemoIsPaused = false;
       if (typeof stopCikguKikoSpeech === 'function') {
         stopCikguKikoSpeech();
       }
@@ -8227,7 +8237,7 @@
             detail: next < 0
               ? `Tolak ${absD} daripada ${prev} menghasilkan nombor negatif ${next}.`
               : `${isAdd ? 'Tambahkan' : 'Tolakkan'} ${absD} pada ${toolName} daripada ${prev} menjadi ${next}.`,
-            voice: `Langkah ${i + 1}. ${isAdd ? 'Tambah' : 'Tolak'} ${absD}, menjadi ${next}.`
+            voice: `Langkah ${i + 1}. ${isAdd ? 'Tambah' : 'Tolak'} ${absD}${formulaHint ? ', guna ' + formulaHint.replace(/[()]/g, '') : ''}, menjadi ${next}.`
           });
           current = next;
         }
@@ -8244,6 +8254,154 @@
       return steps;
     }
 
+    function updateModDemoControlButtonsUI() {
+      const prevBtn = document.getElementById('btn-mod-demo-prev');
+      const pauseBtn = document.getElementById('btn-mod-demo-pause');
+      const nextBtn = document.getElementById('btn-mod-demo-next');
+      const total = modDemoStepsCache.length;
+
+      if (prevBtn) prevBtn.disabled = modDemoCurrentStepIdx <= 0;
+      if (nextBtn) nextBtn.disabled = modDemoCurrentStepIdx >= total - 1;
+      if (pauseBtn) {
+        if (!isCurrentModDemoRunning && modDemoCurrentStepIdx >= total - 1) {
+          pauseBtn.classList.add('hidden');
+        } else {
+          pauseBtn.classList.remove('hidden');
+          pauseBtn.innerText = modDemoIsPaused ? '▶️ Sambung' : '⏸️ Jeda';
+        }
+      }
+    }
+
+    function finishModDemoAndUnlockAnswers(sessionId) {
+      if (sessionId !== modDemoSessionId) return;
+      isCurrentModDemoRunning = false;
+      modDemoIsPaused = false;
+      setModAnswerButtonsLocked(false);
+      const lockStatus = document.getElementById('mod-demo-lock-status');
+      const replayBtn = document.getElementById('btn-mod-demo-replay');
+      if (lockStatus) {
+        lockStatus.className = 'text-[10px] font-black text-emerald-800';
+        lockStatus.innerText = '🔓 Tunjuk cara tamat! Tekan jawapan di bawah untuk teruskan (0 Markah & 0 Coin).';
+      }
+      if (replayBtn) replayBtn.classList.remove('hidden');
+      updateModDemoControlButtonsUI();
+      keepQuizBottomInView();
+    }
+
+    function renderAndNarrateModDemoStep(idx, autoAdvance, sessionId) {
+      if (sessionId !== modDemoSessionId) return;
+      const steps = modDemoStepsCache;
+      if (!steps || idx < 0 || idx >= steps.length) return;
+
+      modDemoCurrentStepIdx = idx;
+      const st = steps[idx];
+      const isLastStep = idx === steps.length - 1;
+
+      const stepBadge = document.getElementById('mod-demo-step-badge');
+      const stepTitle = document.getElementById('mod-demo-step-title');
+      const stepDetail = document.getElementById('mod-demo-step-detail');
+
+      if (stepBadge) stepBadge.innerText = `🎬 Langkah ${idx + 1} / ${steps.length}`;
+      if (stepTitle) stepTitle.innerText = st.title;
+      if (stepDetail) stepDetail.innerText = st.detail;
+
+      if (modDemoIsJariTrack) {
+        playClick();
+        setHelperFingersValueAnimated(st.val);
+      } else {
+        if (typeof playWoodBeadClick === 'function') playWoodBeadClick(true);
+        setHelperAbacusValueAnimated(st.val);
+      }
+
+      updateModDemoControlButtonsUI();
+      keepQuizBottomInView();
+
+      let stepCompleted = false;
+      const onStepNarrationDone = () => {
+        if (stepCompleted || sessionId !== modDemoSessionId) return;
+        stepCompleted = true;
+        if (modDemoIsPaused) return;
+
+        // Jeda pedagogi 800ms selepas suara habis supaya murid sempat menghadam pergerakan jari/sempoa
+        const pauseAfterSpeechMs = isLastStep ? 700 : 800;
+        const nextTimer = setTimeout(() => {
+          if (sessionId !== modDemoSessionId || modDemoIsPaused) return;
+          if (isLastStep) {
+            finishModDemoAndUnlockAnswers(sessionId);
+          } else if (autoAdvance) {
+            renderAndNarrateModDemoStep(idx + 1, true, sessionId);
+          }
+        }, pauseAfterSpeechMs);
+        modDemoTimerHandles.push(nextTimer);
+      };
+
+      // Pemasa sandaran dinamik mengikut panjang ayat (sekiranya TTS disenyapkan atau tiada suara di peranti)
+      const voiceText = String(st.voice || st.detail || '');
+      const dynamicFallbackMs = Math.max(2600, Math.min(9000, voiceText.length * 95 + 1400));
+      const fallbackTimer = setTimeout(onStepNarrationDone, dynamicFallbackMs);
+      modDemoTimerHandles.push(fallbackTimer);
+
+      if (typeof speakCikguKikoNatural === 'function' && voiceText && appSoundEffectsEnabled) {
+        speakCikguKikoNatural(voiceText, {
+          playIntroChime: idx === 0,
+          onEnd: () => {
+            clearTimeout(fallbackTimer);
+            onStepNarrationDone();
+          }
+        });
+      }
+    }
+
+    window.toggleModDemoPause = function() {
+      if (!modDemoStepsCache.length) return;
+      playClick();
+      if (!modDemoIsPaused) {
+        modDemoIsPaused = true;
+        const sessionId = ++modDemoSessionId;
+        while (modDemoTimerHandles.length) clearTimeout(modDemoTimerHandles.pop());
+        if (typeof stopCikguKikoSpeech === 'function') stopCikguKikoSpeech();
+        const lockStatus = document.getElementById('mod-demo-lock-status');
+        if (lockStatus && isCurrentModDemoRunning) {
+          lockStatus.className = 'text-[10px] font-black text-sky-900';
+          lockStatus.innerText = '⏸️ Demo dijeda. Tekan Sambung atau Undur / Seterusnya.';
+        }
+        updateModDemoControlButtonsUI();
+      } else {
+        modDemoIsPaused = false;
+        isCurrentModDemoRunning = true;
+        const sessionId = ++modDemoSessionId;
+        while (modDemoTimerHandles.length) clearTimeout(modDemoTimerHandles.pop());
+        const lockStatus = document.getElementById('mod-demo-lock-status');
+        if (lockStatus) {
+          lockStatus.className = 'text-[10px] font-black text-amber-800';
+          lockStatus.innerText = '🔒 Pilihan jawapan dikunci sehingga tunjuk cara tamat...';
+        }
+        renderAndNarrateModDemoStep(modDemoCurrentStepIdx, true, sessionId);
+      }
+    };
+
+    window.stepModDemoManual = function(delta) {
+      if (!modDemoStepsCache.length) return;
+      const targetIdx = Math.max(0, Math.min(modDemoStepsCache.length - 1, modDemoCurrentStepIdx + delta));
+      if (targetIdx === modDemoCurrentStepIdx && modDemoIsPaused) return;
+      playClick();
+      // Apabila murid menekan Undur/Seterusnya secara manual, kekalkan mod jeda supaya murid boleh baca & dengar satu langkah penuh dengan tenang
+      modDemoIsPaused = true;
+      const sessionId = ++modDemoSessionId;
+      while (modDemoTimerHandles.length) clearTimeout(modDemoTimerHandles.pop());
+      if (typeof stopCikguKikoSpeech === 'function') stopCikguKikoSpeech();
+      renderAndNarrateModDemoStep(targetIdx, false, sessionId);
+      if (targetIdx === modDemoStepsCache.length - 1) {
+        finishModDemoAndUnlockAnswers(sessionId);
+      } else {
+        const lockStatus = document.getElementById('mod-demo-lock-status');
+        if (lockStatus && isCurrentModDemoRunning) {
+          lockStatus.className = 'text-[10px] font-black text-sky-900';
+          lockStatus.innerText = '👆 Mod Kawalan Manual: Tekan Seterusnya atau ▶️ Sambung.';
+        }
+      }
+    };
+
     window.startStepByStepDemo = function() {
       const q = activeModQuestions[activeModIndex];
       if (!q) return;
@@ -8254,8 +8412,10 @@
 
       isCurrentModQuestionDemoUsed = true;
       isCurrentModDemoRunning = true;
+      modDemoIsPaused = false;
 
       const isJariTrack = JARI_TRACK_IDS.includes(activeModId);
+      modDemoIsJariTrack = isJariTrack;
       if (isJariTrack) {
         setHelperAbacusVisibility('mod', false);
         setHelperFingersVisibility(true);
@@ -8268,9 +8428,6 @@
       setModAnswerButtonsLocked(true);
 
       const banner = document.getElementById('mod-demo-steps-banner');
-      const stepBadge = document.getElementById('mod-demo-step-badge');
-      const stepTitle = document.getElementById('mod-demo-step-title');
-      const stepDetail = document.getElementById('mod-demo-step-detail');
       const lockStatus = document.getElementById('mod-demo-lock-status');
       const replayBtn = document.getElementById('btn-mod-demo-replay');
 
@@ -8281,47 +8438,10 @@
         lockStatus.innerText = '🔒 Pilihan jawapan dikunci sehingga tunjuk cara tamat...';
       }
 
-      const steps = buildSmartDemoStepsForQuestion(q, isJariTrack);
-      const stepIntervalMs = 2100;
-
-      steps.forEach((st, idx) => {
-        const tId = setTimeout(() => {
-          if (!isCurrentModDemoRunning) return;
-          if (stepBadge) stepBadge.innerText = `🎬 Langkah ${idx + 1} / ${steps.length}`;
-          if (stepTitle) stepTitle.innerText = st.title;
-          if (stepDetail) stepDetail.innerText = st.detail;
-
-          if (isJariTrack) {
-            playClick();
-            setHelperFingersValueAnimated(st.val);
-          } else {
-            if (typeof playWoodBeadClick === 'function') playWoodBeadClick(true);
-            setHelperAbacusValueAnimated(st.val);
-          }
-
-          if (typeof speakCikguKikoNatural === 'function' && st.voice) {
-            speakCikguKikoNatural(st.voice, { playIntroChime: idx === 0 });
-          }
-
-          keepQuizBottomInView();
-
-          // Apabila langkah terakhir dipaparkan, buka kunci 4 butang pilihan jawapan selepas jeda ringkas
-          if (idx === steps.length - 1) {
-            const unlockTimer = setTimeout(() => {
-              isCurrentModDemoRunning = false;
-              setModAnswerButtonsLocked(false);
-              if (lockStatus) {
-                lockStatus.className = 'text-[10px] font-black text-emerald-800';
-                lockStatus.innerText = '🔓 Tunjuk cara tamat! Tekan jawapan di bawah untuk teruskan (0 Markah & 0 Coin).';
-              }
-              if (replayBtn) replayBtn.classList.remove('hidden');
-              keepQuizBottomInView();
-            }, 1350);
-            modDemoTimerHandles.push(unlockTimer);
-          }
-        }, idx * stepIntervalMs);
-        modDemoTimerHandles.push(tId);
-      });
+      modDemoStepsCache = buildSmartDemoStepsForQuestion(q, isJariTrack);
+      modDemoCurrentStepIdx = 0;
+      const sessionId = ++modDemoSessionId;
+      renderAndNarrateModDemoStep(0, true, sessionId);
     };
 
     function renderCurrentModuleQuestion() {

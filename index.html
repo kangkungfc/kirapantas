@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.0 • Susunan Semula Tetapan Akaun dengan Submenu Kategori (Profil, Keselamatan, Keluarga, Umum & Bantuan)
+            Versi 2.2.2 • Misi Harian 3 Bintang Adaptif Mengikut Tahap + Pintasan Klik Terus (Tap-to-Go)
           </span>
         </div>
 
@@ -10277,12 +10277,80 @@ Jom lawan kira pantas dengan saya!`;
       return currentPlayer.dailyQuests;
     }
 
+    function getAdaptiveDailyQuestDefinitions() {
+      const unlockedArr = (currentPlayer && Array.isArray(currentPlayer.unlockedModules)) ? currentPlayer.unlockedModules : [1, 2];
+      const pts = (currentPlayer && typeof currentPlayer.points === 'number') ? currentPlayer.points : 0;
+      // Pemain Mahir / Lanjutan: buka lebih daripada 4 modul atau mempunyai >= 3000 markah
+      const isAdvanced = unlockedArr.length > 4 || pts >= 3000;
+      if (isAdvanced) {
+        return [
+          {
+            key: 'q_mod',
+            icon: '📚',
+            label: 'Jawab betul 8 soalan Modul Belajar',
+            subHint: 'Tahap Mahir • Ketuk untuk sambung modul',
+            target: 8,
+            reward: 10,
+            pointsReward: 20
+          },
+          {
+            key: 'q_arena',
+            icon: '⚡',
+            label: 'Jawab betul 5 soalan Cabaran / Anzan / Arena',
+            subHint: 'Tahap Mahir • Ketuk untuk mula cabaran',
+            target: 5,
+            reward: 15,
+            pointsReward: 25
+          },
+          {
+            key: 'q_tool',
+            icon: '🖐️',
+            label: 'Latihan Simulator Jari atau Abakus',
+            subHint: 'Ketuk untuk buka Simulator terus',
+            target: 1,
+            reward: 5,
+            pointsReward: 10
+          }
+        ];
+      }
+      return [
+        {
+          key: 'q_mod',
+          icon: '📚',
+          label: 'Jawab betul 5 soalan Modul Belajar',
+          subHint: 'Tahap Asas • Ketuk untuk terus belajar',
+          target: 5,
+          reward: 5,
+          pointsReward: 10
+        },
+        {
+          key: 'q_arena',
+          icon: '⚡',
+          label: 'Jawab betul 3 soalan Cabaran / Anzan / Arena',
+          subHint: 'Tahap Asas • Ketuk untuk mula cabaran',
+          target: 3,
+          reward: 8,
+          pointsReward: 15
+        },
+        {
+          key: 'q_tool',
+          icon: '🖐️',
+          label: 'Cuba Simulator Jari atau Abakus',
+          subHint: 'Ketuk untuk buka Simulator terus',
+          target: 1,
+          reward: 3,
+          pointsReward: 10
+        }
+      ];
+    }
+
     function incrementDailyQuestProgress(questKey, step = 1) {
       if (!currentPlayer) return;
       const dq = ensurePlayerDailyQuests();
       if (!dq) return;
-      const targets = { q_mod: 5, q_arena: 3, q_tool: 1 };
-      const maxT = targets[questKey] || 1;
+      const defs = getAdaptiveDailyQuestDefinitions();
+      const found = defs.find(d => d.key === questKey);
+      const maxT = found ? found.target : 1;
       const prev = dq[questKey] || 0;
       dq[questKey] = Math.min(maxT, prev + step);
       if (prev < maxT && dq[questKey] >= maxT) {
@@ -10291,21 +10359,52 @@ Jom lawan kira pantas dengan saya!`;
       renderDailyQuestCard();
     }
 
-    window.claimDailyQuestReward = function(questKey) {
+    window.launchDailyQuestShortcut = function(questKey) {
       if (!currentPlayer) return;
       const dq = ensurePlayerDailyQuests();
-      const defs = {
-        q_mod:   { target: 5, reward: 5 },
-        q_arena: { target: 3, reward: 8 },
-        q_tool:  { target: 1, reward: 3 }
-      };
-      const cfg = defs[questKey];
+      const defs = getAdaptiveDailyQuestDefinitions();
+      const cfg = defs.find(d => d.key === questKey);
+      if (!cfg) return;
+
+      const cur = Math.min(cfg.target, dq[questKey] || 0);
+      if (cur >= cfg.target) {
+        if (!dq.claimed[questKey]) {
+          window.claimDailyQuestReward(questKey);
+        } else {
+          playClick();
+          showAppToast('✅ Misi harian ini sudah selesai dan ditebus hari ini!');
+        }
+        return;
+      }
+
+      playClick();
+      if (questKey === 'q_mod') {
+        if (typeof resumeRecommendedModule === 'function') {
+          resumeRecommendedModule();
+        } else {
+          navTo('modules');
+        }
+      } else if (questKey === 'q_arena') {
+        navTo('quiz');
+      } else if (questKey === 'q_tool') {
+        const recId = window._recommendedResumeModuleId || 1;
+        const isSempoaTrack = typeof SEMPOA_TRACK_IDS !== 'undefined' && Array.isArray(SEMPOA_TRACK_IDS) && SEMPOA_TRACK_IDS.includes(recId);
+        navTo(isSempoaTrack ? 'abacus' : 'simulator');
+      }
+    };
+
+    window.claimDailyQuestReward = function(questKey, evt) {
+      if (evt && typeof evt.stopPropagation === 'function') evt.stopPropagation();
+      if (!currentPlayer) return;
+      const dq = ensurePlayerDailyQuests();
+      const defs = getAdaptiveDailyQuestDefinitions();
+      const cfg = defs.find(d => d.key === questKey);
       if (!cfg || (dq[questKey] || 0) < cfg.target || dq.claimed[questKey]) return;
       dq.claimed[questKey] = true;
       playCheer();
       triggerConfetti(35);
-      addPlayerReward(cfg.reward, 10);
-      showAppToast(`🎁 Tahniah! +${cfg.reward} Coin & +10 Markah Misi Harian dituntut!`);
+      addPlayerReward(cfg.reward, cfg.pointsReward || 10);
+      showAppToast(`🎁 Tahniah! +${cfg.reward} Coin & +${cfg.pointsReward || 10} Markah Misi Harian dituntut!`);
       renderDailyQuestCard();
     };
 
@@ -10314,30 +10413,39 @@ Jom lawan kira pantas dengan saya!`;
       const badgeEl = document.getElementById('daily-quest-progress-badge');
       if (!listEl || !currentPlayer) return;
       const dq = ensurePlayerDailyQuests();
-      const items = [
-        { key: 'q_mod',   icon: '📚', label: 'Jawab 5 soalan Modul Belajar', target: 5, reward: 5 },
-        { key: 'q_arena', icon: '⚡', label: 'Jawab 3 soalan Cabaran / Anzan / Arena', target: 3, reward: 8 },
-        { key: 'q_tool',  icon: '🖐️', label: 'Cuba Simulator Jari atau Abakus', target: 1, reward: 3 }
-      ];
+      const items = getAdaptiveDailyQuestDefinitions();
       let doneCount = 0;
       listEl.innerHTML = items.map(it => {
         const cur = Math.min(it.target, dq[it.key] || 0);
         const isDone = cur >= it.target;
         const isClaimed = Boolean(dq.claimed[it.key]);
         if (isDone) doneCount++;
-        let actionBtn = `<span class="text-[10px] font-black text-slate-500 bg-white px-2 py-1 rounded-lg border border-slate-200">${cur}/${it.target}</span>`;
+
+        let actionBadge = `
+          <span class="inline-flex items-center gap-1 text-[10px] font-black text-indigo-800 bg-indigo-50 px-2 py-1 rounded-lg border border-indigo-200">
+            <span>${cur}/${it.target}</span>
+            <span class="text-indigo-500">➡️</span>
+          </span>`;
+        let rowStyle = 'bg-white/95 hover:bg-indigo-50/90 active:scale-[0.99] border-indigo-200 cursor-pointer shadow-2xs';
+
         if (isClaimed) {
-          actionBtn = `<span class="text-[10px] font-black text-emerald-800 bg-emerald-100 px-2 py-1 rounded-lg">✅ Ditebus</span>`;
+          actionBadge = `<span class="text-[10px] font-black text-emerald-800 bg-emerald-100 border border-emerald-300 px-2 py-1 rounded-lg">✅ Ditebus</span>`;
+          rowStyle = 'bg-emerald-50/60 border-emerald-200 cursor-default opacity-90';
         } else if (isDone) {
-          actionBtn = `<button type="button" onclick="claimDailyQuestReward('${it.key}')" class="bubbly-btn bg-amber-400 text-amber-950 border border-amber-700 px-2.5 py-1 text-[10px] font-black animate-bounce">🎁 +${it.reward} ${COIN_ICON_HTML}</button>`;
+          actionBadge = `<button type="button" onclick="claimDailyQuestReward('${it.key}', event)" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-700 px-2.5 py-1 text-[10px] font-black animate-bounce">🎁 +${it.reward} ${COIN_ICON_HTML}</button>`;
+          rowStyle = 'bg-amber-50/90 border-amber-300 cursor-pointer';
         }
+
         return `
-          <div class="flex items-center justify-between gap-2 bg-white/90 border border-indigo-100 rounded-xl px-2.5 py-1.5">
-            <div class="min-w-0 flex items-center gap-1.5 font-bold text-slate-700 truncate">
-              <span>${it.icon}</span>
-              <span class="truncate">${it.label}</span>
+          <div role="button" tabindex="0" onclick="launchDailyQuestShortcut('${it.key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();launchDailyQuestShortcut('${it.key}');}" class="flex items-center justify-between gap-2 border rounded-xl px-2.5 py-2 transition ${rowStyle}">
+            <div class="min-w-0 flex items-center gap-2">
+              <span class="text-base flex-shrink-0">${it.icon}</span>
+              <div class="min-w-0">
+                <div class="font-extrabold text-slate-800 truncate leading-tight">${it.label}</div>
+                <div class="text-[9px] font-bold text-slate-500 truncate mt-0.5">${isClaimed ? 'Misi selesai hari ini!' : (isDone ? 'Sedia ditebus! Tekan butang hadiah.' : it.subHint)}</div>
+              </div>
             </div>
-            <div class="flex-shrink-0">${actionBtn}</div>
+            <div class="flex-shrink-0">${actionBadge}</div>
           </div>
         `;
       }).join('');
@@ -18286,6 +18394,7 @@ Jom lawan kira pantas dengan saya!`;
   <script>
   (function() {
     const BIO_STORAGE_KEY = 'kirakilat_webauthn_credentials_v1';
+    let bioOpInProgress = false;
 
     const BIO_I18N = {
       ms: {
@@ -18454,8 +18563,9 @@ Jom lawan kira pantas dengan saya!`;
         warnEl.classList.toggle('hidden', isWebAuthnAvailable());
       }
 
-      const myRecord = (window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null)
-        ? records.find(r => r.accountId === (currentPlayer.accountId || currentPlayer.key))
+      const activePlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
+      const myRecord = activePlayer
+        ? records.find(r => r.accountId === String(activePlayer.accountId || activePlayer.key || activePlayer.name))
         : null;
 
       if (badgeEl) {
@@ -18472,9 +18582,11 @@ Jom lawan kira pantas dengan saya!`;
     };
 
     window.registerDeviceBiometrics = async function() {
+      if (bioOpInProgress) return;
       if (typeof playClick === 'function') playClick();
       const t = getBioLang();
       const fb = document.getElementById('acc-bio-feedback');
+      const regBtn = document.getElementById('btn-register-biometric');
       const showFb = (msg, ok) => {
         if (!fb) return;
         fb.innerHTML = msg;
@@ -18482,8 +18594,8 @@ Jom lawan kira pantas dengan saya!`;
         fb.classList.remove('hidden');
       };
 
-      const currentPlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
-      if (!currentPlayer) {
+      const activePlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
+      if (!activePlayer) {
         showFb(t.errNotLoggedIn, false);
         return;
       }
@@ -18493,23 +18605,27 @@ Jom lawan kira pantas dengan saya!`;
         return;
       }
 
+      bioOpInProgress = true;
+      if (regBtn) regBtn.disabled = true;
+      if (fb) fb.classList.add('hidden');
+
       try {
         const challenge = new Uint8Array(32);
         window.crypto.getRandomValues(challenge);
-        const accId = String(currentPlayer.accountId || currentPlayer.key || currentPlayer.name);
+        const accId = String(activePlayer.accountId || activePlayer.key || activePlayer.name);
         const userIdBytes = new TextEncoder().encode(accId);
 
+        // Omit explicit rp.id and transports restrictions for maximum compatibility with iOS Safari Passkeys (iCloud Keychain) & Android Chrome
         const credential = await navigator.credentials.create({
           publicKey: {
             challenge: challenge,
             rp: {
-              name: 'KiraKilat Academy',
-              id: window.location.hostname || undefined
+              name: 'KiraKilat Academy'
             },
             user: {
               id: userIdBytes,
-              name: currentPlayer.name,
-              displayName: currentPlayer.name
+              name: activePlayer.name,
+              displayName: activePlayer.name
             },
             pubKeyCredParams: [
               { type: 'public-key', alg: -7 },   // ES256 (Apple Face ID / Touch ID / Android)
@@ -18518,14 +18634,14 @@ Jom lawan kira pantas dengan saya!`;
             authenticatorSelection: {
               authenticatorAttachment: 'platform',
               userVerification: 'required',
-              residentKey: 'preferred'
+              residentKey: 'required',
+              requireResidentKey: true
             },
-            timeout: 60000,
-            attestation: 'none'
+            timeout: 60000
           }
         });
 
-        if (!credential) {
+        if (!credential || !credential.rawId) {
           showFb(t.errCancelled, false);
           return;
         }
@@ -18535,29 +18651,35 @@ Jom lawan kira pantas dengan saya!`;
         records.push({
           credentialId: credId,
           accountId: accId,
-          name: currentPlayer.name,
-          password: currentPlayer.password,
+          name: activePlayer.name,
+          password: activePlayer.password,
           createdAt: Date.now()
         });
         saveStoredBioRecords(records);
 
         if (typeof playCheer === 'function') playCheer();
-        const msg = t.msgRegistered.replace('{name}', currentPlayer.name);
+        const msg = t.msgRegistered.replace('{name}', activePlayer.name);
         showFb(msg, true);
         if (typeof showAppToast === 'function') showAppToast(msg);
         window.syncBiometricUI();
       } catch (err) {
         if (typeof playWrong === 'function') playWrong();
-        showFb(t.errCancelled, false);
+        const detail = (err && err.name && err.name !== 'NotAllowedError' && err.name !== 'AbortError')
+          ? ` (${err.name}: ${err.message || ''})`
+          : '';
+        showFb(t.errCancelled + detail, false);
+      } finally {
+        bioOpInProgress = false;
+        if (regBtn) regBtn.disabled = false;
       }
     };
 
     window.removeDeviceBiometrics = function() {
       if (typeof playClick === 'function') playClick();
       const t = getBioLang();
-      const currentPlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
-      if (!currentPlayer) return;
-      const accId = String(currentPlayer.accountId || currentPlayer.key || currentPlayer.name);
+      const activePlayer = window.getKiraCurrentPlayer ? window.getKiraCurrentPlayer() : null;
+      if (!activePlayer) return;
+      const accId = String(activePlayer.accountId || activePlayer.key || activePlayer.name);
       const records = getStoredBioRecords().filter(r => r.accountId !== accId);
       saveStoredBioRecords(records);
       const fb = document.getElementById('acc-bio-feedback');
@@ -18571,6 +18693,7 @@ Jom lawan kira pantas dengan saya!`;
     };
 
     window.loginWithDeviceBiometrics = async function() {
+      if (bioOpInProgress) return;
       if (typeof playClick === 'function') playClick();
       const t = getBioLang();
       const errBox = document.getElementById('login-error-msg');
@@ -18597,6 +18720,7 @@ Jom lawan kira pantas dengan saya!`;
       }
 
       const prevText = bioLbl ? bioLbl.innerText : '';
+      bioOpInProgress = true;
       if (bioBtn) bioBtn.disabled = true;
       if (bioLbl) bioLbl.innerText = t.msgVerifying;
       if (errBox) errBox.classList.add('hidden');
@@ -18605,23 +18729,22 @@ Jom lawan kira pantas dengan saya!`;
         const challenge = new Uint8Array(32);
         window.crypto.getRandomValues(challenge);
 
+        // Do NOT force `transports: ['internal']` because iOS Safari Passkeys use hybrid/internal sync
         const allowCredentials = records.map(r => ({
           type: 'public-key',
-          id: base64UrlToBuf(r.credentialId),
-          transports: ['internal']
+          id: base64UrlToBuf(r.credentialId)
         }));
 
         const assertion = await navigator.credentials.get({
           publicKey: {
             challenge: challenge,
-            rpId: window.location.hostname || undefined,
             allowCredentials: allowCredentials,
             userVerification: 'required',
             timeout: 60000
           }
         });
 
-        if (!assertion) {
+        if (!assertion || !assertion.rawId) {
           throw new Error('No assertion returned');
         }
 
@@ -18643,17 +18766,21 @@ Jom lawan kira pantas dengan saya!`;
         }
       } catch (err) {
         if (typeof playWrong === 'function') playWrong();
+        const detail = (err && err.name && err.name !== 'NotAllowedError' && err.name !== 'AbortError')
+          ? ` (${err.name}: ${err.message || ''})`
+          : '';
         if (errBox) {
-          errBox.innerHTML = t.errCancelled;
+          errBox.innerHTML = t.errCancelled + detail;
           errBox.classList.remove('hidden');
         }
       } finally {
+        bioOpInProgress = false;
         if (bioBtn) bioBtn.disabled = false;
         if (bioLbl && prevText) bioLbl.innerText = prevText;
       }
     };
 
-    // Hook into language switcher and navigation so biometric UI always stays synced
+    // Hook into language switcher, logout, and navigation so biometric UI always stays synced
     if (typeof applyAppLanguageUI === 'function') {
       const _origApplyLang = applyAppLanguageUI;
       applyAppLanguageUI = function(langCode) {
@@ -18667,6 +18794,14 @@ Jom lawan kira pantas dengan saya!`;
       navTo = function(screenName) {
         _origNavTo(screenName);
         window.syncBiometricUI();
+      };
+    }
+
+    if (typeof logoutPlayer === 'function') {
+      const _origLogout = logoutPlayer;
+      logoutPlayer = async function() {
+        await _origLogout();
+        setTimeout(() => window.syncBiometricUI(), 100);
       };
     }
 

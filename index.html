@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.5 • Tunjuk Cara Berpandukan Suara (TTS Sync + Jeda Pedagogi 0.8s + Kawalan Manual Undur/Jeda/Seterusnya)
+            Versi 2.2.9 • Peta Penguasaan 4 Teras Formula (Asas, Kawan Kecil, Kawan Besar & Gabungan) + Pengganda Ganjaran Formula + Misi Pintar
           </span>
         </div>
 
@@ -1434,6 +1434,8 @@
           <span class="text-slate-600 text-[10px]">ID: <span id="acc-id-display" class="font-mono">-</span></span>
         </div>
 
+        <div id="acc-formula-mastery-box" class="bg-indigo-50/90 border-2 border-indigo-200 rounded-2xl p-2.5 space-y-2"></div>
+
         <p class="text-[11px] font-bold text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2">
           💡 Semua pencapaian (coin, markah, modul terbuka & avatar) disimpan secara automatik walaupun anda menukar nama atau kata laluan.
         </p>
@@ -1752,7 +1754,7 @@
                   <div class="flex items-center gap-2.5">
                     <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl flex-shrink-0">🏎️</div>
                     <div>
-                      <div class="text-xs sm:text-sm font-black text-emerald-950">2. Perlumbaan Maraton (20 Langkah + Turbo 🔥)</div>
+                      <div class="text-xs sm:text-sm font-black text-emerald-950">2. Perlumbaan Maraton (40 Langkah + Turbo 🔥)</div>
                       <div class="text-[11px] font-bold text-slate-600">Lumba gerakkan avatar ke garisan penamat! 5 betul berturut aktifkan Turbo Api!</div>
                     </div>
                   </div>
@@ -1949,6 +1951,11 @@
           </form>
 
           <div id="arena-turn-feedback" class="hidden rounded-2xl p-2.5 text-center text-xs font-black"></div>
+          <div id="arena-podium-fallback-wrap" class="hidden text-center pt-1">
+            <button type="button" onclick="forceOpenArenaPodiumNow()" class="bubbly-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-700 px-4 py-2 text-xs font-black animate-bounce">
+              🏆 Terus Buka Pentas Podium Pemenang Sekarang
+            </button>
+          </div>
         </div>
 
         <!-- Zon Keputusan & Pentas Podium Juara 1, 2, 3 dengan Avatar 3D Pemain -->
@@ -5873,8 +5880,11 @@
       previewCikguKikoVoice();
     };
 
+    window._activeKikoUtterances = [];
+
     window.stopCikguKikoSpeech = function() {
       kikoSpeechSessionToken++;
+      window._activeKikoUtterances = [];
       if ('speechSynthesis' in window) {
         try { window.speechSynthesis.cancel(); } catch (e) {}
       }
@@ -5890,7 +5900,9 @@
       const preset = KIKO_VOICE_PRESETS[kikoVoicePresetKey] || KIKO_VOICE_PRESETS.ceria;
       const langCodes = opts.langCodes || ['ms-MY', 'ms', 'id-ID', 'id'];
       const matchedVoice = pickBestNaturalVoiceForCodes(langCodes);
-      const clauses = splitIntoNaturalProsodyClauses(text);
+      const clauses = opts.singleFlow
+        ? [normalizeMalayMathProsody(text)].filter(Boolean)
+        : splitIntoNaturalProsodyClauses(text);
 
       if (!clauses.length) {
         if (typeof opts.onEnd === 'function') opts.onEnd();
@@ -5906,6 +5918,7 @@
       const speakNextClause = () => {
         if (token !== kikoSpeechSessionToken) return;
         if (idx >= clauses.length) {
+          window._activeKikoUtterances = [];
           if (typeof opts.onEnd === 'function') opts.onEnd();
           return;
         }
@@ -5914,6 +5927,9 @@
         const isQuestion = clause.endsWith('?');
         const isExclaim = clause.endsWith('!');
         const utter = new SpeechSynthesisUtterance(clause);
+        // Kekalkan rujukan global supaya Safari iOS / WebKit tidak membersihkan objek di tengah bacaan
+        window._activeKikoUtterances.push(utter);
+
         if (matchedVoice) {
           utter.voice = matchedVoice;
           utter.lang = matchedVoice.lang;
@@ -5921,20 +5937,21 @@
           utter.lang = langCodes[0] || 'ms-MY';
         }
 
-        // Variasi mikro nada & kelajuan mengikut jenis ayat supaya tidak berbunyi robotik mendatar
         const baseRate = opts.rate || preset.rate;
         const basePitch = opts.pitch || preset.pitch;
         utter.rate = isExclaim ? Math.min(1.25, baseRate * 1.03) : (isQuestion ? baseRate * 0.98 : baseRate);
         utter.pitch = isQuestion ? Math.min(1.3, basePitch + 0.06) : (isExclaim ? Math.min(1.3, basePitch + 0.04) : basePitch);
 
+        let clauseSettled = false;
         const finishClause = () => {
-          if (token !== kikoSpeechSessionToken) return;
+          if (clauseSettled || token !== kikoSpeechSessionToken) return;
+          clauseSettled = true;
           idx++;
           if (idx >= clauses.length) {
+            window._activeKikoUtterances = [];
             if (typeof opts.onEnd === 'function') opts.onEnd();
             return;
           }
-          // Jeda pernafasan semula jadi antara klausa
           let pauseMs = 210;
           if (/[.!?]$/.test(clause)) pauseMs = 340;
           else if (/,$/.test(clause)) pauseMs = 190;
@@ -5946,13 +5963,16 @@
         utter.onerror = finishClause;
 
         try {
+          if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+          }
           window.speechSynthesis.speak(utter);
         } catch (e) {
           finishClause();
         }
       };
 
-      setTimeout(speakNextClause, 70);
+      setTimeout(speakNextClause, 90);
     };
 
     window.previewCikguKikoVoice = function() {
@@ -6904,6 +6924,7 @@
                   const ans = mid + c;
                   const expr = `${start} ${op} ${b} + ${c}`;
                   pushFresh(`m3_k3_${expr}`, {
+                    formulaPillar: 'kecil',
                     prompt: `Rantaian Kawan Kecil 5: ${expr} = ?`,
                     visualHtml: `<div class="text-xl sm:text-2xl font-black text-rose-800 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${expr}</div>`,
                     options: makeNumericOptions(ans, 0, 99),
@@ -6912,6 +6933,7 @@
                 }
               } else {
                 pushFresh(`m3_k_${start}_${op}_${b}`, {
+                  formulaPillar: 'kecil',
                   prompt: `Formula Kawan Kecil 5: ${start} ${op} ${b} = ?`,
                   visualHtml: `<div class="text-2xl font-black text-rose-800 bg-white px-5 py-2 rounded-2xl border-2 border-rose-200">${start} ${op} ${b}</div>`,
                   options: makeNumericOptions(mid, 0, 99),
@@ -6935,6 +6957,7 @@
                   const ans = base + addV;
                   if (ans <= 99) {
                     pushFresh(`m3_b_add_${base}_${addV}`, {
+                      formulaPillar: 'besar',
                       prompt: `Formula Kawan Besar 10: ${base} + ${addV} = ?`,
                       visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} + ${addV}</div>`,
                       options: makeNumericOptions(ans, 10, 99),
@@ -6951,6 +6974,7 @@
                   const ans = base - subV;
                   if (ans >= 1) {
                     pushFresh(`m3_b_sub_${base}_${subV}`, {
+                      formulaPillar: 'besar',
                       prompt: `Formula Kawan Besar 10: ${base} - ${subV} = ?`,
                       visualHtml: `<div class="text-2xl font-black text-indigo-800 bg-white px-5 py-2 rounded-2xl border-2 border-indigo-200">${base} - ${subV}</div>`,
                       options: makeNumericOptions(ans, 1, 99),
@@ -6985,6 +7009,7 @@
                 const ans = mid - c;
                 const expr = `${start} ${op} ${b} - ${c}`;
                 pushFresh(`m3_g3_${expr}`, {
+                  formulaPillar: 'gabung',
                   prompt: `Rantaian Formula Gabungan: ${expr} = ?`,
                   visualHtml: `<div class="text-xl sm:text-2xl font-black text-purple-800 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${expr}</div>`,
                   options: makeNumericOptions(ans, 1, 99),
@@ -6992,6 +7017,7 @@
                 }, allowFallback);
               } else {
                 pushFresh(`m3_g_${start}_${op}_${b}`, {
+                  formulaPillar: 'gabung',
                   prompt: `Formula Gabungan (10 & 5): ${start} ${op} ${b} = ?`,
                   visualHtml: `<div class="text-2xl font-black text-purple-800 bg-white px-5 py-2 rounded-2xl border-2 border-purple-200">${start} ${op} ${b}</div>`,
                   options: makeNumericOptions(mid, 1, 99),
@@ -8335,14 +8361,15 @@
         modDemoTimerHandles.push(nextTimer);
       };
 
-      // Pemasa sandaran dinamik mengikut panjang ayat (sekiranya TTS disenyapkan atau tiada suara di peranti)
+      // Pemasa sandaran selesa (135ms/aksara + 3.5s penampan) supaya tidak sesekali mendahului suara iOS/Safari
       const voiceText = String(st.voice || st.detail || '');
-      const dynamicFallbackMs = Math.max(2600, Math.min(9000, voiceText.length * 95 + 1400));
+      const dynamicFallbackMs = Math.max(4200, Math.min(14000, voiceText.length * 135 + 3500));
       const fallbackTimer = setTimeout(onStepNarrationDone, dynamicFallbackMs);
       modDemoTimerHandles.push(fallbackTimer);
 
       if (typeof speakCikguKikoNatural === 'function' && voiceText && appSoundEffectsEnabled) {
         speakCikguKikoNatural(voiceText, {
+          singleFlow: true,
           playIntroChime: idx === 0,
           onEnd: () => {
             clearTimeout(fallbackTimer);
@@ -8549,18 +8576,26 @@
         }
 
         const reward = calculateSpeedBonusPoints(elapsedSec, activeModId);
+        const mLabelForPillar = getModuleTopicLabelForAnalytics(activeModId, activeMod3QuizCategory);
+        const qPillarKey = classifyFormulaPillar(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabelForPillar, q.formulaPillar || '');
+        const pMeta = getFormulaPillarMeta(qPillarKey);
+        const formulaScaledBasePts = Math.round(reward.total * pMeta.mult);
+        const formulaExtraCoins = pMeta.coinBonus;
+
         activeModSessionCorrect++;
         activeModConsecutiveStreak++;
 
         let streakBonusPts = 0;
         let streakBonusCoins = 0;
-        let streakTagHtml = '';
+        let streakTagHtml = pMeta.mult > 1
+          ? ` <span class="inline-block bg-amber-300 text-amber-950 px-2 py-0.2 rounded-full text-[10px] font-black">${pMeta.icon} ${pMeta.shortLabel} (${pMeta.mult}x)</span>`
+          : '';
         const isCombo10 = activeModConsecutiveStreak > 0 && activeModConsecutiveStreak % 10 === 0;
         if (isCombo10) {
           const tier = activeModConsecutiveStreak / 10;
           streakBonusPts = 25 * tier;
           streakBonusCoins = 3 * tier;
-          streakTagHtml = `<br><span class="inline-block mt-1 bg-white text-rose-700 px-3 py-0.5 rounded-full text-[11px] font-black shadow-sm">🏆 COMBO ${activeModConsecutiveStreak} BERTURUT: +${streakBonusPts} Markah & +${streakBonusCoins} Coin!</span>`;
+          streakTagHtml += `<br><span class="inline-block mt-1 bg-white text-rose-700 px-3 py-0.5 rounded-full text-[11px] font-black shadow-sm">🏆 COMBO ${activeModConsecutiveStreak} BERTURUT: +${streakBonusPts} Markah & +${streakBonusCoins} Coin!</span>`;
           triggerConfetti(75);
         } else if (reward.tierKey === 'super_fast') {
           triggerConfetti(28);
@@ -8568,8 +8603,8 @@
 
         playTierCelebrationSound(reward.tierKey, isCombo10);
 
-        const totalEarnedPts = reward.total + streakBonusPts;
-        const totalEarnedCoins = 1 + streakBonusCoins;
+        const totalEarnedPts = formulaScaledBasePts + streakBonusPts;
+        const totalEarnedCoins = 1 + formulaExtraCoins + streakBonusCoins;
 
         const tierHeaders = {
           super_fast: `<span class="inline-flex items-center gap-1 bg-amber-950 text-amber-300 px-3 py-0.5 rounded-full text-xs font-black tracking-wide shadow">⚡🔥 KILAT SUPER! +10 BONUS</span>`,
@@ -8583,7 +8618,7 @@
         const popupVariant = isCombo10 ? 'combo' : reward.tierKey;
 
         btnEl.className = 'bubbly-btn bg-emerald-500 border-3 border-emerald-700 py-3 text-base font-black text-white';
-        const msgHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${reward.total} Markah</b> & <b>+1 Coin</b> ${COIN_ICON_HTML}${streakTagHtml}`;
+        const msgHtml = `Masa: <b>${elapsedSec.toFixed(1)}s</b> • <b>+${formulaScaledBasePts} Markah</b> & <b>+${1 + formulaExtraCoins} Coin</b> ${COIN_ICON_HTML}${streakTagHtml}`;
         fb.classList.add('hidden');
         const modOkMascotHtml = `<div class="flex items-center justify-center gap-3 text-left">${getPandaMascotImg('champion', 'w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-md panda-anim-cheer')}<div class="min-w-0 flex-1">${headerBadge}<div class="mt-1">${msgHtml}</div></div></div>`;
         showQuizInstantPopup(modOkMascotHtml, popupVariant);
@@ -8594,7 +8629,7 @@
 
         if (currentPlayer) {
           const mLabel = getModuleTopicLabelForAnalytics(activeModId, activeMod3QuizCategory);
-          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, true);
+          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, true, q.formulaPillar || '');
           addPlayerReward(totalEarnedCoins, totalEarnedPts);
           if (!currentPlayer.modScores) currentPlayer.modScores = {};
           if (activeModSessionCorrect > (currentPlayer.modScores[activeModId] || 0)) {
@@ -8616,7 +8651,7 @@
         activeModConsecutiveWrong++;
         if (currentPlayer) {
           const mLabel = getModuleTopicLabelForAnalytics(activeModId, activeMod3QuizCategory);
-          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, false);
+          recordStudentQuestionAttempt(`mod_${activeModId}_${activeMod3QuizCategory}`, mLabel, false, q.formulaPillar || '');
           savePlayerCloud();
         }
         const streakBadge = document.getElementById('mod-q-streak-badge');
@@ -9812,6 +9847,28 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + addPts;
       currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + addPts;
       currentPlayer.todayStars = (currentPlayer.todayStars || 0) + addStars;
+
+      // Bonus Ketekunan Latihan Harian (15 minit, 25 minit & 35 minit aktif) supaya latihan tekun mengatasi sesi singkat 5 minit
+      const minsToday = Math.floor((Number(currentPlayer.todaySeconds) || 0) / 60);
+      if (!currentPlayer.todayStaminaMilestones || currentPlayer.todayStaminaDate !== todayKey) {
+        currentPlayer.todayStaminaDate = todayKey;
+        currentPlayer.todayStaminaMilestones = {};
+      }
+      const staminaTiers = [
+        { mins: 15, coins: 8,  pts: 40,  label: '15 Minit Tekun' },
+        { mins: 25, coins: 15, pts: 80,  label: '25 Minit Fokus' },
+        { mins: 35, coins: 25, pts: 150, label: '35 Minit Juara Stamina' }
+      ];
+      staminaTiers.forEach(stTier => {
+        if (minsToday >= stTier.mins && !currentPlayer.todayStaminaMilestones[stTier.mins]) {
+          currentPlayer.todayStaminaMilestones[stTier.mins] = true;
+          currentPlayer.stars = (currentPlayer.stars || 0) + stTier.coins;
+          currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + stTier.pts;
+          currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + stTier.pts;
+          currentPlayer.todayStars = (currentPlayer.todayStars || 0) + stTier.coins;
+          showAppToast(`🏅 Bonus Ketekunan (${stTier.label}): +${stTier.coins} Coin & +${stTier.pts} Markah!`);
+        }
+      });
       if (addPts > 0) {
         const curScr = ['modules', 'quiz', 'anzan', 'arena'].find(s => {
           const el = document.getElementById(`screen-${s}`);
@@ -9829,14 +9886,151 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       savePlayerCloud();
     }
 
-    function recordStudentQuestionAttempt(topicKey, topicLabel, isCorrect) {
+    const FORMULA_PILLARS_META = [
+      { key: 'asas',   icon: '🌱', label: 'Asas Terus',        shortLabel: 'Asas Terus',    mult: 1.0, coinBonus: 0, colorClass: 'bg-emerald-500', badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-300', modId: 1, subCat: 'random' },
+      { key: 'kecil',  icon: '🖐️', label: 'Kawan Kecil (5)',   shortLabel: 'Kawan Kecil 5', mult: 1.5, coinBonus: 1, colorClass: 'bg-rose-500',    badgeBg: 'bg-rose-100 text-rose-900 border-rose-300',          modId: 'jari2', subCat: 'kecil' },
+      { key: 'besar',  icon: '🔟', label: 'Kawan Besar (10)',  shortLabel: 'Kawan Besar 10',mult: 2.0, coinBonus: 1, colorClass: 'bg-indigo-600',  badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-300',    modId: 'jari2', subCat: 'besar' },
+      { key: 'gabung', icon: '⚡', label: 'Formula Gabungan',  shortLabel: 'Gabungan 5&10', mult: 2.5, coinBonus: 2, colorClass: 'bg-purple-600',  badgeBg: 'bg-purple-100 text-purple-900 border-purple-300',    modId: 'jari2', subCat: 'gabung' }
+    ];
+
+    function classifyFormulaPillar(topicKey, topicLabel, explicitPillar = '') {
+      const exp = String(explicitPillar || '').toLowerCase();
+      if (['asas', 'kecil', 'besar', 'gabung'].includes(exp)) return exp;
+      const combined = `${topicKey || ''} ${topicLabel || ''}`.toLowerCase();
+      if (combined.includes('gabung') || combined.includes('jari3') || combined.includes('silat jari') || combined.includes('mod_4') || combined.includes('mod_5') || combined.includes('mod_6')) {
+        return 'gabung';
+      }
+      if (combined.includes('besar')) return 'besar';
+      if (combined.includes('kecil')) return 'kecil';
+      if (combined.includes('mod_3') || combined.includes('mod_jari2') || combined.includes('friends') || combined.includes('twodigit') || combined.includes('hundreds')) {
+        return 'besar';
+      }
+      return 'asas';
+    }
+
+    function getFormulaPillarMeta(pillarKey) {
+      return FORMULA_PILLARS_META.find(p => p.key === pillarKey) || FORMULA_PILLARS_META[0];
+    }
+
+    function getPlayerFormulaMasterySummary(playerObj) {
+      const st = (playerObj && playerObj.analyticsStats && typeof playerObj.analyticsStats === 'object')
+        ? playerObj.analyticsStats
+        : { byTopic: {}, formulaMastery: {} };
+      const storedFm = (st.formulaMastery && typeof st.formulaMastery === 'object') ? st.formulaMastery : {};
+
+      // Gabungkan rekod eksplisit `formulaMastery` dan data legasi `byTopic` supaya rekod sedia ada tidak hilang
+      const agg = {
+        asas:   { correct: Number(storedFm.asas?.correct) || 0,   wrong: Number(storedFm.asas?.wrong) || 0 },
+        kecil:  { correct: Number(storedFm.kecil?.correct) || 0,  wrong: Number(storedFm.kecil?.wrong) || 0 },
+        besar:  { correct: Number(storedFm.besar?.correct) || 0,  wrong: Number(storedFm.besar?.wrong) || 0 },
+        gabung: { correct: Number(storedFm.gabung?.correct) || 0, wrong: Number(storedFm.gabung?.wrong) || 0 }
+      };
+
+      const hasExplicitData = Object.values(agg).some(v => (v.correct + v.wrong) > 0);
+      if (!hasExplicitData && st.byTopic && typeof st.byTopic === 'object') {
+        Object.entries(st.byTopic).forEach(([tKey, tVal]) => {
+          if (!tVal) return;
+          const pKey = classifyFormulaPillar(tKey, tVal.label, '');
+          agg[pKey].correct += Number(tVal.correct) || 0;
+          agg[pKey].wrong += Number(tVal.wrong) || 0;
+        });
+      }
+
+      return FORMULA_PILLARS_META.map(meta => {
+        const c = agg[meta.key].correct;
+        const w = agg[meta.key].wrong;
+        const total = c + w;
+        const pct = total > 0 ? Math.round((c / total) * 100) : 0;
+        const mastered = total >= 10 && pct >= 80;
+        const statusLabel = total === 0
+          ? 'Belum Dicuba'
+          : (mastered ? '🏆 Dikuasai' : (pct >= 65 ? '📈 Hampir Mahir' : '⚠️ Perlu Latihan'));
+        return { ...meta, correct: c, wrong: w, total, pct, mastered, statusLabel };
+      });
+    }
+
+    function getWeakestFormulaPillar(playerObj) {
+      const summary = getPlayerFormulaMasterySummary(playerObj);
+      // Utamakan Kawan Kecil, Kawan Besar, atau Gabungan yang belum dikuasai
+      const formulaTargets = summary.filter(s => s.key !== 'asas');
+      const unmastered = formulaTargets.filter(s => !s.mastered);
+      if (unmastered.length > 0) {
+        return unmastered.sort((a, b) => {
+          if (a.total === 0 && b.total > 0) return -1;
+          if (b.total === 0 && a.total > 0) return 1;
+          return a.pct - b.pct;
+        })[0];
+      }
+      return summary.sort((a, b) => a.pct - b.pct)[0];
+    }
+
+    function renderFormulaMasteryGridHtml(playerObj, compact = false) {
+      const items = getPlayerFormulaMasterySummary(playerObj);
+      return `
+        <div class="grid grid-cols-2 gap-1.5">
+          ${items.map(it => {
+            const pctText = it.total > 0 ? `${it.pct}% (${it.correct}/${it.total})` : '0% (0/0)';
+            const multBadge = it.mult > 1 ? `<span class="text-[8.5px] font-black bg-amber-300 text-amber-950 px-1.5 py-0.2 rounded-full">${it.mult}x</span>` : '';
+            return `
+              <div class="bg-white border border-slate-200 rounded-xl p-2 space-y-1 shadow-2xs">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-[10px] font-black text-slate-800 truncate">${it.icon} ${compact ? it.shortLabel : it.label}</span>
+                  ${multBadge}
+                </div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full ${it.colorClass} transition-all duration-300" style="width: ${it.total > 0 ? Math.max(8, it.pct) : 0}%"></div>
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-extrabold">
+                  <span class="text-slate-600">${pctText}</span>
+                  <span class="${it.mastered ? 'text-emerald-700' : (it.total === 0 ? 'text-slate-400' : 'text-rose-700')}">${it.statusLabel}</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    window.refreshAccountFormulaMasteryUI = function() {
+      const box = document.getElementById('acc-formula-mastery-box');
+      if (!box || !currentPlayer) return;
+      const weak = getWeakestFormulaPillar(currentPlayer);
+      box.innerHTML = `
+        <div class="flex items-center justify-between gap-2">
+          <div class="text-xs font-black text-indigo-950">🧭 Peta Penguasaan 4 Teras Formula</div>
+          <button type="button" onclick="launchWeakFormulaTraining('${weak.key}')" class="bubbly-btn bg-indigo-600 text-white text-[10px] font-black px-2.5 py-1 border border-indigo-900">
+            🎯 Latih ${weak.shortLabel} (${weak.mult}x)
+          </button>
+        </div>
+        ${renderFormulaMasteryGridHtml(currentPlayer, false)}
+      `;
+    };
+
+    window.launchWeakFormulaTraining = function(pillarKey) {
+      playClick();
+      const meta = getFormulaPillarMeta(pillarKey);
+      navTo('modules');
+      const targetMod = meta.modId || 'jari2';
+      if (typeof switchModulesTrack === 'function') {
+        switchModulesTrack(JARI_TRACK_IDS.includes(targetMod) ? 'jari' : 'sempoa', true);
+      }
+      if (typeof openModuleDetail === 'function') {
+        openModuleDetail(targetMod);
+        if ((targetMod === 3 || targetMod === 'jari2') && meta.subCat && meta.subCat !== 'random' && typeof setMod3QuizCategory === 'function') {
+          setTimeout(() => setMod3QuizCategory(meta.subCat, true), 60);
+        }
+      }
+    };
+
+    function recordStudentQuestionAttempt(topicKey, topicLabel, isCorrect, explicitPillar = '') {
       if (!currentPlayer || currentPlayer.isGuest || isAdminAccountRecord(currentPlayer)) return;
       const todayKey = getTodayDateKey();
       if (!currentPlayer.analyticsStats || typeof currentPlayer.analyticsStats !== 'object') {
-        currentPlayer.analyticsStats = { totalCorrect: 0, totalWrong: 0, byTopic: {}, activeDays: [] };
+        currentPlayer.analyticsStats = { totalCorrect: 0, totalWrong: 0, byTopic: {}, formulaMastery: {}, activeDays: [] };
       }
       const st = currentPlayer.analyticsStats;
       if (!st.byTopic || typeof st.byTopic !== 'object') st.byTopic = {};
+      if (!st.formulaMastery || typeof st.formulaMastery !== 'object') st.formulaMastery = {};
       if (!Array.isArray(st.activeDays)) st.activeDays = [];
 
       if (isCorrect) st.totalCorrect = (Number(st.totalCorrect) || 0) + 1;
@@ -9849,6 +10043,17 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       st.byTopic[tKey].label = String(topicLabel || st.byTopic[tKey].label || tKey);
       if (isCorrect) st.byTopic[tKey].correct = (Number(st.byTopic[tKey].correct) || 0) + 1;
       else st.byTopic[tKey].wrong = (Number(st.byTopic[tKey].wrong) || 0) + 1;
+
+      const pillarKey = classifyFormulaPillar(tKey, topicLabel, explicitPillar);
+      if (!st.formulaMastery[pillarKey]) {
+        st.formulaMastery[pillarKey] = { correct: 0, wrong: 0 };
+      }
+      if (isCorrect) st.formulaMastery[pillarKey].correct = (Number(st.formulaMastery[pillarKey].correct) || 0) + 1;
+      else st.formulaMastery[pillarKey].wrong = (Number(st.formulaMastery[pillarKey].wrong) || 0) + 1;
+
+      if (isCorrect && pillarKey !== 'asas') {
+        incrementDailyQuestProgress('q_formula', 1);
+      }
 
       if (!st.activeDays.includes(todayKey)) {
         st.activeDays.push(todayKey);
@@ -10439,6 +10644,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             pointsReward: 25
           },
           {
+            key: 'q_formula',
+            icon: '🧭',
+            label: `Kuasai ${getWeakestFormulaPillar(currentPlayer).shortLabel} (12 Soalan Formula)`,
+            subHint: `Ganjaran ${getWeakestFormulaPillar(currentPlayer).mult}x • Ketuk untuk terus latih formula lemah`,
+            target: 12,
+            reward: 18,
+            pointsReward: 50
+          },
+          {
             key: 'q_tool',
             icon: '🖐️',
             label: 'Latihan Simulator Jari atau Abakus',
@@ -10467,6 +10681,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           target: 3,
           reward: 8,
           pointsReward: 15
+        },
+        {
+          key: 'q_formula',
+          icon: '🧭',
+          label: `Kuasai ${getWeakestFormulaPillar(currentPlayer).shortLabel} (10 Soalan Formula)`,
+          subHint: `Ganjaran ${getWeakestFormulaPillar(currentPlayer).mult}x • Ketuk untuk terus latih formula lemah`,
+          target: 10,
+          reward: 15,
+          pointsReward: 40
         },
         {
           key: 'q_tool',
@@ -10522,6 +10745,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         }
       } else if (questKey === 'q_arena') {
         navTo('quiz');
+      } else if (questKey === 'q_formula') {
+        const weak = getWeakestFormulaPillar(currentPlayer);
+        launchWeakFormulaTraining(weak.key);
       } else if (questKey === 'q_tool') {
         const recId = window._recommendedResumeModuleId || 1;
         const isSempoaTrack = typeof SEMPOA_TRACK_IDS !== 'undefined' && Array.isArray(SEMPOA_TRACK_IDS) && SEMPOA_TRACK_IDS.includes(recId);
@@ -12207,6 +12433,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         loadParentChildrenDashboard();
       } else if (screenName === 'account') {
         syncPlayerUI();
+        if (typeof refreshAccountFormulaMasteryUI === 'function') refreshAccountFormulaMasteryUI();
         const pinInp = document.getElementById('acc-new-pin');
         if (pinInp && currentPlayer) pinInp.value = currentPlayer.recoveryPin || '0000';
         const nFb = document.getElementById('acc-name-feedback');
@@ -13157,6 +13384,14 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
               <span class="text-teal-800">${activeDaysCount}/7 Hari Aktif</span>
             </div>
             <div class="flex items-center justify-between gap-1 pt-0.5">${weekPills.join('')}</div>
+          </div>
+
+          <div class="bg-indigo-100/60 border border-indigo-200 rounded-lg p-2 space-y-1.5">
+            <div class="flex items-center justify-between text-[9.5px] font-black text-indigo-950">
+              <span>🧭 Penguasaan 4 Teras Formula:</span>
+              <span class="text-[8.5px] text-indigo-700">Sasaran Mahir: ≥80%</span>
+            </div>
+            ${renderFormulaMasteryGridHtml(child, true)}
           </div>
 
           <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
@@ -15169,7 +15404,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
     const ARENA_MODE_LABELS = {
       kuiz_kilat:   '🎓 Kuiz Kilat Serentak (10 Soalan)',
-      marathon_gp:  '🏎️ Perlumbaan Maraton (20 Langkah + Turbo 🔥)',
+      marathon_gp:  '🏎️ Perlumbaan Maraton (40 Langkah + Turbo 🔥)',
       royale_anzan: '👑 Battle Royale: Flash Anzan (Kalah Mati)',
       team_tug:     '🚩 Pertarungan Pasukan (Merah 🔴 vs Biru 🔵)'
     };
@@ -15187,12 +15422,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       },
       marathon_gp: {
         playersBadge: '👥 2 – 30 Pemain (Lumba Individu)',
-        title: 'Cara Main: Perlumbaan Maraton (20 Langkah)',
+        title: 'Cara Main: Perlumbaan Maraton (40 Langkah)',
         steps: [
           '👥 <b>Jumlah Pemain:</b> 2 hingga 30 orang berlumba di trek yang sama.',
           '🏎️ Setiap jawapan betul gerakkan avatar awak <b>1 langkah ke hadapan</b>.',
           '🔥 Jawab betul <b>5 kali berturut-turut</b> untuk aktifkan <b>Turbo Api</b> (lompat 2 langkah sekali gus)!',
-          '🏁 Siapa sampai garisan <b>20 langkah</b> paling awal dialah Juara!'
+          '🏁 Siapa sampai garisan <b>40 langkah</b> paling awal dialah Juara (+Bonus Maraton)!'
         ]
       },
       royale_anzan: {
@@ -15272,11 +15507,17 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       });
     };
 
-    function generateArenaQuestionBank(diffKey, count = 35) {
+    function generateArenaQuestionBank(diffKey, count = 60, modeKey = 'kuiz_kilat') {
       const list = [];
+      const isMarathon = modeKey === 'marathon_gp';
       for (let i = 0; i < count; i++) {
+        // Peningkatan kesukaran berperingkat (Zon Awal -> Pecutan -> Pecutan Akhir) untuk cabaran sebenar
+        const stage = i < 12 ? 1 : (i < 26 ? 2 : 3);
+
         if (diffKey === 'jari_all') {
-          if (i % 4 === 0) {
+          // Gabungan bacaan jari, formula Kawan Kecil/Besar 2-digit, dan operasi 3-langkah (0–99)
+          const rType = i % 5;
+          if (rType === 0 && (!isMarathon || i < 20)) {
             const target = Math.floor(Math.random() * 88) + 11;
             const st = numberToFingerStates(target);
             list.push({
@@ -15285,73 +15526,105 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
               options: makeNumericOptions(target, 1, 99),
               answer: target
             });
+          } else if (rType === 1 || rType === 2) {
+            // Operasi 2 digit + 2 digit (melibatkan Kawan Kecil 5 & Kawan Besar 10)
+            const a = Math.floor(Math.random() * 58) + 14;
+            const b = stage === 1 ? (Math.floor(Math.random() * 19) + 6) : (Math.floor(Math.random() * 38) + 12);
+            const isAdd = (i % 2 === 1) && (a + b <= 99);
+            if (isAdd) {
+              const ans = a + b;
+              list.push({ prompt: `${a} + ${b} = ?`, visualHtml: '', options: makeNumericOptions(ans, 10, 99), answer: ans });
+            } else {
+              const hi = Math.max(a, b) + 18;
+              const lo = Math.min(a, b);
+              const ans = hi - lo;
+              list.push({ prompt: `${hi} - ${lo} = ?`, visualHtml: '', options: makeNumericOptions(ans, 1, 99), answer: ans });
+            }
           } else {
-            const a = Math.floor(Math.random() * 55) + 6;
-            const b = Math.floor(Math.random() * 9) + 1;
-            const isAdd = i % 2 === 1;
-            const ans = isAdd ? (a + b) : (a + 10 - b);
-            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + 10} - ${b} = ?`;
-            list.push({
-              prompt,
-              visualHtml: '',
-              options: makeNumericOptions(ans, 1, 99),
-              answer: ans
-            });
+            // Operasi Silat Jari 3 Langkah (0–99)
+            const n1 = Math.floor(Math.random() * 45) + 15;
+            const n2 = Math.floor(Math.random() * 38) + 12;
+            const n3 = Math.floor(Math.random() * 25) + 6;
+            if (i % 2 === 0 && n1 + n2 - n3 <= 99 && n1 + n2 - n3 >= 5) {
+              const ans = n1 + n2 - n3;
+              list.push({ prompt: `${n1} + ${n2} - ${n3} = ?`, visualHtml: '', options: makeNumericOptions(ans, 5, 99), answer: ans });
+            } else {
+              const base = Math.floor(Math.random() * 40) + 45;
+              const s1 = Math.floor(Math.random() * 22) + 7;
+              const a2 = Math.floor(Math.random() * 28) + 8;
+              const ans = base - s1 + a2;
+              list.push({ prompt: `${base} - ${s1} + ${a2} = ?`, visualHtml: '', options: makeNumericOptions(ans, 5, 99), answer: ans });
+            }
           }
         } else if (diffKey === 'lvl1') {
-          const target = Math.floor(Math.random() * 88) + 11;
-          const st = numberToFingerStates(target);
-          list.push({
-            prompt: 'Berapakah nilai jari ini?',
-            visualHtml: `<div class="flex gap-2 justify-center">${renderRealisticHandSVG('left', st.left, false, 'w-20 h-24')}${renderRealisticHandSVG('right', st.right, false, 'w-20 h-24')}</div>`,
-            options: makeNumericOptions(target, 1, 99),
-            answer: target
-          });
-        } else if (diffKey === 'lvl45') {
-          const isMul = i % 2 === 0;
-          if (isMul) {
-            const a = Math.floor(Math.random() * 45) + 12;
-            const b = Math.floor(Math.random() * 8) + 2;
-            const ans = a * b;
-            list.push({
-              prompt: `${a} × ${b} = ?`,
-              visualHtml: '',
-              options: makeNumericOptions(ans, 20, 999),
-              answer: ans
-            });
-          } else {
-            const n1 = Math.floor(Math.random() * 35) + 12;
-            const n2 = Math.floor(Math.random() * 30) + 11;
-            const n3 = Math.floor(Math.random() * 15) + 4;
-            const ans = n1 + n2 - n3;
-            list.push({
-              prompt: `${n1} + ${n2} - ${n3} = ?`,
-              visualHtml: '',
-              options: makeNumericOptions(ans, 5, 150),
-              answer: ans
-            });
-          }
-        } else {
-          if (i % 3 === 0) {
+          // Tahap 1 kini mencampurkan bacaan jari 2-digit dengan tambah/tolak terus 2-digit (tiada formula)
+          if (i % 2 === 0) {
             const target = Math.floor(Math.random() * 88) + 11;
+            const st = numberToFingerStates(target);
             list.push({
-              prompt: 'Baca nilai sempoa ini:',
-              visualHtml: renderAbacusQuestionSVG(target, 2),
+              prompt: 'Berapakah nilai jari ini?',
+              visualHtml: `<div class="flex gap-2 justify-center">${renderRealisticHandSVG('left', st.left, false, 'w-20 h-24')}${renderRealisticHandSVG('right', st.right, false, 'w-20 h-24')}</div>`,
               options: makeNumericOptions(target, 1, 99),
               answer: target
             });
           } else {
-            const a = Math.floor(Math.random() * 48) + 7;
-            const b = Math.floor(Math.random() * 9) + 2;
-            const isAdd = i % 2 === 1;
-            const ans = isAdd ? (a + b) : (a + 10 - b);
-            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + 10} - ${b} = ?`;
+            // Jana pasangan tambah/tolak terus pada jari (tiada bawa puluh/pinjam)
+            const t1 = Math.floor(Math.random() * 4) + 1;
+            const u1 = Math.floor(Math.random() * 4);
+            const t2 = Math.floor(Math.random() * 4) + 1;
+            const u2 = Math.floor(Math.random() * (4 - u1)) + 1;
+            const a = t1 * 10 + u1;
+            const b = t2 * 10 + u2;
+            const isAdd = stage < 3 ? (i % 4 !== 3) : (i % 2 === 1);
+            const ans = isAdd ? (a + b) : (a + b - b);
+            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + b} - ${b} = ?`;
+            list.push({ prompt, visualHtml: '', options: makeNumericOptions(ans, 10, 99), answer: ans });
+          }
+        } else if (diffKey === 'lvl45') {
+          // Tahap 4 & 5: Darab 2×1 & 2×2 digit, Bahagi tepat, dan 3-Langkah 3-digit
+          const rType = i % 3;
+          if (rType === 0) {
+            const a = stage === 1 ? (Math.floor(Math.random() * 45) + 14) : (Math.floor(Math.random() * 75) + 22);
+            const b = stage < 3 ? (Math.floor(Math.random() * 7) + 3) : (Math.floor(Math.random() * 11) + 4);
+            const ans = a * b;
+            list.push({ prompt: `${a} × ${b} = ?`, visualHtml: '', options: makeNumericOptions(ans, 25, 1200), answer: ans });
+          } else if (rType === 1) {
+            const divisor = Math.floor(Math.random() * 8) + 3;
+            const quotient = stage === 1 ? (Math.floor(Math.random() * 25) + 12) : (Math.floor(Math.random() * 65) + 18);
+            const dividend = divisor * quotient;
+            list.push({ prompt: `${dividend} ÷ ${divisor} = ?`, visualHtml: '', options: makeNumericOptions(quotient, 10, 150), answer: quotient });
+          } else {
+            const n1 = Math.floor(Math.random() * 180) + 65;
+            const n2 = Math.floor(Math.random() * 140) + 45;
+            const n3 = Math.floor(Math.random() * 95) + 25;
+            const ans = n1 + n2 - n3;
+            list.push({ prompt: `${n1} + ${n2} - ${n3} = ?`, visualHtml: '', options: makeNumericOptions(ans, 20, 450), answer: ans });
+          }
+        } else {
+          // Sempoa 5/10 (lvl23): Bacaan manik 2–3 digit, gabungan Kawan Kecil/Besar 2-digit, dan 3-Langkah Sempoa
+          const rType = i % 4;
+          if (rType === 0 && (!isMarathon || i < 20)) {
+            const digits = stage === 1 ? 2 : 3;
+            const target = digits === 2 ? (Math.floor(Math.random() * 88) + 11) : (Math.floor(Math.random() * 850) + 120);
             list.push({
-              prompt,
-              visualHtml: '',
-              options: makeNumericOptions(ans, 1, 99),
-              answer: ans
+              prompt: 'Baca nilai sempoa ini:',
+              visualHtml: renderAbacusQuestionSVG(target, digits),
+              options: makeNumericOptions(target, 10, digits === 2 ? 99 : 999),
+              answer: target
             });
+          } else if (rType === 1 || rType === 2) {
+            const a = Math.floor(Math.random() * 68) + 18;
+            const b = Math.floor(Math.random() * 48) + 14;
+            const isAdd = i % 2 === 1;
+            const ans = isAdd ? (a + b) : (a + 35 - b);
+            const prompt = isAdd ? `${a} + ${b} = ?` : `${a + 35} - ${b} = ?`;
+            list.push({ prompt, visualHtml: '', options: makeNumericOptions(ans, 10, 180), answer: ans });
+          } else {
+            const n1 = Math.floor(Math.random() * 55) + 24;
+            const n2 = Math.floor(Math.random() * 45) + 16;
+            const n3 = Math.floor(Math.random() * 28) + 9;
+            const ans = n1 + n2 - n3;
+            list.push({ prompt: `${n1} + ${n2} - ${n3} = ?`, visualHtml: '', options: makeNumericOptions(ans, 10, 160), answer: ans });
           }
         }
       }
@@ -15595,7 +15868,7 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       playClick();
       const diffKey = document.getElementById('arena-difficulty-select')?.value || 'jari_all';
       const roomCode = String(Math.floor(1000 + Math.random() * 9000));
-      const questions = generateArenaQuestionBank(diffKey, 35);
+      const questions = generateArenaQuestionBank(diffKey, 60, selectedArenaMode);
       const myId = currentPlayer.accountId || currentPlayer.key;
       const isPrivateRoom = selectedArenaRoomPrivacy === 'private' && !invitedOpponent;
 
@@ -15877,9 +16150,11 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
                 bot.progress = Math.min(12, (bot.progress || 0) + 1);
               }
             } else if (mode === 'marathon_gp') {
-              bot.score = (bot.score || 0) + 10;
-              bot.progress = Math.min(20, (bot.progress || 0) + 1);
-              if (bot.progress >= 20) bot.done = true;
+              const botTurbo = Math.random() < 0.25;
+              bot.turbo = botTurbo;
+              bot.score = (bot.score || 0) + (botTurbo ? 18 : 12);
+              bot.progress = Math.min(40, (bot.progress || 0) + (botTurbo ? 2 : 1));
+              if (bot.progress >= 40) bot.done = true;
             } else if (mode === 'kuiz_kilat') {
               bot.score = (bot.score || 0) + (Math.floor(Math.random() * 6) + 10);
               bot.progress = Math.min(10, (bot.progress || 0) + 1);
@@ -15894,11 +16169,95 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       }, 3200);
     }
 
+    let arenaAnzanFlashTimeoutId = null;
+    let arenaAnzanRoundSessionId = 0;
+    let arenaPodiumWatchdogTimer = null;
+    let arenaInitialParticipantCount = 0;
+
+    function clearArenaAnzanFlashTimers() {
+      arenaAnzanRoundSessionId++;
+      arenaAnzanFlashing = false;
+      if (arenaAnzanFlashTimeoutId) {
+        clearTimeout(arenaAnzanFlashTimeoutId);
+        arenaAnzanFlashTimeoutId = null;
+      }
+    }
+
+    function clearArenaPodiumWatchdog() {
+      if (arenaPodiumWatchdogTimer) {
+        clearTimeout(arenaPodiumWatchdogTimer);
+        arenaPodiumWatchdogTimer = null;
+      }
+      const fbWrap = document.getElementById('arena-podium-fallback-wrap');
+      if (fbWrap) fbWrap.classList.add('hidden');
+    }
+
+    function armArenaPodiumWatchdog(delayMs = 2400) {
+      if (arenaRewardGranted || arenaPodiumWatchdogTimer) return;
+      arenaPodiumWatchdogTimer = setTimeout(() => {
+        arenaPodiumWatchdogTimer = null;
+        if (!arenaRewardGranted && activeArenaRoomData) {
+          const fbWrap = document.getElementById('arena-podium-fallback-wrap');
+          if (fbWrap) fbWrap.classList.remove('hidden');
+          finishArenaMatch();
+        }
+      }, delayMs);
+    }
+
+    window.forceOpenArenaPodiumNow = function() {
+      playClick();
+      clearArenaAnzanFlashTimers();
+      clearArenaPodiumWatchdog();
+      if (activeArenaRoomData) {
+        finishArenaMatch();
+      }
+    };
+
+    function mergeArenaRoomSnapshotSafely(incomingRoom) {
+      if (!incomingRoom) return activeArenaRoomData;
+      if (!activeArenaRoomData) return incomingRoom;
+      const merged = { ...activeArenaRoomData, ...incomingRoom };
+      // Kekalkan status 'finished' jika salah satu sumber sudah menamatkan perlawanan
+      if (activeArenaRoomData.status === 'finished' || incomingRoom.status === 'finished') {
+        merged.status = 'finished';
+      }
+      const prevParts = activeArenaRoomData.participants || {};
+      const nextParts = incomingRoom.participants || {};
+      const allIds = new Set([...Object.keys(prevParts), ...Object.keys(nextParts)]);
+      const mergedParts = {};
+      allIds.forEach(pid => {
+        const oldP = prevParts[pid];
+        const newP = nextParts[pid];
+        if (oldP && newP) {
+          mergedParts[pid] = {
+            ...oldP,
+            ...newP,
+            score: Math.max(oldP.score || 0, newP.score || 0),
+            progress: Math.max(oldP.progress || 0, newP.progress || 0),
+            done: Boolean(oldP.done || newP.done),
+            eliminated: Boolean(oldP.eliminated || newP.eliminated)
+          };
+        } else if (newP) {
+          mergedParts[pid] = newP;
+        } else if (oldP) {
+          // Jika lawan terputus/keluar di tengah perlawanan, kekalkan rekodnya sebagai tersingkir supaya pemenang tidak tersangkut
+          mergedParts[pid] = {
+            ...oldP,
+            eliminated: (merged.status === 'playing' || merged.status === 'finished') ? true : Boolean(oldP.eliminated),
+            done: (merged.status === 'playing' || merged.status === 'finished') ? true : Boolean(oldP.done)
+          };
+        }
+      });
+      merged.participants = mergedParts;
+      return merged;
+    }
+
     function enterArenaRoomSession(roomCode, initialData) {
       activeArenaRoomId = roomCode;
       activeArenaRoomData = initialData;
       arenaMatchStartedLocally = false;
       arenaRewardGranted = false;
+      arenaInitialParticipantCount = getRoomParticipantsArray(initialData).length;
       arenaQIndex = 0;
       arenaStreak = 0;
       arenaAnzanRound = 1;
@@ -15907,6 +16266,8 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       arenaTotalAnswerSec = 0;
       arenaSpeedBonusEarned = 0;
       arenaStreakBonusEarned = 0;
+      clearArenaAnzanFlashTimers();
+      clearArenaPodiumWatchdog();
       if (arenaLiveQTimerInterval) {
         clearInterval(arenaLiveQTimerInterval);
         arenaLiveQTimerInterval = null;
@@ -15929,7 +16290,11 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         }
         arenaRoomUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', roomCode), (snap) => {
           if (snap.exists()) {
-            activeArenaRoomData = snap.data();
+            activeArenaRoomData = mergeArenaRoomSnapshotSafely(snap.data());
+            onArenaRoomUpdated(activeArenaRoomData);
+          } else if (activeArenaRoomData && (activeArenaRoomData.status === 'playing' || activeArenaRoomData.status === 'finished')) {
+            // Bilik dipadam awal oleh lawan yang kalah keluar dahulu: tamatkan perlawanan & buka podium pemenang
+            activeArenaRoomData.status = 'finished';
             onArenaRoomUpdated(activeArenaRoomData);
           }
         });
@@ -15941,7 +16306,13 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
       const isHost = room.hostId === myId;
       const isTeamMode = room.mode === 'team_tug';
-      const plist = getRoomParticipantsArray(room).sort((a, b) => (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0));
+      const plist = getRoomParticipantsArray(room).sort((a, b) => {
+        if (Boolean(a.eliminated) !== Boolean(b.eliminated)) return a.eliminated ? 1 : -1;
+        return (b.score || 0) - (a.score || 0) || (b.progress || 0) - (a.progress || 0);
+      });
+      if (plist.length > arenaInitialParticipantCount) {
+        arenaInitialParticipantCount = plist.length;
+      }
 
       const countBadge = document.getElementById('arena-players-count-badge');
       if (countBadge) countBadge.innerText = `${plist.length} Pemain`;
@@ -15997,7 +16368,7 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
 
       const boardEl = document.getElementById('arena-live-standings-board');
       if (boardEl) {
-        const maxSteps = room.mode === 'marathon_gp' ? 20 : 10;
+        const maxSteps = room.mode === 'marathon_gp' ? 40 : 10;
         boardEl.innerHTML = plist.map((p, idx) => {
           const isMe = p.id === myId;
           const safeName = (p.name || 'Pemain').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -16031,8 +16402,14 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         }).join('');
       }
 
+      if (room.status === 'finished' && !arenaRewardGranted) {
+        finishArenaMatch();
+        return;
+      }
+
       if (room.status === 'playing' && !arenaMatchStartedLocally) {
         arenaMatchStartedLocally = true;
+        arenaInitialParticipantCount = Math.max(arenaInitialParticipantCount, plist.length);
         playCheer();
         document.getElementById('arena-waiting-box').classList.add('hidden');
         document.getElementById('arena-gameplay-box').classList.remove('hidden');
@@ -16050,14 +16427,19 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         }
       }
 
-      if (room.status === 'playing' && plist.length >= 2) {
+      if (room.status === 'playing' && !arenaRewardGranted) {
+        const effectiveTotal = Math.max(plist.length, arenaInitialParticipantCount);
         const activeAlive = plist.filter(p => !p.eliminated);
-        const allFinished = plist.every(p => p.done || p.eliminated);
-        const someoneWonMarathon = room.mode === 'marathon_gp' && plist.some(p => (p.progress || 0) >= 20);
-        const lastManStanding = room.mode === 'royale_anzan' && activeAlive.length <= 1;
+        const allFinished = plist.length >= 2 && plist.every(p => p.done || p.eliminated);
+        const someoneWonMarathon = room.mode === 'marathon_gp' && plist.some(p => (p.progress || 0) >= 40);
+        const lastManStanding = room.mode === 'royale_anzan' && effectiveTotal >= 2 && activeAlive.length <= 1;
+        const meObj = plist.find(p => p.id === myId);
 
         if (allFinished || someoneWonMarathon || lastManStanding) {
           finishArenaMatch();
+        } else if (meObj && (meObj.done || meObj.eliminated)) {
+          // Saya sudah tamat / tersingkir, aktifkan pemasa pengawas (watchdog) supaya tidak sesekali tersangkut
+          armArenaPodiumWatchdog(2600);
         }
       }
     }
@@ -16127,7 +16509,7 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         if (mode === 'kuiz_kilat') {
           counterEl.innerText = `Soalan ${arenaQIndex + 1} / 10 • ⏱️ ${secStr}s`;
         } else if (mode === 'marathon_gp') {
-          counterEl.innerText = `Maraton • Langkah ${me ? me.progress : 0}/20 • ⏱️ ${secStr}s`;
+          counterEl.innerText = `Maraton • Langkah ${me ? me.progress : 0}/40 • ⏱️ ${secStr}s`;
         } else {
           counterEl.innerText = `Pasukan • Soalan #${arenaQIndex + 1} • ⏱️ ${secStr}s`;
         }
@@ -16224,14 +16606,17 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         const isTenQMode = mode === 'kuiz_kilat';
         const isMarathon = mode === 'marathon_gp';
         const stepVal = isMarathon
-          ? Math.min(20, (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0) + (hasTurbo ? 2 : 1))
+          ? Math.min(40, (activeArenaRoomData.participants?.[currentPlayer.accountId || currentPlayer.key]?.progress || 0) + (hasTurbo ? 2 : 1))
           : arenaQIndex;
-        const isDone = (isTenQMode && arenaQIndex >= 10) || (isMarathon && stepVal >= 20);
+        const isDone = (isTenQMode && arenaQIndex >= 10) || (isMarathon && stepVal >= 40);
 
         await syncMyArenaProgress(ptsGain, stepVal, hasTurbo, isDone, false);
 
         if (isDone) {
-          if (fb) fb.innerText = '🏁 Tahniah, anda sudah tamat! Mengira markah & coin akhir...';
+          if (fb) fb.innerText = '🏁 Tahniah, garisan penamat dicapai! Membuka Pentas Podium...';
+          if (isMarathon && !arenaRewardGranted) {
+            finishArenaMatch();
+          }
           return;
         }
         setTimeout(() => {
@@ -16264,7 +16649,17 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
     }
 
     function startArenaAnzanSuddenDeathRound() {
-      if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
+      if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing' || arenaRewardGranted) return;
+      // Semak dahulu jika baki pemain hidup tinggal <= 1 sebelum memulakan kelipan pusingan baharu
+      const curPlist = getRoomParticipantsArray(activeArenaRoomData);
+      const curAlive = curPlist.filter(p => !p.eliminated);
+      if (Math.max(curPlist.length, arenaInitialParticipantCount) >= 2 && curAlive.length <= 1) {
+        finishArenaMatch();
+        return;
+      }
+
+      clearArenaAnzanFlashTimers();
+      const roundSession = arenaAnzanRoundSessionId;
       arenaAnzanFlashing = true;
       if (arenaLiveQTimerInterval) {
         clearInterval(arenaLiveQTimerInterval);
@@ -16297,6 +16692,7 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       let idx = 0;
 
       function stepFlash() {
+        if (roundSession !== arenaAnzanRoundSessionId || arenaRewardGranted) return;
         if (!activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
         if (idx >= seq.length) {
           arenaAnzanFlashing = false;
@@ -16309,15 +16705,15 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         playTick();
         promptEl.innerText = `+${seq[idx]}`;
         idx++;
-        setTimeout(stepFlash, speed);
+        arenaAnzanFlashTimeoutId = setTimeout(stepFlash, speed);
       }
       promptEl.innerText = '👀 Fokus pada skrin...';
-      setTimeout(stepFlash, 600);
+      arenaAnzanFlashTimeoutId = setTimeout(stepFlash, 600);
     }
 
     window.submitArenaAnzanAnswer = async function(e) {
       e.preventDefault();
-      if (arenaAnzanFlashing) return;
+      if (arenaAnzanFlashing || arenaRewardGranted) return;
       const val = parseInt(document.getElementById('arena-anzan-input').value, 10);
       const diffKey = activeArenaRoomData?.difficulty || 'jari_all';
       const elapsedSec = Math.max(0.2, (performance.now() - arenaQShownAt) / 1000);
@@ -16341,8 +16737,14 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
           fb.classList.remove('hidden');
         }
         await syncMyArenaProgress(ptsGain, Math.min(10, arenaAnzanRound), arenaAnzanRound >= 3, false, false);
+        if (arenaRewardGranted || !activeArenaRoomData || activeArenaRoomData.status !== 'playing') return;
         arenaAnzanRound++;
-        setTimeout(() => startArenaAnzanSuddenDeathRound(), 850);
+        const nextRoundTimer = setTimeout(() => {
+          if (!arenaRewardGranted && activeArenaRoomData && activeArenaRoomData.status === 'playing') {
+            startArenaAnzanSuddenDeathRound();
+          }
+        }, 850);
+        arenaAnzanFlashTimeoutId = nextRoundTimer;
       } else {
         playWrong();
         arenaStreak = 0;
@@ -16352,6 +16754,9 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
           fb.classList.remove('hidden');
         }
         await syncMyArenaProgress(0, arenaAnzanRound, false, true, true);
+        if (!arenaRewardGranted) {
+          armArenaPodiumWatchdog(2200);
+        }
       }
     };
 
@@ -16423,6 +16828,12 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       arenaRewardGranted = true;
       activeArenaRoomData.status = 'finished';
 
+      clearArenaAnzanFlashTimers();
+      clearArenaPodiumWatchdog();
+      if (arenaLiveQTimerInterval) {
+        clearInterval(arenaLiveQTimerInterval);
+        arenaLiveQTimerInterval = null;
+      }
       if (arenaRaceTimerInterval) {
         clearInterval(arenaRaceTimerInterval);
         arenaRaceTimerInterval = null;
@@ -16527,11 +16938,15 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
 
       // Bonus +1 Coin jika purata jawapan pantas (< 4.0s) dan sekurang-kurangnya 5 soalan betul
       const speedCoinExtra = (arenaCorrectCount >= 5 && avgSec > 0 && avgSec < 4.0) ? 1 : 0;
+      // Bonus Maraton 40 Langkah jika berjaya menjawab sekurang-kurangnya 20 soalan betul
+      const isMarathon40 = activeArenaRoomData.mode === 'marathon_gp';
+      const marathonStaminaPts = (isMarathon40 && arenaCorrectCount >= 20) ? Math.round(15 * dCfg.ptsMult) : 0;
+      const marathonStaminaCoins = (isMarathon40 && arenaCorrectCount >= 20) ? 2 : 0;
 
-      const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus);
+      const finalTotalPoints = arenaCorrectCount === 0 ? 0 : (inMatchScore + rankPtsBonus + marathonStaminaPts);
       const finalTotalCoins = arenaCorrectCount === 0
         ? 0
-        : Math.max(1, Math.round(baseMatchCoinCap * completionRatio) + speedCoinExtra);
+        : Math.max(1, Math.round(baseMatchCoinCap * completionRatio) + speedCoinExtra + marathonStaminaCoins);
 
       playCheer();
       if (sumEl) {
@@ -16547,10 +16962,10 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
           </div>
           <div class="text-[11px] font-bold text-white/90 space-y-0.5">
             <div>✅ Jawapan Betul: <b>${arenaCorrectCount}/${Math.max(arenaAnsweredCount, arenaCorrectCount)}</b> • ⚡ Purata Masa: <b>${avgLabel}</b></div>
-            <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> + Bonus Podium: <b>+${rankPtsBonus}</b> = <b>+${finalTotalPoints} Markah</b></div>
+            <div>🏅 Markah Perlawanan: <b>${inMatchScore}</b> + Bonus Podium: <b>+${rankPtsBonus}</b>${marathonStaminaPts > 0 ? ` + Bonus Maraton: <b>+${marathonStaminaPts}</b>` : ''} = <b>+${finalTotalPoints} Markah</b></div>
             <div class="pt-1 text-xs font-black text-emerald-300">
               Ganjaran Coin Diterima: +${finalTotalCoins} Coin ${COIN_ICON_HTML}
-              <span class="block text-[10px] font-bold text-amber-200/90">(${Math.round(baseMatchCoinCap * completionRatio)} Coin Kedudukan & Tahap${speedCoinExtra > 0 ? ' + 1 Coin Pantas' : ''})</span>
+              <span class="block text-[10px] font-bold text-amber-200/90">(${Math.round(baseMatchCoinCap * completionRatio)} Coin Kedudukan & Tahap${speedCoinExtra > 0 ? ' + 1 Coin Pantas' : ''}${marathonStaminaCoins > 0 ? ' + 2 Coin Maraton' : ''})</span>
             </div>
           </div>
         `;
@@ -16578,6 +16993,12 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
 
     window.exitCurrentArenaRoom = async function() {
       playClick();
+      clearArenaAnzanFlashTimers();
+      clearArenaPodiumWatchdog();
+      if (arenaLiveQTimerInterval) {
+        clearInterval(arenaLiveQTimerInterval);
+        arenaLiveQTimerInterval = null;
+      }
       if (arenaRaceTimerInterval) {
         clearInterval(arenaRaceTimerInterval);
         arenaRaceTimerInterval = null;
@@ -16591,13 +17012,31 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         arenaRoomUnsubscribe = null;
       }
       if (activeArenaRoomId) {
-        const localRooms = loadLocalArenaRooms();
-        delete localRooms[activeArenaRoomId];
-        saveLocalArenaRooms(localRooms);
-        if (db && fbUser) {
+        const myId = currentPlayer ? (currentPlayer.accountId || currentPlayer.key) : '';
+        const wasPlaying = activeArenaRoomData && activeArenaRoomData.status === 'playing';
+        const plistBeforeExit = activeArenaRoomData ? getRoomParticipantsArray(activeArenaRoomData) : [];
+        const otherHumansStillActive = plistBeforeExit.filter(p => p.id !== myId && !p.isBot && !p.eliminated && !p.done);
+
+        if (wasPlaying && otherHumansStillActive.length > 0 && db && fbUser) {
+          // Jika lawan manusia masih bermain, jangan padam bilik dahulu — tandakan diri sendiri tersingkir/tamat supaya lawan terus ke podium
           try {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId));
+            const myUpdate = activeArenaRoomData.participants?.[myId]
+              ? { ...activeArenaRoomData.participants[myId], eliminated: true, done: true }
+              : { id: myId, eliminated: true, done: true };
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId), {
+              status: otherHumansStillActive.length <= 1 ? 'finished' : 'playing',
+              participants: { [myId]: myUpdate }
+            }, { merge: true });
           } catch (e) {}
+        } else {
+          const localRooms = loadLocalArenaRooms();
+          delete localRooms[activeArenaRoomId];
+          saveLocalArenaRooms(localRooms);
+          if (db && fbUser) {
+            try {
+              await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'duel_rooms', activeArenaRoomId));
+            } catch (e) {}
+          }
         }
       }
       activeArenaRoomId = null;

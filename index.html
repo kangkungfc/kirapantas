@@ -235,7 +235,11 @@
           <span id="header-inbox-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
         <button id="btn-header-account" onclick="navTo('account')" class="bubbly-btn bg-amber-100 text-amber-900 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-amber-400 inline-flex items-center gap-1" title="Pengurusan Akaun">⚙️ <span class="hidden sm:inline">Akaun</span></button>
-        <button id="btn-header-score" onclick="navTo('scoreboard')" class="bubbly-btn bg-indigo-500 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700 inline-flex items-center gap-1" title="Papan Skor">🏆 <span class="hidden sm:inline">Skor</span></button>
+        <button id="btn-header-score" onclick="navTo('scoreboard')" class="relative bubbly-btn bg-indigo-500 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-indigo-700 inline-flex items-center gap-1" title="Papan Skor & Tebus Hadiah Podium">
+          <span>🏆</span>
+          <span class="hidden sm:inline">Skor</span>
+          <span id="header-podium-claim-badge" class="hidden absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white border-2 border-white text-[10px] font-black flex items-center justify-center shadow animate-bounce">0</span>
+        </button>
         <button id="btn-header-logout" onclick="logoutPlayer()" class="bubbly-btn bg-rose-500 hover:bg-rose-600 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 sm:py-2 border-2 border-rose-800 inline-flex items-center gap-1" title="Log Keluar">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -388,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.8 • Reka Bentuk Semula Kad Profil Skrin Pengurusan Akaun Dengan Pentas Avatar Berpusat Tanpa Tindihan Sayap/Bingkai
+            Versi 2.3.9 • Pengesan Auto-Pause AFK/Idle 60 Saat Di PC & Sistem Tebus Hadiah Podium Interaktif Beserta Rekod Sejarah Trofi
           </span>
         </div>
 
@@ -1226,6 +1230,9 @@
             🏆 Terkumpul
           </button>
         </div>
+
+        <!-- Kad Tebus Hadiah Podium Belum Ditebus (Tampil Bila Murid Menang Top 3 Tempoh Lepas) -->
+        <div id="scoreboard-unclaimed-podium-box" class="hidden space-y-2"></div>
 
         <!-- Pentas Podium Visual Juara Dengan Maskot Panda Di Tempat #1 (Padat & Bermaklumat) -->
         <div id="scoreboard-podium-prize-banner" class="bg-gradient-to-b from-amber-50/90 via-yellow-50/70 to-indigo-50/60 border-2 border-amber-300 rounded-2xl px-2.5 pt-2 pb-2.5"></div>
@@ -2281,6 +2288,23 @@
       </div>
     </div>
   
+    <!-- ========================================================
+         MODAL REKOD SEJARAH HADIAH PODIUM & STATUS TEBUSAN
+         ======================================================== -->
+    <div id="modal-podium-history" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 overflow-y-auto">
+      <div class="bubbly-card bg-white border-4 border-amber-400 max-w-md w-full p-4 sm:p-5 space-y-3 relative">
+        <div class="flex items-center justify-between border-b-2 border-amber-100 pb-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-display font-bold text-amber-950">🏆 Rekod Trofi & Hadiah Podium</h3>
+            <p class="text-[10.5px] font-bold text-slate-500">Bukti kemenangan podium harian, mingguan & bulanan anda</p>
+          </div>
+          <button type="button" onclick="closePodiumHistoryModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-black text-sm border border-slate-300">✕</button>
+        </div>
+        <div id="podium-history-modal-list" class="space-y-2 max-h-[60vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        <button type="button" onclick="closePodiumHistoryModal()" class="w-full bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2 text-xs font-black">Tutup Rekod</button>
+      </div>
+    </div>
+
     <!-- ========================================================
          MODAL TUTORIAL INTERAKTIF ASAS 3 LANGKAH (KANAK-KANAK 6+ TAHUN)
          ======================================================== -->
@@ -10615,7 +10639,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             <span class="text-[10px] font-black text-amber-950">🎁 ${cfg.title.split('(')[0].trim()}</span>
             ${guardPill}
           </div>
-          <span class="text-[9px] font-black bg-white text-rose-700 px-2 py-0.5 rounded-full border border-amber-300 shadow-xs">${countdown}</span>
+          <div class="flex items-center gap-1 flex-wrap">
+            <span class="text-[9px] font-black bg-white text-rose-700 px-2 py-0.5 rounded-full border border-amber-300 shadow-xs">${countdown}</span>
+            <button type="button" onclick="openPodiumHistoryModal()" class="text-[9px] font-black bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded-full border border-indigo-900 shadow-xs transition">📜 Rekod Hadiah</button>
+          </div>
         </div>
 
         <!-- Podium Visual 3-Tangga: #2 Perak | #1 Emas (Maskot Panda Juara) | #3 Gangsa -->
@@ -10671,15 +10698,162 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       stripTextEl.innerHTML = `🏆 <b>Carta Hari Ini: #${myRank}</b> (${myPts} Markah) ${prizeHint}`;
     }
 
-    // Semak dan kreditkan hadiah Podium tempoh terdahulu (Harian / Mingguan / Bulanan) secara automatik sekali sahaja
-    function evaluateAndGrantPodiumRewards(playersArr) {
-      if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) return;
-      const list = Array.isArray(playersArr) ? playersArr.filter(p => p && !isAdminAccountRecord(p)) : [];
-      if (list.length === 0) return;
-
+    function ensurePodiumRewardLists() {
+      if (!currentPlayer) return;
       if (!currentPlayer.claimedPodiumKeys || typeof currentPlayer.claimedPodiumKeys !== 'object') {
         currentPlayer.claimedPodiumKeys = {};
       }
+      if (!Array.isArray(currentPlayer.unclaimedPodiumRewards)) {
+        currentPlayer.unclaimedPodiumRewards = [];
+      }
+      if (!Array.isArray(currentPlayer.podiumRewardHistory)) {
+        currentPlayer.podiumRewardHistory = [];
+      }
+    }
+
+    function updatePodiumClaimBadgesAndBox() {
+      const badgeEl = document.getElementById('header-podium-claim-badge');
+      const boxEl = document.getElementById('scoreboard-unclaimed-podium-box');
+      if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) {
+        if (badgeEl) badgeEl.classList.add('hidden');
+        if (boxEl) {
+          boxEl.classList.add('hidden');
+          boxEl.innerHTML = '';
+        }
+        return;
+      }
+      ensurePodiumRewardLists();
+      const pending = currentPlayer.unclaimedPodiumRewards;
+      if (badgeEl) {
+        if (pending.length > 0) {
+          badgeEl.innerText = String(pending.length);
+          badgeEl.classList.remove('hidden');
+        } else {
+          badgeEl.classList.add('hidden');
+        }
+      }
+      if (!boxEl) return;
+      if (pending.length === 0) {
+        boxEl.classList.add('hidden');
+        boxEl.innerHTML = '';
+        return;
+      }
+      boxEl.classList.remove('hidden');
+      boxEl.innerHTML = pending.map((item) => {
+        const medal = item.rank === 1 ? '🥇' : (item.rank === 2 ? '🥈' : '🥉');
+        return `
+          <div class="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 border-3 border-amber-600 rounded-2xl p-3 shadow-md flex items-center justify-between gap-2">
+            <div class="min-w-0 flex-1">
+              <div class="text-[10px] font-black uppercase tracking-wide text-amber-900">🎉 Hadiah Podium Sedia Ditebus!</div>
+              <div class="text-xs sm:text-sm font-black text-slate-900 leading-tight">${medal} Juara #${item.rank} Podium ${item.periodLabel} (${item.periodKey})</div>
+              <div class="text-[10.5px] font-extrabold text-amber-950 mt-0.5">Skor Layak: <b>${(Number(item.points) || 0).toLocaleString()} Markah</b> • Ganjaran: <b>+${item.coins} Coin</b></div>
+            </div>
+            <button type="button" onclick="claimPodiumRewardById('${item.id}')" class="bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border-2 border-emerald-900 px-3 py-2 text-xs font-black flex-shrink-0 animate-pulse">
+              🎁 Tebus +${item.coins} Coin
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.claimPodiumRewardById = function(rewardId) {
+      if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) return;
+      ensurePodiumRewardLists();
+      const idx = currentPlayer.unclaimedPodiumRewards.findIndex(r => r && r.id === rewardId);
+      if (idx === -1) return;
+      const item = currentPlayer.unclaimedPodiumRewards.splice(idx, 1)[0];
+      currentPlayer.claimedPodiumKeys[item.id] = true;
+      const claimedRecord = {
+        ...item,
+        claimedAt: Date.now()
+      };
+      currentPlayer.podiumRewardHistory.unshift(claimedRecord);
+      if (currentPlayer.podiumRewardHistory.length > 40) {
+        currentPlayer.podiumRewardHistory.length = 40;
+      }
+
+      addPlayerReward(Number(item.coins) || 0, 0, true);
+      if (typeof launchConfetti === 'function') launchConfetti();
+      if (typeof playCorrectSound === 'function') playCorrectSound();
+      const medal = item.rank === 1 ? '🥇' : (item.rank === 2 ? '🥈' : '🥉');
+      showQuizInstantPopup(
+        `${medal} BERJAYA DITEBUS!<br><b>+${item.coins} Coin</b> daripada Podium ${item.periodLabel} (#${item.rank}) telah masuk ke akaun anda!`,
+        'combo',
+        '',
+        4500
+      );
+      updatePodiumClaimBadgesAndBox();
+      syncPlayerUI();
+      savePlayerCloud();
+    };
+
+    window.openPodiumHistoryModal = function() {
+      playClick();
+      const modal = document.getElementById('modal-podium-history');
+      const listEl = document.getElementById('podium-history-modal-list');
+      if (!modal || !listEl) return;
+      ensurePodiumRewardLists();
+      const unclaimed = (currentPlayer && currentPlayer.unclaimedPodiumRewards) || [];
+      const history = (currentPlayer && currentPlayer.podiumRewardHistory) || [];
+
+      if (unclaimed.length === 0 && history.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-5 space-y-1.5">
+            <div class="text-2xl">🏅</div>
+            <div class="text-xs font-black text-slate-700">Belum Ada Rekod Trofi Podium</div>
+            <div class="text-[11px] font-bold text-slate-500">Kumpul sekurang-kurangnya <b>50 Markah</b> & tamatkan tempoh di kedudukan Top 3 untuk mendapatkan hadiah podium!</div>
+          </div>
+        `;
+      } else {
+        const unclaimedHtml = unclaimed.map((item) => {
+          const medal = item.rank === 1 ? '🥇' : (item.rank === 2 ? '🥈' : '🥉');
+          return `
+            <div class="p-2.5 rounded-2xl bg-amber-50 border-2 border-amber-400 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-xs font-black text-slate-900">${medal} Tempat #${item.rank} — Podium ${item.periodLabel}</div>
+                <div class="text-[10px] font-bold text-slate-600">Tempoh: ${item.periodKey} • ${(Number(item.points) || 0).toLocaleString()} Markah</div>
+              </div>
+              <button type="button" onclick="claimPodiumRewardById('${item.id}'); openPodiumHistoryModal();" class="bubbly-btn bg-emerald-600 text-white border-2 border-emerald-900 px-2.5 py-1.5 text-[10.5px] font-black flex-shrink-0">
+                🎁 Tebus +${item.coins}
+              </button>
+            </div>
+          `;
+        }).join('');
+
+        const historyHtml = history.map((item) => {
+          const medal = item.rank === 1 ? '🥇' : (item.rank === 2 ? '🥈' : '🥉');
+          const dateLabel = item.claimedAt
+            ? new Date(item.claimedAt).toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+            : item.periodKey;
+          return `
+            <div class="p-2.5 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-xs font-black text-slate-800">${medal} Tempat #${item.rank} — Podium ${item.periodLabel}</div>
+                <div class="text-[10px] font-bold text-slate-500">Tempoh: ${item.periodKey} • Ditebus: ${dateLabel}</div>
+              </div>
+              <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-1 rounded-xl flex-shrink-0">
+                ✅ +${item.coins} Coin
+              </span>
+            </div>
+          `;
+        }).join('');
+
+        listEl.innerHTML = unclaimedHtml + historyHtml;
+      }
+      modal.classList.remove('hidden');
+    };
+
+    window.closePodiumHistoryModal = function() {
+      playClick();
+      const modal = document.getElementById('modal-podium-history');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    // Semak kelayakan hadiah Podium tempoh terdahulu (Harian / Mingguan / Bulanan) & masukkan ke senarai "Sedia Ditebus" oleh murid sendiri
+    function evaluateAndGrantPodiumRewards(playersArr) {
+      if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) return;
+      ensurePodiumRewardLists();
+      const list = Array.isArray(playersArr) ? playersArr.filter(p => p && !isAdminAccountRecord(p)) : [];
 
       const todayKey = getTodayDateKey();
       const weekKey = getCurrentWeekDateKey();
@@ -10689,39 +10863,58 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       const prevWeekKey = currentPlayer._lastTrackedWeekKey || weekKey;
       const prevMonthKey = currentPlayer._lastTrackedMonthKey || monthKey;
 
-      const checkAward = (periodType, closedPeriodKey, dateField, ptsField, prizesArr, periodLabel) => {
-        if (!closedPeriodKey || currentPlayer.claimedPodiumKeys[`${periodType}_${closedPeriodKey}`]) return;
+      let addedNewClaim = false;
+
+      const queueAwardIfEligible = (periodType, closedPeriodKey, dateField, ptsField, prizesArr, periodLabel) => {
+        if (!closedPeriodKey || list.length === 0) return;
+        const rewardId = `${periodType}_${closedPeriodKey}`;
+        if (currentPlayer.claimedPodiumKeys[rewardId]) return;
+        if (currentPlayer.unclaimedPodiumRewards.some(r => r && r.id === rewardId)) return;
+
         const contenders = list
           .filter(p => p[dateField] === closedPeriodKey && (Number(p[ptsField]) || 0) >= 50)
           .sort((a, b) => (Number(b[ptsField]) || 0) - (Number(a[ptsField]) || 0));
         const rankIdx = contenders.findIndex(p => p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
-        currentPlayer.claimedPodiumKeys[`${periodType}_${closedPeriodKey}`] = true;
+
         if (rankIdx >= 0 && rankIdx < 3) {
           const wonCoins = prizesArr[rankIdx];
-          const medalIcon = rankIdx === 0 ? '🥇' : (rankIdx === 1 ? '🥈' : '🥉');
-          addPlayerReward(wonCoins, 0, true);
-          showQuizInstantPopup(
-            `${medalIcon} TAHNIAH JUARA PODIUM ${periodLabel.toUpperCase()}!<br>Anda menduduki tempat <b>#${rankIdx + 1}</b> dan menerima <b>+${wonCoins} Coin</b>!`,
-            'combo',
-            '',
-            4800
-          );
+          const myPts = Number(contenders[rankIdx][ptsField]) || 0;
+          currentPlayer.unclaimedPodiumRewards.push({
+            id: rewardId,
+            periodType,
+            periodLabel,
+            periodKey: closedPeriodKey,
+            rank: rankIdx + 1,
+            coins: wonCoins,
+            points: myPts,
+            awardedAt: Date.now()
+          });
+          addedNewClaim = true;
+        } else {
+          // Tandakan tempoh telah disemak supaya tidak berulang
+          currentPlayer.claimedPodiumKeys[rewardId] = true;
         }
       };
 
       if (prevDayKey !== todayKey) {
-        checkAward('today', prevDayKey, 'todayDateKey', 'todayPoints', [30, 20, 10], 'Harian');
+        queueAwardIfEligible('today', prevDayKey, 'todayDateKey', 'todayPoints', [30, 20, 10], 'Harian');
       }
       if (prevWeekKey !== weekKey) {
-        checkAward('weekly', prevWeekKey, 'weekDateKey', 'weekPoints', [100, 60, 35], 'Mingguan');
+        queueAwardIfEligible('weekly', prevWeekKey, 'weekDateKey', 'weekPoints', [100, 60, 35], 'Mingguan');
       }
       if (prevMonthKey !== monthKey) {
-        checkAward('monthly', prevMonthKey, 'monthDateKey', 'monthPoints', [300, 180, 100], 'Bulanan');
+        queueAwardIfEligible('monthly', prevMonthKey, 'monthDateKey', 'monthPoints', [300, 180, 100], 'Bulanan');
       }
 
       currentPlayer._lastTrackedDayKey = todayKey;
       currentPlayer._lastTrackedWeekKey = weekKey;
       currentPlayer._lastTrackedMonthKey = monthKey;
+
+      updatePodiumClaimBadgesAndBox();
+      if (addedNewClaim) {
+        savePlayerCloud();
+        showAppToast('🏆 Tahniah! Anda ada hadiah Podium baharu di Papan Skor untuk ditebus!');
+      }
     }
 
     window.switchScoreboardTab = function(tabName) {
@@ -11050,6 +11243,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (mChildBadge) mChildBadge.innerText = `${currentPlayer.linkedChildrenIds.length} Anak`;
       if (typeof renderStudentAccountGuardiansList === 'function') {
         renderStudentAccountGuardiansList();
+      }
+      if (typeof updatePodiumClaimBadgesAndBox === 'function') {
+        updatePodiumClaimBadgesAndBox();
       }
 
       const hAvatar = document.getElementById('header-avatar-box');
@@ -11824,10 +12020,14 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       } else if (hasPending || isCloudSyncInProgress) {
         badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-sky-100 text-sky-900 border border-sky-400 animate-pulse';
         badge.innerText = '🔄 Memuat Naik...';
+      } else if (isPlayerCurrentlyIdle) {
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300';
+        badge.innerText = '💤 Rehat (Idle)';
+        badge.title = 'Tiada aktiviti selama 60 saat — kiraan masa belajar dijeda automatik.';
       } else {
         badge.className = 'inline-flex items-center gap-1 text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300';
         badge.innerText = '🟢 Online';
-        badge.title = 'Tersambung ke awan';
+        badge.title = 'Tersambung ke awan & aktif berlatih';
       }
     }
 
@@ -12033,8 +12233,47 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       showAppToast('Masukkan kata laluan Admin anda untuk masuk ke Panel Kawalan.');
     };
 
+    const IDLE_AUTO_PAUSE_MS = 60000; // 60 saat tiada interaksi = Rehat (Idle) & masa aktif dijeda
+    let lastUserInteractionAt = Date.now();
+    let isPlayerCurrentlyIdle = false;
+
+    function registerUserActivityHeartbeat() {
+      lastUserInteractionAt = Date.now();
+      if (isPlayerCurrentlyIdle) {
+        isPlayerCurrentlyIdle = false;
+        if (currentPlayer) {
+          currentPlayer.isIdle = false;
+          currentPlayer.isOnline = true;
+          currentPlayer.lastActiveAt = Date.now();
+        }
+        updateNetworkStatusUI();
+      }
+    }
+
+    if (typeof window !== 'undefined' && !window._kirakilatIdleListenersBound) {
+      window._kirakilatIdleListenersBound = true;
+      ['pointerdown', 'keydown', 'touchstart', 'wheel', 'click'].forEach((evtName) => {
+        window.addEventListener(evtName, registerUserActivityHeartbeat, { passive: true });
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          registerUserActivityHeartbeat();
+        } else {
+          isPlayerCurrentlyIdle = true;
+          if (currentPlayer) {
+            currentPlayer.isIdle = true;
+            savePlayerCloud();
+          }
+          updateNetworkStatusUI();
+        }
+      });
+    }
+
     function startPlayerSessionTimer() {
       if (activePlayTimer) clearInterval(activePlayTimer);
+      lastUserInteractionAt = Date.now();
+      isPlayerCurrentlyIdle = false;
+
       activePlayTimer = setInterval(() => {
         if (!currentPlayer) return;
         const todayKey = getTodayDateKey();
@@ -12044,17 +12283,40 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           currentPlayer.todayPoints = 0;
           currentPlayer.todayStars = 0;
         }
+
+        const now = Date.now();
+        const tabHidden = typeof document !== 'undefined' && document.hidden;
+        const idleExceeded = (now - lastUserInteractionAt) >= IDLE_AUTO_PAUSE_MS;
+
+        if (tabHidden || idleExceeded) {
+          if (!isPlayerCurrentlyIdle) {
+            isPlayerCurrentlyIdle = true;
+            currentPlayer.isIdle = true;
+            updateNetworkStatusUI();
+            savePlayerCloud();
+          }
+          // Jangan tambah playSeconds / todaySeconds / lastActiveAt ketika AFK atau tab disembunyikan!
+          return;
+        }
+
+        if (isPlayerCurrentlyIdle) {
+          isPlayerCurrentlyIdle = false;
+          currentPlayer.isIdle = false;
+          updateNetworkStatusUI();
+        }
+
         currentPlayer.playSeconds = (currentPlayer.playSeconds || 0) + 1;
         currentPlayer.todaySeconds = (currentPlayer.todaySeconds || 0) + 1;
         currentPlayer.isOnline = true;
-        currentPlayer.lastActiveAt = Date.now();
+        currentPlayer.isIdle = false;
+        currentPlayer.lastActiveAt = now;
         const actName = currentPlayer.currentActivityLabel || 'Menu Utama';
         if (!currentPlayer.activityDurations || typeof currentPlayer.activityDurations !== 'object') {
           currentPlayer.activityDurations = {};
         }
         currentPlayer.activityDurations[actName] = (Number(currentPlayer.activityDurations[actName]) || 0) + 1;
         currentPlayer.lastPlayedActivity = actName;
-        currentPlayer.lastPlayedAt = Date.now();
+        currentPlayer.lastPlayedAt = now;
         const hTime = document.getElementById('header-timer-display');
         if (hTime) hTime.innerText = formatDurationMMSS(currentPlayer.playSeconds);
         if (currentPlayer.playSeconds % 15 === 0) {
@@ -12786,7 +13048,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         const safeName = (p.name || 'Pelajar').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const miniAvatar = renderRealisticAvatarSVG(p.avatarConfig || getDefaultAvatarConfig('boy'), 'w-full h-full');
         const lastPing = Number(p.lastActiveAt || p.updatedAt || 0);
-        const isOnlineNow = isMe || (p.isOnline !== false && lastPing > 0 && (nowMs - lastPing) <= 45000);
+        const isIdlePlayer = isMe ? isPlayerCurrentlyIdle : Boolean(p.isIdle);
+        const isOnlineNow = isMe
+          ? (!isPlayerCurrentlyIdle)
+          : (!isIdlePlayer && p.isOnline !== false && lastPing > 0 && (nowMs - lastPing) <= 45000);
         const lastActiveLabel = formatLastActiveText(lastPing, isOnlineNow);
         const todaySec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
         const todayHHMM = formatDurationHHMM(todaySec);

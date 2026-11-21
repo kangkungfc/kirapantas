@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.1 • Papan Skor 4-Kategori (Hari Ini Aktif Sahaja, Minggu Ini, Bulan Ini & Terkumpul) + Hadiah Podium Rasmi (30/20/10, 100/60/35, 300/180/100) & Anti-Manipulasi
+            Versi 2.3.3 • Panel Pemantauan Anak Pantas (Tab Penukar Anak 1-Klik, Kad Laporan Boleh Lipat, Borang Pautan Boleh Sorok & Keutamaan Fokus Pengajar)
           </span>
         </div>
 
@@ -2028,63 +2028,70 @@
           </button>
         </div>
 
-        <!-- Kotak Tambah / Pautkan Akaun Anak & Murid (2 Mod Mudah) -->
-        <div class="bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-3 space-y-2.5">
-          <div class="grid grid-cols-2 gap-1.5">
-            <button type="button" id="tab-parent-add-link" onclick="switchParentAddChildTab('link')" class="bubbly-btn bg-teal-600 text-white border-2 border-teal-900 py-2 px-2 text-[11px] font-black">
-              🔗 Pautkan Akaun Sedia Ada
-            </button>
-            <button type="button" id="tab-parent-add-create" onclick="switchParentAddChildTab('create')" class="bubbly-btn bg-white text-teal-950 border-2 border-teal-300 py-2 px-2 text-[11px] font-black">
-              ✨ Cipta Akaun Anak Baru
-            </button>
-          </div>
+        <!-- Butang Togol Tambah / Pautkan Anak Baharu (Boleh Sorok supaya tidak semakkan skrin) -->
+        <div class="bg-teal-50/90 border-2 border-teal-200 rounded-2xl p-2.5 space-y-2.5">
+          <button type="button" id="btn-toggle-parent-add-wrap" onclick="toggleParentAddChildPanel()" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white hover:bg-teal-100/70 border border-teal-300 text-xs font-black text-teal-950 transition">
+            <span>➕ Pautkan atau Cipta Akaun Anak / Murid Baharu</span>
+            <span id="parent-add-wrap-chevron" class="text-[11px] bg-teal-100 text-teal-900 px-2 py-0.5 rounded-full">Tutup ▴</span>
+          </button>
 
-          <!-- Sub-Borang A: Pautkan Akaun Sedia Ada (Had Maksimum 3 Penjaga: 1 Ibu, 1 Bapa, 1 Pengajar) -->
-          <div id="parent-subpanel-link" class="space-y-2">
-            <p class="text-[10px] font-bold text-slate-600">Pilih peranan penjaga sah (<b>Had 1 Ibu, 1 Bapa, 1 Pengajar</b> bagi setiap anak), kemudian masukkan nama &amp; PIN 4-Digit anak:</p>
-            <div class="grid grid-cols-3 gap-1.5" role="group" aria-label="Peranan Penjaga">
-              <button type="button" id="btn-guardian-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-teal-600 text-white border-teal-900 shadow-xs transition">
-                👩 Ibu
+          <div id="parent-add-child-collapsible-wrap" class="space-y-2.5">
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" id="tab-parent-add-link" onclick="switchParentAddChildTab('link')" class="bubbly-btn bg-teal-600 text-white border-2 border-teal-900 py-2 px-2 text-[11px] font-black">
+                🔗 Pautkan Akaun Sedia Ada
               </button>
-              <button type="button" id="btn-guardian-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
-                👨 Bapa
-              </button>
-              <button type="button" id="btn-guardian-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
-                🎓 Pengajar
+              <button type="button" id="tab-parent-add-create" onclick="switchParentAddChildTab('create')" class="bubbly-btn bg-white text-teal-950 border-2 border-teal-300 py-2 px-2 text-[11px] font-black">
+                ✨ Cipta Akaun Anak Baru
               </button>
             </div>
-            <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
-              <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
-              <button id="btn-parent-link-submit" type="submit" class="sm:col-span-3 bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border-2 border-teal-900 py-2.5 text-xs font-black">
-                ➕ Pautkan Akaun Anak Sekarang
-              </button>
-            </form>
-          </div>
 
-          <!-- Sub-Borang B: Cipta Akaun Anak / Murid Terus Tanpa Log Keluar -->
-          <div id="parent-subpanel-create" class="hidden space-y-2">
-            <p class="text-[10px] font-bold text-slate-600">Daftar akaun baharu untuk anak/murid dan pautkan terus secara automatik:</p>
-            <form onsubmit="handleParentCreateChildAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div class="sm:col-span-2 flex items-center justify-between gap-1.5 bg-white border border-emerald-200 rounded-xl px-2.5 py-1.5">
-                <span class="text-[10px] font-black text-emerald-950">Peranan Anda:</span>
-                <div class="flex items-center gap-1">
-                  <button type="button" id="btn-create-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-teal-600 text-white border-teal-900">👩 Ibu</button>
-                  <button type="button" id="btn-create-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">👨 Bapa</button>
-                  <button type="button" id="btn-create-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">🎓 Pengajar</button>
-                </div>
+            <!-- Sub-Borang A: Pautkan Akaun Sedia Ada (Had Maksimum 3 Penjaga: 1 Ibu, 1 Bapa, 1 Pengajar) -->
+            <div id="parent-subpanel-link" class="space-y-2">
+              <p class="text-[10px] font-bold text-slate-600">Pilih peranan penjaga sah (<b>Had 1 Ibu, 1 Bapa, 1 Pengajar</b> bagi setiap anak), kemudian masukkan nama &amp; PIN 4-Digit anak:</p>
+              <div class="grid grid-cols-3 gap-1.5" role="group" aria-label="Peranan Penjaga">
+                <button type="button" id="btn-guardian-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-teal-600 text-white border-teal-900 shadow-xs transition">
+                  👩 Ibu
+                </button>
+                <button type="button" id="btn-guardian-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
+                  👨 Bapa
+                </button>
+                <button type="button" id="btn-guardian-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="py-1.5 px-2 rounded-xl text-[11px] font-black border-2 bg-white text-teal-950 border-teal-300 transition">
+                  🎓 Pengajar
+                </button>
               </div>
-              <input id="parent-create-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Anak / Murid (cth: Aisyah)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
-              <input id="parent-create-child-pass" type="text" required minlength="3" maxlength="20" placeholder="Kata Laluan (cth: 1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
-              <select id="parent-create-child-gender" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none">
-                <option value="boy">👦 Murid Lelaki</option>
-                <option value="girl">👧 Murid Perempuan</option>
-              </select>
-              <input id="parent-create-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" value="1234" placeholder="PIN 4-Digit (1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
-              <button id="btn-parent-create-submit" type="submit" class="sm:col-span-2 bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border-2 border-emerald-900 py-2.5 text-xs font-black">
-                ✨ Cipta & Pautkan Akaun Anak Sekarang
-              </button>
-            </form>
+              <form onsubmit="handleParentLinkChild(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input id="parent-link-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Akaun Anak (cth: Aiman)" class="sm:col-span-2 px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-bold bg-white focus:outline-none" />
+                <input id="parent-link-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" placeholder="PIN 4-Digit" class="px-3 py-2 rounded-xl border-2 border-teal-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+                <button id="btn-parent-link-submit" type="submit" class="sm:col-span-3 bubbly-btn bg-teal-600 hover:bg-teal-700 text-white border-2 border-teal-900 py-2.5 text-xs font-black">
+                  ➕ Pautkan Akaun Anak Sekarang
+                </button>
+              </form>
+            </div>
+
+            <!-- Sub-Borang B: Cipta Akaun Anak / Murid Terus Tanpa Log Keluar -->
+            <div id="parent-subpanel-create" class="hidden space-y-2">
+              <p class="text-[10px] font-bold text-slate-600">Daftar akaun baharu untuk anak/murid dan pautkan terus secara automatik:</p>
+              <form onsubmit="handleParentCreateChildAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="sm:col-span-2 flex items-center justify-between gap-1.5 bg-white border border-emerald-200 rounded-xl px-2.5 py-1.5">
+                  <span class="text-[10px] font-black text-emerald-950">Peranan Anda:</span>
+                  <div class="flex items-center gap-1">
+                    <button type="button" id="btn-create-role-ibu" onclick="selectGuardianLinkRole('ibu')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-teal-600 text-white border-teal-900">👩 Ibu</button>
+                    <button type="button" id="btn-create-role-bapa" onclick="selectGuardianLinkRole('bapa')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">👨 Bapa</button>
+                    <button type="button" id="btn-create-role-pengajar" onclick="selectGuardianLinkRole('pengajar')" class="px-2 py-0.5 rounded-lg text-[10px] font-black border bg-white text-teal-950 border-teal-300">🎓 Pengajar</button>
+                  </div>
+                </div>
+                <input id="parent-create-child-name" type="text" required minlength="2" maxlength="25" placeholder="Nama Anak / Murid (cth: Aisyah)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
+                <input id="parent-create-child-pass" type="text" required minlength="3" maxlength="20" placeholder="Kata Laluan (cth: 1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none" />
+                <select id="parent-create-child-gender" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-bold bg-white focus:outline-none">
+                  <option value="boy">👦 Murid Lelaki</option>
+                  <option value="girl">👧 Murid Perempuan</option>
+                </select>
+                <input id="parent-create-child-pin" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]{4}" value="1234" placeholder="PIN 4-Digit (1234)" class="px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs font-black text-center tracking-widest bg-white focus:outline-none" />
+                <button id="btn-parent-create-submit" type="submit" class="sm:col-span-2 bubbly-btn bg-emerald-600 hover:bg-emerald-700 text-white border-2 border-emerald-900 py-2.5 text-xs font-black">
+                  ✨ Cipta & Pautkan Akaun Anak Sekarang
+                </button>
+              </form>
+            </div>
           </div>
 
           <div id="parent-link-feedback" class="hidden text-xs font-extrabold rounded-xl p-2 text-center"></div>
@@ -2106,8 +2113,11 @@
           </div>
         </div>
 
+        <!-- Penukar Profil Anak Pantas (1-Klik Terus Ke Laporan Anak Ketiga Tanpa Scroll Jauh) -->
+        <div id="parent-child-quick-tabs" class="hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
+
         <!-- Senarai Kad Prestasi Terperinci Setiap Anak -->
-        <div id="parent-children-list" class="space-y-3 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        <div id="parent-children-list" class="space-y-3"></div>
       </div>
     </section>
 
@@ -7527,6 +7537,7 @@
     let helperFingerLeft = [false, false, false, false, false];
     let helperFingerRight = [false, false, false, false, false];
     let isHelperFingersVisible = false;
+    let userPreferredHelperFingers = null; // null = ikut lalai modul, false = pengguna tutup manual, true = pengguna buka manual
 
     window.switchModulesTrack = function(trackKey, silent = false) {
       if (!silent) playClick();
@@ -7643,7 +7654,9 @@
 
     window.toggleHelperFingers = function() {
       playClick();
-      setHelperFingersVisibility(!isHelperFingersVisible);
+      const nextState = !isHelperFingersVisible;
+      userPreferredHelperFingers = nextState;
+      setHelperFingersVisibility(nextState);
       keepQuizBottomInView();
     };
 
@@ -7881,6 +7894,7 @@
       // Untuk Laluan Jari: sembunyikan Sempoa dan tunjukkan butang Jari Kira; untuk Laluan Sempoa: buka Sempoa bagi Tahap 2-4
       const fingerBtn = document.getElementById('mod-finger-toggle-btn');
       const abacusBtn = document.getElementById('mod-helper-toggle-btn');
+      userPreferredHelperFingers = null;
       if (isJariTrack) {
         if (fingerBtn) fingerBtn.classList.remove('hidden');
         if (abacusBtn) abacusBtn.classList.add('hidden');
@@ -8512,7 +8526,9 @@
         }
       } else {
         if (isJariTrack) {
-          setHelperFingersVisibility(activeModId === 1 || activeModId === 'jari2');
+          const defaultJariOpen = (activeModId === 1 || activeModId === 'jari2');
+          const shouldShowFingers = (userPreferredHelperFingers !== null) ? userPreferredHelperFingers : defaultJariOpen;
+          setHelperFingersVisibility(shouldShowFingers);
           if (hintTextEl) hintTextEl.innerText = '🖐️ Tekan jari di bawah untuk praktis buka & lipat jari!';
         } else {
           setHelperAbacusVisibility('mod', activeModId >= 2 && activeModId <= 4);
@@ -13631,6 +13647,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             ${accBadge}
           </div>
 
+          <!-- Keutamaan Pengajar: Kelemahan Topik & Cadangan Modul di Bahagian Atas -->
+          <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
+            <div class="text-[9px] font-black text-slate-600">🎯 Prestasi & Kelemahan Mengikut Topik:</div>
+            ${weakestHtml}
+          </div>
+
           <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
             <div class="flex items-center justify-between text-[9px] font-black text-slate-600">
               <span>📅 Konsistensi Latihan 7 Hari Terkini</span>
@@ -13646,18 +13668,57 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             </div>
             ${renderFormulaMasteryGridHtml(child, true)}
           </div>
-
-          <div class="bg-white border border-indigo-100 rounded-lg p-2 space-y-1">
-            <div class="text-[9px] font-black text-slate-600">🎯 Prestasi & Kelemahan Mengikut Topik:</div>
-            ${weakestHtml}
-          </div>
         </div>
       `;
     }
 
+    let selectedParentChildFilter = 'all';
+    const expandedParentChildCards = new Set();
+    let parentAddPanelUserToggled = false;
+
+    window.toggleParentAddChildPanel = function(forceOpen) {
+      const wrap = document.getElementById('parent-add-child-collapsible-wrap');
+      const chev = document.getElementById('parent-add-wrap-chevron');
+      if (!wrap) return;
+      const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : wrap.classList.contains('hidden');
+      if (typeof forceOpen !== 'boolean') {
+        playClick();
+        parentAddPanelUserToggled = true;
+      }
+      wrap.classList.toggle('hidden', !shouldOpen);
+      if (chev) chev.innerText = shouldOpen ? 'Tutup ▴' : 'Buka ▾';
+    };
+
+    window.selectParentChildFilter = function(filterId) {
+      playClick();
+      selectedParentChildFilter = filterId || 'all';
+      if (selectedParentChildFilter !== 'all') {
+        expandedParentChildCards.add(selectedParentChildFilter);
+      }
+      loadParentChildrenDashboard();
+    };
+
+    window.toggleParentChildCardDetails = function(childId) {
+      playClick();
+      const bodyEl = document.getElementById(`parent-child-details-${childId}`);
+      const btnEl = document.getElementById(`btn-toggle-child-details-${childId}`);
+      if (!bodyEl) return;
+      const isCurrentlyHidden = bodyEl.classList.contains('hidden');
+      if (isCurrentlyHidden) {
+        expandedParentChildCards.add(childId);
+        bodyEl.classList.remove('hidden');
+        if (btnEl) btnEl.innerText = 'Tutup Laporan ▴';
+      } else {
+        expandedParentChildCards.delete(childId);
+        bodyEl.classList.add('hidden');
+        if (btnEl) btnEl.innerText = 'Lihat Laporan Penuh ▾';
+      }
+    };
+
     window.loadParentChildrenDashboard = async function() {
       if (!currentPlayer) return;
       const listEl = document.getElementById('parent-children-list');
+      const tabsEl = document.getElementById('parent-child-quick-tabs');
       const countBadge = document.getElementById('parent-linked-count-badge');
       const sumPtsEl = document.getElementById('parent-sum-points');
       const sumStarsEl = document.getElementById('parent-sum-stars');
@@ -13716,7 +13777,16 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       const linkedIds = currentPlayer.linkedChildrenIds;
       if (countBadge) countBadge.innerText = `${linkedIds.length} Anak`;
 
+      if (!parentAddPanelUserToggled) {
+        toggleParentAddChildPanel(linkedIds.length === 0);
+      }
+
       if (linkedIds.length === 0) {
+        selectedParentChildFilter = 'all';
+        if (tabsEl) {
+          tabsEl.classList.add('hidden');
+          tabsEl.innerHTML = '';
+        }
         if (sumPtsEl) sumPtsEl.innerText = '0';
         if (sumStarsEl) sumStarsEl.innerText = '0';
         if (sumTimeEl) sumTimeEl.innerText = '0 jam 0 min';
@@ -13747,7 +13817,41 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         if (v.nameKey) byKeyMap.set(String(v.nameKey), v);
       });
 
+      const resolvedChildren = [];
       for (const cid of linkedIds) {
+        const ch = cloudMap.get(cid) || byKeyMap.get(String(cid));
+        resolvedChildren.push({ cid, child: ch });
+      }
+
+      if (selectedParentChildFilter !== 'all' && !resolvedChildren.some(item => String(item.child ? (item.child.accountId || item.child.key || item.cid) : item.cid) === String(selectedParentChildFilter))) {
+        selectedParentChildFilter = 'all';
+      }
+
+      if (tabsEl) {
+        if (resolvedChildren.length > 1) {
+          tabsEl.classList.remove('hidden');
+          const allActive = selectedParentChildFilter === 'all';
+          const pillBtns = [
+            `<button type="button" onclick="selectParentChildFilter('all')" class="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-black border-2 transition ${allActive ? 'bg-teal-600 text-white border-teal-900 shadow-xs' : 'bg-white text-teal-950 border-teal-300 hover:bg-teal-50'}">📋 Semua (${resolvedChildren.length})</button>`
+          ];
+          resolvedChildren.forEach(({ cid, child }, idx) => {
+            const realId = String(child ? (child.accountId || child.key || cid) : cid);
+            const isTabActive = String(selectedParentChildFilter) === realId;
+            const labelName = child ? escapeHtmlSafe(child.name || `Anak #${idx + 1}`) : `Anak #${idx + 1}`;
+            const isOnline = child && Boolean(child.isOnline) && (Date.now() - Number(child.lastActiveAt || 0) < 90000);
+            const dot = isOnline ? '🟢' : '⚪';
+            pillBtns.push(
+              `<button type="button" onclick="selectParentChildFilter('${realId}')" class="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-black border-2 transition ${isTabActive ? 'bg-indigo-600 text-white border-indigo-950 shadow-xs' : 'bg-white text-slate-800 border-slate-300 hover:bg-indigo-50'}">${dot} ${idx + 1}. ${labelName}</button>`
+            );
+          });
+          tabsEl.innerHTML = pillBtns.join('');
+        } else {
+          tabsEl.classList.add('hidden');
+          tabsEl.innerHTML = '';
+        }
+      }
+
+      for (const { cid, child } of resolvedChildren) {
         const child = cloudMap.get(cid) || byKeyMap.get(String(cid));
         if (!child) {
           const missCard = document.createElement('div');
@@ -13867,22 +13971,29 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             </div>
           </div>
 
-          <!-- Kad Analisis Ketepatan (%), Kelemahan Topik & Konsistensi 7 Hari -->
-          ${buildChildAnalyticsHtml(child)}
+          <!-- Butang Lipat / Kembang Laporan Terperinci Anak -->
+          <button type="button" id="btn-toggle-child-details-${realCid}" onclick="toggleParentChildCardDetails('${realCid}')" class="w-full py-1.5 px-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-[10.5px] font-black text-indigo-950 flex items-center justify-center gap-1 transition">
+            <span>${(resolvedChildren.length === 1 || String(selectedParentChildFilter) === String(realCid) || expandedParentChildCards.has(String(realCid))) ? 'Tutup Laporan ▴' : 'Lihat Laporan Penuh ▾'}</span>
+          </button>
 
-          <!-- Kotak Mod Terakhir & Pecahan Masa Setiap Mod -->
-          <div class="bg-sky-50/90 border border-sky-200 rounded-xl p-2.5 space-y-1.5">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="font-black text-sky-950">⏱️ Masa di Mod Terakhir (${escapeHtmlSafe(lastModeName)}):</span>
-              <span class="font-black bg-sky-200 text-sky-950 px-2 py-0.5 rounded-full">${formatDurationMMSS(lastModeSec)}</span>
+          <div id="parent-child-details-${realCid}" class="${(resolvedChildren.length === 1 || String(selectedParentChildFilter) === String(realCid) || expandedParentChildCards.has(String(realCid))) ? '' : 'hidden'} space-y-2.5">
+            <!-- Kad Analisis Ketepatan (%), Kelemahan Topik & Konsistensi 7 Hari -->
+            ${buildChildAnalyticsHtml(child)}
+
+            <!-- Kotak Mod Terakhir & Pecahan Masa Setiap Mod -->
+            <div class="bg-sky-50/90 border border-sky-200 rounded-xl p-2.5 space-y-1.5">
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="font-black text-sky-950">⏱️ Masa di Mod Terakhir (${escapeHtmlSafe(lastModeName)}):</span>
+                <span class="font-black bg-sky-200 text-sky-950 px-2 py-0.5 rounded-full">${formatDurationMMSS(lastModeSec)}</span>
+              </div>
+              <div class="text-[10px] font-black text-slate-600 pt-0.5">📋 Pecahan Masa Mengikut Tahap & Mod:</div>
+              <div class="space-y-1 max-h-28 overflow-y-auto pr-0.5">${modeBreakdownHtml}</div>
             </div>
-            <div class="text-[10px] font-black text-slate-600 pt-0.5">📋 Pecahan Masa Mengikut Tahap & Mod:</div>
-            <div class="space-y-1 max-h-28 overflow-y-auto pr-0.5">${modeBreakdownHtml}</div>
-          </div>
 
-          <div class="space-y-1">
-            <div class="text-[10px] font-black text-slate-600">📊 Rekod Penguasaan Setiap Tahap:</div>
-            <div class="flex flex-wrap gap-1">${stageBadges}</div>
+            <div class="space-y-1">
+              <div class="text-[10px] font-black text-slate-600">📊 Rekod Penguasaan Setiap Tahap:</div>
+              <div class="flex flex-wrap gap-1">${stageBadges}</div>
+            </div>
           </div>
 
           <div class="pt-1 grid grid-cols-2 gap-1.5">
@@ -13894,7 +14005,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             </button>
           </div>
         `;
-        if (listEl) listEl.appendChild(card);
+        if (listEl && (selectedParentChildFilter === 'all' || String(selectedParentChildFilter) === String(realCid))) {
+          listEl.appendChild(card);
+        }
       }
 
       if (sumPtsEl) sumPtsEl.innerText = String(totalPtsAll);

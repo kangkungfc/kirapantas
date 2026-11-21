@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.2.9 • Peta Penguasaan 4 Teras Formula (Asas, Kawan Kecil, Kawan Besar & Gabungan) + Pengganda Ganjaran Formula + Misi Pintar
+            Versi 2.3.0 • Pengecualian Had Lembut Coin Harian untuk Misi Harian, Log Masuk Berturut, Peti Misteri & Podium Arena
           </span>
         </div>
 
@@ -7481,7 +7481,7 @@
               accBonusCoins = 2;
               blitzScore += accBonusPts;
               updateBlitzLivesAndBestUI();
-              if (currentPlayer) addPlayerReward(accBonusCoins, accBonusPts);
+              if (currentPlayer) addPlayerReward(accBonusCoins, accBonusPts, true);
               accBonusLine = `<br><span class="inline-block mt-1 bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full text-[11px] font-black">🎯 Bonus Ketepatan ${accPct}%: +${accBonusPts} Markah & +${accBonusCoins} Coin!</span>`;
             }
             const goCard = document.getElementById('blitz-gameover-card');
@@ -8682,7 +8682,7 @@
           saveModuleCheckpointData(activeModId, activeModIndex + 1, activeModSessionCorrect, activeModConsecutiveStreak, activeMod3QuizCategory);
           playCheer();
           triggerConfetti(55);
-          if (currentPlayer) addPlayerReward(3, 15);
+          if (currentPlayer) addPlayerReward(3, 15, true);
           const bar = document.getElementById('mod-5-stars-bar');
           if (bar) {
             bar.innerHTML = [1, 2, 3, 4, 5].map(s =>
@@ -9161,7 +9161,7 @@
         if (midTierUnowned.length > 0) {
           const picked = midTierUnowned[Math.floor(Math.random() * midTierUnowned.length)];
           currentPlayer.ownedAvatarItems.push(picked.id);
-          addPlayerReward(rewardObj.coins, 25);
+          addPlayerReward(rewardObj.coins, 25, true);
           showQuizInstantPopup(
             `🏆 GANJARAN HARI KE-7 BERTURUT-TURUT!<br>Anda dapat <b>+${rewardObj.coins} Coin</b> ${COIN_ICON_HTML} + Item Istimewa <b>"${picked.name}"</b> (Nilai ${picked.cost} Coin)!`,
             'combo',
@@ -9171,7 +9171,7 @@
         } else {
           // Jika semua item sederhana sudah dimiliki, beri +35 + 50 = +85 Coin!
           const totalBonus = rewardObj.coins + 50;
-          addPlayerReward(totalBonus, 25);
+          addPlayerReward(totalBonus, 25, true);
           showQuizInstantPopup(
             `🏆 GANJARAN HARI KE-7 BERTURUT-TURUT!<br>Semua item sudah dimiliki — anda dapat <b>+${totalBonus} Coin</b> ${COIN_ICON_HTML}!`,
             'combo',
@@ -9180,7 +9180,7 @@
           );
         }
       } else {
-        addPlayerReward(rewardObj.coins, 10);
+        addPlayerReward(rewardObj.coins, 10, true);
         showQuizInstantPopup(
           `🎉 HADIAH LOG MASUK HARI ${info.streakDay}!<br>Anda menerima <b>+${rewardObj.coins} Coin</b> ${COIN_ICON_HTML} & <b>+10 Markah</b>!`,
           'fast',
@@ -9272,7 +9272,7 @@
 
         const wonItem = chosen.item;
         currentPlayer.ownedAvatarItems.push(wonItem.id);
-        addPlayerReward(5, 15);
+        addPlayerReward(5, 15, true);
         currentPlayer.lastMysteryPrizeText = `Menang "${wonItem.name}" (${chosen.meta.label}) + 5 Coin!`;
         showQuizInstantPopup(
           `🎁 KEJUTAN MISTERI [<span class="underline">${chosen.meta.label}</span>]!<br>Anda menang <b>"${wonItem.name}"</b> (Nilai ${wonItem.cost} Coin) + <b>5 Coin</b> ${COIN_ICON_HTML}!`,
@@ -9291,7 +9291,7 @@
         else if (rCoin < 97) { wonCoins = 40; coinTierText = 'Jackpot Epik!'; }
         else { wonCoins = 75; coinTierText = 'MEGA JACKPOT LEGENDA! 🌟'; }
 
-        addPlayerReward(wonCoins, 15);
+        addPlayerReward(wonCoins, 15, true);
         currentPlayer.lastMysteryPrizeText = `${coinTierText}: +${wonCoins} Coin & +15 Markah!`;
         showQuizInstantPopup(`🎁 ${coinTierText}<br>Anda dapat <b>+${wonCoins} Coin</b> ${COIN_ICON_HTML} & <b>+15 Markah</b>!`, 'combo', '', 5000);
       }
@@ -9826,7 +9826,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
-    function addPlayerReward(starsEarned, pointsEarned) {
+    function addPlayerReward(starsEarned, pointsEarned, bypassSoftCap = false) {
       if (!currentPlayer) return;
       const todayKey = getTodayDateKey();
       if (currentPlayer.todayDateKey !== todayKey) {
@@ -9838,7 +9838,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       const DAILY_COIN_FULL_RATE_CAP = 50;
       let rawStars = Number(starsEarned) || 0;
       let addStars = rawStars;
-      if (rawStars > 0 && (currentPlayer.todayStars || 0) >= DAILY_COIN_FULL_RATE_CAP) {
+      if (!bypassSoftCap && rawStars > 0 && (currentPlayer.todayStars || 0) >= DAILY_COIN_FULL_RATE_CAP) {
         currentPlayer._softCapCoinStep = (currentPlayer._softCapCoinStep || 0) + 1;
         addStars = (currentPlayer._softCapCoinStep % 3 === 0) ? 1 : 0;
       }
@@ -10765,7 +10765,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       dq.claimed[questKey] = true;
       playCheer();
       triggerConfetti(35);
-      addPlayerReward(cfg.reward, cfg.pointsReward || 10);
+      addPlayerReward(cfg.reward, cfg.pointsReward || 10, true);
       showAppToast(`🎁 Tahniah! +${cfg.reward} Coin & +${cfg.pointsReward || 10} Markah Misi Harian dituntut!`);
       renderDailyQuestCard();
     };
@@ -16981,7 +16981,7 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
       };
 
       if (currentPlayer && (finalTotalPoints > 0 || finalTotalCoins > 0)) {
-        addPlayerReward(finalTotalCoins, finalTotalPoints);
+        addPlayerReward(finalTotalCoins, finalTotalPoints, true);
       }
 
       if (db && fbUser && activeArenaRoomId) {

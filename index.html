@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.0 • Pengecualian Had Lembut Coin Harian untuk Misi Harian, Log Masuk Berturut, Peti Misteri & Podium Arena
+            Versi 2.3.1 • Papan Skor 4-Kategori (Hari Ini Aktif Sahaja, Minggu Ini, Bulan Ini & Terkumpul) + Hadiah Podium Rasmi (30/20/10, 100/60/35, 300/180/100) & Anti-Manipulasi
           </span>
         </div>
 
@@ -628,7 +628,12 @@
           <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
             <div id="home-xp-progress-fill" class="h-full bg-gradient-to-r from-amber-400 via-emerald-500 to-sky-500 rounded-full transition-all duration-500" style="width: 12%"></div>
           </div>
+                <!-- Jalur Kedudukan Podium & Hadiah Semasa (Menu Utama) -->
+        <div id="home-podium-status-strip" onclick="navTo('scoreboard')" class="cursor-pointer bg-gradient-to-r from-indigo-50 via-purple-50 to-amber-50 border-2 border-indigo-200 hover:border-indigo-400 rounded-2xl px-3 py-2 flex items-center justify-between gap-2 transition">
+          <div class="text-[10.5px] font-black text-indigo-950 truncate" id="home-podium-status-text">🏆 Semak kedudukan Papan Skor Juara & Hadiah Coin!</div>
+          <span class="text-[9.5px] font-black bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full border border-amber-500 flex-shrink-0">Lihat Carta →</span>
         </div>
+</div>
       </div>
 
       <!-- Butang Pintas Utama: Teruskan Belajar Tahap Semasa (Smart Resume Hero CTA) -->
@@ -1193,15 +1198,24 @@
           </div>
         </div>
 
-        <!-- 2 Tab Papan Skor: Tertinggi Hari Ini vs Skor Terkumpul -->
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" onclick="switchScoreboardTab('today')" id="tab-score-today" class="bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2.5 px-2 text-xs font-black">
-            🔥 Tertinggi Hari Ini
+        <!-- 4 Tab Papan Skor: Hari Ini (Aktif Sahaja), Minggu Ini, Bulan Ini & Terkumpul -->
+        <div class="grid grid-cols-4 gap-1.5 pt-1">
+          <button type="button" onclick="switchScoreboardTab('today')" id="tab-score-today" class="bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+            🔥 Hari Ini
           </button>
-          <button type="button" onclick="switchScoreboardTab('alltime')" id="tab-score-alltime" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black">
-            🏆 Skor Terkumpul
+          <button type="button" onclick="switchScoreboardTab('weekly')" id="tab-score-weekly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+            📅 Minggu Ini
+          </button>
+          <button type="button" onclick="switchScoreboardTab('monthly')" id="tab-score-monthly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+            🗓️ Bulan Ini
+          </button>
+          <button type="button" onclick="switchScoreboardTab('alltime')" id="tab-score-alltime" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+            🏆 Terkumpul
           </button>
         </div>
+
+        <!-- Sepanduk Hadiah Podium Rasmi & Pemasa Undur (Marketing & Ganjaran) -->
+        <div id="scoreboard-podium-prize-banner" class="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border-2 border-amber-400 rounded-2xl p-2.5 space-y-1.5"></div>
 
         <div id="scoreboard-list" class="space-y-2.5 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
       </div>
@@ -9826,15 +9840,46 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
+    function getCurrentWeekDateKey() {
+      const d = new Date();
+      const day = d.getDay(); // 0 = Ahad, 1 = Isnin ... 6 = Sabtu
+      const diffToMonday = (day === 0 ? -6 : 1 - day);
+      const mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diffToMonday);
+      return `${mon.getFullYear()}-W${String(mon.getMonth() + 1).padStart(2, '0')}-${String(mon.getDate()).padStart(2, '0')}`;
+    }
+
+    function getCurrentMonthDateKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function ensurePlayerPeriodCounters(p) {
+      if (!p) return;
+      const todayKey = getTodayDateKey();
+      const weekKey = getCurrentWeekDateKey();
+      const monthKey = getCurrentMonthDateKey();
+      if (p.todayDateKey !== todayKey) {
+        p.todayDateKey = todayKey;
+        p.todaySeconds = 0;
+        p.todayPoints = 0;
+        p.todayStars = 0;
+      }
+      if (p.weekDateKey !== weekKey) {
+        p.weekDateKey = weekKey;
+        p.weekPoints = 0;
+        p.weekStars = 0;
+      }
+      if (p.monthDateKey !== monthKey) {
+        p.monthDateKey = monthKey;
+        p.monthPoints = 0;
+        p.monthStars = 0;
+      }
+    }
+
     function addPlayerReward(starsEarned, pointsEarned, bypassSoftCap = false) {
       if (!currentPlayer) return;
       const todayKey = getTodayDateKey();
-      if (currentPlayer.todayDateKey !== todayKey) {
-        currentPlayer.todayDateKey = todayKey;
-        currentPlayer.todaySeconds = 0;
-        currentPlayer.todayPoints = 0;
-        currentPlayer.todayStars = 0;
-      }
+      ensurePlayerPeriodCounters(currentPlayer);
       const DAILY_COIN_FULL_RATE_CAP = 50;
       let rawStars = Number(starsEarned) || 0;
       let addStars = rawStars;
@@ -9847,6 +9892,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + addPts;
       currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + addPts;
       currentPlayer.todayStars = (currentPlayer.todayStars || 0) + addStars;
+      currentPlayer.weekPoints = (currentPlayer.weekPoints || 0) + addPts;
+      currentPlayer.weekStars = (currentPlayer.weekStars || 0) + addStars;
+      currentPlayer.monthPoints = (currentPlayer.monthPoints || 0) + addPts;
+      currentPlayer.monthStars = (currentPlayer.monthStars || 0) + addStars;
 
       // Bonus Ketekunan Latihan Harian (15 minit, 25 minit & 35 minit aktif) supaya latihan tekun mengatasi sesi singkat 5 minit
       const minsToday = Math.floor((Number(currentPlayer.todaySeconds) || 0) / 60);
@@ -9866,6 +9915,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           currentPlayer.totalPoints = (currentPlayer.totalPoints || 0) + stTier.pts;
           currentPlayer.todayPoints = (currentPlayer.todayPoints || 0) + stTier.pts;
           currentPlayer.todayStars = (currentPlayer.todayStars || 0) + stTier.coins;
+          currentPlayer.weekPoints = (currentPlayer.weekPoints || 0) + stTier.pts;
+          currentPlayer.weekStars = (currentPlayer.weekStars || 0) + stTier.coins;
+          currentPlayer.monthPoints = (currentPlayer.monthPoints || 0) + stTier.pts;
+          currentPlayer.monthStars = (currentPlayer.monthStars || 0) + stTier.coins;
           showAppToast(`🏅 Bonus Ketekunan (${stTier.label}): +${stTier.coins} Coin & +${stTier.pts} Markah!`);
         }
       });
@@ -10141,21 +10194,176 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       } catch (e) {}
     };
 
+    const PODIUM_PRIZES_CONFIG = {
+      today: {
+        title: 'Hadiah Podium Harian (Reset 12:00 Tgh Malam)',
+        minPts: 50,
+        prizes: [30, 20, 10],
+        labels: ['🥇 +30 Coin', '🥈 +20 Coin', '🥉 +10 Coin'],
+        emptyMsg: 'Belum ada pelajar aktif hari ini — jadilah yang pertama menawan carta & rebut +30 Coin!'
+      },
+      weekly: {
+        title: 'Hadiah Podium Mingguan (Reset Setiap Isnin)',
+        minPts: 50,
+        prizes: [100, 60, 35],
+        labels: ['🥇 +100 Coin', '🥈 +60 Coin', '🥉 +35 Coin'],
+        emptyMsg: 'Belum ada rekod minggu ini — mula berlatih sekarang untuk merebut +100 Coin!'
+      },
+      monthly: {
+        title: 'Hadiah Podium Bulanan (Reset 1 Haribulan)',
+        minPts: 50,
+        prizes: [300, 180, 100],
+        labels: ['🥇 +300 Coin & Mahaguru', '🥈 +180 Coin', '🥉 +100 Coin'],
+        emptyMsg: 'Belum ada rekod bulan ini — kumpul markah sekarang untuk takhta Juara Bulanan (+300 Coin)!'
+      },
+      alltime: {
+        title: 'Dewan Kemasyhuran Sepanjang Zaman (Hall of Fame)',
+        minPts: 0,
+        prizes: [0, 0, 0],
+        labels: ['🥇 Pangkat Agung', '🥈 Pangkat Legenda', '🥉 Pangkat Epik'],
+        emptyMsg: 'Belum ada rekod pelajar di papan skor.'
+      }
+    };
+
+    function getPodiumResetCountdownText(tabKey) {
+      const now = new Date();
+      let target;
+      if (tabKey === 'today') {
+        target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+      } else if (tabKey === 'weekly') {
+        const day = now.getDay();
+        const daysUntilMon = day === 0 ? 1 : (8 - day);
+        target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilMon, 0, 0, 0);
+      } else if (tabKey === 'monthly') {
+        target = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0);
+      } else {
+        return 'Rekod Kekal Sepanjang Zaman';
+      }
+      const diffMs = Math.max(0, target - now);
+      const totalMins = Math.floor(diffMs / 60000);
+      const days = Math.floor(totalMins / (60 * 24));
+      const hrs = Math.floor((totalMins % (60 * 24)) / 60);
+      const mins = totalMins % 60;
+      if (days > 0) return `⏳ Tamat dalam ${days}h ${hrs}j ${mins}m`;
+      return `⏳ Tamat dalam ${hrs}j ${mins}m`;
+    }
+
+    function renderScoreboardPodiumBanner() {
+      const bannerEl = document.getElementById('scoreboard-podium-prize-banner');
+      if (!bannerEl) return;
+      const cfg = PODIUM_PRIZES_CONFIG[activeScoreboardTab] || PODIUM_PRIZES_CONFIG.today;
+      const countdown = getPodiumResetCountdownText(activeScoreboardTab);
+      const guardNote = cfg.minPts > 0
+        ? `<div class="text-[9.5px] font-bold text-amber-900">🛡️ Syarat kelayakan hadiah: Minimum <b>${cfg.minPts} Markah</b> dalam tempoh ini.</div>`
+        : `<div class="text-[9.5px] font-bold text-indigo-900">🌟 Kedudukan terkumpul sepanjang masa — item paling mahal setiap kategori di Kedai kekal eksklusif untuk dibeli dengan Coin!</div>`;
+      bannerEl.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-1">
+          <span class="text-[10.5px] font-black text-amber-950">🎁 ${cfg.title}</span>
+          <span class="text-[9.5px] font-black bg-white text-rose-700 px-2 py-0.5 rounded-full border border-amber-300">${countdown}</span>
+        </div>
+        <div class="grid grid-cols-3 gap-1 text-center pt-0.5">
+          <div class="bg-white/95 border border-amber-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-amber-900">${cfg.labels[0]}</div>
+          <div class="bg-white/95 border border-slate-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-slate-800">${cfg.labels[1]}</div>
+          <div class="bg-white/95 border border-orange-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-orange-900">${cfg.labels[2]}</div>
+        </div>
+        ${guardNote}
+      `;
+    }
+
+    function updateHomePodiumStatusStrip(playersArr) {
+      const stripTextEl = document.getElementById('home-podium-status-text');
+      if (!stripTextEl || !currentPlayer || currentPlayer.isAdmin) return;
+      const todayKey = getTodayDateKey();
+      const activeToday = (playersArr || [])
+        .filter(p => p && !isAdminAccountRecord(p) && p.todayDateKey === todayKey && ((Number(p.todayPoints) || 0) > 0 || (Number(p.todaySeconds) || 0) > 0))
+        .sort((a, b) => ((Number(b.todayPoints) || 0) - (Number(a.todayPoints) || 0)) || ((Number(b.todayStars) || 0) - (Number(a.todayStars) || 0)));
+      const myIdx = activeToday.findIndex(p => p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
+      if (myIdx === -1) {
+        stripTextEl.innerHTML = `🔥 <b>Hari Ini:</b> Belum masuk carta — jawab soalan untuk rebut <b>+30 Coin</b>!`;
+        return;
+      }
+      const myRank = myIdx + 1;
+      const myPts = Number(activeToday[myIdx].todayPoints) || 0;
+      const prizeMap = { 1: '+30 Coin', 2: '+20 Coin', 3: '+10 Coin' };
+      const prizeHint = prizeMap[myRank]
+        ? (myPts >= 50 ? `• Bakal menang <b>${prizeMap[myRank]}</b>!` : `• Capai 50 Markah untuk layak <b>${prizeMap[myRank]}</b>!`)
+        : `• Kejar Top 3 untuk hadiah Coin harian!`;
+      stripTextEl.innerHTML = `🏆 <b>Carta Hari Ini: #${myRank}</b> (${myPts} Markah) ${prizeHint}`;
+    }
+
+    // Semak dan kreditkan hadiah Podium tempoh terdahulu (Harian / Mingguan / Bulanan) secara automatik sekali sahaja
+    function evaluateAndGrantPodiumRewards(playersArr) {
+      if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) return;
+      const list = Array.isArray(playersArr) ? playersArr.filter(p => p && !isAdminAccountRecord(p)) : [];
+      if (list.length === 0) return;
+
+      if (!currentPlayer.claimedPodiumKeys || typeof currentPlayer.claimedPodiumKeys !== 'object') {
+        currentPlayer.claimedPodiumKeys = {};
+      }
+
+      const todayKey = getTodayDateKey();
+      const weekKey = getCurrentWeekDateKey();
+      const monthKey = getCurrentMonthDateKey();
+
+      const prevDayKey = currentPlayer._lastTrackedDayKey || todayKey;
+      const prevWeekKey = currentPlayer._lastTrackedWeekKey || weekKey;
+      const prevMonthKey = currentPlayer._lastTrackedMonthKey || monthKey;
+
+      const checkAward = (periodType, closedPeriodKey, dateField, ptsField, prizesArr, periodLabel) => {
+        if (!closedPeriodKey || currentPlayer.claimedPodiumKeys[`${periodType}_${closedPeriodKey}`]) return;
+        const contenders = list
+          .filter(p => p[dateField] === closedPeriodKey && (Number(p[ptsField]) || 0) >= 50)
+          .sort((a, b) => (Number(b[ptsField]) || 0) - (Number(a[ptsField]) || 0));
+        const rankIdx = contenders.findIndex(p => p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
+        currentPlayer.claimedPodiumKeys[`${periodType}_${closedPeriodKey}`] = true;
+        if (rankIdx >= 0 && rankIdx < 3) {
+          const wonCoins = prizesArr[rankIdx];
+          const medalIcon = rankIdx === 0 ? '🥇' : (rankIdx === 1 ? '🥈' : '🥉');
+          addPlayerReward(wonCoins, 0, true);
+          showQuizInstantPopup(
+            `${medalIcon} TAHNIAH JUARA PODIUM ${periodLabel.toUpperCase()}!<br>Anda menduduki tempat <b>#${rankIdx + 1}</b> dan menerima <b>+${wonCoins} Coin</b>!`,
+            'combo',
+            '',
+            4800
+          );
+        }
+      };
+
+      if (prevDayKey !== todayKey) {
+        checkAward('today', prevDayKey, 'todayDateKey', 'todayPoints', [30, 20, 10], 'Harian');
+      }
+      if (prevWeekKey !== weekKey) {
+        checkAward('weekly', prevWeekKey, 'weekDateKey', 'weekPoints', [100, 60, 35], 'Mingguan');
+      }
+      if (prevMonthKey !== monthKey) {
+        checkAward('monthly', prevMonthKey, 'monthDateKey', 'monthPoints', [300, 180, 100], 'Bulanan');
+      }
+
+      currentPlayer._lastTrackedDayKey = todayKey;
+      currentPlayer._lastTrackedWeekKey = weekKey;
+      currentPlayer._lastTrackedMonthKey = monthKey;
+    }
+
     window.switchScoreboardTab = function(tabName) {
       playClick();
-      activeScoreboardTab = tabName === 'alltime' ? 'alltime' : 'today';
-      const todayBtn = document.getElementById('tab-score-today');
-      const allBtn = document.getElementById('tab-score-alltime');
-      if (todayBtn) {
-        todayBtn.className = activeScoreboardTab === 'today'
-          ? 'bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2.5 px-2 text-xs font-black'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
-      }
-      if (allBtn) {
-        allBtn.className = activeScoreboardTab === 'alltime'
-          ? 'bubbly-btn bg-indigo-600 text-white border-2 border-indigo-800 py-2.5 px-2 text-xs font-black'
-          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2.5 px-2 text-xs font-black';
-      }
+      const validTabs = ['today', 'weekly', 'monthly', 'alltime'];
+      activeScoreboardTab = validTabs.includes(tabName) ? tabName : 'today';
+      validTabs.forEach(tKey => {
+        const btn = document.getElementById(`tab-score-${tKey}`);
+        if (!btn) return;
+        const isActive = activeScoreboardTab === tKey;
+        const activeStyle = tKey === 'today'
+          ? 'bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight'
+          : (tKey === 'weekly'
+              ? 'bubbly-btn bg-emerald-500 text-white border-2 border-emerald-800 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight'
+              : (tKey === 'monthly'
+                  ? 'bubbly-btn bg-purple-600 text-white border-2 border-purple-900 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight'
+                  : 'bubbly-btn bg-indigo-600 text-white border-2 border-indigo-800 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight'));
+        btn.className = isActive
+          ? activeStyle
+          : 'bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight';
+      });
+      renderScoreboardPodiumBanner();
       renderScoreboardList(lastScoreboardPlayers);
     };
 
@@ -11048,6 +11256,14 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             currentPlayer.todayPoints = Math.max(Number(currentPlayer.todayPoints) || 0, Number(prevLocal.todayPoints) || 0);
             currentPlayer.todayStars = Math.max(Number(currentPlayer.todayStars) || 0, Number(prevLocal.todayStars) || 0);
             currentPlayer.todaySeconds = Math.max(Number(currentPlayer.todaySeconds) || 0, Number(prevLocal.todaySeconds) || 0);
+          }
+          if (prevLocal.weekDateKey === currentPlayer.weekDateKey) {
+            currentPlayer.weekPoints = Math.max(Number(currentPlayer.weekPoints) || 0, Number(prevLocal.weekPoints) || 0);
+            currentPlayer.weekStars = Math.max(Number(currentPlayer.weekStars) || 0, Number(prevLocal.weekStars) || 0);
+          }
+          if (prevLocal.monthDateKey === currentPlayer.monthDateKey) {
+            currentPlayer.monthPoints = Math.max(Number(currentPlayer.monthPoints) || 0, Number(prevLocal.monthPoints) || 0);
+            currentPlayer.monthStars = Math.max(Number(currentPlayer.monthStars) || 0, Number(prevLocal.monthStars) || 0);
           }
           currentPlayer.playSeconds = Math.max(Number(currentPlayer.playSeconds) || 0, Number(prevLocal.playSeconds) || 0);
         }
@@ -12125,29 +12341,59 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
     function renderScoreboardList(players) {
       lastScoreboardPlayers = Array.isArray(players) ? players : [];
+      renderScoreboardPodiumBanner();
+      updateHomePodiumStatusStrip(lastScoreboardPlayers);
+      evaluateAndGrantPodiumRewards(lastScoreboardPlayers);
+
       const listEl = document.getElementById('scoreboard-list');
       if (!listEl) return;
 
       const todayKey = getTodayDateKey();
-      const isTodayTab = activeScoreboardTab === 'today';
+      const weekKey = getCurrentWeekDateKey();
+      const monthKey = getCurrentMonthDateKey();
+      const tab = activeScoreboardTab;
+      const isTodayTab = tab === 'today';
 
       const getTodayPts = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayPoints) || 0) : 0;
       const getTodayStars = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayStars) || 0) : 0;
+      const getWeekPts = (p) => (p.weekDateKey === weekKey) ? (Number(p.weekPoints) || 0) : getTodayPts(p);
+      const getWeekStars = (p) => (p.weekDateKey === weekKey) ? (Number(p.weekStars) || 0) : getTodayStars(p);
+      const getMonthPts = (p) => (p.monthDateKey === monthKey) ? (Number(p.monthPoints) || 0) : getWeekPts(p);
+      const getMonthStars = (p) => (p.monthDateKey === monthKey) ? (Number(p.monthStars) || 0) : getWeekStars(p);
+
+      const getPeriodPts = (p) => {
+        if (tab === 'today') return getTodayPts(p);
+        if (tab === 'weekly') return getWeekPts(p);
+        if (tab === 'monthly') return getMonthPts(p);
+        return Number(p.totalPoints) || 0;
+      };
+      const getPeriodStars = (p) => {
+        if (tab === 'today') return getTodayStars(p);
+        if (tab === 'weekly') return getWeekStars(p);
+        if (tab === 'monthly') return getMonthStars(p);
+        return Number(p.stars) || 0;
+      };
 
       const sorted = lastScoreboardPlayers
-        .filter(p => p && !isAdminAccountRecord(p))
-        .sort((a, b) => {
-          if (isTodayTab) {
-            return (getTodayPts(b) - getTodayPts(a))
-              || (getTodayStars(b) - getTodayStars(a))
-              || ((b.totalPoints || 0) - (a.totalPoints || 0));
+        .filter(p => {
+          if (!p || isAdminAccountRecord(p)) return false;
+          if (tab === 'today') {
+            const tSec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
+            return getTodayPts(p) > 0 || tSec > 0;
           }
-          return ((b.totalPoints || 0) - (a.totalPoints || 0))
-            || ((b.stars || 0) - (a.stars || 0));
+          if (tab === 'weekly') return getWeekPts(p) > 0;
+          if (tab === 'monthly') return getMonthPts(p) > 0;
+          return true;
+        })
+        .sort((a, b) => {
+          return (getPeriodPts(b) - getPeriodPts(a))
+            || (getPeriodStars(b) - getPeriodStars(a))
+            || ((b.totalPoints || 0) - (a.totalPoints || 0));
         });
 
+      const tabCfg = PODIUM_PRIZES_CONFIG[tab] || PODIUM_PRIZES_CONFIG.today;
       if (sorted.length === 0) {
-        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-400 py-6">Belum ada rekod pelajar di papan skor.</div>`;
+        listEl.innerHTML = `<div class="text-center text-xs font-bold text-slate-500 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6">${tabCfg.emptyMsg}</div>`;
         return;
       }
 
@@ -12171,10 +12417,17 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           ? (isOnlineNow ? `🎮 Sedang main: <b class="text-emerald-800">${rawAct}</b>` : `🕹️ Terakhir main: <b class="text-slate-700">${rawAct}</b>`)
           : `✨ Baru mendaftar`;
 
-        const shownPoints = isTodayTab ? getTodayPts(p) : (Number(p.totalPoints) || 0);
-        const shownStars = isTodayTab ? getTodayStars(p) : (Number(p.stars) || 0);
-        const subScoreInfo = isTodayTab
-          ? `Terkumpul: ${(Number(p.totalPoints) || 0).toLocaleString()} Markah`
+        const shownPoints = getPeriodPts(p);
+        const shownStars = getPeriodStars(p);
+        const coinSuffix = tab === 'today' ? ' (Hari Ini)' : (tab === 'weekly' ? ' (Minggu Ini)' : (tab === 'monthly' ? ' (Bulan Ini)' : ''));
+        const prizeAmt = (rank <= 3 && tabCfg.prizes[rank - 1] > 0) ? tabCfg.prizes[rank - 1] : 0;
+        const prizeGuardTag = prizeAmt > 0
+          ? (shownPoints >= tabCfg.minPts
+              ? `<div class="text-[9px] font-black text-emerald-700">🎁 Layak Hadiah +${prizeAmt} Coin</div>`
+              : `<div class="text-[9px] font-bold text-rose-600">🛡️ Perlu ≥${tabCfg.minPts} Markah</div>`)
+          : '';
+        const subScoreInfo = tab !== 'alltime'
+          ? `${prizeGuardTag}Terkumpul: ${(Number(p.totalPoints) || 0).toLocaleString()} Markah`
           : `Hari ini: +${getTodayPts(p).toLocaleString()} Markah`;
 
         const statusBadge = isOnlineNow
@@ -12201,7 +12454,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
               </div>
               <div class="text-right flex-shrink-0 space-y-0.5">
                 <div class="text-xs sm:text-sm font-black ${isTodayTab ? 'text-amber-700' : 'text-indigo-800'}">${shownPoints.toLocaleString()} <span class="text-[10px]">Markah</span></div>
-                <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} <span>${shownStars.toLocaleString()} Coin${isTodayTab ? ' (Hari Ini)' : ''}</span></div>
+                <div class="text-[11px] font-extrabold text-amber-700 inline-flex items-center justify-end gap-1">${COIN_ICON_HTML} <span>${shownStars.toLocaleString()} Coin${coinSuffix}</span></div>
                 ${(isTodayTab && todaySec >= 60 && shownPoints > 0) ? `<div class="text-[9px] font-black text-emerald-700">⚡ ${Math.round(shownPoints / (todaySec / 60))} markah/min</div>` : ''}
                 <div class="text-[9px] text-slate-500 font-bold leading-tight">${subScoreInfo}</div>
               </div>

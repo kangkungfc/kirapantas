@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.5 • Rekaan Semula Bingkai Paw & Ekor Kucing 3D dan Arnab Kontot (Siluet Tapak Kaki 4-Jari Chibi Berlekuk, Loceng Emas & Lobak Merah Mini, Serta Zon Telinga Bebas Tindihan)
+            Versi 2.3.7 • Reka Bentuk Semula Pentas Hero Profil Utama & Podium Juara Interaktif Maskot Panda Tanpa Tindihan Sayap/Bingkai
           </span>
         </div>
 
@@ -585,38 +585,42 @@
         </button>
       </div>
 
-      <!-- Kad Hero Pengembaraan & Avatar 3D Utama (Adventure Hero Card) -->
-      <div class="bubbly-card bg-gradient-to-br from-white via-amber-50/70 to-sky-50 border-4 border-amber-400 p-4 space-y-3 relative overflow-hidden">
-        <div class="flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3 min-w-0 flex-1">
-            <div id="home-avatar-box" onclick="navTo('rewards')" title="Klik untuk tukar gaya Avatar 3D" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl flex-shrink-0 cursor-pointer relative shadow-md bg-white/80"></div>
-            <div class="min-w-0 flex-1 space-y-1">
-              <div class="flex flex-wrap items-center gap-1">
-                <span id="home-welcome-tag" class="text-[10px] font-extrabold text-amber-700 uppercase tracking-wide">Selamat Datang!</span>
-                <span id="home-hero-rank-badge" class="text-[10px] font-black bg-sky-600 text-white px-2 py-0.5 rounded-full">🌱 Perantis KiraKilat</span>
-              </div>
-              <h2 id="home-player-name" class="text-lg sm:text-xl font-bold text-slate-900 truncate">Pelajar</h2>
-              <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-lg inline-flex items-center gap-1"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
-                <span class="text-[11px] font-black bg-indigo-100 text-indigo-900 border border-indigo-200 px-2 py-0.5 rounded-lg">🏅 <span id="home-points-count">0</span> Pts</span>
-              </div>
-            </div>
+      <!-- Kad Hero Pengembaraan & Avatar 3D Utama (Adventure Hero Card - Pentas Sayap & Bingkai Luas Tanpa Tindihan) -->
+      <div class="bubbly-card bg-gradient-to-br from-white via-amber-50/80 to-sky-50 border-4 border-amber-400 p-3.5 sm:p-4 space-y-3 relative overflow-visible">
+        <!-- Pentas Hero Atas: Avatar Gah Berpusat Dengan Ruang Sayap & Mahkota Penuh -->
+        <div class="flex flex-col items-center text-center pt-1">
+          <div class="w-full flex items-center justify-center py-1 px-8 overflow-visible">
+            <div id="home-avatar-box" onclick="navTo('rewards')" title="Klik untuk tukar gaya Avatar 3D & Kedai" class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 cursor-pointer relative overflow-visible transition-transform hover:scale-105"></div>
           </div>
 
-          <div class="flex flex-col gap-1.5 flex-shrink-0">
-            <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-rose-700 whitespace-nowrap">
-              🎨 Avatar & Kedai
-            </button>
-            <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-amber-600 whitespace-nowrap">
-              📅 Hadiah 7-Hari
-            </button>
-            <button type="button" onclick="openKidTutorialModal()" class="bubbly-btn bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-emerald-700 whitespace-nowrap">
-              🖐️ Tutorial Asas 6+
-            </button>
-            <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-white text-slate-700 text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 border-2 border-slate-300 whitespace-nowrap">
-              ⚙️ Urus Akaun
-            </button>
+          <!-- Identiti Murid, Pangkat & Lencana Coin/Markah Di Bawah Pentas Avatar (Bebas Tindihan) -->
+          <div class="mt-2.5 w-full space-y-1.5">
+            <div class="flex flex-wrap items-center justify-center gap-1.5">
+              <span id="home-welcome-tag" class="text-[10px] font-extrabold text-amber-700 uppercase tracking-wide">Selamat Datang!</span>
+              <span id="home-hero-rank-badge" class="text-[10px] font-black bg-sky-600 text-white px-2.5 py-0.5 rounded-full shadow-sm">🌱 Perantis KiraKilat</span>
+            </div>
+            <h2 id="home-player-name" class="text-xl sm:text-2xl font-display font-bold text-slate-900 break-words leading-tight px-2">Pelajar</h2>
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-0.5">
+              <span class="text-xs font-black bg-amber-100 text-amber-950 border-2 border-amber-300 px-3 py-1 rounded-xl inline-flex items-center gap-1.5 shadow-sm"><span class="gold-coin-icon">$</span> <span id="home-star-count">0</span> Coin</span>
+              <span class="text-xs font-black bg-indigo-100 text-indigo-950 border-2 border-indigo-200 px-3 py-1 rounded-xl inline-flex items-center gap-1 shadow-sm">🏅 <span id="home-points-count">0</span> Pts</span>
+            </div>
           </div>
+        </div>
+
+        <!-- Baris Butang Pantas 2x2 Kemas & Seimbang -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-0.5">
+          <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-rose-700 truncate">
+            🎨 Avatar & Kedai
+          </button>
+          <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-amber-600 truncate">
+            📅 Hadiah 7-Hari
+          </button>
+          <button type="button" onclick="openKidTutorialModal()" class="bubbly-btn bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-emerald-700 truncate">
+            🖐️ Tutorial Asas 6+
+          </button>
+          <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-white text-slate-700 text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-slate-300 truncate">
+            ⚙️ Urus Akaun
+          </button>
         </div>
 
         <!-- Bar Kemajuan Tahap Master (XP & Tahap Dikuasai) -->
@@ -1189,40 +1193,45 @@
         </div>
       </div>
 
-      <div class="bubbly-card bg-white border-4 border-indigo-400 p-4 space-y-3">
-        <div class="text-center">
-          <img id="score-champion-panda-img" alt="Juara Papan Skor" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-1 object-contain drop-shadow-md panda-anim-cheer" /><h2 id="score-screen-title" class="text-lg font-bold text-indigo-950">🏆 Papan Skor Juara Online</h2>
-          <p id="score-screen-sub" class="text-xs font-bold text-slate-500">Kedudukan markah, coin & masa aktif semua pelajar secara langsung</p>
-          <div id="scoreboard-sync-status" class="inline-block mt-1.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">⏳ Menyemak sambungan awan...</div>
-          <div id="scoreboard-apikey-fix" class="hidden mt-2 bg-rose-50 border border-rose-200 rounded-xl p-2 text-left space-y-1.5">
-            <div class="text-[10px] font-black text-rose-800">🔑 Tampal teks sebenar <code>apiKey</code> dari Firebase Console > Project Settings:</div>
-            <div class="flex gap-1.5">
-              <input id="input-override-apikey" type="text" placeholder="AIzaSy..." class="flex-1 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-rose-300 bg-white" />
-              <button type="button" onclick="saveOverrideApiKey()" class="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-lg">Simpan & Sambung</button>
-            </div>
+      <div class="bubbly-card bg-white border-4 border-indigo-400 p-3.5 sm:p-4 space-y-2.5">
+        <!-- Tajuk Ringkas & Status Awan Sebaris -->
+        <div class="flex flex-wrap items-center justify-between gap-1.5 border-b border-indigo-100 pb-2">
+          <div>
+            <h2 id="score-screen-title" class="text-base sm:text-lg font-bold text-indigo-950 leading-tight">🏆 Papan Skor Juara Online</h2>
+            <p id="score-screen-sub" class="text-[10.5px] font-bold text-slate-500">Kedudukan markah, coin & masa aktif secara langsung</p>
+          </div>
+          <div id="scoreboard-sync-status" class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">⏳ Menyemak awan...</div>
+        </div>
+
+        <div id="scoreboard-apikey-fix" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-2 text-left space-y-1.5">
+          <div class="text-[10px] font-black text-rose-800">🔑 Tampal teks sebenar <code>apiKey</code> dari Firebase Console > Project Settings:</div>
+          <div class="flex gap-1.5">
+            <input id="input-override-apikey" type="text" placeholder="AIzaSy..." class="flex-1 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-rose-300 bg-white" />
+            <button type="button" onclick="saveOverrideApiKey()" class="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-lg">Simpan & Sambung</button>
           </div>
         </div>
 
-        <!-- 4 Tab Papan Skor: Hari Ini (Aktif Sahaja), Minggu Ini, Bulan Ini & Terkumpul -->
-        <div class="grid grid-cols-4 gap-1.5 pt-1">
-          <button type="button" onclick="switchScoreboardTab('today')" id="tab-score-today" class="bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+        <!-- 4 Tab Kategori Papan Skor -->
+        <div class="grid grid-cols-4 gap-1.5">
+          <button type="button" onclick="switchScoreboardTab('today')" id="tab-score-today" class="bubbly-btn bg-amber-400 text-amber-950 border-2 border-amber-600 py-1.5 px-1 text-[10px] sm:text-xs font-black leading-tight">
             🔥 Hari Ini
           </button>
-          <button type="button" onclick="switchScoreboardTab('weekly')" id="tab-score-weekly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+          <button type="button" onclick="switchScoreboardTab('weekly')" id="tab-score-weekly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-1.5 px-1 text-[10px] sm:text-xs font-black leading-tight">
             📅 Minggu Ini
           </button>
-          <button type="button" onclick="switchScoreboardTab('monthly')" id="tab-score-monthly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+          <button type="button" onclick="switchScoreboardTab('monthly')" id="tab-score-monthly" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-1.5 px-1 text-[10px] sm:text-xs font-black leading-tight">
             🗓️ Bulan Ini
           </button>
-          <button type="button" onclick="switchScoreboardTab('alltime')" id="tab-score-alltime" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-2 px-1 text-[10px] sm:text-xs font-black leading-tight">
+          <button type="button" onclick="switchScoreboardTab('alltime')" id="tab-score-alltime" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-1.5 px-1 text-[10px] sm:text-xs font-black leading-tight">
             🏆 Terkumpul
           </button>
         </div>
 
-        <!-- Sepanduk Hadiah Podium Rasmi & Pemasa Undur (Marketing & Ganjaran) -->
-        <div id="scoreboard-podium-prize-banner" class="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border-2 border-amber-400 rounded-2xl p-2.5 space-y-1.5"></div>
+        <!-- Pentas Podium Visual Juara Dengan Maskot Panda Di Tempat #1 (Padat & Bermaklumat) -->
+        <div id="scoreboard-podium-prize-banner" class="bg-gradient-to-b from-amber-50/90 via-yellow-50/70 to-indigo-50/60 border-2 border-amber-300 rounded-2xl px-2.5 pt-2 pb-2.5"></div>
 
-        <div id="scoreboard-list" class="space-y-2.5 max-h-[62vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
+        <!-- Senarai Kedudukan Murid (Ruang Sayap & Bingkai Luas Tanpa Tindihan Nama) -->
+        <div id="scoreboard-list" class="space-y-2.5 max-h-[68vh] overflow-y-auto scroll-smooth-touch pr-0.5"></div>
       </div>
     </section>
 
@@ -1432,9 +1441,9 @@
 
       <!-- Kad Ringkasan Profil Pelajar (Sentiasa Dipaparkan Di Atas) -->
       <div class="bubbly-card bg-white border-4 border-amber-400 p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between gap-2.5">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div id="acc-avatar-box" class="w-14 h-14 rounded-2xl flex-shrink-0 relative"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-5 min-w-0 pl-2">
+            <div id="acc-avatar-box" class="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 relative overflow-visible"></div>
             <div class="min-w-0 flex-1">
               <div id="acc-current-name-display" class="text-base font-black text-slate-800 truncate">Pelajar</div>
               <div class="flex flex-wrap gap-1.5 mt-1 text-[11px] font-extrabold">
@@ -3046,7 +3055,15 @@
         { id: 'out_cyber_armor',   name: 'Perisai Cyber Neon',    tier: 'Epik',     gender: 'unisex', cost: 125, setTag: '⚡ Set Cyber Neon',
           setApply: { outfit: 'out_cyber_armor', hair: 'hair_cyber_spike', headwear: 'hw_cyber_visor', addAcc: ['acc_shades', 'acc_headphones'], frame: 'fr_neon' } },
         { id: 'out_dragon_emperor',name: 'Jubah Maharaja Naga',   tier: 'Legenda',  gender: 'unisex', cost: 160, setTag: '🐉 Set Maharaja Naga',
-          setApply: { outfit: 'out_dragon_emperor', hair: 'hair_samurai', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon', 'acc_scarf_red'], frame: 'fr_dragon' } }
+          setApply: { outfit: 'out_dragon_emperor', hair: 'hair_samurai', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon', 'acc_scarf_red'], frame: 'fr_dragon' } },
+        { id: 'out_phoenix_robe',  name: 'Jubah Sayap Phoenix',   tier: 'Mitos',    gender: 'unisex', cost: 210, setTag: '🔥 Set Phoenix Abadi',
+          setApply: { outfit: 'out_phoenix_robe', hair: 'hair_phoenix_plume', headwear: 'hw_phoenix_crest', addAcc: ['acc_wings_phoenix'], frame: 'fr_phoenix_mythic' } },
+        { id: 'out_celestial_armor',name:'Zirah Kosmik Cakerawala',tier:'Mitos',    gender: 'unisex', cost: 240, setTag: '☀️ Set Cakerawala Suria',
+          setApply: { outfit: 'out_celestial_armor', hair: 'hair_wizard_wave', headwear: 'hw_celestial_crown', addAcc: ['acc_wings_celestial'], frame: 'fr_celestial_king' } },
+        { id: 'out_prism_suit',    name: 'Sut Kristal Prisma',    tier: 'Mitos',    gender: 'unisex', cost: 275, setTag: '💎 Set Prisma Infiniti',
+          setApply: { outfit: 'out_prism_suit', hair: 'hair_cyber_spike', headwear: 'hw_prism_tiara', addAcc: ['acc_prism_visor', 'acc_wings_prism'], frame: 'fr_infinity_prism' } },
+        { id: 'out_grandmaster_robe',name:'Jubah Agung Grandmaster',tier:'Agung',   gender: 'unisex', cost: 350, setTag: '🧮 Set Grandmaster Abakus',
+          setApply: { outfit: 'out_grandmaster_robe', hair: 'hair_samurai', headwear: 'hw_grandmaster_crown', addAcc: ['acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
       ],
       hair: [
         // Susunan Harga Rambut Mengikut Padanan Set
@@ -3064,7 +3081,8 @@
         { id: 'hair_fire_flame', name: 'Rambut Api Membara',     tier: 'Epik',     gender: 'unisex',cost: 60, setTag: '🔥 Set Api Membara', setApply: { hair: 'hair_fire_flame', outfit: 'out_fire_armor', addAcc: ['acc_fire_glasses'], frame: 'fr_fire' } },
         { id: 'hair_cyber_spike',name: 'Rambut Neon Cyber',      tier: 'Epik',     gender: 'unisex',cost: 65, setTag: '⚡ Set Cyber Neon', setApply: { hair: 'hair_cyber_spike', outfit: 'out_cyber_armor', headwear: 'hw_cyber_visor', frame: 'fr_neon' } },
         { id: 'hair_princess',   name: 'Ikatan Puteri Unicorn',  tier: 'Gah',      gender: 'girl', cost: 68, setTag: '🦄 Set Puteri Unicorn', setApply: { hair: 'hair_princess', outfit: 'out_princess_gown', headwear: 'hw_unicorn_horn' } },
-        { id: 'hair_samurai',    name: 'Sanggul Maharaja Naga',  tier: 'Legenda',  gender: 'boy',  cost: 75, setTag: '🐉 Set Maharaja Naga', setApply: { hair: 'hair_samurai', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } }
+        { id: 'hair_samurai',    name: 'Sanggul Maharaja Naga',  tier: 'Legenda',  gender: 'boy',  cost: 75, setTag: '🐉 Set Maharaja Naga', setApply: { hair: 'hair_samurai', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } },
+        { id: 'hair_phoenix_plume',name:'Rambut Bulu Phoenix',   tier: 'Mitos',    gender: 'unisex',cost: 95, setTag: '🔥 Set Phoenix Abadi', setApply: { hair: 'hair_phoenix_plume', outfit: 'out_phoenix_robe', headwear: 'hw_phoenix_crest', addAcc: ['acc_wings_phoenix'], frame: 'fr_phoenix_mythic' } }
       ],
       headwear: [
         // Tudung, Topi, Cekak Haiwan & Tanduk Unicorn Mengikut Padanan Set
@@ -3091,7 +3109,11 @@
         { id: 'hw_cyber_visor',    name: 'Visor Cyber Neon',     tier: 'Epik',     gender: 'unisex', cost: 115,setTag: '⚡ Set Cyber Neon', setApply: { headwear: 'hw_cyber_visor', outfit: 'out_cyber_armor', frame: 'fr_neon' } },
         { id: 'hw_unicorn_horn',   name: 'Tanduk & Halo Unicorn',tier: 'Legenda',  gender: 'unisex', cost: 135,setTag: '🦄 Set Puteri Unicorn', setApply: { headwear: 'hw_unicorn_horn', addAcc: ['acc_wings_angel'], outfit: 'out_princess_gown' } },
         { id: 'hw_halo',           name: 'Halo Cahaya Suci',     tier: 'Legenda',  gender: 'unisex', cost: 140,setTag: '😇 Padan Sayap Unicorn', setApply: { headwear: 'hw_halo', addAcc: ['acc_wings_angel'] } },
-        { id: 'hw_dragon_crest',   name: 'Mahkota Tanduk Naga',  tier: 'Legenda',  gender: 'unisex', cost: 150,setTag: '🐉 Set Maharaja Naga', setApply: { headwear: 'hw_dragon_crest', outfit: 'out_dragon_emperor', addAcc: ['acc_wings_dragon'], frame: 'fr_dragon' } }
+        { id: 'hw_dragon_crest',   name: 'Mahkota Tanduk Naga',  tier: 'Legenda',  gender: 'unisex', cost: 150,setTag: '🐉 Set Maharaja Naga', setApply: { headwear: 'hw_dragon_crest', outfit: 'out_dragon_emperor', addAcc: ['acc_wings_dragon'], frame: 'fr_dragon' } },
+        { id: 'hw_phoenix_crest',  name: 'Mahkota Jambul Phoenix',tier:'Mitos',    gender: 'unisex', cost: 185,setTag: '🔥 Set Phoenix Abadi', setApply: { headwear: 'hw_phoenix_crest', outfit: 'out_phoenix_robe', hair: 'hair_phoenix_plume', addAcc: ['acc_wings_phoenix'], frame: 'fr_phoenix_mythic' } },
+        { id: 'hw_celestial_crown',name: 'Mahkota Suria & Bulan',tier: 'Mitos',    gender: 'unisex', cost: 210,setTag: '☀️ Set Cakerawala Suria', setApply: { headwear: 'hw_celestial_crown', outfit: 'out_celestial_armor', addAcc: ['acc_wings_celestial'], frame: 'fr_celestial_king' } },
+        { id: 'hw_prism_tiara',    name: 'Mahkota Kristal Prisma',tier:'Mitos',    gender: 'unisex', cost: 235,setTag: '💎 Set Prisma Infiniti', setApply: { headwear: 'hw_prism_tiara', outfit: 'out_prism_suit', addAcc: ['acc_prism_visor', 'acc_wings_prism'], frame: 'fr_infinity_prism' } },
+        { id: 'hw_grandmaster_crown',name:'Mahkota Agung Grandmaster',tier:'Agung',gender: 'unisex', cost: 300,setTag: '🧮 Set Grandmaster Abakus', setApply: { headwear: 'hw_grandmaster_crown', outfit: 'out_grandmaster_robe', addAcc: ['acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
       ],
       accessory: [
         // Aksesori Stackable Mengikut Set
@@ -3112,7 +3134,12 @@
         { id: 'acc_fire_glasses',  name: 'Cermin Mata Api',      tier: 'Epik',     gender: 'unisex', slot: 'eyewear', cost: 52, setTag: '🔥 Set Api Membara', setApply: { addAcc: ['acc_fire_glasses'], outfit: 'out_fire_armor', hair: 'hair_fire_flame', frame: 'fr_fire' } },
         { id: 'acc_medal_gold',    name: 'Pingat Emas Graduan',  tier: 'Gah',      gender: 'unisex', slot: 'pin',     cost: 55, setTag: '🎓 Set Graduan/Putera', setApply: { addAcc: ['acc_medal_gold'], outfit: 'out_blazer_slate', headwear: 'hw_grad' } },
         { id: 'acc_wings_angel',   name: 'Sayap Unicorn',        tier: 'Epik',     gender: 'unisex', slot: 'back',    cost: 95, setTag: '🦄 Set Puteri Unicorn', setApply: { addAcc: ['acc_wings_angel'], headwear: 'hw_unicorn_horn', outfit: 'out_princess_gown' } },
-        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } }
+        { id: 'acc_wings_dragon',  name: 'Sayap Naga Api',       tier: 'Legenda',  gender: 'unisex', slot: 'back',    cost: 135, setTag: '🐉 Set Maharaja Naga', setApply: { addAcc: ['acc_wings_dragon'], outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', frame: 'fr_dragon' } },
+        { id: 'acc_prism_visor',   name: 'Kaca Mata Prisma Infiniti',tier:'Mitos',  gender: 'unisex', slot: 'eyewear', cost: 145, setTag: '💎 Set Prisma Infiniti', setApply: { addAcc: ['acc_prism_visor', 'acc_wings_prism'], outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', frame: 'fr_infinity_prism' } },
+        { id: 'acc_wings_phoenix', name: 'Sayap Phoenix Abadi',  tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 175, setTag: '🔥 Set Phoenix Abadi', setApply: { addAcc: ['acc_wings_phoenix'], outfit: 'out_phoenix_robe', headwear: 'hw_phoenix_crest', frame: 'fr_phoenix_mythic' } },
+        { id: 'acc_wings_celestial',name:'Sayap Cakerawala Kosmik',tier:'Mitos',   gender: 'unisex', slot: 'back',    cost: 205, setTag: '☀️ Set Cakerawala Suria', setApply: { addAcc: ['acc_wings_celestial'], outfit: 'out_celestial_armor', headwear: 'hw_celestial_crown', frame: 'fr_celestial_king' } },
+        { id: 'acc_wings_prism',   name: 'Sayap Kristal Prisma', tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 245, setTag: '💎 Set Prisma Infiniti', setApply: { addAcc: ['acc_wings_prism', 'acc_prism_visor'], outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', frame: 'fr_infinity_prism' } },
+        { id: 'acc_abacus_staff',  name: 'Tongkat Sempoa Grandmaster',tier:'Agung',gender: 'unisex', slot: 'pin',     cost: 260, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_abacus_staff', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } }
       ],
       frame: [
         // Disusun rapi mengikut tahap eksklusif visual & kenaikan harga Coin
@@ -3136,10 +3163,10 @@
         { id: 'fr_diamond_chain', name: 'Rantai Berlian Unicorn',tier: 'Legenda',  cost: 375, setTag: '🦄 Set Puteri Unicorn', setApply: { frame: 'fr_diamond_chain', outfit: 'out_princess_gown', headwear: 'hw_unicorn_horn', addAcc: ['acc_wings_angel'] } },
         { id: 'fr_galaxy',        name: 'Galaksi Kristal & Planet',tier: 'Legenda', cost: 420, setTag: '🌌 Set Galaksi', setApply: { frame: 'fr_galaxy', outfit: 'out_astronaut', headwear: 'hw_astro_visor' } },
         { id: 'fr_dragon',        name: 'Sayap Naga Berapi',     tier: 'Legenda',  cost: 480, setTag: '🐉 Set Maharaja Naga', setApply: { frame: 'fr_dragon', outfit: 'out_dragon_emperor', headwear: 'hw_dragon_crest', addAcc: ['acc_wings_dragon'] } },
-        { id: 'fr_phoenix_mythic',name: 'Aura Phoenix Abadi',    tier: 'Mitos',    cost: 600 },
-        { id: 'fr_celestial_king',name: 'Takhta Suria & Bulan',  tier: 'Mitos',    cost: 800 },
-        { id: 'fr_infinity_prism',name: 'Prisma Infiniti Juara',  tier: 'Mitos',    cost: 1000 },
-        { id: 'fr_grandmaster',   name: 'Lambang Grandmaster Abakus', tier: 'Agung', cost: 1500 }
+        { id: 'fr_phoenix_mythic',name: 'Aura Phoenix Abadi',    tier: 'Mitos',    cost: 600, setTag: '🔥 Set Phoenix Abadi', setApply: { frame: 'fr_phoenix_mythic', outfit: 'out_phoenix_robe', hair: 'hair_phoenix_plume', headwear: 'hw_phoenix_crest', addAcc: ['acc_wings_phoenix'] } },
+        { id: 'fr_celestial_king',name: 'Takhta Suria & Bulan',  tier: 'Mitos',    cost: 800, setTag: '☀️ Set Cakerawala Suria', setApply: { frame: 'fr_celestial_king', outfit: 'out_celestial_armor', headwear: 'hw_celestial_crown', addAcc: ['acc_wings_celestial'] } },
+        { id: 'fr_infinity_prism',name: 'Prisma Infiniti Juara',  tier: 'Mitos',    cost: 1000,setTag: '💎 Set Prisma Infiniti', setApply: { frame: 'fr_infinity_prism', outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', addAcc: ['acc_prism_visor', 'acc_wings_prism'] } },
+        { id: 'fr_grandmaster',   name: 'Lambang Grandmaster Abakus', tier: 'Agung', cost: 1500,setTag: '🧮 Set Grandmaster Abakus', setApply: { frame: 'fr_grandmaster', outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', addAcc: ['acc_abacus_staff', 'acc_medal_gold'] } }
       ]
     };
 
@@ -4220,7 +4247,11 @@
         out_princess_gown: ['#F9A8D4', '#EC4899', '#9D174D', '#FEF08A'],
         out_fire_armor:    ['#F97316', '#DC2626', '#7F1D1D', '#FEF08A'],
         out_cyber_armor:   ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
-        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A']
+        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A'],
+        out_phoenix_robe:  ['#F97316', '#B91C1C', '#450A0A', '#FEF08A'],
+        out_celestial_armor:['#38BDF8', '#1E1B4B', '#090D16', '#FACC15'],
+        out_prism_suit:    ['#F8FAFC', '#E0E7FF', '#4338CA', '#EC4899'],
+        out_grandmaster_robe:['#FACC15', '#991B1B', '#451A03', '#FEF08A']
       };
       const op = palettes[outfitId] || palettes.out_hoodie_amber;
 
@@ -4373,6 +4404,46 @@
           <rect x="27" y="62" width="46" height="7" fill="url(#${uid}_gold)"/>
           <path d="M 32 76 Q 50 70 68 76 M 30 84 Q 50 78 70 84" fill="none" stroke="#FACC15" stroke-width="1.8" stroke-dasharray="4 2"/>
         `;
+      } else if (outfitId === 'out_phoenix_robe') {
+        bodyDetails = `
+          <!-- Jubah Sayap Phoenix: Bahu Bulu Api & Permata Suria -->
+          <polygon points="14,34 25,18 38,29 29,40" fill="#F97316" stroke="#FEF08A" stroke-width="1.1"/>
+          <polygon points="86,34 75,18 62,29 71,40" fill="#F97316" stroke="#FEF08A" stroke-width="1.1"/>
+          <polygon points="34,25 50,56 66,25 58,24 50,43 42,24" fill="url(#${uid}_gold)"/>
+          <polygon points="50,36 56,45 50,54 44,45" fill="#FEF08A" stroke="#DC2626" stroke-width="1.2"/>
+          <rect x="27" y="61" width="46" height="6.5" fill="url(#${uid}_gold)"/>
+          <path d="M 32 76 L 50 86 L 68 76" fill="none" stroke="#FACC15" stroke-width="2"/>
+        `;
+      } else if (outfitId === 'out_celestial_armor') {
+        bodyDetails = `
+          <!-- Zirah Kosmik Cakerawala: Selempang Bintang Emas & Bulan Sabit -->
+          <polygon points="29,25 71,62 63,66 24,31" fill="url(#${uid}_gold)" stroke="#1E1B4B" stroke-width="0.9"/>
+          <path d="M 53 38 A 9 9 0 1 0 53 54 A 6.5 6.5 0 1 1 53 38 Z" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1"/>
+          <polygon points="56,46 58,49 61,49.5 58.8,51.5 59.3,54.5 56,53 52.7,54.5 53.2,51.5 51,49.5 54,49" fill="#FEF08A"/>
+          <rect x="27" y="62" width="46" height="6" fill="#38BDF8"/>
+        `;
+      } else if (outfitId === 'out_prism_suit') {
+        bodyDetails = `
+          <!-- Sut Kristal Prisma: Hablur Pelangi & Garis Tenaga -->
+          <polygon points="50,31 61,44 50,57 39,44" fill="#38BDF8" stroke="#4F46E5" stroke-width="1.3"/>
+          <polygon points="50,35 56,44 50,53 44,44" fill="#F472B6"/>
+          <line x1="25" y1="36" x2="39" y2="44" stroke="#F59E0B" stroke-width="2.2"/>
+          <line x1="75" y1="36" x2="61" y2="44" stroke="#10B981" stroke-width="2.2"/>
+          <rect x="27" y="62" width="46" height="6" fill="#4F46E5"/>
+        `;
+      } else if (outfitId === 'out_grandmaster_robe') {
+        bodyDetails = `
+          <!-- Jubah Agung Grandmaster: Sulaman Sempoa Emas Diraja -->
+          <path d="M 15 34 Q 25 18 37 28 L 31 40 Q 21 35 15 34 Z" fill="url(#${uid}_gold)" stroke="#451A03" stroke-width="1.2"/>
+          <path d="M 85 34 Q 75 18 63 28 L 69 40 Q 79 35 85 34 Z" fill="url(#${uid}_gold)" stroke="#451A03" stroke-width="1.2"/>
+          <polygon points="34,24 50,58 66,24 58,23 50,43 42,23" fill="url(#${uid}_gold)"/>
+          <rect x="40" y="42" width="20" height="12" rx="2" fill="#78350F" stroke="#FACC15" stroke-width="1.2"/>
+          <line x1="41" y1="47" x2="59" y2="47" stroke="#FEF08A" stroke-width="1.1"/>
+          <circle cx="45" cy="45" r="1.4" fill="#EF4444"/>
+          <circle cx="50" cy="50" r="1.4" fill="#FACC15"/>
+          <circle cx="55" cy="45" r="1.4" fill="#EF4444"/>
+          <rect x="27" y="62" width="46" height="7" fill="url(#${uid}_gold)"/>
+        `;
       }
 
       const skirtOrPants = (isGirl || ['out_princess_gown', 'out_baju_kurung', 'out_knit_bow'].includes(outfitId))
@@ -4474,7 +4545,11 @@
         out_cyber_armor:   ['#22D3EE', '#0F172A', '#020617', '#38BDF8'],
         out_wizard_robe:   ['#7C3AED', '#4C1D95', '#2E1065', '#FACC15'],
         out_fire_armor:    ['#F97316', '#DC2626', '#7F1D1D', '#FEF08A'],
-        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A']
+        out_dragon_emperor:['#F59E0B', '#B91C1C', '#450A0A', '#FEF08A'],
+        out_phoenix_robe:  ['#F97316', '#B91C1C', '#450A0A', '#FEF08A'],
+        out_celestial_armor:['#38BDF8', '#1E1B4B', '#090D16', '#FACC15'],
+        out_prism_suit:    ['#F8FAFC', '#E0E7FF', '#4338CA', '#EC4899'],
+        out_grandmaster_robe:['#FACC15', '#991B1B', '#451A03', '#FEF08A']
       };
       const op = outfitPalettes[outfitId] || outfitPalettes.out_hoodie_amber;
 
@@ -4606,6 +4681,62 @@
               fill="none" stroke="#FEF08A" stroke-width="2.1" stroke-linecap="round"/>
             <polygon points="126,0 132,-7 121,-3" fill="#FEF08A" stroke="#78350F" stroke-width="0.9"/>
             <polygon points="134,32 140,29 132,37" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
+          </g>
+        `;
+      }
+      if (accList.includes('acc_wings_phoenix')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Phoenix Abadi Kiri (3 Lapisan Bulu Api Merah -> Jingga -> Emas Bercahaya) -->
+            <path d="M 20 62 C 6 58, -14 48, -32 34 C -22 36, -15 35, -10 32 C -26 24, -36 10, -34 -5 C -21 4, -12 10, -4 14 C -14 0, -14 -12, -5 -18 C 4 -6, 12 8, 19 26 Z"
+              fill="#DC2626" stroke="#FEF08A" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M 19 57 C 7 53, -8 43, -22 31 C -14 32, -8 30, -4 27 C -16 19, -23 8, -21 -4 C -11 4, -4 10, 3 16 C -3 5, -2 -4, 4 -9 C 11 2, 16 14, 19 28 Z"
+              fill="#F97316"/>
+            <path d="M 18 52 C 9 48, -2 39, -12 29 C -5 29, 0 26, 3 22 C -6 15, -10 7, -8 -1 C 0 6, 7 15, 16 30 Z"
+              fill="#FACC15"/>
+            <!-- Sayap Phoenix Abadi Kanan -->
+            <path d="M 80 62 C 94 58, 114 48, 132 34 C 122 36, 115 35, 110 32 C 126 24, 136 10, 134 -5 C 121 4, 112 10, 104 14 C 114 0, 114 -12, 105 -18 C 96 -6, 88 8, 81 26 Z"
+              fill="#DC2626" stroke="#FEF08A" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M 81 57 C 93 53, 108 43, 122 31 C 114 32, 108 30, 104 27 C 116 19, 123 8, 121 -4 C 111 4, 104 10, 97 16 C 103 5, 102 -4, 96 -9 C 89 2, 84 14, 81 28 Z"
+              fill="#F97316"/>
+            <path d="M 82 52 C 91 48, 102 39, 112 29 C 105 29, 100 26, 97 22 C 106 15, 110 7, 108 -1 C 100 6, 93 15, 84 30 Z"
+              fill="#FACC15"/>
+          </g>
+        `;
+      }
+      if (accList.includes('acc_wings_celestial')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Cakerawala Kosmik Kiri (Indigo Malam + Bingkai Emas & Bintang Suria) -->
+            <path d="M 20 62 L -28 72 L -16 54 L -36 44 L -18 32 L -34 14 L -10 18 L -18 -4 L 8 16 L 20 38 Z"
+              fill="#1E1B4B" stroke="#FACC15" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M 19 56 L -15 62 L -7 49 L -22 42 L -9 33 L -19 20 L -2 23 L -7 7 L 11 22 L 19 40 Z"
+              fill="#0284C7" opacity="0.82"/>
+            <circle cx="-18" cy="43" r="2.2" fill="#FEF08A"/>
+            <circle cx="-14" cy="18" r="2.4" fill="#38BDF8"/>
+            <!-- Sayap Cakerawala Kosmik Kanan -->
+            <path d="M 80 62 L 128 72 L 116 54 L 136 44 L 118 32 L 134 14 L 110 18 L 118 -4 L 92 16 L 80 38 Z"
+              fill="#1E1B4B" stroke="#38BDF8" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M 81 56 L 115 62 L 107 49 L 122 42 L 109 33 L 119 20 L 102 23 L 107 7 L 89 22 L 81 40 Z"
+              fill="#312E81" opacity="0.88"/>
+            <circle cx="118" cy="43" r="2.2" fill="#38BDF8"/>
+            <circle cx="114" cy="18" r="2.4" fill="#FEF08A"/>
+          </g>
+        `;
+      }
+      if (accList.includes('acc_wings_prism')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Kristal Prisma Kiri (Hablur Pelangi Lutsinar 4 Segmen) -->
+            <polygon points="20,42 -30,-4 -14,24 19,48" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="20,47 -36,24 -12,42 19,53" fill="#E879F9" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="20,52 -32,52 -10,58 19,58" fill="#FACC15" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="20,58 -20,76 -2,68 19,63" fill="#34D399" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <!-- Sayap Kristal Prisma Kanan -->
+            <polygon points="80,42 130,-4 114,24 81,48" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="80,47 136,24 112,42 81,53" fill="#E879F9" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="80,52 132,52 110,58 81,58" fill="#FACC15" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
+            <polygon points="80,58 120,76 102,68 81,63" fill="#34D399" stroke="#FFFFFF" stroke-width="1.2" opacity="0.92"/>
           </g>
         `;
       }
@@ -4794,6 +4925,46 @@
           <!-- Pelindung Bahu Sisik Naga -->
           <path d="M 18 82 Q 25 73 34 79 L 30 86 Q 22 83 18 82 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
           <path d="M 82 82 Q 75 73 66 79 L 70 86 Q 78 83 82 82 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="0.9"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_phoenix_robe') {
+        outfitDetail = `
+          <!-- Jubah Sayap Phoenix: Kolar Bulu Emas & Permata Suria -->
+          <path d="M 16 100 C 18 79, 31 73, 50 73 C 69 73, 82 79, 84 100 Z" fill="#991B1B" stroke="#FEF08A" stroke-width="1.3" filter="url(#${uid}_shadow)"/>
+          <polygon points="32,74 50,96 68,74 59,74 50,86 41,74" fill="url(#${uid}_gold)"/>
+          <polygon points="50,82 55,88 50,94 45,88" fill="#FEF08A" stroke="#DC2626" stroke-width="1"/>
+          <polygon points="17,82 27,72 34,82 22,87" fill="#F97316" stroke="#FEF08A" stroke-width="0.9"/>
+          <polygon points="83,82 73,72 66,82 78,87" fill="#F97316" stroke="#FEF08A" stroke-width="0.9"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_celestial_armor') {
+        outfitDetail = `
+          <!-- Zirah Kosmik Cakerawala: Selempang Emas & Bulan Sabit -->
+          <path d="M 17 100 L 20 79 L 33 74 L 67 74 L 80 79 L 83 100 Z" fill="#1E1B4B" stroke="#FACC15" stroke-width="1.3" filter="url(#${uid}_shadow)"/>
+          <polygon points="30,76 70,98 63,100 25,81" fill="url(#${uid}_gold)"/>
+          <path d="M 52 81 A 6.5 6.5 0 1 0 52 93 A 4.8 4.8 0 1 1 52 81 Z" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.8"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_prism_suit') {
+        outfitDetail = `
+          <!-- Sut Kristal Prisma: Hablur Pelangi & Garis Tenaga -->
+          <path d="M 17 100 L 20 79 L 33 74 L 67 74 L 80 79 L 83 100 Z" fill="#F8FAFC" stroke="#4F46E5" stroke-width="1.4" filter="url(#${uid}_shadow)"/>
+          <polygon points="50,78 58,86 50,94 42,86" fill="#38BDF8" stroke="#4F46E5" stroke-width="1.1"/>
+          <polygon points="50,81 54,86 50,91 46,86" fill="#F472B6"/>
+          <line x1="22" y1="84" x2="42" y2="86" stroke="#F59E0B" stroke-width="1.8"/>
+          <line x1="78" y1="84" x2="58" y2="86" stroke="#10B981" stroke-width="1.8"/>
+          <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
+        `;
+      } else if (outfitId === 'out_grandmaster_robe') {
+        outfitDetail = `
+          <!-- Jubah Agung Grandmaster: Sulaman Sempoa Emas Diraja -->
+          <path d="M 16 100 C 18 79, 31 73, 50 73 C 69 73, 82 79, 84 100 Z" fill="#7F1D1D" stroke="#FACC15" stroke-width="1.5" filter="url(#${uid}_shadow)"/>
+          <polygon points="32,74 50,96 68,74 59,74 50,86 41,74" fill="url(#${uid}_gold)"/>
+          <rect x="41" y="82" width="18" height="10" rx="2" fill="#78350F" stroke="#FACC15" stroke-width="1.1"/>
+          <line x1="42" y1="86.5" x2="58" y2="86.5" stroke="#FEF08A" stroke-width="1"/>
+          <circle cx="45.5" cy="84.5" r="1.2" fill="#EF4444"/>
+          <circle cx="50" cy="89" r="1.2" fill="#FACC15"/>
+          <circle cx="54.5" cy="84.5" r="1.2" fill="#EF4444"/>
           <rect x="43.5" y="65" width="13" height="14" rx="6" fill="url(#${uid}_skin)"/>
         `;
       } else if (outfitId === 'out_princess_gown') {
@@ -5129,6 +5300,13 @@
               <polygon points="40,10 45,23 50,23" fill="#22D3EE"/>
               <polygon points="60,10 55,23 50,23" fill="#38BDF8"/>
             `;
+          } else if (cfg.hair === 'hair_phoenix_plume') {
+            frontHairLayer = `
+              <path d="M 21 45 C 16 25, 29 12, 43 8 C 41 15, 46 18, 50 9 C 54 18, 59 15, 57 8 C 71 12, 84 25, 79 45 C 70 32, 30 32, 21 45 Z"
+                fill="#B91C1C" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+              <path d="M 30 35 C 34 22, 44 16, 50 11 C 56 16, 66 22, 70 35 C 58 29, 42 29, 30 35 Z" fill="#F97316"/>
+              <path d="M 38 33 Q 50 22 62 33 Q 50 28 38 33 Z" fill="#FEF08A"/>
+            `;
           } else {
             frontHairLayer = `
               <circle cx="27" cy="33" r="8.5" fill="url(#${uid}_hair)" filter="url(#${uid}_soft)"/>
@@ -5151,6 +5329,13 @@
               <polygon points="21,43 19,19 32,27 40,10 50,23 60,10 68,27 81,19 79,43 66,31 50,34 34,31" fill="#0F172A" stroke="#22D3EE" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
               <polygon points="40,10 45,23 50,23" fill="#22D3EE"/>
               <polygon points="60,10 55,23 50,23" fill="#38BDF8"/>
+            `;
+          } else if (cfg.hair === 'hair_phoenix_plume') {
+            frontHairLayer = `
+              <path d="M 21 45 C 16 25, 29 12, 43 8 C 41 15, 46 18, 50 9 C 54 18, 59 15, 57 8 C 71 12, 84 25, 79 45 C 70 32, 30 32, 21 45 Z"
+                fill="#B91C1C" stroke="#FACC15" stroke-width="1.2" filter="url(#${uid}_shadow)"/>
+              <path d="M 30 35 C 34 22, 44 16, 50 11 C 56 16, 66 22, 70 35 C 58 29, 42 29, 30 35 Z" fill="#F97316"/>
+              <path d="M 38 33 Q 50 22 62 33 Q 50 28 38 33 Z" fill="#FEF08A"/>
             `;
           } else {
             frontHairLayer = `
@@ -5260,6 +5445,18 @@
 
             <!-- Jambatan Hidung Api -->
             <path d="M 46 46 Q 50 43 54 46" fill="none" stroke="#FACC15" stroke-width="2.6" stroke-linecap="round"/>
+          </g>
+        `;
+      }
+      if (accList.includes('acc_prism_visor')) {
+        accLayer += `
+          <g filter="url(#${uid}_glow)">
+            <!-- Kaca Mata Prisma Infiniti Berlian Pelangi -->
+            <polygon points="26,47 32,40 44,40 48,47 44,54 32,54" fill="rgba(56, 189, 248, 0.72)" stroke="#FACC15" stroke-width="1.6"/>
+            <polygon points="52,47 56,40 68,40 74,47 68,54 56,54" fill="rgba(232, 121, 249, 0.72)" stroke="#FACC15" stroke-width="1.6"/>
+            <line x1="33" y1="42" x2="41" y2="52" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="57" y1="42" x2="65" y2="52" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+            <polygon points="47,46 50,43 53,46 50,49" fill="#FEF08A" stroke="#4F46E5" stroke-width="0.9"/>
           </g>
         `;
       }
@@ -5436,6 +5633,48 @@
             <circle cx="50" cy="3" r="1.8" fill="#FFFFFF"/>
           </g>
         `;
+      } else if (cfg.headwear === 'hw_phoenix_crest') {
+        hatLayer = `
+          <g filter="url(#${uid}_glow)">
+            <!-- Mahkota Jambul Phoenix Abadi -->
+            <path d="M 25 32 C 19 20, 26 9, 36 14 C 37 6, 44 2, 50 11 C 56 2, 63 6, 64 14 C 74 9, 81 20, 75 32 Z"
+              fill="#DC2626" stroke="#FEF08A" stroke-width="1.3" stroke-linejoin="round"/>
+            <polygon points="34,30 42,13 50,23 58,13 66,30" fill="#F97316"/>
+            <polygon points="50,14 55,23 50,30 45,23" fill="#FEF08A" stroke="#B91C1C" stroke-width="1"/>
+          </g>
+        `;
+      } else if (cfg.headwear === 'hw_celestial_crown') {
+        hatLayer = `
+          <g filter="url(#${uid}_glow)">
+            <!-- Mahkota Suria & Bulan Cakerawala -->
+            <polygon points="26,31 32,12 41,21 50,7 59,21 68,12 74,31" fill="#1E1B4B" stroke="#FACC15" stroke-width="1.4" stroke-linejoin="round"/>
+            <circle cx="50" cy="17" r="4.8" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+            <path d="M 35 19 A 4 4 0 1 0 35 26 A 3 3 0 1 1 35 19 Z" fill="#38BDF8"/>
+            <polygon points="65,19 66.5,22 69.5,22.5 67.2,24.5 67.8,27.5 65,26 62.2,27.5 62.8,24.5 60.5,22.5 63.5,22" fill="#FEF08A"/>
+          </g>
+        `;
+      } else if (cfg.headwear === 'hw_prism_tiara') {
+        hatLayer = `
+          <g filter="url(#${uid}_glow)">
+            <!-- Mahkota Kristal Prisma Infiniti -->
+            <path d="M 27 31 Q 50 16 73 31 L 68 33 Q 50 24 32 33 Z" fill="url(#${uid}_gold)" stroke="#4F46E5" stroke-width="1"/>
+            <polygon points="50,6 56,19 50,29 44,19" fill="#E0F2FE" stroke="#4F46E5" stroke-width="1.2"/>
+            <polygon points="36,14 40,22 36,28 32,22" fill="#F472B6" stroke="#FFFFFF" stroke-width="0.9"/>
+            <polygon points="64,14 68,22 64,28 60,22" fill="#34D399" stroke="#FFFFFF" stroke-width="0.9"/>
+          </g>
+        `;
+      } else if (cfg.headwear === 'hw_grandmaster_crown') {
+        hatLayer = `
+          <g filter="url(#${uid}_glow)">
+            <!-- Mahkota Agung Grandmaster Abakus -->
+            <polygon points="24,31 31,10 41,20 50,5 59,20 69,10 76,31" fill="url(#${uid}_gold)" stroke="#451A03" stroke-width="1.4" stroke-linejoin="round"/>
+            <rect x="41" y="18" width="18" height="10" rx="2" fill="#78350F" stroke="#FEF08A" stroke-width="1"/>
+            <line x1="42" y1="22.5" x2="58" y2="22.5" stroke="#FEF08A" stroke-width="1"/>
+            <circle cx="45.5" cy="20.5" r="1.3" fill="#EF4444"/>
+            <circle cx="50" cy="25" r="1.3" fill="#FACC15"/>
+            <circle cx="54.5" cy="20.5" r="1.3" fill="#EF4444"/>
+          </g>
+        `;
       }
 
       return `
@@ -5485,6 +5724,25 @@
               <circle cx="74" cy="56" r="1.8" fill="#38BDF8"/>
               <circle cx="96" cy="54" r="1.6" fill="#F472B6"/>
               <circle cx="95" cy="76" r="1.5" fill="#FEF08A"/>
+            </g>
+          ` : ''}
+          ${accList.includes('acc_abacus_staff') ? `
+            <g filter="url(#${uid}_glow)">
+              <!-- Tongkat Sempoa Agung Grandmaster Di Sisi Kanan -->
+              <line x1="70" y1="97" x2="87" y2="62" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
+              <line x1="70" y1="97" x2="87" y2="62" stroke="url(#${uid}_gold)" stroke-width="2" stroke-linecap="round"/>
+              <!-- Kepala Sempoa Emas Diraja Di Hujung Tongkat -->
+              <g transform="translate(87, 56) rotate(14)">
+                <rect x="-12" y="-8" width="24" height="15" rx="3" fill="#78350F" stroke="#FACC15" stroke-width="1.4"/>
+                <rect x="-10" y="-6" width="20" height="11" rx="1.5" fill="#FEF3C7"/>
+                <line x1="-10" y1="-1" x2="10" y2="-1" stroke="#451A03" stroke-width="1.3"/>
+                <line x1="-5" y1="-6" x2="-5" y2="5" stroke="#92400E" stroke-width="1.1"/>
+                <line x1="0" y1="-6" x2="0" y2="5" stroke="#92400E" stroke-width="1.1"/>
+                <line x1="5" y1="-6" x2="5" y2="5" stroke="#92400E" stroke-width="1.1"/>
+                <circle cx="-5" cy="-3.5" r="1.6" fill="#EF4444"/>
+                <circle cx="0" cy="2" r="1.6" fill="#F59E0B"/>
+                <circle cx="5" cy="-3.5" r="1.6" fill="#EF4444"/>
+              </g>
             </g>
           ` : ''}
         </svg>
@@ -10339,20 +10597,56 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (!bannerEl) return;
       const cfg = PODIUM_PRIZES_CONFIG[activeScoreboardTab] || PODIUM_PRIZES_CONFIG.today;
       const countdown = getPodiumResetCountdownText(activeScoreboardTab);
-      const guardNote = cfg.minPts > 0
-        ? `<div class="text-[9.5px] font-bold text-amber-900">🛡️ Syarat kelayakan hadiah: Minimum <b>${cfg.minPts} Markah</b> dalam tempoh ini.</div>`
-        : `<div class="text-[9.5px] font-bold text-indigo-900">🌟 Kedudukan terkumpul sepanjang masa — item paling mahal setiap kategori di Kedai kekal eksklusif untuk dibeli dengan Coin!</div>`;
+      const pandaSrc = (typeof PANDA_MASCOT_POSES !== 'undefined' && PANDA_MASCOT_POSES.champion) ? PANDA_MASCOT_POSES.champion : '';
+      const shortLabels = {
+        today: ['+30 Coin', '+20 Coin', '+10 Coin'],
+        weekly: ['+100 Coin', '+60 Coin', '+35 Coin'],
+        monthly: ['+300 Coin', '+180 Coin', '+100 Coin'],
+        alltime: ['Pangkat Agung', 'Pangkat Legenda', 'Pangkat Epik']
+      }[activeScoreboardTab] || ['+30 Coin', '+20 Coin', '+10 Coin'];
+
+      const guardPill = cfg.minPts > 0
+        ? `<span class="text-[9px] font-black bg-amber-200/80 text-amber-950 px-2 py-0.5 rounded-full border border-amber-400">🛡️ Min ${cfg.minPts} Markah</span>`
+        : `<span class="text-[9px] font-black bg-indigo-100 text-indigo-900 px-2 py-0.5 rounded-full border border-indigo-300">🌟 Carta Sepanjang Masa</span>`;
+
       bannerEl.innerHTML = `
-        <div class="flex flex-wrap items-center justify-between gap-1">
-          <span class="text-[10.5px] font-black text-amber-950">🎁 ${cfg.title}</span>
-          <span class="text-[9.5px] font-black bg-white text-rose-700 px-2 py-0.5 rounded-full border border-amber-300">${countdown}</span>
+        <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
+          <div class="flex items-center gap-1 flex-wrap">
+            <span class="text-[10px] font-black text-amber-950">🎁 ${cfg.title.split('(')[0].trim()}</span>
+            ${guardPill}
+          </div>
+          <span class="text-[9px] font-black bg-white text-rose-700 px-2 py-0.5 rounded-full border border-amber-300 shadow-xs">${countdown}</span>
         </div>
-        <div class="grid grid-cols-3 gap-1 text-center pt-0.5">
-          <div class="bg-white/95 border border-amber-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-amber-900">${cfg.labels[0]}</div>
-          <div class="bg-white/95 border border-slate-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-slate-800">${cfg.labels[1]}</div>
-          <div class="bg-white/95 border border-orange-300 rounded-xl py-1 px-1 text-[9.5px] font-black text-orange-900">${cfg.labels[2]}</div>
+
+        <!-- Podium Visual 3-Tangga: #2 Perak | #1 Emas (Maskot Panda Juara) | #3 Gangsa -->
+        <div class="grid grid-cols-3 items-end gap-1.5 pt-1 text-center">
+          <!-- Tangga #2 Perak -->
+          <div class="flex flex-col items-center">
+            <div class="text-sm sm:text-base leading-none mb-0.5 drop-shadow-xs">🥈</div>
+            <div class="w-full h-11 sm:h-12 rounded-t-xl bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400 border-2 border-b-0 border-slate-400 flex flex-col items-center justify-center px-1 shadow-inner">
+              <span class="text-[10px] font-black text-slate-800 leading-none">#2</span>
+              <span class="text-[9.5px] sm:text-[10px] font-black text-slate-900 mt-0.5 leading-tight">${shortLabels[1]}</span>
+            </div>
+          </div>
+
+          <!-- Tangga #1 Emas Dengan Maskot Panda Juara Di Puncak -->
+          <div class="flex flex-col items-center">
+            ${pandaSrc ? `<img id="score-champion-panda-img" src="${pandaSrc}" alt="Juara Podium" class="w-16 h-16 sm:w-20 sm:h-20 -mb-2 object-contain drop-shadow-md panda-anim-cheer z-10 pointer-events-none" />` : `<div class="text-xl mb-0.5">🥇</div>`}
+            <div class="w-full h-14 sm:h-16 rounded-t-xl bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-2 border-b-0 border-amber-600 flex flex-col items-center justify-center px-1 shadow-md">
+              <span class="text-[11px] font-black text-amber-950 leading-none">🥇 JUARA #1</span>
+              <span class="text-[10px] sm:text-[11px] font-black text-amber-950 bg-white/90 px-1.5 py-0.2 rounded-full mt-1 leading-tight shadow-xs">${shortLabels[0]}</span>
+            </div>
+          </div>
+
+          <!-- Tangga #3 Gangsa -->
+          <div class="flex flex-col items-center">
+            <div class="text-sm sm:text-base leading-none mb-0.5 drop-shadow-xs">🥉</div>
+            <div class="w-full h-9 sm:h-10 rounded-t-xl bg-gradient-to-b from-orange-200 via-amber-600/40 to-orange-400/70 border-2 border-b-0 border-orange-400 flex flex-col items-center justify-center px-1 shadow-inner">
+              <span class="text-[10px] font-black text-orange-950 leading-none">#3</span>
+              <span class="text-[9.5px] sm:text-[10px] font-black text-orange-950 mt-0.5 leading-tight">${shortLabels[2]}</span>
+            </div>
+          </div>
         </div>
-        ${guardNote}
       `;
     }
 
@@ -12523,10 +12817,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         return `
           <div class="p-2.5 sm:p-3 rounded-2xl border-2 space-y-2 ${isMe ? 'bg-amber-50 border-amber-400 shadow-sm' : 'bg-slate-50 border-slate-200'}">
             <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-2 min-w-0 flex-1">
-                <div class="w-6 sm:w-7 text-center font-black text-xs sm:text-sm text-indigo-900 flex-shrink-0">${medal}</div>
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex-shrink-0 relative">${miniAvatar}</div>
-                <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-3.5 sm:gap-4 min-w-0 flex-1">
+                <div class="w-6 sm:w-7 text-center font-black text-xs sm:text-sm text-indigo-900 flex-shrink-0 mr-1">${medal}</div>
+                <div class="w-11 h-11 sm:w-12 sm:h-12 flex-shrink-0 relative overflow-visible mx-1">${miniAvatar}</div>
+                <div class="min-w-0 flex-1 pl-1">
                   <div class="flex flex-wrap items-center gap-1">
                     <span class="text-xs sm:text-sm font-black text-slate-800 break-words leading-tight">${safeName}</span>
                     ${isMe ? '<span class="text-[9px] font-black bg-amber-300 text-amber-950 px-1.5 py-0.5 rounded-full">Anda</span>' : ''}

@@ -388,7 +388,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.3 • Panel Pemantauan Anak Pantas (Tab Penukar Anak 1-Klik, Kad Laporan Boleh Lipat, Borang Pautan Boleh Sorok & Keutamaan Fokus Pengajar)
+            Versi 2.3.5 • Rekaan Semula Bingkai Paw & Ekor Kucing 3D dan Arnab Kontot (Siluet Tapak Kaki 4-Jari Chibi Berlekuk, Loceng Emas & Lobak Merah Mini, Serta Zon Telinga Bebas Tindihan)
           </span>
         </div>
 
@@ -1135,7 +1135,12 @@
       <!-- Pratonton Avatar 3D -->
       <div class="bubbly-card bg-white border-4 border-pink-400 p-4 text-center space-y-3">
         <h2 class="text-lg font-bold text-slate-800">🎨 Studio Avatar 3D & Kedai</h2>
-        <div id="avatar-studio-preview" class="w-28 h-28 mx-auto rounded-3xl relative"></div>
+        <div id="avatar-studio-preview" class="w-32 h-32 mx-auto rounded-3xl relative flex items-center justify-center overflow-visible"></div>
+        <div class="flex items-center justify-center gap-1.5">
+          <button type="button" id="btn-toggle-studio-hide-frame" onclick="toggleStudioHideFramePreview()" class="px-2.5 py-1 rounded-full text-[10px] font-black border-2 bg-slate-100 text-slate-700 border-slate-300 hover:bg-amber-100 transition">
+            👁️ Pratonton Tanpa Bingkai: Off
+          </button>
+        </div>
         <div id="avatar-studio-caption" class="text-xs font-black text-slate-700">Profil Pelajar</div>
 
         <!-- Pilihan Jantina -->
@@ -3726,56 +3731,90 @@
         `;
       }
       if (frameId === 'fr_cat') {
+        const catPawInner = `
+          <!-- Siluet Tapak Kucing Chibi Berlekuk 4-Jari -->
+          <path d="M -9 4 C -11 0, -10.5 -4.2, -7.2 -4.8 C -6.8 -7.8, -3.5 -9.5, -1.4 -7.5 C -0.5 -9.6, 2.8 -9.6, 3.6 -7.4 C 5.8 -9.1, 8.8 -7.3, 8.2 -4.4 C 11.2 -3.6, 11.4 0.5, 9 4.2 C 6.6 8.2, -6.6 8.2, -9 4 Z"
+            fill="#1E293B" stroke="#FFFFFF" stroke-width="1.35" stroke-linejoin="round"/>
+          <!-- Pad Tengah Berbentuk Hati / Bean Kucing -->
+          <path d="M -4.2 3.2 C -4.2 1.2, -1.8 0.4, 0 1.8 C 1.8 0.4, 4.2 1.2, 4.2 3.2 C 4.2 5.4, 1.8 6.4, 0 6.4 C -1.8 6.4, -4.2 5.4, -4.2 3.2 Z"
+            fill="#FB7185"/>
+          <!-- 4 Pad Jari Kucing Comel -->
+          <ellipse cx="-6.3" cy="-1.6" rx="1.65" ry="2.15" transform="rotate(-24 -6.3 -1.6)" fill="#FB7185"/>
+          <ellipse cx="-2.3" cy="-4.3" rx="1.7" ry="2.25" transform="rotate(-8 -2.3 -4.3)" fill="#FB7185"/>
+          <ellipse cx="2.3" cy="-4.3" rx="1.7" ry="2.25" transform="rotate(8 2.3 -4.3)" fill="#FB7185"/>
+          <ellipse cx="6.3" cy="-1.6" rx="1.65" ry="2.15" transform="rotate(24 6.3 -1.6)" fill="#FB7185"/>
+        `;
         return `
-          <!-- Ekor Kucing Melengkung Di Belakang Bawah -->
-          <path d="M 76 78 C 96 76, 104 54, 93 44 C 89 41, 85 45, 88 50 C 93 58, 86 69, 73 71 Z" fill="#1E293B" stroke="#F59E0B" stroke-width="1.3"/>
-          <circle cx="91" cy="46" r="2.6" fill="#FDE68A"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="5"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-dasharray="7 5"/>
-          <!-- Paw Kucing Kiri -->
-          <g transform="translate(10, 56) rotate(-18)">
-            <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
-            <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
-            <circle cx="-4" cy="-2.2" r="1.6" fill="#FB7185"/>
-            <circle cx="0" cy="-3.4" r="1.6" fill="#FB7185"/>
-            <circle cx="4" cy="-2.2" r="1.6" fill="#FB7185"/>
-          </g>
-          <!-- Paw Kucing Kanan -->
-          <g transform="translate(90, 56) rotate(18)">
-            <ellipse cx="0" cy="2" rx="7.2" ry="6.2" fill="#1E293B" stroke="#FFFFFF" stroke-width="1.2"/>
-            <ellipse cx="0" cy="3.2" rx="3.4" ry="2.5" fill="#FB7185"/>
-            <circle cx="-4" cy="-2.2" r="1.6" fill="#FB7185"/>
-            <circle cx="0" cy="-3.4" r="1.6" fill="#FB7185"/>
-            <circle cx="4" cy="-2.2" r="1.6" fill="#FB7185"/>
+          <g filter="url(#${uid}_soft)">
+            <!-- Ekor Kucing Lentik Di Kanan Bawah (Bebas Dari Zon Telinga Atas) -->
+            <path d="M 78 75 C 99 73, 108 51, 96 40 C 92 36, 87 40, 91 46 C 96 54, 89 66, 75 68 Z"
+              fill="#1E293B" stroke="#F59E0B" stroke-width="1.35" stroke-linejoin="round"/>
+            <circle cx="94" cy="42" r="2.8" fill="#FDE68A"/>
+            <!-- Lingkaran Bingkai Kolar Kucing Emas-Arang -->
+            <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F59E0B" stroke-width="5"/>
+            <circle cx="50" cy="50" r="42.5" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-dasharray="7 5"/>
+            <!-- Paw Kucing Kiri Bawah (Menonjol Jelas & Tidak Bertindih Dengan Telinga Atas) -->
+            <g transform="translate(12, 68) rotate(-24) scale(1.12)">
+              ${catPawInner}
+            </g>
+            <!-- Paw Kucing Kanan Bawah -->
+            <g transform="translate(88, 68) rotate(24) scale(1.12)">
+              ${catPawInner}
+            </g>
+            <!-- Lencana Loceng Emas Kucing & Riben Merah Di Bawah Tengah -->
+            <g transform="translate(50, 92.5)">
+              <polygon points="-8,-3.5 0,0 -8,3.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="0.9"/>
+              <polygon points="8,-3.5 0,0 8,3.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="0.9"/>
+              <circle cx="0" cy="1" r="4.8" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+              <line x1="-3.5" y1="1.5" x2="3.5" y2="1.5" stroke="#78350F" stroke-width="1.1"/>
+              <circle cx="0" cy="3" r="1.2" fill="#78350F"/>
+            </g>
           </g>
         `;
       }
       if (frameId === 'fr_bunny') {
+        const bunnyPawInner = `
+          <!-- Siluet Tapak Kaki Arnab Gebu Memanjang 4-Jari -->
+          <path d="M -8 5.5 C -10.2 1.2, -9.8 -3.8, -6.8 -4.8 C -6.5 -8.5, -3.2 -10.5, -1.2 -8.4 C -0.4 -10.8, 2.6 -10.8, 3.4 -8.4 C 5.4 -10.3, 8.6 -8.3, 8 -4.6 C 10.6 -3.5, 10.6 1.5, 8.2 5.8 C 5.8 10.2, -5.8 10.2, -8 5.5 Z"
+            fill="#FFFFFF" stroke="#EC4899" stroke-width="1.45" stroke-linejoin="round"/>
+          <!-- Pad Tapak Arnab Merah Jambu Pastel -->
+          <ellipse cx="0" cy="3.8" rx="4.2" ry="3.4" fill="#F472B6"/>
+          <ellipse cx="0" cy="3.3" rx="2.3" ry="1.6" fill="#FBCFE8" opacity="0.7"/>
+          <!-- 4 Pad Jari Arnab Bujur Comel -->
+          <ellipse cx="-5.8" cy="-1.6" rx="1.55" ry="2.4" transform="rotate(-20 -5.8 -1.6)" fill="#F472B6"/>
+          <ellipse cx="-2.1" cy="-4.8" rx="1.6" ry="2.6" transform="rotate(-6 -2.1 -4.8)" fill="#F472B6"/>
+          <ellipse cx="2.1" cy="-4.8" rx="1.6" ry="2.6" transform="rotate(6 2.1 -4.8)" fill="#F472B6"/>
+          <ellipse cx="5.8" cy="-1.6" rx="1.55" ry="2.4" transform="rotate(20 5.8 -1.6)" fill="#F472B6"/>
+        `;
         return `
-          <!-- Ekor Arnab Kontot Gebu Di Belakang Bawah -->
-          <g transform="translate(82, 78)">
-            <circle cx="0" cy="0" r="8.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.6"/>
-            <circle cx="-3.5" cy="-3" r="4" fill="#FFFFFF"/>
-            <circle cx="3.5" cy="-2.5" r="3.8" fill="#FFFFFF"/>
-            <circle cx="0" cy="3.5" r="4" fill="#FBCFE8"/>
-          </g>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F472B6" stroke-width="5"/>
-          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="6 5"/>
-          <!-- Paw Arnab Kiri -->
-          <g transform="translate(9, 54) rotate(-15)">
-            <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
-            <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
-            <circle cx="-3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
-            <circle cx="0" cy="-3.4" r="1.5" fill="#F472B6"/>
-            <circle cx="3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
-          </g>
-          <!-- Paw Arnab Kanan -->
-          <g transform="translate(91, 54) rotate(15)">
-            <ellipse cx="0" cy="2" rx="7.2" ry="6.5" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.4"/>
-            <ellipse cx="0" cy="3.5" rx="3.4" ry="2.4" fill="#F472B6"/>
-            <circle cx="-3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
-            <circle cx="0" cy="-3.4" r="1.5" fill="#F472B6"/>
-            <circle cx="3.8" cy="-2.2" r="1.5" fill="#F472B6"/>
+          <g filter="url(#${uid}_soft)">
+            <!-- Ekor Arnab Kontot Gebu Berawan Di Kanan Bawah -->
+            <g transform="translate(84, 78)">
+              <circle cx="0" cy="0" r="9.2" fill="#FFFFFF" stroke="#EC4899" stroke-width="1.5"/>
+              <circle cx="-4" cy="-3.5" r="4.4" fill="#FFFFFF"/>
+              <circle cx="4" cy="-3" r="4.2" fill="#FFFFFF"/>
+              <circle cx="-3.5" cy="3.5" r="4" fill="#FCE7F3"/>
+              <circle cx="3" cy="3.8" r="4.2" fill="#FBCFE8"/>
+            </g>
+            <!-- Lingkaran Bingkai Arnab Merah Jambu Pastel -->
+            <circle cx="50" cy="50" r="42.5" fill="none" stroke="#F472B6" stroke-width="5"/>
+            <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="6 5"/>
+            <!-- Paw Arnab Kiri Bawah -->
+            <g transform="translate(12, 68) rotate(-22) scale(1.12)">
+              ${bunnyPawInner}
+            </g>
+            <!-- Paw Arnab Kanan Bawah -->
+            <g transform="translate(88, 68) rotate(22) scale(1.12)">
+              ${bunnyPawInner}
+            </g>
+            <!-- Lencana Lobak Merah Comel Di Bawah Tengah -->
+            <g transform="translate(50, 93) rotate(-18)">
+              <path d="M -5 -2.5 L -10 -5.5 M -5 -1.5 L -11 -2 M -5 -0.5 L -9.5 2" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M -5.5 -3.5 C -2 -4.2, 6 -2.2, 9.5 0 C 6 2.2, -2 4.2, -5.5 3.5 C -7 1.5, -7 -1.5, -5.5 -3.5 Z"
+                fill="#F97316" stroke="#FFFFFF" stroke-width="1"/>
+              <line x1="-1.5" y1="-2.2" x2="-1.5" y2="1" stroke="#FED7AA" stroke-width="1" stroke-linecap="round"/>
+              <line x1="2.5" y1="-1.5" x2="2.5" y2="1.2" stroke="#FED7AA" stroke-width="1" stroke-linecap="round"/>
+            </g>
           </g>
         `;
       }
@@ -4131,11 +4170,11 @@
         }
         return `
           <g filter="url(#${uid}_glow)">
-            <!-- Sayap Laurel Emas Agung Terkeluar Jauh Di Kiri & Kanan -->
-            <path d="M 12 68 C -6 62, -16 44, -14 24 C -7 30, -3 33, 2 33 C -6 22, -8 10, -3 0 C 3 9, 7 18, 10 27 L 15 62 Z"
-              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3" stroke-linejoin="round"/>
-            <path d="M 88 68 C 106 62, 116 44, 114 24 C 107 30, 103 33, 98 33 C 106 22, 108 10, 103 0 C 97 9, 93 18, 90 27 L 85 62 Z"
-              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Sayap Laurel Emas Agung Ramping Di Bahagian Atas (Membuka Ruang Sisi Untuk Sayap & Ekor Aksesori) -->
+            <path d="M 14 48 C 1 43, -7 31, -6 17 C -1 21, 2 23, 6 23 C 0 15, -2 7, 2 -1 C 6 6, 9 13, 12 20 L 16 44 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 86 48 C 99 43, 107 31, 106 17 C 101 21, 98 23, 94 23 C 100 15, 102 7, 98 -1 C 94 6, 91 13, 88 20 L 84 44 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" stroke-linejoin="round"/>
             <circle cx="50" cy="50" r="43.5" fill="none" stroke="#78350F" stroke-width="7"/>
             ${beads.join('')}
             <!-- Mahkota Agung Grandmaster Terkeluar Tinggi Di Atas -->
@@ -4516,47 +4555,57 @@
       }
       if (accList.includes('acc_wings_angel')) {
         outerBackWingsLayer += `
-          <g filter="url(#${uid}_shadow)">
-            <!-- SAYAP UNICORN KIRI (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
-            <path d="M 18 52 C 12 30, -2 12, -16 8 C -19 14, -14 21, -7 25 C -16 23, -21 28, -18 34 C -10 35, -4 36, 2 37 C -14 37, -18 43, -14 48 C -7 48, -1 47, 5 47 C -10 49, -13 55, -8 59 C -1 58, 5 56, 10 55 C -2 59, -4 65, 2 67 C 9 65, 14 61, 18 58 Z"
-              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- Lapisan Bulu Tengah Biru-Perak -->
-            <path d="M 17 51 C 12 35, 1 22, -9 18 C -10 23, -5 28, 2 31 C -6 31, -9 35, -6 39 C 1 39, 6 40, 11 41 C -2 42, -5 46, -1 49 C 5 49, 11 49, 16 50 Z"
-              fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+          <g filter="url(#${uid}_glow)">
+            <!-- SAYAP UNICORN KIRI (Rentangan Heroik Lebar & Tinggi Melangkaui Bingkai Agung) -->
+            <path d="M 20 58 C 10 30, -9 3, -31 -4 C -35 5, -27 14, -17 19 C -30 17, -37 24, -33 32 C -21 34, -11 35, -2 37 C -25 38, -32 46, -26 53 C -15 53, -6 51, 3 51 C -18 55, -23 63, -15 69 C -5 67, 4 64, 11 63 C -5 69, -8 77, 1 80 C 11 77, 17 71, 21 66 Z"
+              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.45" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Mutiara -->
+            <path d="M 19 56 C 11 35, -4 16, -20 11 C -21 18, -14 25, -4 29 C -15 29, -20 35, -15 41 C -5 41, 3 42, 10 44 C -8 46, -13 52, -7 56 C 2 56, 10 56, 18 57 Z"
+              fill="#E0F2FE" stroke="#38BDF8" stroke-width="1.05"/>
             <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
-            <path d="M 17 50 C 14 39, 7 31, 0 29 C 0 34, 4 38, 9 40 C 3 41, 2 44, 5 47 C 9 47, 13 48, 17 50 Z"
-              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
+            <path d="M 19 55 C 14 41, 4 30, -6 27 C -6 34, 0 39, 7 42 C -1 43, -3 48, 2 52 C 8 52, 13 53, 19 55 Z"
+              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="1.0"/>
 
-            <!-- SAYAP UNICORN KANAN (Lengkung Sayap Burung / Pegasus dengan 6 Helai Bulu Pelepah Bertingkat) -->
-            <path d="M 82 52 C 88 30, 102 12, 116 8 C 119 14, 114 21, 107 25 C 116 23, 121 28, 118 34 C 110 35, 104 36, 98 37 C 114 37, 118 43, 114 48 C 107 48, 101 47, 95 47 C 110 49, 113 55, 108 59 C 101 58, 95 56, 90 55 C 102 59, 104 65, 98 67 C 91 65, 86 61, 82 58 Z"
-              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- Lapisan Bulu Tengah Biru-Perak -->
-            <path d="M 83 51 C 88 35, 99 22, 109 18 C 110 23, 105 28, 98 31 C 106 31, 109 35, 106 39 C 99 39, 94 40, 89 41 C 102 42, 105 46, 101 49 C 95 49, 89 49, 84 50 Z"
-              fill="#E0F2FE" stroke="#38BDF8" stroke-width="0.9"/>
+            <!-- SAYAP UNICORN KANAN (Rentangan Heroik Lebar & Tinggi Melangkaui Bingkai Agung) -->
+            <path d="M 80 58 C 90 30, 109 3, 131 -4 C 135 5, 127 14, 117 19 C 130 17, 137 24, 133 32 C 121 34, 111 35, 102 37 C 125 38, 132 46, 126 53 C 115 53, 106 51, 97 51 C 118 55, 123 63, 115 69 C 105 67, 96 64, 89 63 C 105 69, 108 77, 99 80 C 89 77, 83 71, 79 66 Z"
+              fill="#FFFFFF" stroke="#0284C7" stroke-width="1.45" stroke-linejoin="round"/>
+            <!-- Lapisan Bulu Tengah Biru-Mutiara -->
+            <path d="M 81 56 C 89 35, 104 16, 120 11 C 121 18, 114 25, 104 29 C 115 29, 120 35, 115 41 C 105 41, 97 42, 90 44 C 108 46, 113 52, 107 56 C 98 56, 90 56, 82 57 Z"
+              fill="#E0F2FE" stroke="#38BDF8" stroke-width="1.05"/>
             <!-- Pangkal Sayap Emas Unicorn (Covert Feathers) -->
-            <path d="M 83 50 C 86 39, 93 31, 100 29 C 100 34, 96 38, 91 40 C 97 41, 98 44, 95 47 C 91 47, 87 48, 83 50 Z"
-              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="0.9"/>
+            <path d="M 81 55 C 86 41, 96 30, 106 27 C 106 34, 100 39, 93 42 C 101 43, 103 48, 98 52 C 92 52, 87 53, 81 55 Z"
+              fill="url(#${uid}_gold)" stroke="#B45309" stroke-width="1.0"/>
           </g>
         `;
       }
       if (accList.includes('acc_wings_dragon')) {
         outerBackWingsLayer += `
-          <g filter="url(#${uid}_shadow)">
-            <!-- Sayap Naga Kiri (Membran Berapi + Tulang & Cakar Emas) -->
-            <path d="M 18 66 Q 6 61 -4 68 Q -4 56 -14 57 Q -10 43 -18 35 Q -8 24 -12 12 Q 2 18 11 26 L 19 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M 16 61 Q 7 58 -1 62 Q 0 53 -9 53 Q -5 43 -12 36 Q -4 27 -7 19 Q 3 23 10 30 L 17 44 Z" fill="#EA580C"/>
-            <path d="M 15 56 Q 8 54 3 57 Q 4 50 -3 49 Q 0 42 -5 37 Q 1 31 0 26 L 14 45 Z" fill="#FACC15" opacity="0.72"/>
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Naga Api Kiri (Rentangan Heroik Lebar & Tinggi + Tulang & Cakar Emas) -->
+            <path d="M 20 74 Q 2 69 -13 78 Q -13 61 -28 63 Q -22 44 -34 32 Q -19 17 -26 0 Q -6 8 8 20 L 21 44 Z"
+              fill="#991B1B" stroke="#450A0A" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M 18 67 Q 4 64 -8 70 Q -7 57 -20 57 Q -15 43 -25 34 Q -13 21 -18 9 Q -3 15 7 25 L 18 46 Z"
+              fill="#EA580C"/>
+            <path d="M 16 61 Q 6 59 -2 63 Q -1 53 -11 52 Q -7 42 -15 35 Q -6 26 -8 18 L 15 47 Z"
+              fill="#FACC15" opacity="0.8"/>
             <!-- Tulang Sayap & Cakar Naga Kiri -->
-            <path d="M 18 45 Q 3 27 -12 12 M 17 49 Q 0 41 -18 35 M 17 54 Q 1 54 -14 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
-            <polygon points="-12,12 -16,7 -9,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
+            <path d="M 19 46 Q -2 21 -26 0 M 18 52 Q -7 41 -34 32 M 18 59 Q -5 59 -28 63"
+              fill="none" stroke="#FEF08A" stroke-width="2.1" stroke-linecap="round"/>
+            <polygon points="-26,0 -32,-7 -21,-3" fill="#FEF08A" stroke="#78350F" stroke-width="0.9"/>
+            <polygon points="-34,32 -40,29 -32,37" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
 
-            <!-- Sayap Naga Kanan (Membran Berapi + Tulang & Cakar Emas) -->
-            <path d="M 82 66 Q 94 61 104 68 Q 104 56 114 57 Q 110 43 118 35 Q 108 24 112 12 Q 98 18 89 26 L 81 42 Z" fill="#991B1B" stroke="#450A0A" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M 84 61 Q 93 58 101 62 Q 100 53 109 53 Q 105 43 112 36 Q 104 27 107 19 Q 97 23 90 30 L 83 44 Z" fill="#EA580C"/>
-            <path d="M 85 56 Q 92 54 97 57 Q 96 50 103 49 Q 100 42 105 37 Q 99 31 100 26 L 86 45 Z" fill="#FACC15" opacity="0.72"/>
+            <!-- Sayap Naga Api Kanan (Rentangan Heroik Lebar & Tinggi + Tulang & Cakar Emas) -->
+            <path d="M 80 74 Q 98 69 113 78 Q 113 61 128 63 Q 122 44 134 32 Q 119 17 126 0 Q 106 8 92 20 L 79 44 Z"
+              fill="#991B1B" stroke="#450A0A" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M 82 67 Q 96 64 108 70 Q 107 57 120 57 Q 115 43 125 34 Q 113 21 118 9 Q 103 15 93 25 L 82 46 Z"
+              fill="#EA580C"/>
+            <path d="M 84 61 Q 94 59 102 63 Q 101 53 111 52 Q 107 42 115 35 Q 106 26 108 18 L 85 47 Z"
+              fill="#FACC15" opacity="0.8"/>
             <!-- Tulang Sayap & Cakar Naga Kanan -->
-            <path d="M 82 45 Q 97 27 112 12 M 83 49 Q 100 41 118 35 M 83 54 Q 99 54 114 57" fill="none" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
-            <polygon points="112,12 116,7 109,10" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
+            <path d="M 81 46 Q 102 21 126 0 M 82 52 Q 107 41 134 32 M 82 59 Q 105 59 128 63"
+              fill="none" stroke="#FEF08A" stroke-width="2.1" stroke-linecap="round"/>
+            <polygon points="126,0 132,-7 121,-3" fill="#FEF08A" stroke="#78350F" stroke-width="0.9"/>
+            <polygon points="134,32 140,29 132,37" fill="#FEF08A" stroke="#78350F" stroke-width="0.8"/>
           </g>
         `;
       }
@@ -9372,6 +9421,13 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       }
     };
 
+    let studioHideFrameInPreview = false;
+    window.toggleStudioHideFramePreview = function() {
+      playClick();
+      studioHideFrameInPreview = !studioHideFrameInPreview;
+      renderAvatarStudio();
+    };
+
     function renderAvatarStudio() {
       if (!currentPlayer) return;
       updateDailyMysteryBoxUI();
@@ -9380,8 +9436,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       const starEl = document.getElementById('studio-star-balance');
       if (starEl) starEl.innerText = currentPlayer.isAdmin ? '∞ Unlimited' : (currentPlayer.stars || 0);
 
+      const mainPreviewCfg = studioHideFrameInPreview ? { ...cfg, frame: 'fr_none' } : cfg;
       const previewEl = document.getElementById('avatar-studio-preview');
-      if (previewEl) previewEl.innerHTML = renderRealisticAvatarSVG(cfg, "w-full h-full");
+      if (previewEl) previewEl.innerHTML = renderRealisticAvatarSVG(mainPreviewCfg, "w-full h-full");
+
+      const hideFrameBtn = document.getElementById('btn-toggle-studio-hide-frame');
+      if (hideFrameBtn) {
+        hideFrameBtn.className = `px-2.5 py-1 rounded-full text-[10px] font-black border-2 transition ${studioHideFrameInPreview ? 'bg-amber-300 text-amber-950 border-amber-600 shadow-xs' : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-amber-100'}`;
+        hideFrameBtn.innerText = studioHideFrameInPreview ? '👁️ Pratonton Tanpa Bingkai: On' : '👁️ Pratonton Tanpa Bingkai: Off';
+      }
 
       const allCatalogIds = [
         ...AVATAR_STUDIO_CATALOG.face,
@@ -9462,6 +9525,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
         const previewCfg = {
           ...cfg,
+          frame: isAccTab ? 'fr_none' : cfg.frame,
           accessories: isAccTab
             ? (isEquipped ? cfg.accessories : [...cfg.accessories, item.id])
             : [...cfg.accessories]
@@ -9474,6 +9538,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           // Jika pratonton di tab Rambut semasa bertudung, tunjukkan gaya rambut itu tanpa tudung pada kad pratonton
           if (activeStudioTab === 'hair' && previewCfg.headwear && previewCfg.headwear.startsWith('hw_tudung')) {
             previewCfg.headwear = 'hw_none';
+          }
+          // Jika pratonton bingkai Paw Kucing/Arnab di kedai, padankan telinga comelnya jika tiada topi penuh supaya set kelihatan jelas
+          if (activeStudioTab === 'frame' && (item.id === 'fr_cat' || item.id === 'fr_bunny')) {
+            if (!previewCfg.headwear || previewCfg.headwear === 'hw_none') {
+              previewCfg.headwear = item.id === 'fr_cat' ? 'hw_cat_ears' : 'hw_bunny_ears';
+            }
           }
         }
 

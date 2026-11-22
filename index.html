@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.14 • Naik Taraf Visual Agung Grandmaster Abakus (Sayap Kilat Emas + Tongkat Cokmar Sempoa & Aura Cahaya 12 Penjuru)
+            Versi 2.3.15 • Asingkan Sayap Agung Grandmaster (Lapisan Bawah Melengkapi Sayap Bingkai) & Tongkat Sempoa Grandmaster (108 Item Kedai)
           </span>
         </div>
 
@@ -3249,7 +3249,7 @@
         { id: 'out_prism_suit',    name: 'Sut Kristal Prisma',    tier: 'Mitos',    gender: 'unisex', cost: 275, setTag: '💎 Set Prisma Infiniti',
           setApply: { outfit: 'out_prism_suit', hair: 'hair_cyber_spike', headwear: 'hw_prism_tiara', addAcc: ['acc_prism_visor', 'acc_wings_prism'], frame: 'fr_infinity_prism' } },
         { id: 'out_grandmaster_robe',name:'Jubah Agung Grandmaster',tier:'Agung',   gender: 'unisex', cost: 350, setTag: '🧮 Set Grandmaster Abakus',
-          setApply: { outfit: 'out_grandmaster_robe', hair: 'hair_samurai', headwear: 'hw_grandmaster_crown', addAcc: ['acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
+          setApply: { outfit: 'out_grandmaster_robe', hair: 'hair_samurai', headwear: 'hw_grandmaster_crown', addAcc: ['acc_wings_grandmaster', 'acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
       ],
       hair: [
         // Susunan Harga Rambut Mengikut Padanan Set
@@ -3299,7 +3299,7 @@
         { id: 'hw_phoenix_crest',  name: 'Mahkota Jambul Phoenix',tier:'Mitos',    gender: 'unisex', cost: 185,setTag: '🔥 Set Phoenix Abadi', setApply: { headwear: 'hw_phoenix_crest', outfit: 'out_phoenix_robe', hair: 'hair_phoenix_plume', addAcc: ['acc_wings_phoenix'], frame: 'fr_phoenix_mythic' } },
         { id: 'hw_celestial_crown',name: 'Mahkota Suria & Bulan',tier: 'Mitos',    gender: 'unisex', cost: 210,setTag: '☀️ Set Cakerawala Suria', setApply: { headwear: 'hw_celestial_crown', outfit: 'out_celestial_armor', addAcc: ['acc_wings_celestial'], frame: 'fr_celestial_king' } },
         { id: 'hw_prism_tiara',    name: 'Mahkota Kristal Prisma',tier:'Mitos',    gender: 'unisex', cost: 235,setTag: '💎 Set Prisma Infiniti', setApply: { headwear: 'hw_prism_tiara', outfit: 'out_prism_suit', addAcc: ['acc_prism_visor', 'acc_wings_prism'], frame: 'fr_infinity_prism' } },
-        { id: 'hw_grandmaster_crown',name:'Mahkota Agung Grandmaster',tier:'Agung',gender: 'unisex', cost: 300,setTag: '🧮 Set Grandmaster Abakus', setApply: { headwear: 'hw_grandmaster_crown', outfit: 'out_grandmaster_robe', addAcc: ['acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
+        { id: 'hw_grandmaster_crown',name:'Mahkota Agung Grandmaster',tier:'Agung',gender: 'unisex', cost: 300,setTag: '🧮 Set Grandmaster Abakus', setApply: { headwear: 'hw_grandmaster_crown', outfit: 'out_grandmaster_robe', addAcc: ['acc_wings_grandmaster', 'acc_abacus_staff', 'acc_medal_gold'], frame: 'fr_grandmaster' } }
       ],
       accessory: [
         // Aksesori Stackable Mengikut Set
@@ -3325,7 +3325,8 @@
         { id: 'acc_wings_phoenix', name: 'Sayap Phoenix Abadi',  tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 175, setTag: '🔥 Set Phoenix Abadi', setApply: { addAcc: ['acc_wings_phoenix'], outfit: 'out_phoenix_robe', headwear: 'hw_phoenix_crest', frame: 'fr_phoenix_mythic' } },
         { id: 'acc_wings_celestial',name:'Sayap Cakerawala Kosmik',tier:'Mitos',   gender: 'unisex', slot: 'back',    cost: 205, setTag: '☀️ Set Cakerawala Suria', setApply: { addAcc: ['acc_wings_celestial'], outfit: 'out_celestial_armor', headwear: 'hw_celestial_crown', frame: 'fr_celestial_king' } },
         { id: 'acc_wings_prism',   name: 'Sayap Kristal Prisma', tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 245, setTag: '💎 Set Prisma Infiniti', setApply: { addAcc: ['acc_wings_prism', 'acc_prism_visor'], outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', frame: 'fr_infinity_prism' } },
-        { id: 'acc_abacus_staff',  name: 'Sayap & Tongkat Sempoa Agung',tier:'Agung',gender: 'unisex', slot: 'pin',     cost: 260, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_abacus_staff', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } }
+        { id: 'acc_wings_grandmaster',name:'Sayap Agung Grandmaster', tier: 'Agung',    gender: 'unisex', slot: 'back',    cost: 280, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_wings_grandmaster', 'acc_abacus_staff', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } },
+        { id: 'acc_abacus_staff',  name: 'Tongkat Sempoa Grandmaster',tier:'Agung',gender: 'unisex', slot: 'pin',     cost: 260, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_abacus_staff', 'acc_wings_grandmaster', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } }
       ],
       frame: [
         // Disusun rapi mengikut tahap eksklusif visual & kenaikan harga Coin
@@ -3352,7 +3353,7 @@
         { id: 'fr_phoenix_mythic',name: 'Aura Phoenix Abadi',    tier: 'Mitos',    cost: 600, setTag: '🔥 Set Phoenix Abadi', setApply: { frame: 'fr_phoenix_mythic', outfit: 'out_phoenix_robe', hair: 'hair_phoenix_plume', headwear: 'hw_phoenix_crest', addAcc: ['acc_wings_phoenix'] } },
         { id: 'fr_celestial_king',name: 'Takhta Suria & Bulan',  tier: 'Mitos',    cost: 800, setTag: '☀️ Set Cakerawala Suria', setApply: { frame: 'fr_celestial_king', outfit: 'out_celestial_armor', headwear: 'hw_celestial_crown', addAcc: ['acc_wings_celestial'] } },
         { id: 'fr_infinity_prism',name: 'Prisma Infiniti Juara',  tier: 'Mitos',    cost: 1000,setTag: '💎 Set Prisma Infiniti', setApply: { frame: 'fr_infinity_prism', outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', addAcc: ['acc_prism_visor', 'acc_wings_prism'] } },
-        { id: 'fr_grandmaster',   name: 'Lambang Grandmaster Abakus', tier: 'Agung', cost: 1500,setTag: '🧮 Set Grandmaster Abakus', setApply: { frame: 'fr_grandmaster', outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', addAcc: ['acc_abacus_staff', 'acc_medal_gold'] } }
+        { id: 'fr_grandmaster',   name: 'Lambang Grandmaster Abakus', tier: 'Agung', cost: 1500,setTag: '🧮 Set Grandmaster Abakus', setApply: { frame: 'fr_grandmaster', outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', addAcc: ['acc_wings_grandmaster', 'acc_abacus_staff', 'acc_medal_gold'] } }
       ]
     };
 
@@ -4935,6 +4936,22 @@
           </g>
         `;
       }
+      if (accList.includes('acc_wings_grandmaster')) {
+        outerBackWingsLayer += `
+          <g filter="url(#${uid}_glow)">
+            <!-- Sayap Agung Grandmaster Kiri (Direka Sama Gaya Merah Delima + Emas Seperti Sayap Bingkai, Direndahkan Untuk Melengkapi Sayap Atas Bingkai!) -->
+            <path d="M 16 46 C 0 47, -19 42, -32 33 C -24 41, -17 45, -10 47 C -24 51, -33 59, -31 69 C -20 66, -12 63, -4 60 C -17 69, -20 79, -11 85 C -1 80, 9 74, 19 67 Z"
+              fill="#991B1B" stroke="#FEF08A" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M 17 50 C 4 51, -11 47, -21 40 C -15 46, -9 49, -3 50 C -14 54, -20 60, -18 67 C -10 65, -3 62, 3 59 C -6 66, -8 74, -1 78 C 6 74, 13 69, 19 64 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.05" stroke-linejoin="round"/>
+            <!-- Sayap Agung Grandmaster Kanan (Direndahkan Untuk Melengkapi Sayap Atas Bingkai!) -->
+            <path d="M 84 46 C 100 47, 119 42, 132 33 C 124 41, 117 45, 110 47 C 124 51, 133 59, 131 69 C 120 66, 112 63, 104 60 C 117 69, 120 79, 111 85 C 101 80, 91 74, 81 67 Z"
+              fill="#991B1B" stroke="#FEF08A" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M 83 50 C 96 51, 111 47, 121 40 C 115 46, 109 49, 103 50 C 114 54, 120 60, 118 67 C 110 65, 103 62, 97 59 C 106 66, 108 74, 101 78 C 94 74, 87 69, 81 64 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.05" stroke-linejoin="round"/>
+          </g>
+        `;
+      }
 
       // Lapisan Rambut Belakang / Tudung Luar
       let backHairLayer = '';
@@ -5918,17 +5935,7 @@
           ` : ''}
           ${accList.includes('acc_abacus_staff') ? `
             <g filter="url(#${uid}_glow)">
-              <!-- Sayap Kilat Emas Grandmaster Di Belakang Bahu (Gah Setanding Sayap Mitos!) -->
-              <path d="M 20 60 C 5 55, -15 44, -33 28 C -22 30, -15 29, -10 26 C -26 18, -35 4, -31 -10 C -19 -1, -11 5, -3 9 C -11 -4, -9 -14, 0 -19 C 8 -7, 14 7, 19 25 Z"
-                fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.4" stroke-linejoin="round"/>
-              <path d="M 18 54 C 7 50, -7 40, -19 28 C -12 29, -6 27, -3 24 C -14 16, -19 6, -16 -4 C -8 3, -2 9, 4 15 C 0 5, 2 -3, 8 -7 C 13 3, 16 15, 19 28 Z"
-                fill="#EF4444" opacity="0.88"/>
-              <path d="M 80 60 C 95 55, 115 44, 133 28 C 122 30, 115 29, 110 26 C 126 18, 135 4, 131 -10 C 119 -1, 111 5, 103 9 C 111 -4, 109 -14, 100 -19 C 92 -7, 86 7, 81 25 Z"
-                fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.4" stroke-linejoin="round"/>
-              <path d="M 82 54 C 93 50, 107 40, 119 28 C 112 29, 106 27, 103 24 C 114 16, 119 6, 116 -4 C 108 3, 102 9, 96 15 C 100 5, 98 -3, 92 -7 C 87 3, 84 15, 81 28 Z"
-                fill="#EF4444" opacity="0.88"/>
-
-              <!-- Tongkat Cokmar Sempoa Agung Grandmaster Di Sisi Kanan -->
+              <!-- Tongkat Cokmar Sempoa Grandmaster Eksklusif Di Sisi Kanan (Berasingan Daripada Sayap) -->
               <line x1="70" y1="98" x2="88" y2="60" stroke="#451A03" stroke-width="5.2" stroke-linecap="round"/>
               <line x1="70" y1="98" x2="88" y2="60" stroke="url(#${uid}_gold)" stroke-width="2.6" stroke-linecap="round"/>
               <!-- Sayap Kecil Emas Pada Leher Tongkat -->

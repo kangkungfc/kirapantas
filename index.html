@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.9 • Pengesan Auto-Pause AFK/Idle 60 Saat Di PC & Sistem Tebus Hadiah Podium Interaktif Beserta Rekod Sejarah Trofi
+            Versi 2.3.10 • Podium Visual Dinamik: Avatar Murid & Panda Kiko Berdiri Mengikut Kedudukan Sebenar (#1, #2, Atau #3) Di Papan Skor
           </span>
         </div>
 
@@ -10616,6 +10616,55 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       return `⏳ Tamat dalam ${hrs}j ${mins}m`;
     }
 
+    function getCurrentPlayerTabRankAndPoints() {
+      if (!currentPlayer || currentPlayer.isAdmin) return { rank: 0, pts: 0 };
+      const todayKey = getTodayDateKey();
+      const weekKey = getCurrentWeekDateKey();
+      const monthKey = getCurrentMonthDateKey();
+      const tab = activeScoreboardTab;
+
+      const getTodayPts = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayPoints) || 0) : 0;
+      const getTodayStars = (p) => (p.todayDateKey === todayKey) ? (Number(p.todayStars) || 0) : 0;
+      const getWeekPts = (p) => (p.weekDateKey === weekKey) ? (Number(p.weekPoints) || 0) : getTodayPts(p);
+      const getWeekStars = (p) => (p.weekDateKey === weekKey) ? (Number(p.weekStars) || 0) : getTodayStars(p);
+      const getMonthPts = (p) => (p.monthDateKey === monthKey) ? (Number(p.monthPoints) || 0) : getWeekPts(p);
+      const getMonthStars = (p) => (p.monthDateKey === monthKey) ? (Number(p.monthStars) || 0) : getWeekStars(p);
+
+      const getPeriodPts = (p) => {
+        if (tab === 'today') return getTodayPts(p);
+        if (tab === 'weekly') return getWeekPts(p);
+        if (tab === 'monthly') return getMonthPts(p);
+        return Number(p.totalPoints) || 0;
+      };
+      const getPeriodStars = (p) => {
+        if (tab === 'today') return getTodayStars(p);
+        if (tab === 'weekly') return getWeekStars(p);
+        if (tab === 'monthly') return getMonthStars(p);
+        return Number(p.stars) || 0;
+      };
+
+      const sourceList = (Array.isArray(lastScoreboardPlayers) && lastScoreboardPlayers.length > 0)
+        ? lastScoreboardPlayers
+        : [currentPlayer];
+
+      const sorted = sourceList
+        .filter(p => {
+          if (!p || isAdminAccountRecord(p)) return false;
+          if (tab === 'today') {
+            const tSec = (p.todayDateKey === todayKey) ? (Number(p.todaySeconds) || 0) : 0;
+            return getTodayPts(p) > 0 || tSec > 0;
+          }
+          if (tab === 'weekly') return getWeekPts(p) > 0;
+          if (tab === 'monthly') return getMonthPts(p) > 0;
+          return true;
+        })
+        .sort((a, b) => (getPeriodPts(b) - getPeriodPts(a)) || (getPeriodStars(b) - getPeriodStars(a)));
+
+      const myIdx = sorted.findIndex(p => (currentPlayer.accountId && p.accountId === currentPlayer.accountId) || p.name === currentPlayer.name);
+      if (myIdx === -1) return { rank: 0, pts: getPeriodPts(currentPlayer) };
+      return { rank: myIdx + 1, pts: getPeriodPts(sorted[myIdx]) };
+    }
+
     function renderScoreboardPodiumBanner() {
       const bannerEl = document.getElementById('scoreboard-podium-prize-banner');
       if (!bannerEl) return;
@@ -10628,6 +10677,33 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         monthly: ['+300 Coin', '+180 Coin', '+100 Coin'],
         alltime: ['Pangkat Agung', 'Pangkat Legenda', 'Pangkat Epik']
       }[activeScoreboardTab] || ['+30 Coin', '+20 Coin', '+10 Coin'];
+
+      const { rank: myRank } = getCurrentPlayerTabRankAndPoints();
+      const isMeTop3 = myRank >= 1 && myRank <= 3;
+
+      const myAvatarHtml = (currentPlayer && typeof renderRealisticAvatarSVG === 'function')
+        ? `<div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-amber-500 bg-white shadow-md">${renderRealisticAvatarSVG(ensurePlayerAvatarConfig(currentPlayer), 'w-full h-full')}</div>`
+        : '';
+
+      const renderStepTopper = (stepRank, defaultMedal) => {
+        if (isMeTop3 && myRank === stepRank) {
+          return `
+            <div class="relative flex flex-col items-center -mb-1.5 z-10 panda-anim-cheer">
+              <span class="text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full border border-white shadow mb-0.5 whitespace-nowrap">⭐ Anda di #${stepRank}!</span>
+              <div class="flex items-end justify-center -space-x-2">
+                ${myAvatarHtml}
+                ${pandaSrc ? `<img src="${pandaSrc}" alt="Panda Kiko" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-md pointer-events-none" />` : `<span class="text-lg">${defaultMedal}</span>`}
+              </div>
+            </div>
+          `;
+        }
+        if (!isMeTop3 && stepRank === 1) {
+          return pandaSrc
+            ? `<img id="score-champion-panda-img" src="${pandaSrc}" alt="Juara Podium" class="w-16 h-16 sm:w-20 sm:h-20 -mb-2 object-contain drop-shadow-md panda-anim-cheer z-10 pointer-events-none" />`
+            : `<div class="text-xl mb-0.5">🥇</div>`;
+        }
+        return `<div class="text-sm sm:text-base leading-none mb-0.5 drop-shadow-xs">${defaultMedal}</div>`;
+      };
 
       const guardPill = cfg.minPts > 0
         ? `<span class="text-[9px] font-black bg-amber-200/80 text-amber-950 px-2 py-0.5 rounded-full border border-amber-400">🛡️ Min ${cfg.minPts} Markah</span>`
@@ -10645,21 +10721,21 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           </div>
         </div>
 
-        <!-- Podium Visual 3-Tangga: #2 Perak | #1 Emas (Maskot Panda Juara) | #3 Gangsa -->
+        <!-- Podium Visual 3-Tangga Dinamik: #2 Perak | #1 Emas | #3 Gangsa -->
         <div class="grid grid-cols-3 items-end gap-1.5 pt-1 text-center">
           <!-- Tangga #2 Perak -->
           <div class="flex flex-col items-center">
-            <div class="text-sm sm:text-base leading-none mb-0.5 drop-shadow-xs">🥈</div>
-            <div class="w-full h-11 sm:h-12 rounded-t-xl bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400 border-2 border-b-0 border-slate-400 flex flex-col items-center justify-center px-1 shadow-inner">
-              <span class="text-[10px] font-black text-slate-800 leading-none">#2</span>
+            ${renderStepTopper(2, '🥈')}
+            <div class="w-full h-11 sm:h-12 rounded-t-xl bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400 border-2 border-b-0 ${myRank === 2 ? 'border-emerald-600 ring-2 ring-emerald-400' : 'border-slate-400'} flex flex-col items-center justify-center px-1 shadow-inner">
+              <span class="text-[10px] font-black text-slate-800 leading-none">🥈 #2</span>
               <span class="text-[9.5px] sm:text-[10px] font-black text-slate-900 mt-0.5 leading-tight">${shortLabels[1]}</span>
             </div>
           </div>
 
-          <!-- Tangga #1 Emas Dengan Maskot Panda Juara Di Puncak -->
+          <!-- Tangga #1 Emas -->
           <div class="flex flex-col items-center">
-            ${pandaSrc ? `<img id="score-champion-panda-img" src="${pandaSrc}" alt="Juara Podium" class="w-16 h-16 sm:w-20 sm:h-20 -mb-2 object-contain drop-shadow-md panda-anim-cheer z-10 pointer-events-none" />` : `<div class="text-xl mb-0.5">🥇</div>`}
-            <div class="w-full h-14 sm:h-16 rounded-t-xl bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-2 border-b-0 border-amber-600 flex flex-col items-center justify-center px-1 shadow-md">
+            ${renderStepTopper(1, '🥇')}
+            <div class="w-full h-14 sm:h-16 rounded-t-xl bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-2 border-b-0 ${myRank === 1 ? 'border-emerald-600 ring-2 ring-emerald-400' : 'border-amber-600'} flex flex-col items-center justify-center px-1 shadow-md">
               <span class="text-[11px] font-black text-amber-950 leading-none">🥇 JUARA #1</span>
               <span class="text-[10px] sm:text-[11px] font-black text-amber-950 bg-white/90 px-1.5 py-0.2 rounded-full mt-1 leading-tight shadow-xs">${shortLabels[0]}</span>
             </div>
@@ -10667,9 +10743,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
           <!-- Tangga #3 Gangsa -->
           <div class="flex flex-col items-center">
-            <div class="text-sm sm:text-base leading-none mb-0.5 drop-shadow-xs">🥉</div>
-            <div class="w-full h-9 sm:h-10 rounded-t-xl bg-gradient-to-b from-orange-200 via-amber-600/40 to-orange-400/70 border-2 border-b-0 border-orange-400 flex flex-col items-center justify-center px-1 shadow-inner">
-              <span class="text-[10px] font-black text-orange-950 leading-none">#3</span>
+            ${renderStepTopper(3, '🥉')}
+            <div class="w-full h-9 sm:h-10 rounded-t-xl bg-gradient-to-b from-orange-200 via-amber-600/40 to-orange-400/70 border-2 border-b-0 ${myRank === 3 ? 'border-emerald-600 ring-2 ring-emerald-400' : 'border-orange-400'} flex flex-col items-center justify-center px-1 shadow-inner">
+              <span class="text-[10px] font-black text-orange-950 leading-none">🥉 #3</span>
               <span class="text-[9.5px] sm:text-[10px] font-black text-orange-950 mt-0.5 leading-tight">${shortLabels[2]}</span>
             </div>
           </div>

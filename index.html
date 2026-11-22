@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.13 • Penyelarasan Reka Bentuk Set Agung Grandmaster (1 Mahkota Diraja & 1 Tongkat Sempoa Eksklusif Tanpa Bertindih)
+            Versi 2.3.14 • Naik Taraf Visual Agung Grandmaster Abakus (Sayap Kilat Emas + Tongkat Cokmar Sempoa & Aura Cahaya 12 Penjuru)
           </span>
         </div>
 
@@ -3325,7 +3325,7 @@
         { id: 'acc_wings_phoenix', name: 'Sayap Phoenix Abadi',  tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 175, setTag: '🔥 Set Phoenix Abadi', setApply: { addAcc: ['acc_wings_phoenix'], outfit: 'out_phoenix_robe', headwear: 'hw_phoenix_crest', frame: 'fr_phoenix_mythic' } },
         { id: 'acc_wings_celestial',name:'Sayap Cakerawala Kosmik',tier:'Mitos',   gender: 'unisex', slot: 'back',    cost: 205, setTag: '☀️ Set Cakerawala Suria', setApply: { addAcc: ['acc_wings_celestial'], outfit: 'out_celestial_armor', headwear: 'hw_celestial_crown', frame: 'fr_celestial_king' } },
         { id: 'acc_wings_prism',   name: 'Sayap Kristal Prisma', tier: 'Mitos',    gender: 'unisex', slot: 'back',    cost: 245, setTag: '💎 Set Prisma Infiniti', setApply: { addAcc: ['acc_wings_prism', 'acc_prism_visor'], outfit: 'out_prism_suit', headwear: 'hw_prism_tiara', frame: 'fr_infinity_prism' } },
-        { id: 'acc_abacus_staff',  name: 'Tongkat Sempoa Grandmaster',tier:'Agung',gender: 'unisex', slot: 'pin',     cost: 260, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_abacus_staff', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } }
+        { id: 'acc_abacus_staff',  name: 'Sayap & Tongkat Sempoa Agung',tier:'Agung',gender: 'unisex', slot: 'pin',     cost: 260, setTag: '🧮 Set Grandmaster Abakus', setApply: { addAcc: ['acc_abacus_staff', 'acc_medal_gold'], outfit: 'out_grandmaster_robe', headwear: 'hw_grandmaster_crown', frame: 'fr_grandmaster' } }
       ],
       frame: [
         // Disusun rapi mengikut tahap eksklusif visual & kenaikan harga Coin
@@ -4375,25 +4375,46 @@
       }
       if (frameId === 'fr_grandmaster') {
         const beads = [];
-        for (let i = 0; i < 18; i++) {
-          const ang = (i * 20) * Math.PI / 180;
+        for (let i = 0; i < 20; i++) {
+          const ang = (i * 18) * Math.PI / 180;
           const cx = (50 + 43.5 * Math.cos(ang)).toFixed(1);
           const cy = (50 + 43.5 * Math.sin(ang)).toFixed(1);
-          beads.push(`<ellipse cx="${cx}" cy="${cy}" rx="5.2" ry="3.4" transform="rotate(${i * 20 + 90} ${cx} ${cy})" fill="${i % 2 === 0 ? '#DC2626' : 'url(#${uid}_gold)'}" stroke="#451A03" stroke-width="1"/>`);
+          beads.push(`<ellipse cx="${cx}" cy="${cy}" rx="5.0" ry="3.3" transform="rotate(${i * 18 + 90} ${cx} ${cy})" fill="${i % 2 === 0 ? '#DC2626' : 'url(#${uid}_gold)'}" stroke="#451A03" stroke-width="1"/>`);
+        }
+        // Pancaran Cahaya Kilat Diraja (12 Sinar Emas Di Belakang Lingkaran)
+        const auraRays = [];
+        for (let i = 0; i < 12; i++) {
+          const a = (i * 30 + 15) * Math.PI / 180;
+          const x1 = (50 + 42 * Math.cos(a - 0.09)).toFixed(1);
+          const y1 = (50 + 42 * Math.sin(a - 0.09)).toFixed(1);
+          const x2 = (50 + 57 * Math.cos(a)).toFixed(1);
+          const y2 = (50 + 57 * Math.sin(a)).toFixed(1);
+          const x3 = (50 + 42 * Math.cos(a + 0.09)).toFixed(1);
+          const y3 = (50 + 42 * Math.sin(a + 0.09)).toFixed(1);
+          auraRays.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#FEF08A" stroke="#F59E0B" stroke-width="0.9" opacity="0.9"/>`);
         }
         return `
           <g filter="url(#${uid}_glow)">
-            <!-- Sayap Laurel Emas Agung Ramping Di Sisi Atas -->
-            <path d="M 14 48 C 1 43, -7 31, -6 17 C -1 21, 2 23, 6 23 C 0 15, -2 7, 2 -1 C 6 6, 9 13, 12 20 L 16 44 Z"
-              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" stroke-linejoin="round"/>
-            <path d="M 86 48 C 99 43, 107 31, 106 17 C 101 21, 98 23, 94 23 C 100 15, 102 7, 98 -1 C 94 6, 91 13, 88 20 L 84 44 Z"
-              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2" stroke-linejoin="round"/>
-            <!-- Lingkaran Manik Sempoa Diraja Kemas Tanpa Pertindihan Mahkota/Sempoa Ganda -->
-            <circle cx="50" cy="50" r="43.5" fill="none" stroke="#78350F" stroke-width="6.2"/>
+            <!-- Pancaran Cahaya Agung 12 Penjuru -->
+            ${auraRays.join('')}
+            <!-- Sayap Maharaja Sempoa 3-Lapisan Besar & Megah (Merah Delima + Oren Suria + Emas Diraja) -->
+            <path d="M 14 58 C -2 54, -15 43, -18 30 C -10 34, -4 34, 0 31 C -12 23, -17 11, -14 0 C -5 7, 1 11, 7 14 C 2 3, 4 -6, 11 -11 C 16 0, 19 12, 18 26 L 16 52 Z"
+              fill="#991B1B" stroke="#FEF08A" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 15 53 C 2 49, -8 40, -10 29 C -3 31, 1 30, 4 27 C -5 20, -8 11, -5 3 C 2 9, 7 14, 11 21 L 16 48 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+            <path d="M 86 58 C 102 54, 115 43, 118 30 C 110 34, 104 34, 100 31 C 112 23, 117 11, 114 0 C 105 7, 99 11, 93 14 C 98 3, 96 -6, 89 -11 C 84 0, 81 12, 82 26 L 84 52 Z"
+              fill="#991B1B" stroke="#FEF08A" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 85 53 C 98 49, 108 40, 110 29 C 103 31, 99 30, 96 27 C 105 20, 108 11, 105 3 C 98 9, 93 14, 89 21 L 84 48 Z"
+              fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+            <!-- Lingkaran Manik Sempoa Diraja Berlapis Emas -->
+            <circle cx="50" cy="50" r="43.5" fill="none" stroke="#451A03" stroke-width="6.8"/>
+            <circle cx="50" cy="50" r="43.5" fill="none" stroke="#FACC15" stroke-width="2.4"/>
             ${beads.join('')}
-            <!-- Permata Bintang Puncak & Reben Emas Bawah Yang Bersih -->
-            <polygon points="50,1 52.5,6 58,6.6 54,10.2 55,15.5 50,12.8 45,15.5 46,10.2 42,6.6 47.5,6" fill="#FEF08A" stroke="#78350F" stroke-width="1"/>
-            <path d="M 35 91 Q 50 97 65 91 L 62 96 Q 50 101 38 96 Z" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1"/>
+            <!-- Permata Delima & Bintang Agung Puncak + Reben Juara Bawah -->
+            <polygon points="50,-8 54,1 63,2 56,8 58,17 50,12 42,17 44,8 37,2 46,1" fill="#FEF08A" stroke="#991B1B" stroke-width="1.2"/>
+            <circle cx="50" cy="6" r="2.6" fill="#EF4444"/>
+            <path d="M 27 89 Q 50 97 73 89 L 69 98 Q 50 104 31 98 Z" fill="#991B1B" stroke="#FACC15" stroke-width="1.3"/>
+            <polygon points="50,91 52,95 56,95.5 53,98 53.8,102 50,100 46.2,102 47,98 44,95.5 48,95" fill="#FEF08A"/>
           </g>
         `;
       }
@@ -5897,20 +5918,35 @@
           ` : ''}
           ${accList.includes('acc_abacus_staff') ? `
             <g filter="url(#${uid}_glow)">
-              <!-- Tongkat Sempoa Agung Grandmaster Di Sisi Kanan -->
-              <line x1="70" y1="97" x2="87" y2="62" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
-              <line x1="70" y1="97" x2="87" y2="62" stroke="url(#${uid}_gold)" stroke-width="2" stroke-linecap="round"/>
-              <!-- Kepala Sempoa Emas Diraja Di Hujung Tongkat -->
-              <g transform="translate(87, 56) rotate(14)">
-                <rect x="-12" y="-8" width="24" height="15" rx="3" fill="#78350F" stroke="#FACC15" stroke-width="1.4"/>
-                <rect x="-10" y="-6" width="20" height="11" rx="1.5" fill="#FEF3C7"/>
-                <line x1="-10" y1="-1" x2="10" y2="-1" stroke="#451A03" stroke-width="1.3"/>
-                <line x1="-5" y1="-6" x2="-5" y2="5" stroke="#92400E" stroke-width="1.1"/>
-                <line x1="0" y1="-6" x2="0" y2="5" stroke="#92400E" stroke-width="1.1"/>
-                <line x1="5" y1="-6" x2="5" y2="5" stroke="#92400E" stroke-width="1.1"/>
-                <circle cx="-5" cy="-3.5" r="1.6" fill="#EF4444"/>
-                <circle cx="0" cy="2" r="1.6" fill="#F59E0B"/>
-                <circle cx="5" cy="-3.5" r="1.6" fill="#EF4444"/>
+              <!-- Sayap Kilat Emas Grandmaster Di Belakang Bahu (Gah Setanding Sayap Mitos!) -->
+              <path d="M 20 60 C 5 55, -15 44, -33 28 C -22 30, -15 29, -10 26 C -26 18, -35 4, -31 -10 C -19 -1, -11 5, -3 9 C -11 -4, -9 -14, 0 -19 C 8 -7, 14 7, 19 25 Z"
+                fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M 18 54 C 7 50, -7 40, -19 28 C -12 29, -6 27, -3 24 C -14 16, -19 6, -16 -4 C -8 3, -2 9, 4 15 C 0 5, 2 -3, 8 -7 C 13 3, 16 15, 19 28 Z"
+                fill="#EF4444" opacity="0.88"/>
+              <path d="M 80 60 C 95 55, 115 44, 133 28 C 122 30, 115 29, 110 26 C 126 18, 135 4, 131 -10 C 119 -1, 111 5, 103 9 C 111 -4, 109 -14, 100 -19 C 92 -7, 86 7, 81 25 Z"
+                fill="url(#${uid}_gold)" stroke="#991B1B" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M 82 54 C 93 50, 107 40, 119 28 C 112 29, 106 27, 103 24 C 114 16, 119 6, 116 -4 C 108 3, 102 9, 96 15 C 100 5, 98 -3, 92 -7 C 87 3, 84 15, 81 28 Z"
+                fill="#EF4444" opacity="0.88"/>
+
+              <!-- Tongkat Cokmar Sempoa Agung Grandmaster Di Sisi Kanan -->
+              <line x1="70" y1="98" x2="88" y2="60" stroke="#451A03" stroke-width="5.2" stroke-linecap="round"/>
+              <line x1="70" y1="98" x2="88" y2="60" stroke="url(#${uid}_gold)" stroke-width="2.6" stroke-linecap="round"/>
+              <!-- Sayap Kecil Emas Pada Leher Tongkat -->
+              <polygon points="82,66 71,61 77,70" fill="#FEF08A" stroke="#991B1B" stroke-width="0.9"/>
+              <polygon points="87,68 99,66 91,74" fill="#FEF08A" stroke="#991B1B" stroke-width="0.9"/>
+              <!-- Kepala Sempoa Emas Diraja Bercahaya Di Hujung Tongkat -->
+              <g transform="translate(89, 53) rotate(14)">
+                <rect x="-14" y="-9.5" width="28" height="18" rx="3.5" fill="#78350F" stroke="#FEF08A" stroke-width="1.6"/>
+                <rect x="-11.5" y="-7" width="23" height="13" rx="1.8" fill="#FEF3C7"/>
+                <line x1="-11.5" y1="-1.2" x2="11.5" y2="-1.2" stroke="#451A03" stroke-width="1.5"/>
+                <line x1="-6" y1="-7" x2="-6" y2="6" stroke="#92400E" stroke-width="1.2"/>
+                <line x1="0" y1="-7" x2="0" y2="6" stroke="#92400E" stroke-width="1.2"/>
+                <line x1="6" y1="-7" x2="6" y2="6" stroke="#92400E" stroke-width="1.2"/>
+                <circle cx="-6" cy="-4.2" r="1.9" fill="#DC2626"/>
+                <circle cx="0" cy="2.3" r="1.9" fill="#F59E0B"/>
+                <circle cx="6" cy="-4.2" r="1.9" fill="#DC2626"/>
+                <!-- Bintang Puncak Kepala Tongkat -->
+                <polygon points="0,-16 1.8,-12 6,-11.5 2.8,-8.8 3.6,-4.8 0,-6.8 -3.6,-4.8 -2.8,-8.8 -6,-11.5 -1.8,-12" fill="#FEF08A" stroke="#991B1B" stroke-width="0.8"/>
               </g>
             </g>
           ` : ''}

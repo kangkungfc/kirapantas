@@ -288,26 +288,26 @@
           <div class="grid grid-cols-2 gap-1.5">
             <button type="button" onclick="startGuestDemoMode()" class="w-full bubbly-btn bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 text-amber-950 font-black text-[11px] sm:text-xs py-2 px-2 border-2 border-amber-700 shadow-sm flex items-center justify-center gap-1">
               <span class="text-sm">🎮</span>
-              <span>Cuba Main Terus</span>
+              <span data-i18n="guestTryBtn">Cuba Main Terus</span>
             </button>
             <button type="button" onclick="toggleTeacherClassCodeDrawer()" class="w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-[11px] sm:text-xs py-2 px-2 border-2 border-teal-900 shadow-sm flex items-center justify-center gap-1">
               <span class="text-sm">🏫</span>
-              <span>Kod Kelas Cikgu</span>
+              <span data-i18n="teacherCodeBtn">Kod Kelas Cikgu</span>
             </button>
           </div>
 
           <!-- Laci Pantas Masuk Kelas Cikgu (Kod 4-Digit Tanpa Daftar) -->
           <div id="teacher-class-code-drawer" class="hidden text-left bg-teal-50 border-2 border-teal-400 rounded-2xl p-2.5 space-y-2 shadow-inner">
             <div class="flex items-center justify-between">
-              <div class="text-[11px] font-black text-teal-950">🏫 Sertai Kelas Langsung Cikgu / Tuisyen</div>
-              <button type="button" onclick="toggleTeacherClassCodeDrawer(false)" class="text-[10px] font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
+              <div data-i18n="joinClassTitle" class="text-[11px] font-black text-teal-950">🏫 Sertai Kelas Langsung Cikgu / Tuisyen</div>
+              <button type="button" data-i18n="closeBtn" onclick="toggleTeacherClassCodeDrawer(false)" class="text-[10px] font-black text-slate-500 hover:text-slate-800">✖️ Tutup</button>
             </div>
             <form onsubmit="joinTeacherClassDirectFromLogin(event)" class="space-y-1.5">
               <div class="grid grid-cols-5 gap-1.5">
-                <input id="class-join-student-name" type="text" required minlength="2" maxlength="20" placeholder="Nama Murid" class="col-span-3 px-2.5 py-2 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-bold text-xs bg-white" />
-                <input id="class-join-room-code" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]4" placeholder="Kod 4-Digit" class="col-span-2 px-2 py-2 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-black text-center text-xs tracking-widest bg-white" />
+                <input id="class-join-student-name" data-i18n-ph="phStudentNameShort" type="text" required minlength="2" maxlength="20" placeholder="Nama Murid" class="col-span-3 px-2.5 py-2 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-bold text-xs bg-white" />
+                <input id="class-join-room-code" data-i18n-ph="phRoomCode" type="text" inputmode="numeric" required maxlength="4" pattern="[0-9]4" placeholder="Kod 4-Digit" class="col-span-2 px-2 py-2 rounded-xl border-2 border-teal-300 focus:border-teal-600 focus:outline-none font-black text-center text-xs tracking-widest bg-white" />
               </div>
-              <button type="submit" class="w-full bubbly-btn bg-teal-600 hover:bg-teal-700 text-white font-black text-[11px] py-2 border-2 border-teal-950">
+              <button type="submit" data-i18n="joinClassSubmit" class="w-full bubbly-btn bg-teal-600 hover:bg-teal-700 text-white font-black text-[11px] py-2 border-2 border-teal-950">
                 🚀 Masuk Bilik Kelas Cikgu Sekarang
               </button>
             </form>
@@ -316,10 +316,10 @@
 
         <!-- Tab Mod: Log Masuk vs Daftar Baru -->
         <div class="bg-slate-100 p-0.5 rounded-xl border-2 border-slate-200 grid grid-cols-2 gap-1 mb-2">
-          <button type="button" id="tab-auth-login" onclick="switchAuthModeTab('login')" class="py-1.5 px-2 rounded-lg text-xs font-black bg-sky-600 text-white shadow-xs transition">
+          <button type="button" id="tab-auth-login" data-i18n="tabLogin" onclick="switchAuthModeTab('login')" class="py-1.5 px-2 rounded-lg text-xs font-black bg-sky-600 text-white shadow-xs transition">
             🔑 Log Masuk
           </button>
-          <button type="button" id="tab-auth-register" onclick="switchAuthModeTab('register')" class="py-1.5 px-2 rounded-lg text-xs font-black text-slate-600 hover:text-slate-900 transition">
+          <button type="button" id="tab-auth-register" data-i18n="tabRegister" onclick="switchAuthModeTab('register')" class="py-1.5 px-2 rounded-lg text-xs font-black text-slate-600 hover:text-slate-900 transition">
             ✨ Daftar Baru
           </button>
         </div>
@@ -342,16 +342,16 @@
 
           <!-- Pilihan Jenis Akaun (Dipaparkan HANYA apabila tab 'Daftar Baru' dipilih) -->
           <div id="register-role-selector-box" class="hidden w-full bg-teal-50/95 border-2 border-teal-200 rounded-xl p-2 space-y-1 text-left">
-            <div class="text-[9px] font-black text-teal-950 uppercase tracking-wide">👤 Daftar Sebagai:</div>
+            <div data-i18n="registerAsLbl" class="text-[9px] font-black text-teal-950 uppercase tracking-wide">👤 Daftar Sebagai:</div>
             <div class="grid grid-cols-2 gap-1">
-              <button type="button" id="btn-role-student" onclick="selectRegisterAccountRole('student')" class="py-1.5 px-2 rounded-lg text-[11px] font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
+              <button type="button" id="btn-role-student" data-i18n="roleStudentBtn" onclick="selectRegisterAccountRole('student')" class="py-1.5 px-2 rounded-lg text-[11px] font-black border-2 bg-sky-500 text-white border-sky-800 shadow-xs transition">
                 🎓 Pelajar
               </button>
-              <button type="button" id="btn-role-parent" onclick="selectRegisterAccountRole('parent')" class="py-1.5 px-2 rounded-lg text-[11px] font-black border-2 bg-white text-teal-900 border-teal-300 transition">
+              <button type="button" id="btn-role-parent" data-i18n="roleParentBtn" onclick="selectRegisterAccountRole('parent')" class="py-1.5 px-2 rounded-lg text-[11px] font-black border-2 bg-white text-teal-900 border-teal-300 transition">
                 👨‍👩‍👧‍👦 Ibu Bapa / Pengajar
               </button>
             </div>
-            <div id="role-register-hint" class="text-[9px] font-bold text-slate-600">🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.</div>
+            <div id="role-register-hint" data-i18n="roleStudentHint" class="text-[9px] font-bold text-slate-600">🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.</div>
           </div>
 
           <div id="login-error-msg" class="hidden text-[11px] font-extrabold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2"></div>
@@ -378,7 +378,7 @@
               🔑 Lupa Kata Laluan?
             </button>
             <span class="text-slate-300 font-bold">•</span>
-            <button id="btn-login-support" type="button" onclick="toggleSupportHelpPanel()" class="text-[11px] font-black text-rose-700 hover:text-rose-900 underline">
+            <button id="btn-login-support" data-i18n="contactAdminBtn" type="button" onclick="toggleSupportHelpPanel()" class="text-[11px] font-black text-rose-700 hover:text-rose-900 underline">
               🆘 Hubungi Admin
             </button>
           </div>
@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.10 • Podium Visual Dinamik: Avatar Murid & Panda Kiko Berdiri Mengikut Kedudukan Sebenar (#1, #2, Atau #3) Di Papan Skor
+            Versi 2.3.11 • Sistem Terjemahan Penuh 4 Bahasa (Melayu, English, 中文, العربية) & Sokongan Arah Teks RTL Bahasa Arab
           </span>
         </div>
 
@@ -581,10 +581,10 @@
       <!-- Banner Simpan Rekod Khas Untuk Mod Tetamu (Guest) -->
       <div id="guest-save-banner" class="hidden bubbly-card bg-gradient-to-r from-amber-200 via-yellow-100 to-orange-200 border-3 border-amber-500 p-3 flex items-center justify-between gap-2">
         <div class="min-w-0">
-          <div class="text-xs font-black text-amber-950">🎮 Anda Sedang Dalam Mod Tetamu</div>
-          <div class="text-[10px] font-bold text-amber-900">Daftar nama percuma supaya Coin & Avatar tidak hilang!</div>
+          <div data-i18n="guestBannerTitle" class="text-xs font-black text-amber-950">🎮 Anda Sedang Dalam Mod Tetamu</div>
+          <div data-i18n="guestBannerSub" class="text-[10px] font-bold text-amber-900">Daftar nama percuma supaya Coin & Avatar tidak hilang!</div>
         </div>
-        <button type="button" onclick="promptUpgradeGuestToAccount()" class="bubbly-btn bg-emerald-600 text-white text-[11px] font-black px-3 py-2 border-2 border-emerald-900 flex-shrink-0">
+        <button type="button" data-i18n="guestSaveBtn" onclick="promptUpgradeGuestToAccount()" class="bubbly-btn bg-emerald-600 text-white text-[11px] font-black px-3 py-2 border-2 border-emerald-900 flex-shrink-0">
           ✨ Simpan Rekod
         </button>
       </div>
@@ -616,10 +616,10 @@
           <button id="btn-home-avatar" onclick="navTo('rewards')" class="bubbly-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-rose-700 truncate">
             🎨 Avatar & Kedai
           </button>
-          <button id="btn-home-daily-login" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-amber-600 truncate">
+          <button id="btn-home-daily-login" data-i18n="btnDaily7" onclick="openDailyLoginRewardModal(false)" class="bubbly-btn bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-amber-600 truncate">
             📅 Hadiah 7-Hari
           </button>
-          <button type="button" onclick="openKidTutorialModal()" class="bubbly-btn bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-emerald-700 truncate">
+          <button type="button" data-i18n="btnTutorial6" onclick="openKidTutorialModal()" class="bubbly-btn bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-emerald-700 truncate">
             🖐️ Tutorial Asas 6+
           </button>
           <button id="btn-home-account" onclick="navTo('account')" class="bubbly-btn bg-white text-slate-700 text-[10.5px] sm:text-[11px] font-black px-2 py-2 border-2 border-slate-300 truncate">
@@ -740,8 +740,8 @@
                 <span class="bg-white/25 text-white text-[10px] font-black px-2 py-0.5 rounded-full">MULTIPLAYER LIVE</span>
                 <span class="bg-emerald-300 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full">🟢 4 MOD SERONOK</span>
               </div>
-              <div class="text-base sm:text-lg font-bold leading-tight">Arena Perlawanan Online</div>
-              <div class="text-[11px] font-bold text-fuchsia-100 mt-0.5">Kuiz Kilat • Lumba Maraton • Battle Royale Anzan • Lawan Pasukan</div>
+              <div data-i18n="arenaTitle" class="text-base sm:text-lg font-bold leading-tight">Arena Perlawanan Online</div>
+              <div data-i18n="arenaSub" class="text-[11px] font-bold text-fuchsia-100 mt-0.5">Kuiz Kilat • Lumba Maraton • Battle Royale Anzan • Lawan Pasukan</div>
             </div>
           </div>
           <span class="text-xl font-black flex-shrink-0">▶️</span>
@@ -750,10 +750,10 @@
 
       <!-- Bar Pintasan Bawah -->
       <div class="grid grid-cols-2 gap-3">
-        <button id="btn-bottom-studio" onclick="navTo('rewards')" class="bubbly-btn bg-white border-3 border-amber-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-amber-900">
+        <button id="btn-bottom-studio" data-i18n="bottomStudio" onclick="navTo('rewards')" class="bubbly-btn bg-white border-3 border-amber-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-amber-900">
           <span>🛍️</span> Kedai & Studio Avatar
         </button>
-        <button id="btn-bottom-scoreboard" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
+        <button id="btn-bottom-scoreboard" data-i18n="bottomScore" onclick="navTo('scoreboard')" class="bubbly-btn bg-white border-3 border-indigo-400 p-3 flex items-center justify-center gap-2 text-xs font-black text-indigo-900">
           <span>🏆</span> Papan Skor Online
         </button>
         <button id="btn-home-admin-panel" onclick="openAdminPanelWithAlerts()" class="hidden relative col-span-2 bubbly-btn bg-gradient-to-r from-rose-600 to-red-700 border-3 border-rose-950 p-3.5 flex items-center justify-center gap-2 text-xs font-black text-white">
@@ -783,21 +783,21 @@
         <div class="flex items-center gap-2.5 min-w-0">
           <div id="daily-mystery-box-icon" class="w-12 h-12 rounded-2xl bg-white/80 flex items-center justify-center text-3xl shadow-sm flex-shrink-0 animate-bounce">🎁</div>
           <div class="min-w-0">
-            <div class="text-xs font-black text-amber-950">🎁 Peti Hadiah Misteri Harian</div>
-            <div id="daily-mystery-box-desc" class="text-[10px] font-bold text-amber-900">Buka 1 peti kejutan percuma setiap hari semasa belajar untuk Coin atau Aksesori!</div>
+            <div data-i18n="mysteryTitle" class="text-xs font-black text-amber-950">🎁 Peti Hadiah Misteri Harian</div>
+            <div id="daily-mystery-box-desc" data-i18n="mysteryDesc" class="text-[10px] font-bold text-amber-900">Buka 1 peti kejutan percuma setiap hari semasa belajar untuk Coin atau Aksesori!</div>
           </div>
         </div>
-        <button type="button" id="btn-open-mystery-box" onclick="openDailyMysteryGiftBox()" class="bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0">
+        <button type="button" id="btn-open-mystery-box" data-i18n="mysteryBtn" onclick="openDailyMysteryGiftBox()" class="bubbly-btn bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-950 px-3 py-2 text-xs font-black flex-shrink-0">
           ✨ Buka Peti!
         </button>
       </div>
 
       <!-- Pemilih Laluan Belajar: Laluan Jari (Tanpa Sempoa) vs Laluan Sempoa -->
       <div id="modules-track-switcher" class="grid grid-cols-2 gap-2">
-        <button type="button" onclick="switchModulesTrack('jari')" id="track-btn-jari" class="bubbly-btn bg-sky-600 text-white border-2 border-sky-900 py-3 px-2 text-xs font-black">
+        <button type="button" data-i18n="trackJariBtn" onclick="switchModulesTrack('jari')" id="track-btn-jari" class="bubbly-btn bg-sky-600 text-white border-2 border-sky-900 py-3 px-2 text-xs font-black">
           🖐️ Laluan Jari (3 Tahap)
         </button>
-        <button type="button" onclick="switchModulesTrack('sempoa')" id="track-btn-sempoa" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-3 px-2 text-xs font-black">
+        <button type="button" data-i18n="trackSempoaBtn" onclick="switchModulesTrack('sempoa')" id="track-btn-sempoa" class="bubbly-btn bg-white text-slate-700 border-2 border-slate-300 py-3 px-2 text-xs font-black">
           🧮 Laluan Sempoa (4 Tahap)
         </button>
       </div>
@@ -1267,8 +1267,8 @@
       <!-- 1. LATIHAN FLASH ANZAN (KILAS NOMBOR MINDA) -->
       <div id="anzan-panel-flash" class="bubbly-card bg-white border-4 border-rose-400 p-4 space-y-3">
         <div class="text-center">
-          <div class="text-sm font-black text-rose-900">⚡ Latihan Kilas Minda (Flash Anzan)</div>
-          <p class="text-[11px] font-bold text-slate-500">Bayangkan pergerakan jari atau manik sempoa dalam minda semasa nombor berkelip!</p>
+          <div data-i18n="flashHeading" class="text-sm font-black text-rose-900">⚡ Latihan Kilas Minda (Flash Anzan)</div>
+          <p data-i18n="flashSub" class="text-[11px] font-bold text-slate-500">Bayangkan pergerakan jari atau manik sempoa dalam minda semasa nombor berkelip!</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2 bg-rose-50 p-2.5 rounded-2xl border-2 border-rose-200">
@@ -2482,7 +2482,44 @@
         mod5Age: '⚡ Sasaran Umur: 9 – 12 Tahun',
         mod6Title: 'Pejuang Antarabangsa (Peringkat Master)',
         mod6Sub: 'Kelajuan maksimum, ketepatan 100%, perpuluhan, negatif & kawalan fokus.',
-        mod6Age: '🏆 Sasaran Umur: 10 Tahun ke Atas (Pertandingan Dunia)'
+        mod6Age: '🏆 Sasaran Umur: 10 Tahun ke Atas (Pertandingan Dunia)',
+        guestTryBtn: 'Cuba Main Terus',
+        teacherCodeBtn: 'Kod Kelas Cikgu',
+        joinClassTitle: '🏫 Sertai Kelas Langsung Cikgu / Tuisyen',
+        closeBtn: '✖️ Tutup',
+        phStudentNameShort: 'Nama Murid',
+        phRoomCode: 'Kod 4-Digit',
+        joinClassSubmit: '🚀 Masuk Bilik Kelas Cikgu Sekarang',
+        tabLogin: '🔑 Log Masuk',
+        tabRegister: '✨ Daftar Baru',
+        registerAsLbl: '👤 Daftar Sebagai:',
+        roleStudentBtn: '🎓 Pelajar',
+        roleParentBtn: '👨‍👩‍👧‍👦 Ibu Bapa / Pengajar',
+        roleStudentHint: '🎓 Pelajar boleh belajar 6 tahap, kumpul coin & bertanding bersama kawan.',
+        contactAdminBtn: '🆘 Hubungi Admin',
+        btnLoginNow: '🔑 Log Masuk Sekarang',
+        btnRegisterStudent: '✨ Daftar Akaun Pelajar Sekarang',
+        btnRegisterParent: '✨ Daftar Akaun Ibu Bapa Sekarang',
+        createStudentNameLbl: 'Cipta Nama Pelajar Baharu',
+        createParentNameLbl: 'Taip Nama Ibu Bapa / Pengajar',
+        haveAccountPrompt: 'Sudah ada akaun?',
+        loginHereLink: 'Log Masuk di sini 🔑',
+        noAccountPrompt: 'Belum ada akaun?',
+        registerHereLink: 'Daftar Baru di sini ✨',
+        guestBannerTitle: '🎮 Anda Sedang Dalam Mod Tetamu',
+        guestBannerSub: 'Daftar nama percuma supaya Coin & Avatar tidak hilang!',
+        guestSaveBtn: '✨ Simpan Rekod',
+        btnDaily7: '📅 Hadiah 7-Hari',
+        btnTutorial6: '🖐️ Tutorial Asas 6+',
+        arenaTitle: 'Arena Perlawanan Online',
+        arenaSub: 'Kuiz Kilat • Lumba Maraton • Battle Royale Anzan • Lawan Pasukan',
+        mysteryTitle: '🎁 Peti Hadiah Misteri Harian',
+        mysteryDesc: 'Buka 1 peti kejutan percuma setiap hari semasa belajar untuk Coin atau Aksesori!',
+        mysteryBtn: '✨ Buka Peti!',
+        trackJariBtn: '🖐️ Laluan Jari (3 Tahap)',
+        trackSempoaBtn: '🧮 Laluan Sempoa (4 Tahap)',
+        flashHeading: '⚡ Latihan Kilas Minda (Flash Anzan)',
+        flashSub: 'Bayangkan pergerakan jari atau manik sempoa dalam minda semasa nombor berkelip!'
       },
       en: {
         langLabel: '🌐 Language:',
@@ -2567,7 +2604,44 @@
         mod5Age: '⚡ Target Age: 9 – 12 Years',
         mod6Title: 'International Warrior (Master Tier)',
         mod6Sub: 'Maximum speed, 100% accuracy, decimals, negatives & focus control.',
-        mod6Age: '🏆 Target Age: 10+ Years (World Competition)'
+        mod6Age: '🏆 Target Age: 10+ Years (World Competition)',
+        guestTryBtn: 'Quick Play (Guest)',
+        teacherCodeBtn: 'Teacher Class Code',
+        joinClassTitle: '🏫 Join Live Teacher / Tuition Class',
+        closeBtn: '✖️ Close',
+        phStudentNameShort: 'Student Name',
+        phRoomCode: '4-Digit Code',
+        joinClassSubmit: '🚀 Enter Teacher Class Now',
+        tabLogin: '🔑 Log In',
+        tabRegister: '✨ Register New',
+        registerAsLbl: '👤 Register As:',
+        roleStudentBtn: '🎓 Student',
+        roleParentBtn: '👨‍👩‍👧‍👦 Parent / Teacher',
+        roleStudentHint: '🎓 Students can learn 6 levels, collect coins & compete with friends.',
+        contactAdminBtn: '🆘 Contact Admin',
+        btnLoginNow: '🔑 Log In Now',
+        btnRegisterStudent: '✨ Create Student Account Now',
+        btnRegisterParent: '✨ Create Parent Account Now',
+        createStudentNameLbl: 'Create New Student Name',
+        createParentNameLbl: 'Enter Parent / Teacher Name',
+        haveAccountPrompt: 'Already have an account?',
+        loginHereLink: 'Log In here 🔑',
+        noAccountPrompt: 'No account yet?',
+        registerHereLink: 'Register here ✨',
+        guestBannerTitle: '🎮 You Are In Guest Mode',
+        guestBannerSub: 'Register a free name so your Coins & Avatar are saved!',
+        guestSaveBtn: '✨ Save Progress',
+        btnDaily7: '📅 7-Day Rewards',
+        btnTutorial6: '🖐️ Basics Tutorial 6+',
+        arenaTitle: 'Online Battle Arena',
+        arenaSub: 'Lightning Quiz • Marathon Race • Anzan Royale • Team Battle',
+        mysteryTitle: '🎁 Daily Mystery Gift Chest',
+        mysteryDesc: 'Open 1 free surprise chest daily while learning for Coins or Accessories!',
+        mysteryBtn: '✨ Open Chest!',
+        trackJariBtn: '🖐️ Finger Track (3 Levels)',
+        trackSempoaBtn: '🧮 Abacus Track (4 Levels)',
+        flashHeading: '⚡ Flash Anzan Mental Training',
+        flashSub: 'Visualize finger or abacus bead movements in your mind as numbers flash!'
       },
       zh: {
         langLabel: '🌐 语言:',
@@ -2652,7 +2726,44 @@
         mod5Age: '⚡ 适合年龄：9 – 12 岁',
         mod6Title: '国际珠心算战士（大师级）',
         mod6Sub: '极致速度、100%准确率、小数、负数与专注力控制。',
-        mod6Age: '🏆 适合年龄：10 岁及以上（国际竞赛级）'
+        mod6Age: '🏆 适合年龄：10 岁及以上（国际竞赛级）',
+        guestTryBtn: '游客直接试玩',
+        teacherCodeBtn: '老师课堂代码',
+        joinClassTitle: '🏫 加入老师实时课堂 / 补习班',
+        closeBtn: '✖️ 关闭',
+        phStudentNameShort: '学生姓名',
+        phRoomCode: '4位课堂码',
+        joinClassSubmit: '🚀 立即进入老师课堂',
+        tabLogin: '🔑 登录账号',
+        tabRegister: '✨ 注册新账号',
+        registerAsLbl: '👤 注册身份：',
+        roleStudentBtn: '🎓 学生',
+        roleParentBtn: '👨‍👩‍👧‍👦 家长 / 老师',
+        roleStudentHint: '🎓 学生可学习6个阶段、收集金币并与好友对战。',
+        contactAdminBtn: '🆘 联系管理员',
+        btnLoginNow: '🔑 立即登录',
+        btnRegisterStudent: '✨ 立即注册学生账号',
+        btnRegisterParent: '✨ 立即注册家长账号',
+        createStudentNameLbl: '创建新学生姓名',
+        createParentNameLbl: '输入家长 / 老师姓名',
+        haveAccountPrompt: '已有账号？',
+        loginHereLink: '点击这里登录 🔑',
+        noAccountPrompt: '还没有账号？',
+        registerHereLink: '点击这里注册 ✨',
+        guestBannerTitle: '🎮 您当前处于游客模式',
+        guestBannerSub: '免费注册账号，永久保存您的金币与3D形象！',
+        guestSaveBtn: '✨ 保存记录',
+        btnDaily7: '📅 7日签到礼',
+        btnTutorial6: '🖐️ 6岁+基础教程',
+        arenaTitle: '在线实时对战竞技场',
+        arenaSub: '闪电快答 • 马拉松竞速 • 珠心算大逃杀 • 团队对战',
+        mysteryTitle: '🎁 每日神秘惊喜宝箱',
+        mysteryDesc: '每天学习时免费开启1个惊喜宝箱，赢取金币或饰品！',
+        mysteryBtn: '✨ 开启宝箱！',
+        trackJariBtn: '🖐️ 指算路线（3阶段）',
+        trackSempoaBtn: '🧮 算盘路线（4阶段）',
+        flashHeading: '⚡ 闪电心算训练 (Flash Anzan)',
+        flashSub: '数字闪烁时，在脑海中想象手指或算珠的拨动！'
       },
       ar: {
         langLabel: '🌐 اللغة:',
@@ -2738,14 +2849,62 @@
         mod6Title: 'المحارب الدولي (مستوى الاحتراف)',
         mod6Sub: 'أقصى سرعة ودقة 100% والكسور العشرية والأعداد السالبة والتركيز.',
         mod6Age: '🏆 الفئة العمرية: 10 سنوات فأكثر (المسابقات الدولية)'
+      ,
+        guestTryBtn: 'العب مباشرة كضيف',
+        teacherCodeBtn: 'رمز فصل المعلم',
+        joinClassTitle: '🏫 انضم إلى فصل المعلم المباشر',
+        closeBtn: '✖️ إغلاق',
+        phStudentNameShort: 'اسم الطالب',
+        phRoomCode: 'رمز من 4 أرقام',
+        joinClassSubmit: '🚀 ادخل فصل المعلم الآن',
+        tabLogin: '🔑 تسجيل الدخول',
+        tabRegister: '✨ حساب جديد',
+        registerAsLbl: '👤 التسجيل كـ:',
+        roleStudentBtn: '🎓 طالب',
+        roleParentBtn: '👨‍👩‍👧‍👦 ولي أمر / معلم',
+        roleStudentHint: '🎓 يمكن للطلاب تعلم 6 مستويات وجمع العملات والتنافس مع الأصدقاء.',
+        contactAdminBtn: '🆘 تواصل مع الإدارة',
+        btnLoginNow: '🔑 تسجيل الدخول الآن',
+        btnRegisterStudent: '✨ إنشاء حساب طالب الآن',
+        btnRegisterParent: '✨ إنشاء حساب ولي أمر الآن',
+        createStudentNameLbl: 'أنشئ اسم طالب جديد',
+        createParentNameLbl: 'أدخل اسم ولي الأمر / المعلم',
+        haveAccountPrompt: 'لديك حساب بالفعل؟',
+        loginHereLink: 'سجّل الدخول هنا 🔑',
+        noAccountPrompt: 'ليس لديك حساب؟',
+        registerHereLink: 'سجّل حساباً جديداً هنا ✨',
+        guestBannerTitle: '🎮 أنت الآن في وضع الضيف',
+        guestBannerSub: 'سجّل اسماً مجانياً لحفظ عملاتك وشخصيتك!',
+        guestSaveBtn: '✨ حفظ التقدم',
+        btnDaily7: '📅 مكافآت 7 أيام',
+        btnTutorial6: '🖐️ شرح الأساسيات 6+',
+        arenaTitle: 'ساحة المنافسة المباشرة',
+        arenaSub: 'اختبار البرق • سباق الماراثون • تحدي أنزان • معركة الفرق',
+        mysteryTitle: '🎁 صندوق الهدايا الغامض اليومي',
+        mysteryDesc: 'افتح صندوق مفاجآت مجاني يومياً أثناء التعلم للحصول على عملات أو إكسسوارات!',
+        mysteryBtn: '✨ افتح الصندوق!',
+        trackJariBtn: '🖐️ مسار الأصابع (3 مستويات)',
+        trackSempoaBtn: '🧮 مسار المعداد (4 مستويات)',
+        flashHeading: '⚡ تدريب الوميض الذهني (Flash Anzan)',
+        flashSub: 'تخيل حركة الأصابع أو خرزات المعداد في ذهنك أثناء وميض الأرقام!'
       }
     };
 
     function applyAppLanguageUI(langCode) {
       const code = ['ms', 'en', 'zh', 'ar'].includes(langCode) ? langCode : 'ms';
       currentAppLang = code;
-      const t = UI_TRANSLATIONS[code];
+      const t = UI_TRANSLATIONS[code] || UI_TRANSLATIONS.ms;
       document.documentElement.lang = code;
+      document.documentElement.dir = code === 'ar' ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (key && t[key]) el.innerText = t[key];
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach((el) => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (key && t[key]) el.placeholder = t[key];
+      });
 
       const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
       const setPh = (id, val) => { const el = document.getElementById(id); if (el) el.placeholder = val; };
@@ -2854,6 +3013,9 @@
 
       const dictSel = document.getElementById('dict-lang');
       if (dictSel) dictSel.value = code;
+      if (typeof switchAuthModeTab === 'function') {
+        switchAuthModeTab(window.currentAuthMode || 'login', true);
+      }
     }
 
     window.setAppLanguage = function(langCode, silent = false) {
@@ -7114,7 +7276,12 @@
             const st = numberToFingerStates(target);
             pushFresh(`m1_f_${target}`, {
               isVisualRead: true,
-              prompt: 'Teka Nombor Rahsia: Berapakah nilai jari kedua-dua tangan ini?',
+              prompt: ({
+                ms: 'Teka Nombor Rahsia: Berapakah nilai jari kedua-dua tangan ini?',
+                en: 'Secret Number Guess: What is the total value of both hands?',
+                zh: '猜神秘数字：双手合起来的数字是多少？',
+                ar: 'خمّن الرقم السري: ما هي قيمة الأصابع في كلتا اليدين؟'
+              }[currentAppLang] || 'Teka Nombor Rahsia: Berapakah nilai jari kedua-dua tangan ini?'),
               visualHtml: `
                 <div class="flex gap-2 justify-center">
                   ${renderRealisticHandSVG('left', st.left, false, 'w-24 h-28')}
@@ -7138,7 +7305,12 @@
             if (onesOk && tensOk && a + b <= 99) {
               const ans = a + b;
               pushFresh(`m1_add_${a}_${b}`, {
-                prompt: `Kira terus menggunakan 10 jari: ${a} + ${b} = ?`,
+                prompt: ({
+                  ms: `Kira terus menggunakan 10 jari: ${a} + ${b} = ?`,
+                  en: `Calculate directly using 10 fingers: ${a} + ${b} = ?`,
+                  zh: `用十指直接计算：${a} + ${b} = ?`,
+                  ar: `احسب مباشرة باستخدام الأصابع العشرة: ${a} + ${b} = ?`
+                }[currentAppLang] || `Kira terus menggunakan 10 jari: ${a} + ${b} = ?`),
                 visualHtml: `<div class="text-2xl font-black text-sky-800 bg-white px-5 py-2 rounded-2xl border-2 border-sky-200">${a} + ${b}</div>`,
                 options: makeNumericOptions(ans, 1, 99),
                 answer: ans
@@ -11214,14 +11386,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
     function syncAuthModeSubmitButton() {
       const submitBtn = document.getElementById('btn-login-submit');
       if (!submitBtn) return;
+      const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
       if (currentAuthMode === 'register') {
-        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-sm sm:text-base py-3.5 border-2 border-emerald-700';
+        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-xs sm:text-sm py-2.5 border-2 border-emerald-700';
         submitBtn.innerText = selectedRegisterRole === 'parent'
-          ? '✨ Daftar Akaun Ibu Bapa Sekarang'
-          : '✨ Daftar Akaun Pelajar Sekarang';
+          ? (t.btnRegisterParent || '✨ Daftar Akaun Ibu Bapa Sekarang')
+          : (t.btnRegisterStudent || '✨ Daftar Akaun Pelajar Sekarang');
       } else {
-        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-sm sm:text-base py-3.5 border-2 border-blue-800';
-        submitBtn.innerText = '🔑 Log Masuk Sekarang';
+        submitBtn.className = 'w-full bubbly-btn bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black text-xs sm:text-sm py-2.5 border-2 border-blue-800';
+        submitBtn.innerText = t.btnLoginNow || '🔑 Log Masuk Sekarang';
       }
     }
 
@@ -11229,6 +11402,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (!silent) playClick();
       currentAuthMode = mode === 'register' ? 'register' : 'login';
       window.currentAuthMode = currentAuthMode;
+      const t = UI_TRANSLATIONS[currentAppLang] || UI_TRANSLATIONS.ms;
       const tabLogin = document.getElementById('tab-auth-login');
       const tabReg = document.getElementById('tab-auth-register');
       const roleBox = document.getElementById('register-role-selector-box');
@@ -11239,20 +11413,22 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (errBox && !silent) errBox.classList.add('hidden');
 
       if (currentAuthMode === 'register') {
-        if (tabLogin) tabLogin.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 transition';
-        if (tabReg) tabReg.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-emerald-600 text-white shadow-xs transition';
+        if (tabLogin) tabLogin.className = 'py-1.5 px-2 rounded-lg text-xs font-black text-slate-600 hover:text-slate-900 transition';
+        if (tabReg) tabReg.className = 'py-1.5 px-2 rounded-lg text-xs font-black bg-emerald-600 text-white shadow-xs transition';
         if (roleBox) roleBox.classList.remove('hidden');
-        if (nameLbl) nameLbl.innerText = selectedRegisterRole === 'parent' ? 'Taip Nama Ibu Bapa / Pengajar' : 'Cipta Nama Pelajar Baharu';
+        if (nameLbl) nameLbl.innerText = selectedRegisterRole === 'parent'
+          ? (t.createParentNameLbl || 'Taip Nama Ibu Bapa / Pengajar')
+          : (t.createStudentNameLbl || 'Cipta Nama Pelajar Baharu');
         if (switchPrompt) {
-          switchPrompt.innerHTML = 'Sudah ada akaun? <button type="button" onclick="switchAuthModeTab(\'login\')" class="text-sky-700 font-black underline">Log Masuk di sini 🔑</button>';
+          switchPrompt.innerHTML = `${t.haveAccountPrompt || 'Sudah ada akaun?'} <button type="button" onclick="switchAuthModeTab('login')" class="text-sky-700 font-black underline">${t.loginHereLink || 'Log Masuk di sini 🔑'}</button>`;
         }
       } else {
-        if (tabLogin) tabLogin.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-xs transition';
-        if (tabReg) tabReg.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 transition';
+        if (tabLogin) tabLogin.className = 'py-1.5 px-2 rounded-lg text-xs font-black bg-sky-600 text-white shadow-xs transition';
+        if (tabReg) tabReg.className = 'py-1.5 px-2 rounded-lg text-xs font-black text-slate-600 hover:text-slate-900 transition';
         if (roleBox) roleBox.classList.add('hidden');
-        if (nameLbl) nameLbl.innerText = 'Taip Nama Anda';
+        if (nameLbl) nameLbl.innerText = t.lblName || 'Taip Nama Anda';
         if (switchPrompt) {
-          switchPrompt.innerHTML = 'Belum ada akaun? <button type="button" onclick="switchAuthModeTab(\'register\')" class="text-emerald-700 font-black underline">Daftar Baru di sini ✨</button>';
+          switchPrompt.innerHTML = `${t.noAccountPrompt || 'Belum ada akaun?'} <button type="button" onclick="switchAuthModeTab('register')" class="text-emerald-700 font-black underline">${t.registerHereLink || 'Daftar Baru di sini ✨'}</button>`;
         }
       }
       syncAuthModeSubmitButton();

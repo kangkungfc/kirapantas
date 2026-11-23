@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.22 • Tab Katalog Set Penuh & Sasaran Avatar, Siluet Baju Ramping & Pelengkapan Set Legenda/Mitos/Agung
+            Versi 2.3.23 • Penambahbaikan Bingkai Set Sut Putera Diraja & Set Cakerawala Suria (Tiada Duplikasi Mahkota)
           </span>
         </div>
 
@@ -4297,14 +4297,15 @@
       }
       if (frameId === 'fr_crown_gold') {
         return `
-          <!-- Sayap Kecil Emas Putera Di Kiri & Kanan -->
-          <polygon points="12,42 -4,35 6,49 -3,60 14,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
-          <polygon points="88,42 104,35 94,49 103,60 86,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+          <!-- Sayap Emas Diraja Di Kiri & Kanan -->
+          <polygon points="12,42 -5,34 6,49 -4,60 14,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
+          <polygon points="88,42 105,34 94,49 104,60 86,58" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.2"/>
           <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#${uid}_gold)" stroke-width="6.5"/>
-          <polygon points="26,11 33,-3 41,7 50,-5 59,7 67,-3 74,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
-          <circle cx="50" cy="6" r="2.8" fill="#E11D48"/>
-          <circle cx="37" cy="8" r="2.2" fill="#0284C7"/>
-          <circle cx="63" cy="8" r="2.2" fill="#0284C7"/>
+          <circle cx="50" cy="50" r="42.5" fill="none" stroke="#FEF08A" stroke-width="2" stroke-dasharray="8 4"/>
+          <!-- Lencana Perisai & Bintang Diraja Di Puncak Bingkai (Tiada Duplikasi Mahkota) -->
+          <polygon points="50,-6 54,1 62,2 56,8 57.5,16 50,12 42.5,16 44,8 38,2 46,1" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+          <circle cx="50" cy="6" r="2.6" fill="#E11D48"/>
+          <!-- Permata Delima Di Bawah -->
           <polygon points="39,91 50,86 61,91 50,99" fill="#E11D48" stroke="#FACC15" stroke-width="1.3"/>
         `;
       }
@@ -4421,9 +4422,9 @@
             <!-- Bulan Sabit & Bintang Terkeluar Kanan -->
             <path d="M 99 33 A 11 11 0 1 0 99 55 A 8.2 8.2 0 1 1 99 33 Z" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.3"/>
             <polygon points="103,44 105,47.5 109,48 106,50.5 106.8,54.5 103,52.5 99.2,54.5 100,50.5 97,48 101,47.5" fill="#FEF08A"/>
-            <!-- Mahkota Suria Besar Terkeluar Atas -->
-            <polygon points="28,11 36,-6 44,5 50,-8 56,5 64,-6 72,11" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.4"/>
-            <circle cx="50" cy="5" r="3" fill="#38BDF8"/>
+            <!-- Lencana Bintang Suria-Kosmik Di Puncak Bingkai (Tiada Duplikasi Mahkota) -->
+            <polygon points="50,-8 54,1 63,2 56,8 58,16 50,12 42,16 44,8 37,2 46,1" fill="url(#${uid}_gold)" stroke="#78350F" stroke-width="1.3"/>
+            <circle cx="50" cy="5" r="3.2" fill="#38BDF8" stroke="#FFFFFF" stroke-width="0.8"/>
             <!-- Riben Bintang Cakerawala Di Bawah -->
             <polygon points="36,92 50,86 64,92 60,103 50,98 40,103" fill="#1E1B4B" stroke="#FACC15" stroke-width="1.3"/>
           </g>

@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.16 • Penambahbaikan Enjin Muzik Latar Adaptif (Auto-Unlock AudioContext, Sambung Semula Tab & Lalai Aktif)
+            Versi 2.3.17 • Pembaikan Penyegerakan Awan Hadiah Podium Top 3 (Arkib Skor Tempoh Lepas, Semakan Semalam Automatik & Tebus Manual)
           </span>
         </div>
 
@@ -10454,27 +10454,73 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     }
 
-    function ensurePlayerPeriodCounters(p) {
-      if (!p) return;
+    function getYesterdayDateKey() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getPreviousWeekDateKey() {
+      const d = new Date();
+      const day = d.getDay();
+      const diffToMonday = (day === 0 ? -6 : 1 - day);
+      const prevMon = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diffToMonday - 7);
+      return `${prevMon.getFullYear()}-W${String(prevMon.getMonth() + 1).padStart(2, '0')}-${String(prevMon.getDate()).padStart(2, '0')}`;
+    }
+
+    function getPreviousMonthDateKey() {
+      const d = new Date();
+      const prevM = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+      return `${prevM.getFullYear()}-${String(prevM.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    // Simpan skor tempoh tertutup ke `periodArchive` (cth: periodArchive.daily['2026-11-22'] = 3834) sebelum tetapan semula harian/mingguan/bulanan
+    function archiveAndRolloverPlayerPeriods(p) {
+      if (!p || typeof p !== 'object') return;
+      if (!p.periodArchive || typeof p.periodArchive !== 'object') {
+        p.periodArchive = { daily: {}, weekly: {}, monthly: {} };
+      }
+      if (!p.periodArchive.daily || typeof p.periodArchive.daily !== 'object') p.periodArchive.daily = {};
+      if (!p.periodArchive.weekly || typeof p.periodArchive.weekly !== 'object') p.periodArchive.weekly = {};
+      if (!p.periodArchive.monthly || typeof p.periodArchive.monthly !== 'object') p.periodArchive.monthly = {};
+
       const todayKey = getTodayDateKey();
       const weekKey = getCurrentWeekDateKey();
       const monthKey = getCurrentMonthDateKey();
+
+      if (p.todayDateKey && (Number(p.todayPoints) || 0) > 0) {
+        p.periodArchive.daily[p.todayDateKey] = Math.max(Number(p.periodArchive.daily[p.todayDateKey]) || 0, Number(p.todayPoints) || 0);
+      }
+      if (p.weekDateKey && (Number(p.weekPoints) || 0) > 0) {
+        p.periodArchive.weekly[p.weekDateKey] = Math.max(Number(p.periodArchive.weekly[p.weekDateKey]) || 0, Number(p.weekPoints) || 0);
+      }
+      if (p.monthDateKey && (Number(p.monthPoints) || 0) > 0) {
+        p.periodArchive.monthly[p.monthDateKey] = Math.max(Number(p.periodArchive.monthly[p.monthDateKey]) || 0, Number(p.monthPoints) || 0);
+      }
+
       if (p.todayDateKey !== todayKey) {
+        if (p.todayDateKey) p._lastTrackedDayKey = p.todayDateKey;
         p.todayDateKey = todayKey;
         p.todaySeconds = 0;
         p.todayPoints = 0;
         p.todayStars = 0;
       }
       if (p.weekDateKey !== weekKey) {
+        if (p.weekDateKey) p._lastTrackedWeekKey = p.weekDateKey;
         p.weekDateKey = weekKey;
         p.weekPoints = 0;
         p.weekStars = 0;
       }
       if (p.monthDateKey !== monthKey) {
+        if (p.monthDateKey) p._lastTrackedMonthKey = p.monthDateKey;
         p.monthDateKey = monthKey;
         p.monthPoints = 0;
         p.monthStars = 0;
       }
+    }
+
+    function ensurePlayerPeriodCounters(p) {
+      archiveAndRolloverPlayerPeriods(p);
     }
 
     function addPlayerReward(starsEarned, pointsEarned, bypassSoftCap = false) {
@@ -11162,32 +11208,58 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
     function evaluateAndGrantPodiumRewards(playersArr) {
       if (!currentPlayer || currentPlayer.isGuest || currentPlayer.isAdmin) return;
       ensurePodiumRewardLists();
+      archiveAndRolloverPlayerPeriods(currentPlayer);
       const list = Array.isArray(playersArr) ? playersArr.filter(p => p && !isAdminAccountRecord(p)) : [];
 
       const todayKey = getTodayDateKey();
       const weekKey = getCurrentWeekDateKey();
       const monthKey = getCurrentMonthDateKey();
 
-      const prevDayKey = currentPlayer._lastTrackedDayKey || todayKey;
-      const prevWeekKey = currentPlayer._lastTrackedWeekKey || weekKey;
-      const prevMonthKey = currentPlayer._lastTrackedMonthKey || monthKey;
+      const yesterdayKey = getYesterdayDateKey();
+      const prevWeekStandardKey = getPreviousWeekDateKey();
+      const prevMonthStandardKey = getPreviousMonthDateKey();
+
+      const prevDayKey = currentPlayer._lastTrackedDayKey || yesterdayKey;
+      const prevWeekKey = currentPlayer._lastTrackedWeekKey || prevWeekStandardKey;
+      const prevMonthKey = currentPlayer._lastTrackedMonthKey || prevMonthStandardKey;
 
       let addedNewClaim = false;
 
-      const queueAwardIfEligible = (periodType, closedPeriodKey, dateField, ptsField, prizesArr, periodLabel) => {
+      const getPlayerClosedPeriodPoints = (p, archiveBucket, dateField, ptsField, targetPeriodKey) => {
+        if (!p || !targetPeriodKey) return 0;
+        let pts = 0;
+        if (p[dateField] === targetPeriodKey) {
+          pts = Math.max(pts, Number(p[ptsField]) || 0);
+        }
+        const archPts = p.periodArchive && p.periodArchive[archiveBucket]
+          ? (Number(p.periodArchive[archiveBucket][targetPeriodKey]) || 0)
+          : 0;
+        pts = Math.max(pts, archPts);
+        return pts;
+      };
+
+      const queueAwardIfEligible = (periodType, archiveBucket, closedPeriodKey, dateField, ptsField, prizesArr, periodLabel) => {
         if (!closedPeriodKey || list.length === 0) return;
         const rewardId = `${periodType}_${closedPeriodKey}`;
         if (currentPlayer.claimedPodiumKeys[rewardId]) return;
         if (currentPlayer.unclaimedPodiumRewards.some(r => r && r.id === rewardId)) return;
 
-        const contenders = list
-          .filter(p => p[dateField] === closedPeriodKey && (Number(p[ptsField]) || 0) >= 50)
-          .sort((a, b) => (Number(b[ptsField]) || 0) - (Number(a[ptsField]) || 0));
-        const rankIdx = contenders.findIndex(p => p.accountId === currentPlayer.accountId || p.name === currentPlayer.name);
+        // Pastikan calon dalam senarai juga merangkumi currentPlayer terkini
+        const effectiveList = list.map(p => (p.accountId === currentPlayer.accountId || p.name === currentPlayer.name) ? { ...p, ...currentPlayer } : p);
+
+        const contenders = effectiveList
+          .map(p => ({
+            player: p,
+            closedPts: getPlayerClosedPeriodPoints(p, archiveBucket, dateField, ptsField, closedPeriodKey)
+          }))
+          .filter(entry => entry.closedPts >= 50)
+          .sort((a, b) => b.closedPts - a.closedPts);
+
+        const rankIdx = contenders.findIndex(entry => entry.player.accountId === currentPlayer.accountId || entry.player.name === currentPlayer.name);
 
         if (rankIdx >= 0 && rankIdx < 3) {
           const wonCoins = prizesArr[rankIdx];
-          const myPts = Number(contenders[rankIdx][ptsField]) || 0;
+          const myPts = contenders[rankIdx].closedPts;
           currentPlayer.unclaimedPodiumRewards.push({
             id: rewardId,
             periodType,
@@ -11199,21 +11271,26 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             awardedAt: Date.now()
           });
           addedNewClaim = true;
-        } else {
-          // Tandakan tempoh telah disemak supaya tidak berulang
+        } else if (contenders.length > 0) {
+          // Tandakan tempoh telah disemak hanya apabila data papan skor awan untuk tempoh tersebut telah wujud
           currentPlayer.claimedPodiumKeys[rewardId] = true;
         }
       };
 
-      if (prevDayKey !== todayKey) {
-        queueAwardIfEligible('today', prevDayKey, 'todayDateKey', 'todayPoints', [30, 20, 10], 'Harian');
-      }
-      if (prevWeekKey !== weekKey) {
-        queueAwardIfEligible('weekly', prevWeekKey, 'weekDateKey', 'weekPoints', [100, 60, 35], 'Mingguan');
-      }
-      if (prevMonthKey !== monthKey) {
-        queueAwardIfEligible('monthly', prevMonthKey, 'monthDateKey', 'monthPoints', [300, 180, 100], 'Bulanan');
-      }
+      const dayKeysToCheck = Array.from(new Set([prevDayKey, yesterdayKey])).filter(k => k && k !== todayKey);
+      dayKeysToCheck.forEach(dk => {
+        queueAwardIfEligible('today', 'daily', dk, 'todayDateKey', 'todayPoints', [30, 20, 10], 'Harian');
+      });
+
+      const weekKeysToCheck = Array.from(new Set([prevWeekKey, prevWeekStandardKey])).filter(k => k && k !== weekKey);
+      weekKeysToCheck.forEach(wk => {
+        queueAwardIfEligible('weekly', 'weekly', wk, 'weekDateKey', 'weekPoints', [100, 60, 35], 'Mingguan');
+      });
+
+      const monthKeysToCheck = Array.from(new Set([prevMonthKey, prevMonthStandardKey])).filter(k => k && k !== monthKey);
+      monthKeysToCheck.forEach(mk => {
+        queueAwardIfEligible('monthly', 'monthly', mk, 'monthDateKey', 'monthPoints', [300, 180, 100], 'Bulanan');
+      });
 
       currentPlayer._lastTrackedDayKey = todayKey;
       currentPlayer._lastTrackedWeekKey = weekKey;
@@ -12119,13 +12196,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       currentPlayer.nameKey = normalizePlayerKey(currentPlayer.name);
       currentPlayer.recoveryPin = currentPlayer.recoveryPin || '0000';
       currentPlayer.preferredLang = currentPlayer.preferredLang || currentAppLang;
-      const todayKey = getTodayDateKey();
-      if (currentPlayer.todayDateKey !== todayKey) {
-        currentPlayer.todayDateKey = todayKey;
-        currentPlayer.todaySeconds = 0;
-        currentPlayer.todayPoints = 0;
-        currentPlayer.todayStars = 0;
-      }
+      archiveAndRolloverPlayerPeriods(currentPlayer);
       currentPlayer.isOnline = true;
       currentPlayer.lastActiveAt = Date.now();
       currentPlayer.updatedAt = Date.now();
@@ -12213,9 +12284,43 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             }
             currentPlayer.linkedGuardians = mergeLinkedGuardiansObjs(r.linkedGuardians, currentPlayer.linkedGuardians);
             currentPlayer.guardianLinkLocked = Boolean(r.guardianLinkLocked || currentPlayer.guardianLinkLocked);
+            // Gabungkan rekod tebus hadiah podium & arkib tempoh dari awan
+            ensurePodiumRewardLists();
+            if (r.claimedPodiumKeys && typeof r.claimedPodiumKeys === 'object') {
+              currentPlayer.claimedPodiumKeys = { ...r.claimedPodiumKeys, ...currentPlayer.claimedPodiumKeys };
+            }
+            if (Array.isArray(r.unclaimedPodiumRewards)) {
+              const seenUnclaimed = new Set(currentPlayer.unclaimedPodiumRewards.map(u => u && u.id));
+              r.unclaimedPodiumRewards.forEach(u => {
+                if (u && u.id && !seenUnclaimed.has(u.id) && !currentPlayer.claimedPodiumKeys[u.id]) {
+                  currentPlayer.unclaimedPodiumRewards.push(u);
+                  seenUnclaimed.add(u.id);
+                }
+              });
+            }
+            if (Array.isArray(r.podiumRewardHistory)) {
+              const seenHist = new Set(currentPlayer.podiumRewardHistory.map(h => h && h.id));
+              r.podiumRewardHistory.forEach(h => {
+                if (h && h.id && !seenHist.has(h.id)) {
+                  currentPlayer.podiumRewardHistory.push(h);
+                  seenHist.add(h.id);
+                }
+              });
+            }
+            if (r.periodArchive && typeof r.periodArchive === 'object') {
+              archiveAndRolloverPlayerPeriods(currentPlayer);
+              ['daily', 'weekly', 'monthly'].forEach(b => {
+                if (r.periodArchive[b] && typeof r.periodArchive[b] === 'object') {
+                  Object.entries(r.periodArchive[b]).forEach(([pk, pv]) => {
+                    currentPlayer.periodArchive[b][pk] = Math.max(Number(currentPlayer.periodArchive[b][pk]) || 0, Number(pv) || 0);
+                  });
+                }
+              });
+            }
           }
         } catch (hwmErr) {}
 
+        ensurePodiumRewardLists();
         await setDoc(playerRef, {
           accountId: docId,
           key: docId,
@@ -12235,6 +12340,19 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           totalPoints: currentPlayer.totalPoints || 0,
           todayPoints: currentPlayer.todayPoints || 0,
           todayStars: currentPlayer.todayStars || 0,
+          weekDateKey: currentPlayer.weekDateKey || getCurrentWeekDateKey(),
+          weekPoints: currentPlayer.weekPoints || 0,
+          weekStars: currentPlayer.weekStars || 0,
+          monthDateKey: currentPlayer.monthDateKey || getCurrentMonthDateKey(),
+          monthPoints: currentPlayer.monthPoints || 0,
+          monthStars: currentPlayer.monthStars || 0,
+          periodArchive: currentPlayer.periodArchive || { daily: {}, weekly: {}, monthly: {} },
+          _lastTrackedDayKey: currentPlayer._lastTrackedDayKey || getTodayDateKey(),
+          _lastTrackedWeekKey: currentPlayer._lastTrackedWeekKey || getCurrentWeekDateKey(),
+          _lastTrackedMonthKey: currentPlayer._lastTrackedMonthKey || getCurrentMonthDateKey(),
+          claimedPodiumKeys: currentPlayer.claimedPodiumKeys || {},
+          unclaimedPodiumRewards: currentPlayer.unclaimedPodiumRewards || [],
+          podiumRewardHistory: currentPlayer.podiumRewardHistory || [],
           playSeconds: currentPlayer.playSeconds || 0,
           todayDateKey: currentPlayer.todayDateKey,
           todaySeconds: currentPlayer.todaySeconds || 0,
@@ -12589,13 +12707,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
       activePlayTimer = setInterval(() => {
         if (!currentPlayer) return;
-        const todayKey = getTodayDateKey();
-        if (currentPlayer.todayDateKey !== todayKey) {
-          currentPlayer.todayDateKey = todayKey;
-          currentPlayer.todaySeconds = 0;
-          currentPlayer.todayPoints = 0;
-          currentPlayer.todayStars = 0;
-        }
+        archiveAndRolloverPlayerPeriods(currentPlayer);
 
         const now = Date.now();
         const tabHidden = typeof document !== 'undefined' && document.hidden;
@@ -12893,9 +13005,39 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           const permanentId = existingAccount.accountId || existingAccount.key || generatePermanentAccountId();
           const isAdminUser = Boolean(existingAccount.isAdmin) || permanentId === ADMIN_ACCOUNT_ID || existingAccount.name.toLowerCase() === ADMIN_DEFAULT_NAME;
           const todayKey = getTodayDateKey();
+          const weekKey = getCurrentWeekDateKey();
+          const monthKey = getCurrentMonthDateKey();
+          const existingPeriodArchive = (existingAccount.periodArchive && typeof existingAccount.periodArchive === 'object')
+            ? JSON.parse(JSON.stringify(existingAccount.periodArchive))
+            : { daily: {}, weekly: {}, monthly: {} };
+          if (!existingPeriodArchive.daily) existingPeriodArchive.daily = {};
+          if (!existingPeriodArchive.weekly) existingPeriodArchive.weekly = {};
+          if (!existingPeriodArchive.monthly) existingPeriodArchive.monthly = {};
+          if (existingAccount.todayDateKey && (Number(existingAccount.todayPoints) || 0) > 0) {
+            existingPeriodArchive.daily[existingAccount.todayDateKey] = Math.max(Number(existingPeriodArchive.daily[existingAccount.todayDateKey]) || 0, Number(existingAccount.todayPoints) || 0);
+          }
+          if (existingAccount.weekDateKey && (Number(existingAccount.weekPoints) || 0) > 0) {
+            existingPeriodArchive.weekly[existingAccount.weekDateKey] = Math.max(Number(existingPeriodArchive.weekly[existingAccount.weekDateKey]) || 0, Number(existingAccount.weekPoints) || 0);
+          }
+          if (existingAccount.monthDateKey && (Number(existingAccount.monthPoints) || 0) > 0) {
+            existingPeriodArchive.monthly[existingAccount.monthDateKey] = Math.max(Number(existingPeriodArchive.monthly[existingAccount.monthDateKey]) || 0, Number(existingAccount.monthPoints) || 0);
+          }
           const savedTodaySec = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todaySeconds) || 0) : 0;
           const savedTodayPts = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todayPoints) || 0) : 0;
           const savedTodayStars = existingAccount.todayDateKey === todayKey ? (Number(existingAccount.todayStars) || 0) : 0;
+          const savedWeekPts = existingAccount.weekDateKey === weekKey ? (Number(existingAccount.weekPoints) || 0) : savedTodayPts;
+          const savedWeekStars = existingAccount.weekDateKey === weekKey ? (Number(existingAccount.weekStars) || 0) : savedTodayStars;
+          const savedMonthPts = existingAccount.monthDateKey === monthKey ? (Number(existingAccount.monthPoints) || 0) : savedWeekPts;
+          const savedMonthStars = existingAccount.monthDateKey === monthKey ? (Number(existingAccount.monthStars) || 0) : savedWeekStars;
+          const prevDayFromAcc = (existingAccount.todayDateKey && existingAccount.todayDateKey !== todayKey)
+            ? existingAccount.todayDateKey
+            : (existingAccount._lastTrackedDayKey || getYesterdayDateKey());
+          const prevWeekFromAcc = (existingAccount.weekDateKey && existingAccount.weekDateKey !== weekKey)
+            ? existingAccount.weekDateKey
+            : (existingAccount._lastTrackedWeekKey || getPreviousWeekDateKey());
+          const prevMonthFromAcc = (existingAccount.monthDateKey && existingAccount.monthDateKey !== monthKey)
+            ? existingAccount.monthDateKey
+            : (existingAccount._lastTrackedMonthKey || getPreviousMonthDateKey());
           const keptLang = localStorage.getItem(APP_LANG_STORAGE_KEY) || existingAccount.preferredLang || currentAppLang || 'ms';
           currentPlayer = {
             accountId: permanentId,
@@ -12916,6 +13058,19 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             totalPoints: Number(existingAccount.totalPoints) || 0,
             todayPoints: savedTodayPts,
             todayStars: savedTodayStars,
+            weekDateKey: weekKey,
+            weekPoints: savedWeekPts,
+            weekStars: savedWeekStars,
+            monthDateKey: monthKey,
+            monthPoints: savedMonthPts,
+            monthStars: savedMonthStars,
+            periodArchive: existingPeriodArchive,
+            _lastTrackedDayKey: prevDayFromAcc,
+            _lastTrackedWeekKey: prevWeekFromAcc,
+            _lastTrackedMonthKey: prevMonthFromAcc,
+            claimedPodiumKeys: (existingAccount.claimedPodiumKeys && typeof existingAccount.claimedPodiumKeys === 'object') ? { ...existingAccount.claimedPodiumKeys } : {},
+            unclaimedPodiumRewards: Array.isArray(existingAccount.unclaimedPodiumRewards) ? JSON.parse(JSON.stringify(existingAccount.unclaimedPodiumRewards)) : [],
+            podiumRewardHistory: Array.isArray(existingAccount.podiumRewardHistory) ? JSON.parse(JSON.stringify(existingAccount.podiumRewardHistory)) : [],
             playSeconds: Number(existingAccount.playSeconds) || 0,
             todayDateKey: todayKey,
             todaySeconds: savedTodaySec,
@@ -12970,7 +13125,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           }
           navTo('home');
           if (!isAdminUser) {
-            setTimeout(() => openDailyLoginRewardModal(true), 450);
+            setTimeout(() => {
+              loadScoreboard();
+              openDailyLoginRewardModal(true);
+            }, 450);
           }
           try {
             const urlParams = new URLSearchParams(window.location.search);

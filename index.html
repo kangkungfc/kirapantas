@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.17 • Pembaikan Penyegerakan Awan Hadiah Podium Top 3 (Arkib Skor Tempoh Lepas, Semakan Semalam Automatik & Tebus Manual)
+            Versi 2.3.18 • Pembaikan Carian Akaun Log Masuk (Abaikan Jarak/Huruf Besar-Kecil), Paparan Ralat Tepat & Penebusan Podium Top 3
           </span>
         </div>
 
@@ -11389,7 +11389,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             const allSnaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
             allSnaps.forEach((docSnap) => {
               const d = docSnap.data();
-              if (d && (d.name === exactName || d.nameKey === targetNameKey || docSnap.id === targetNameKey)) {
+              if (!d) return;
+              const dTrimmed = String(d.name || '').trim();
+              if (
+                d.name === exactName ||
+                dTrimmed === trimmedName ||
+                dTrimmed.toLowerCase() === lowerName ||
+                d.nameKey === targetNameKey ||
+                docSnap.id === targetNameKey
+              ) {
                 d.accountId = d.accountId || d.key || docSnap.id;
                 d.key = d.accountId;
                 d.nameKey = d.nameKey || targetNameKey;
@@ -13108,7 +13116,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           localStorage.setItem(APP_LANG_STORAGE_KEY, keptLang);
           applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
-          await savePlayerCloud();
+          try { await savePlayerCloud(); } catch (syncLoginErr) { console.warn('Sync login warning:', syncLoginErr); }
           playCheer();
           showAppToast(isAdminUser
             ? '🛡️ Selamat datang Admin! Semua 6 Tahap dibuka & Panel Admin sedia digunakan.'
@@ -13205,8 +13213,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           }
         }
       } catch (err) {
+        console.error('Auth error:', err);
         playWrong();
-        errBox.innerText = 'Ralat semasa pengesahan akaun. Sila cuba sebentar lagi.';
+        const detail = (err && (err.message || err.code)) ? ` (${escapeHtmlSafe(String(err.message || err.code))})` : '';
+        errBox.innerHTML = `⚠️ Ralat semasa pengesahan akaun${detail}. Sila cuba sebentar lagi.`;
         errBox.classList.remove('hidden');
       } finally {
         if (loginBtn) {

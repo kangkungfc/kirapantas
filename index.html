@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.18 • Pembaikan Carian Akaun Log Masuk (Abaikan Jarak/Huruf Besar-Kecil), Paparan Ralat Tepat & Penebusan Podium Top 3
+            Versi 2.3.19 • Pembaikan Ralat SyntaxError (Duplikasi getYesterdayDateKey) Untuk Log Masuk & Penebusan Podium Top 3
           </span>
         </div>
 
@@ -10452,12 +10452,6 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
     function getCurrentMonthDateKey() {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-    }
-
-    function getYesterdayDateKey() {
-      const d = new Date();
-      d.setDate(d.getDate() - 1);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
     function getPreviousWeekDateKey() {

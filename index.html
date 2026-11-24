@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.23 • Penambahbaikan Bingkai Set Sut Putera Diraja & Set Cakerawala Suria (Tiada Duplikasi Mahkota)
+            Versi 2.3.25 • Belian Terus Item & Baki Set Penuh Di Dalam Katalog Set Studio Avatar 3D
           </span>
         </div>
 
@@ -9525,13 +9525,37 @@
 
     let simLeftState = [false, false, false, false, false];
     let simRightState = [false, false, false, false, false];
-    let simChallengeTarget = 27;
+    let simChallengeTarget = Math.floor(Math.random() * 99) + 1;
+    let simRecentTargets = [simChallengeTarget];
+    let _simChallengeSolvedLock = false;
 
     window.nextSimFingerChallenge = function(manualClick = false) {
       if (manualClick) playClick();
-      let nextT = Math.floor(Math.random() * 98) + 1;
-      if (nextT === simChallengeTarget) nextT = (nextT % 98) + 1;
+      _simChallengeSolvedLock = false;
+      const currentVal = (() => {
+        let s = simLeftState[0] ? 50 : 0;
+        for (let i = 1; i <= 4; i++) if (simLeftState[i]) s += 10;
+        if (simRightState[0]) s += 5;
+        for (let i = 1; i <= 4; i++) if (simRightState[i]) s += 1;
+        return s;
+      })();
+
+      // Jana nombor baharu 1..99 yang tidak bertindih dengan 25 soalan terkini & bukan nilai semasa
+      let nextT = simChallengeTarget;
+      for (let attempt = 0; attempt < 60; attempt++) {
+        const cand = Math.floor(Math.random() * 99) + 1;
+        if (cand !== currentVal && !simRecentTargets.includes(cand)) {
+          nextT = cand;
+          break;
+        }
+      }
+      if (nextT === simChallengeTarget || nextT === currentVal) {
+        nextT = ((simChallengeTarget + 13) % 99) + 1;
+      }
       simChallengeTarget = nextT;
+      simRecentTargets.push(nextT);
+      if (simRecentTargets.length > 25) simRecentTargets.shift();
+
       const el = document.getElementById('sim-challenge-target');
       if (el) el.innerText = simChallengeTarget;
     };
@@ -9554,7 +9578,8 @@
       document.getElementById('sim-total-val').innerText = total;
       document.getElementById('sim-breakdown').innerText = `Kiri (Puluh): ${lVal} + Kanan (Sa): ${rVal}`;
 
-      if (total === simChallengeTarget && total > 0) {
+      if (!_simChallengeSolvedLock && total === simChallengeTarget && total > 0) {
+        _simChallengeSolvedLock = true;
         playCheer();
         triggerConfetti(30);
         if (currentPlayer) addPlayerReward(2, 10);
@@ -9636,8 +9661,11 @@
       document.getElementById('abacus-breakdown').innerText =
         `Ribu: ${vals[0]} | Ratus: ${vals[1]} | Puluh: ${vals[2]} | Sa: ${vals[3]}`;
 
-      if (typeof window._abaChallengeTarget === 'undefined') window._abaChallengeTarget = 145;
-      if (total === window._abaChallengeTarget && total > 0) {
+      if (typeof window._abaChallengeTarget === 'undefined') {
+        window.nextAbacusBoardChallenge(false);
+      }
+      if (!window._abaChallengeSolvedLock && total === window._abaChallengeTarget && total > 0) {
+        window._abaChallengeSolvedLock = true;
         playCheer();
         triggerConfetti(30);
         if (currentPlayer) addPlayerReward(2, 10);
@@ -9666,12 +9694,40 @@
       renderInteractiveAbacus();
     };
 
+    window._abaRecentTargets = window._abaRecentTargets || [];
+    window._abaChallengeSolvedLock = false;
     window.nextAbacusBoardChallenge = function(manualClick = false) {
       if (manualClick) playClick();
-      const pools = [26, 48, 73, 125, 145, 260, 384, 519, 642, 875, 1250, 2460];
-      let cand = pools[Math.floor(Math.random() * pools.length)];
-      if (cand === window._abaChallengeTarget) cand = Math.floor(Math.random() * 890) + 110;
+      window._abaChallengeSolvedLock = false;
+      const currentVal = abacusRods.reduce((acc, r) => acc + ((r.top ? 5 : 0) + r.bot) * r.mult, 0);
+
+      // Penjana nombor dinamik menyeluruh untuk 4-tiang (Sa, Puluh, Ratus, Ribu) tanpa ulangan
+      const genAbacusCandidate = () => {
+        const roll = Math.random();
+        if (roll < 0.20) {
+          // 2-digit (11 - 99) untuk pemanasan
+          return Math.floor(Math.random() * 89) + 11;
+        } else if (roll < 0.65) {
+          // 3-digit (101 - 999) — melatih tiang Ratus, Puluh, Sa
+          return Math.floor(Math.random() * 899) + 101;
+        } else {
+          // 4-digit (1001 - 9999) — melatih kesemua 4 tiang termasuk Ribu!
+          return Math.floor(Math.random() * 8999) + 1001;
+        }
+      };
+
+      let cand = genAbacusCandidate();
+      for (let attempt = 0; attempt < 60; attempt++) {
+        const tryVal = genAbacusCandidate();
+        if (tryVal !== currentVal && !window._abaRecentTargets.includes(tryVal)) {
+          cand = tryVal;
+          break;
+        }
+      }
       window._abaChallengeTarget = cand;
+      window._abaRecentTargets.push(cand);
+      if (window._abaRecentTargets.length > 35) window._abaRecentTargets.shift();
+
       const el = document.getElementById('aba-challenge-target');
       if (el) el.innerText = cand.toLocaleString();
     };
@@ -10123,7 +10179,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       if (activeStudioTab === 'sets') {
         container.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[360px] overflow-y-auto pr-0.5';
         const isAdm = Boolean(currentPlayer.isAdmin);
-        const visibleSets = AVATAR_FULL_SETS.filter(s => !s.gender || s.gender === 'unisex' || s.gender === cfg.gender);
+        const visibleSets = AVATAR_FULL_SETS
+          .filter(s => !s.gender || s.gender === 'unisex' || s.gender === cfg.gender)
+          .sort((a, b) => (b.id === currentPlayer.targetAvatarSetId ? 1 : 0) - (a.id === currentPlayer.targetAvatarSetId ? 1 : 0));
 
         const tierSetStyles = {
           Comel:    'bg-pink-50/50 border-pink-300',
@@ -10184,12 +10242,27 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           const card = document.createElement('div');
           card.className = `border-2 rounded-2xl p-3 flex flex-col justify-between transition ${isTarget ? 'ring-2 ring-amber-500 ' : ''}${tierSetStyles[setObj.tier] || 'bg-white border-slate-200'}`;
 
-          const piecesListHtml = pieceEntries.map(p => `
-            <div class="flex items-center justify-between text-[9.5px] leading-tight py-0.5 border-b border-slate-200/60 last:border-b-0">
-              <span class="font-bold ${p.isOwned ? 'text-emerald-800' : 'text-slate-700'} truncate pr-1">${p.isOwned ? '✅' : '🔒'} ${p.name}</span>
-              <span class="font-black flex-shrink-0 ${p.isOwned ? 'text-emerald-600' : 'text-amber-800'}">${p.isOwned ? 'Dimiliki' : `${p.cost} Coin`}</span>
-            </div>
-          `).join('');
+          const canAffordAll = isAdm || (currentPlayer.stars || 0) >= remainingCost;
+          const piecesListHtml = pieceEntries.map(p => {
+            const canAffordOne = isAdm || (currentPlayer.stars || 0) >= p.cost;
+            return `
+              <div class="flex items-center justify-between gap-1 text-[9.5px] leading-tight py-1 border-b border-slate-200/60 last:border-b-0">
+                <span class="font-bold ${p.isOwned ? 'text-emerald-800' : 'text-slate-800'} truncate">${p.isOwned ? '✅' : '🔒'} ${p.name}</span>
+                ${p.isOwned
+                  ? `<span class="font-black flex-shrink-0 text-emerald-600 px-1.5 py-0.5">Dimiliki</span>`
+                  : `<button type="button" onclick="buyAvatarPart('${p.cat}', '${p.id}', ${p.cost})" class="flex-shrink-0 px-2 py-0.5 rounded-lg font-black text-[9px] border transition inline-flex items-center gap-0.5 ${canAffordOne ? 'bg-amber-400 hover:bg-amber-300 text-amber-950 border-amber-600 shadow-2xs' : 'bg-slate-100 text-slate-500 border-slate-300'}" title="Beli item ini terus dari Katalog Set">
+                      Beli (${p.cost} ${COIN_ICON_HTML})
+                    </button>`
+                }
+              </div>
+            `;
+          }).join('');
+
+          const buyAllBtnHtml = remainingCost > 0
+            ? `<button type="button" onclick="buyRemainingSetBundle('${setObj.id}')" class="w-full mb-1.5 py-1.5 px-2 rounded-xl text-[9.5px] font-black border transition inline-flex items-center justify-center gap-1 ${canAffordAll ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-700 shadow-xs' : 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-400'}">
+                🛍️ Beli Semua Baki (${remainingCost} ${COIN_ICON_HTML})
+              </button>`
+            : '';
 
           card.innerHTML = `
             <div>
@@ -10207,17 +10280,20 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
               <div class="text-[9.5px] font-extrabold text-center mb-1.5 ${remainingCost === 0 ? 'text-emerald-700' : 'text-slate-600'}">
                 ${remainingCost === 0 ? '🎉 Semua item dalam set ini telah dimiliki!' : `Nilai Penuh: <b>${totalFullCost}</b> • Baki Diperlukan: <b>${remainingCost} Coin</b>`}
               </div>
-              <div class="bg-white/80 rounded-xl p-1.5 border border-slate-200/80 mb-2 space-y-0.5">
+              <div class="bg-white/90 rounded-xl p-1.5 border border-slate-200/80 mb-2 space-y-0.5">
                 ${piecesListHtml}
               </div>
             </div>
-            <div class="grid grid-cols-2 gap-1.5 pt-1">
-              <button type="button" onclick="previewFullSetOnStage('${setObj.id}')" class="py-1.5 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[9.5px] font-black transition">
-                ${remainingCost === 0 ? '✨ Pakai Set' : '👁️ Pratonton'}
-              </button>
-              <button type="button" onclick="toggleTargetAvatarSet('${setObj.id}')" class="py-1.5 px-2 rounded-xl text-[9.5px] font-black border transition ${isTarget ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white hover:bg-amber-50 text-slate-800 border-slate-300'}">
-                ${isTarget ? '🎯 Sasaran Aktif' : '🎯 Jadikan Sasaran'}
-              </button>
+            <div class="pt-1">
+              ${buyAllBtnHtml}
+              <div class="grid grid-cols-2 gap-1.5">
+                <button type="button" onclick="previewFullSetOnStage('${setObj.id}')" class="py-1.5 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[9.5px] font-black transition">
+                  ${remainingCost === 0 ? '✨ Pakai Set' : '👁️ Pratonton'}
+                </button>
+                <button type="button" onclick="toggleTargetAvatarSet('${setObj.id}')" class="py-1.5 px-2 rounded-xl text-[9.5px] font-black border transition ${isTarget ? 'bg-amber-400 text-amber-950 border-amber-600' : 'bg-white hover:bg-amber-50 text-slate-800 border-slate-300'}">
+                  ${isTarget ? '🎯 Sasaran Aktif' : '🎯 Jadikan Sasaran'}
+                </button>
+              </div>
             </div>
           `;
           container.appendChild(card);
@@ -10395,8 +10471,70 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         playCheer();
         showAppToast(`✨ ${setObj.icon} ${setObj.name} lengkap telah dipakaikan ke profil anda!`);
       } else {
-        showAppToast(`👁️ Pratonton Penuh: ${setObj.icon} ${setObj.name}! Kumpul Coin & beli item bertanda 🔒 untuk pakai kekal.`);
+        showAppToast(`👁️ Pratonton Penuh: ${setObj.icon} ${setObj.name}! Tekan butang Beli pada item 🔒 di bawah untuk miliki.`);
       }
+    };
+
+    window.buyRemainingSetBundle = function(setId) {
+      if (!currentPlayer) return;
+      const setObj = AVATAR_FULL_SETS.find(s => s.id === setId);
+      if (!setObj || !setObj.plan) return;
+      const cfg = ensurePlayerAvatarConfig(currentPlayer);
+      const isAdm = Boolean(currentPlayer.isAdmin);
+      const plan = setObj.plan;
+
+      const missingItems = [];
+      const checkSlot = (cat, id) => {
+        if (!id || id === 'hw_none' || id === 'fr_none') return;
+        const obj = (AVATAR_STUDIO_CATALOG[cat] || []).find(x => x.id === id);
+        if (!obj) return;
+        if (!isAdm && obj.cost > 0 && !currentPlayer.ownedAvatarItems.includes(id)) {
+          missingItems.push({ cat, id, cost: obj.cost });
+        }
+      };
+      checkSlot('outfit', plan.outfit);
+      checkSlot('hair', plan.hair);
+      checkSlot('headwear', plan.headwear);
+      if (Array.isArray(plan.addAcc)) plan.addAcc.forEach(accId => checkSlot('accessory', accId));
+      checkSlot('frame', plan.frame);
+
+      const totalRemaining = missingItems.reduce((s, it) => s + (Number(it.cost) || 0), 0);
+      if (!isAdm && (currentPlayer.stars || 0) < totalRemaining) {
+        playWrong();
+        showAppToast(`Coin belum cukup untuk beli semua baki! Perlukan ${totalRemaining} Coin (Anda ada ${currentPlayer.stars || 0} Coin). Anda boleh beli satu per satu dahulu.`);
+        return;
+      }
+
+      if (!isAdm && totalRemaining > 0) {
+        currentPlayer.stars -= totalRemaining;
+        currentPlayer._allowCoinSpendUntil = Date.now() + 8000;
+      }
+      missingItems.forEach(it => {
+        if (!currentPlayer.ownedAvatarItems.includes(it.id)) {
+          currentPlayer.ownedAvatarItems.push(it.id);
+        }
+      });
+
+      // Terus pakaikan keseluruhan set yang baru dilengkapkan!
+      const appliedCfg = sanitizeAvatarForGender({
+        gender: cfg.gender,
+        face: cfg.face,
+        skin: cfg.skin,
+        hairColor: cfg.hairColor,
+        outfit: plan.outfit || cfg.outfit,
+        hair: plan.hair || cfg.hair,
+        headwear: plan.headwear || 'hw_none',
+        accessories: Array.isArray(plan.addAcc) ? [...plan.addAcc] : [],
+        frame: plan.frame || 'fr_none'
+      });
+      Object.assign(cfg, appliedCfg);
+
+      playCheer();
+      triggerConfetti(45);
+      syncPlayerUI();
+      renderAvatarStudio();
+      savePlayerCloud();
+      showAppToast(`🎉 Tahniah! ${setObj.icon} ${setObj.name} telah dibeli sepenuhnya dan dipakaikan ke profil anda!`);
     };
 
     window.toggleTargetAvatarSet = function(setId) {
@@ -14077,10 +14215,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       } else if (screenName === 'simulator') {
         setPlayerCurrentActivity('Simulator Jari (0–99)');
         incrementDailyQuestProgress('q_tool', 1);
+        window.nextSimFingerChallenge(false);
         renderFingerSimulator();
       } else if (screenName === 'abacus') {
         setPlayerCurrentActivity('Abakus 4-Tiang');
         incrementDailyQuestProgress('q_tool', 1);
+        window.nextAbacusBoardChallenge(false);
         renderInteractiveAbacus();
       } else if (screenName === 'quiz') {
         setPlayerCurrentActivity('Cabaran Kilat');

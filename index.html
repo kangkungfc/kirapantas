@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.27 • Penyegerakan Penuh Kata Laluan Baharu Merentas Awan, Rekod Pendua & Biometrik
+            Versi 2.3.28 • Penguatkuasaan Ketat Prasyarat 35/50 & Kunci Semula Tahap Murid Lama
           </span>
         </div>
 
@@ -1714,6 +1714,11 @@
           <div>
             <label class="block text-[10px] font-black text-rose-950 mb-1">🔑 Kata Laluan Lalai Untuk Reset</label>
             <input id="admin-default-reset-pass" type="text" value="1234" minlength="3" maxlength="20" placeholder="Lalai: 1234" class="w-full px-3 py-2 rounded-xl border border-rose-300 text-xs font-black bg-white focus:outline-none" />
+          </div>
+          <div class="sm:col-span-2 pt-1">
+            <button type="button" onclick="adminEnforceModuleLocksAllStudents()" class="w-full bubbly-btn bg-indigo-600 hover:bg-indigo-500 text-white border-2 border-indigo-900 py-2 px-3 text-xs font-black">
+              🔒 Kunci Semula Tahap Semua Murid Lama Yang Belum Lulus 35/50
+            </button>
           </div>
         </div>
 
@@ -3146,24 +3151,25 @@
       if (Boolean(player.isAdmin)) return true;
       const prereqId = MODULE_PREREQUISITES[modId];
       if (!prereqId) return true; // Tahap 1 Jari (1) & Tahap 1 Sempoa (2) sentiasa terbuka
-      const scores = player.modScores || {};
-      const prevScore = Number(scores[prereqId] || 0);
-      if (prevScore >= MODULE_UNLOCK_PASS_SCORE) return true;
-      // Juga sokong pembukaan manual melalui Kedai Coin jika cukup syiling & prasyarat atau tebusan khas
-      if (Array.isArray(player.unlockedModules) && player.unlockedModules.includes(modId)) {
-        // Pastikan tahap yang memang asal terbuka dari awal sahaja (1 & 2) dikira automatik;
-        // tahap lanjutan hanya kekal terbuka jika sudah melepasi skor prasyarat ATAU ditebus secara sah
-        if (modId === 1 || modId === 2) return true;
-        if (Array.isArray(player.redeemedModules) && player.redeemedModules.includes(modId)) return true;
+      // Semak secara berperingkat dari tahap sebelumnya sehingga tahap asas: setiap prasyarat mesti lulus >= 35/50
+      let curr = modId;
+      const visited = new Set();
+      while (MODULE_PREREQUISITES[curr]) {
+        if (visited.has(curr)) break;
+        visited.add(curr);
+        const reqPrev = MODULE_PREREQUISITES[curr];
+        const scores = player.modScores || {};
+        const prevScore = Number(scores[reqPrev] || 0);
+        if (prevScore < MODULE_UNLOCK_PASS_SCORE) return false;
+        curr = reqPrev;
       }
-      return false;
+      return true;
     }
 
     function evaluateAndUnlockNextModules(player) {
       if (!player) return [];
       const baseUnlocked = [1, 2];
-      const redeemed = Array.isArray(player.redeemedModules) ? player.redeemedModules : [];
-      const computedUnlocked = new Set([...baseUnlocked, ...redeemed]);
+      const computedUnlocked = new Set(baseUnlocked);
       const prevUnlocked = Array.isArray(player.unlockedModules) ? player.unlockedModules : [];
       const newlyUnlocked = [];
 
@@ -3176,7 +3182,11 @@
           }
         }
       });
+      // Kunci semula mana-mana tahap lama yang pernah dibuka guna Coin tetapi belum lulus >= 35/50
       player.unlockedModules = Array.from(computedUnlocked);
+      if (Array.isArray(player.redeemedModules) && player.redeemedModules.length > 0) {
+        player.redeemedModules = [];
+      }
       return newlyUnlocked;
     }
 
@@ -10150,11 +10160,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
 
           const leftInfo = document.createElement('div');
           leftInfo.className = 'flex items-center gap-2';
+          const prevBest = prereqId ? Number((currentPlayer.modScores && currentPlayer.modScores[prereqId]) || 0) : 50;
           leftInfo.innerHTML = `
             <span class="text-xl">${meta.icon}</span>
             <div>
               <div class="text-xs font-black text-slate-800">${getModuleTrackLabel(m)}: ${meta.shortTitle}</div>
-              <div class="text-[10px] font-bold text-slate-500">Lulus ${prereqLabel} (${MODULE_UNLOCK_PASS_SCORE}/50) atau Tebus ${req} Coin ${COIN_ICON_HTML}</div>
+              <div class="text-[10px] font-bold text-slate-500">Syarat: Capai ${MODULE_UNLOCK_PASS_SCORE}/50 pada ${prereqLabel} (Rekod anda: ${prevBest}/50)</div>
             </div>
           `;
           row.appendChild(leftInfo);
@@ -10165,11 +10176,10 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             badge.innerText = '✅ Terbuka';
             row.appendChild(badge);
           } else {
-            const btn = document.createElement('button');
-            btn.className = 'bubbly-btn bg-amber-400 text-amber-950 font-black text-xs px-3 py-1.5 border border-amber-600 inline-flex items-center gap-1';
-            btn.innerHTML = `Buka (${req} ${COIN_ICON_HTML})`;
-            btn.onclick = () => window.unlockModuleNow(m, req);
-            row.appendChild(btn);
+            const badge = document.createElement('span');
+            badge.className = 'text-xs font-black text-slate-500 bg-slate-200 px-2.5 py-1 rounded-xl border border-slate-300';
+            badge.innerText = `🔒 Terkunci (${prevBest}/${MODULE_UNLOCK_PASS_SCORE})`;
+            row.appendChild(badge);
           }
           container.appendChild(row);
         }
@@ -10742,22 +10752,17 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       }
     };
 
-    window.unlockModuleNow = function(modNum, cost) {
+    window.unlockModuleNow = function(modNum) {
       if (!currentPlayer) return;
-      if (!currentPlayer.isAdmin && (currentPlayer.stars || 0) < cost) {
+      evaluateAndUnlockNextModules(currentPlayer);
+      if (!isModuleUnlockedForPlayer(currentPlayer, modNum)) {
+        const prereqId = MODULE_PREREQUISITES[modNum];
+        const prereqLabel = prereqId ? getModuleTrackLabel(prereqId) : 'Tahap Asas';
         playWrong();
-        showAppToast(`Kumpul sekurang-kurangnya ${cost} Coin untuk membuka Tahap ${modNum}!`);
+        showAppToast(`🔒 Tahap ini hanya dibuka selepas mencapai ${MODULE_UNLOCK_PASS_SCORE}/50 pada ${prereqLabel}!`);
         return;
       }
       playCheer();
-      triggerConfetti();
-      if (!Array.isArray(currentPlayer.redeemedModules)) currentPlayer.redeemedModules = [];
-      if (!currentPlayer.redeemedModules.includes(modNum)) {
-        currentPlayer.redeemedModules.push(modNum);
-      }
-      if (!currentPlayer.unlockedModules.includes(modNum)) {
-        currentPlayer.unlockedModules.push(modNum);
-      }
       syncPlayerUI();
       renderAvatarStudio();
       renderModulesMenu();
@@ -12948,13 +12953,15 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
               const mergedTotalPts = Math.max(Number(accData.totalPoints) || 0, (Number(r.totalPoints) || 0) + deltaPts);
               const mergedStars = Math.max(Number(accData.stars) || 0, (Number(r.stars) || 0) + deltaStars);
               const mergedOwned = Array.from(new Set([...(Array.isArray(r.ownedAvatarItems) ? r.ownedAvatarItems : []), ...(Array.isArray(accData.ownedAvatarItems) ? accData.ownedAvatarItems : [])]));
-              const mergedUnlocked = Array.from(new Set([...(Array.isArray(r.unlockedModules) ? r.unlockedModules : [1, 2]), ...(Array.isArray(accData.unlockedModules) ? accData.unlockedModules : [1, 2])]));
               const mergedModScores = { ...(r.modScores || {}) };
               if (accData.modScores && typeof accData.modScores === 'object') {
                 Object.entries(accData.modScores).forEach(([mKey, mVal]) => {
                   mergedModScores[mKey] = Math.max(Number(mergedModScores[mKey]) || 0, Number(mVal) || 0);
                 });
               }
+              const tempEvalPlayer = { isAdmin: false, modScores: mergedModScores };
+              evaluateAndUnlockNextModules(tempEvalPlayer);
+              const mergedUnlocked = tempEvalPlayer.unlockedModules;
               const mergedModCheckpoints = { ...(r.modCheckpoints || {}), ...(accData.modCheckpoints || {}) };
               const todayKey = getTodayDateKey();
               const mergedTodayPts = accData.todayDateKey === todayKey
@@ -13570,6 +13577,9 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           localStorage.setItem(APP_LANG_STORAGE_KEY, keptLang);
           applyAppLanguageUI(keptLang);
           ensurePlayerAvatarConfig(currentPlayer);
+          if (!isAdminUser) {
+            evaluateAndUnlockNextModules(currentPlayer);
+          }
           try { await savePlayerCloud(); } catch (syncLoginErr) { console.warn('Sync login warning:', syncLoginErr); }
           playCheer();
           showAppToast(isAdminUser
@@ -15896,6 +15906,69 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         if (fb) {
           fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
           fb.innerText = '❌ Gagal menyimpan pelarasan Coin & Markah pelajar.';
+          fb.classList.remove('hidden');
+        }
+      }
+    };
+
+    window.adminEnforceModuleLocksAllStudents = async function() {
+      if (!currentPlayer || !currentPlayer.isAdmin) return;
+      playClick();
+      const fb = document.getElementById('admin-action-feedback');
+      try {
+        loadLocalAccountsFromStorage();
+        let updatedCount = 0;
+        const batchWrites = [];
+
+        if (db && isDeviceOnline) {
+          await authReadyPromise;
+          if (fbUser) {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            snap.forEach((docSnap) => {
+              const d = docSnap.data();
+              if (!d || isAdminAccountRecord(d)) return;
+              const prevArr = Array.isArray(d.unlockedModules) ? d.unlockedModules : [1, 2];
+              evaluateAndUnlockNextModules(d);
+              const nextArr = d.unlockedModules || [1, 2];
+              const changed = prevArr.length !== nextArr.length || prevArr.some(x => !nextArr.includes(x));
+              inMemoryAccounts.set(docSnap.id, d);
+              if (changed) {
+                updatedCount++;
+                batchWrites.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id), {
+                  unlockedModules: nextArr,
+                  redeemedModules: []
+                }, { merge: true }));
+              }
+            });
+            if (batchWrites.length > 0) {
+              await Promise.all(batchWrites);
+            }
+          }
+        } else {
+          inMemoryAccounts.forEach((d, k) => {
+            if (!d || isAdminAccountRecord(d)) return;
+            const prevArr = Array.isArray(d.unlockedModules) ? d.unlockedModules : [1, 2];
+            evaluateAndUnlockNextModules(d);
+            const nextArr = d.unlockedModules || [1, 2];
+            if (prevArr.length !== nextArr.length || prevArr.some(x => !nextArr.includes(x))) {
+              updatedCount++;
+            }
+            inMemoryAccounts.set(k, d);
+          });
+        }
+        persistLocalAccountsToStorage();
+        if (typeof loadAdminStudentList === 'function') await loadAdminStudentList();
+        playCheer();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `🔒 Selesai! ${updatedCount} akaun murid telah diselaraskan & dikunci semula tahap yang belum lulus 35/50.`;
+          fb.classList.remove('hidden');
+        }
+      } catch (err) {
+        playWrong();
+        if (fb) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 text-center bg-rose-100 text-rose-900 border border-rose-300';
+          fb.innerText = '❌ Gagal menyelaraskan kunci tahap murid.';
           fb.classList.remove('hidden');
         }
       }

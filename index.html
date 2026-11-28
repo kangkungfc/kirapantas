@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.26 • Simpanan Kekal Set Sasaran Utama Di Awan & Storan Tempatan Setiap Kali Log Masuk
+            Versi 2.3.27 • Penyegerakan Penuh Kata Laluan Baharu Merentas Awan, Rekod Pendua & Biometrik
           </span>
         </div>
 
@@ -12972,9 +12972,12 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
                 ...(Array.isArray(accData.linkedChildrenIds) ? accData.linkedChildrenIds : [])
               ]));
               const mergedGuardians = mergeLinkedGuardiansObjs(r.linkedGuardians, accData.linkedGuardians);
+              const useLocalCreds = (Number(accData.updatedAt) || 0) >= (Number(r.updatedAt) || 0);
               mergedRecord = {
                 ...r,
                 ...accData,
+                password: useLocalCreds ? (accData.password || r.password) : (r.password || accData.password),
+                recoveryPin: useLocalCreds ? (accData.recoveryPin || r.recoveryPin) : (r.recoveryPin || accData.recoveryPin),
                 linkedChildrenIds: mergedLinkedChildren,
                 linkedGuardians: mergedGuardians,
                 guardianLinkLocked: Boolean(r.guardianLinkLocked || accData.guardianLinkLocked),
@@ -13726,6 +13729,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docId), targetAcc);
           }
         }
+        await syncAllMatchingCloudPasswordRecords(docId, targetAcc.name, newPass, null);
 
         playCheer();
         msgBox.className = 'text-xs font-extrabold rounded-xl p-2 bg-emerald-100 text-emerald-900 border border-emerald-300';
@@ -13808,6 +13812,60 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       }
     };
 
+    async function syncAllMatchingCloudPasswordRecords(primaryDocId, playerName, newPassword, newPin) {
+      const trimmed = String(playerName || '').trim();
+      const lower = trimmed.toLowerCase();
+      const nKey = normalizePlayerKey(trimmed);
+      const nowTs = Date.now();
+
+      loadLocalAccountsFromStorage();
+      inMemoryAccounts.forEach((acc, k) => {
+        if (!acc) return;
+        const accTrim = String(acc.name || '').trim();
+        if (k === primaryDocId || accTrim.toLowerCase() === lower || acc.nameKey === nKey) {
+          acc.password = newPassword;
+          if (newPin) acc.recoveryPin = newPin;
+          acc.updatedAt = nowTs;
+          acc.lastActiveAt = nowTs;
+          inMemoryAccounts.set(k, acc);
+        }
+      });
+      persistLocalAccountsToStorage();
+
+      if (typeof window.syncBiometricPasswordForAccount === 'function') {
+        window.syncBiometricPasswordForAccount(primaryDocId, trimmed, newPassword);
+      }
+
+      if (db && isDeviceOnline) {
+        try {
+          await authReadyPromise;
+          if (fbUser) {
+            const allSnaps = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'players'));
+            const batchUpdates = [];
+            allSnaps.forEach((docSnap) => {
+              const d = docSnap.data();
+              if (!d) return;
+              const dTrim = String(d.name || '').trim();
+              if (docSnap.id === primaryDocId || dTrim.toLowerCase() === lower || d.nameKey === nKey) {
+                const patch = {
+                  password: newPassword,
+                  updatedAt: nowTs,
+                  lastActiveAt: nowTs
+                };
+                if (newPin) patch.recoveryPin = newPin;
+                batchUpdates.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id), patch, { merge: true }));
+              }
+            });
+            if (batchUpdates.length > 0) {
+              await Promise.all(batchUpdates);
+            }
+          }
+        } catch (err) {
+          console.warn('Amaran segerak kata laluan awan:', err);
+        }
+      }
+    }
+
     /* Tukar Kata Laluan Baharu & PIN Pemulihan 4-Digit */
     window.handleChangeAccountPassword = async function(e) {
       e.preventDefault();
@@ -13841,14 +13899,24 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
       btn.innerText = '⏳ Menyimpan...';
 
       try {
+        const docId = currentPlayer.accountId || currentPlayer.key;
         currentPlayer.password = newPass;
         currentPlayer.recoveryPin = newPin;
+        currentPlayer.updatedAt = Date.now();
+        currentPlayer.lastActiveAt = Date.now();
         await savePlayerCloud();
+        await syncAllMatchingCloudPasswordRecords(docId, currentPlayer.name, newPass, newPin);
         syncPlayerUI();
 
         playCheer();
-        fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300';
-        fb.innerText = `✅ Kata laluan baharu dan PIN Pemulihan (${newPin}) berjaya disimpan!`;
+        const isOnlineNow = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
+        if (isOnlineNow && db) {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300';
+          fb.innerText = `✅ Kata laluan baharu, PIN Pemulihan (${newPin}) & rekod Biometrik telah disegerakkan ke awan!`;
+        } else {
+          fb.className = 'text-xs font-extrabold rounded-xl p-2.5 bg-amber-100 text-amber-950 border border-amber-400';
+          fb.innerText = `🟠 Kata laluan baharu disimpan di peranti ini (Mod Offline). Pastikan sambung internet hingga status bertukar 🟢 Online sebelum log masuk di peranti lain.`;
+        }
         fb.classList.remove('hidden');
 
         document.getElementById('acc-old-pass').value = '';
@@ -15855,6 +15923,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', studentId), target);
           }
         }
+        await syncAllMatchingCloudPasswordRecords(studentId, target.name, newDefaultPass, null);
 
         playCheer();
         if (fb) {
@@ -21143,6 +21212,29 @@ ${hostName} menjemput anda berlawan ${rawModeName} sekarang!
         localStorage.setItem(BIO_STORAGE_KEY, JSON.stringify(list));
       } catch (e) {}
     }
+
+    window.syncBiometricPasswordForAccount = function(accountId, playerName, newPassword) {
+      if (!newPassword) return;
+      const records = getStoredBioRecords();
+      if (!records.length) return;
+      const targetId = String(accountId || '').trim();
+      const targetName = String(playerName || '').trim().toLowerCase();
+      let updated = false;
+      records.forEach(rec => {
+        if (!rec) return;
+        const matchId = targetId && String(rec.accountId || '').trim() === targetId;
+        const matchName = targetName && String(rec.name || '').trim().toLowerCase() === targetName;
+        if (matchId || matchName) {
+          rec.password = newPassword;
+          if (playerName) rec.name = playerName;
+          updated = true;
+        }
+      });
+      if (updated) {
+        saveStoredBioRecords(records);
+        if (typeof window.syncBiometricUI === 'function') window.syncBiometricUI();
+      }
+    };
 
     function isWebAuthnAvailable() {
       return Boolean(

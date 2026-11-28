@@ -392,7 +392,7 @@
             <div id="offline-saved-accounts-box" class="space-y-1"></div>
           </div>
           <span class="inline-block text-[9px] font-black text-amber-800 bg-amber-100/80 border border-amber-300 px-2.5 py-0.5 rounded-full tracking-wide">
-            Versi 2.3.25 • Belian Terus Item & Baki Set Penuh Di Dalam Katalog Set Studio Avatar 3D
+            Versi 2.3.26 • Simpanan Kekal Set Sasaran Utama Di Awan & Storan Tempatan Setiap Kali Log Masuk
           </span>
         </div>
 
@@ -10547,7 +10547,11 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         currentPlayer.targetAvatarSetId = setId;
         const setObj = AVATAR_FULL_SETS.find(s => s.id === setId);
         playCheer();
-        showAppToast(`🎯 ${setObj ? setObj.name : 'Set'} ditetapkan sebagai sasaran utama anda!`);
+        if (currentPlayer.isGuest) {
+          showAppToast(`🎯 ${setObj ? setObj.name : 'Set'} ditetapkan! (Mod Tetamu: Daftar akaun di ⚙️ Akaun supaya sasaran kekal bila log masuk semula)`);
+        } else {
+          showAppToast(`🎯 ${setObj ? setObj.name : 'Set'} ditetapkan sebagai sasaran utama anda!`);
+        }
       }
       syncPlayerUI();
       renderAvatarStudio();
@@ -12553,7 +12557,8 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
         unlockedModules: [1, 2],
         modScores: {},
         avatarConfig: getDefaultAvatarConfig('boy'),
-        ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none']
+        ownedAvatarItems: ['boy_leo', 'girl_hana', 'out_hoodie_amber', 'out_crew_charcoal', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'fr_none'],
+        targetAvatarSetId: ''
       };
       document.getElementById('screen-login').classList.add('hidden');
       document.getElementById('app-header').classList.remove('hidden');
@@ -12818,6 +12823,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
           modCheckpoints: currentPlayer.modCheckpoints || {},
           avatarConfig: currentPlayer.avatarConfig,
           ownedAvatarItems: currentPlayer.ownedAvatarItems || [],
+          targetAvatarSetId: currentPlayer.targetAvatarSetId || '',
           mysteryBoxDate: currentPlayer.mysteryBoxDate || '',
           lastMysteryPrizeText: currentPlayer.lastMysteryPrizeText || '',
           dailyLoginStreak: currentPlayer.dailyLoginStreak || { streakDay: 1, lastClaimDate: '' },
@@ -13018,6 +13024,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             modCheckpoints: mergedRecord.modCheckpoints || {},
             avatarConfig: mergedRecord.avatarConfig,
             ownedAvatarItems: mergedRecord.ownedAvatarItems || [],
+            targetAvatarSetId: mergedRecord.targetAvatarSetId || '',
             updatedAt: Date.now()
           });
 
@@ -13424,6 +13431,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             modScores: {},
             avatarConfig: (savedAdmin && savedAdmin.avatarConfig) || getDefaultAvatarConfig('boy'),
             ownedAvatarItems: ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky'],
+            targetAvatarSetId: (savedAdmin && savedAdmin.targetAvatarSetId) || '',
             mysteryBoxDate: (savedAdmin && savedAdmin.mysteryBoxDate) || '',
             lastMysteryPrizeText: (savedAdmin && savedAdmin.lastMysteryPrizeText) || '',
             dailyLoginStreak: (savedAdmin && savedAdmin.dailyLoginStreak) || { streakDay: 1, lastClaimDate: '' },
@@ -13546,6 +13554,7 @@ Klik pautan di bawah untuk cuba sekarang (percuma & daftar nama dalam 10 saat sa
             ownedAvatarItems: Array.isArray(existingAccount.ownedAvatarItems)
               ? existingAccount.ownedAvatarItems
               : ['boy_leo', 'girl_hana', 'hair_quiff', 'hair_wavy_girl', 'hw_none', 'bg_sky'],
+            targetAvatarSetId: existingAccount.targetAvatarSetId || '',
             mysteryBoxDate: existingAccount.mysteryBoxDate || '',
             lastMysteryPrizeText: existingAccount.lastMysteryPrizeText || '',
             dailyLoginStreak: (existingAccount.dailyLoginStreak && typeof existingAccount.dailyLoginStreak === 'object')
